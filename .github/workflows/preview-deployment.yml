@@ -72,4 +72,4 @@ jobs:
           **Commit:** \`${{ github.sha }}\`
           **Version ID:** \`${{ steps.deploy.outputs.version_id }}\`
           **Preview URL:** ${{ steps.deploy.outputs.preview_url }}
-          **Deployed at:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          **Deployed at:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
