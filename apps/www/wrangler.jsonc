@@ -11,12 +11,5 @@
   "preview_urls": true,
   "observability": {
     "enabled": true
-  },
-  "routes": [
-    {
-      // TODO: Update to tedxub domain when ready
-      "pattern": "staging-tedxub-www.ahargunyllib.dev",
-      "custom_domain": true
-    }
-  ]
+  }
 }

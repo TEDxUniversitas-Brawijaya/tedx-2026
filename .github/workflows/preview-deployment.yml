@@ -14,16 +14,17 @@ on:
       - '!**/README*'
 
 concurrency:
-  group: preview-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+  group: preview-${{ github.event.pull_request.number }}-${{ github.sha }}
+  cancel-in-progress: false
 
 jobs:
   deploy:
-    name: Deploy to Cloudflare Pages
+    name: Deploy Preview to Cloudflare Workers
     runs-on: ubuntu-latest
     permissions:
       contents: read
       deployments: write
+      pull-requests: write
 
     steps:
       - name: Checkout repository
@@ -47,10 +48,28 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Build and deploy
+      - name: Build and upload version
+        id: deploy
         working-directory: apps/www
         run: |
-          bun run deploy
+          bun run build
+          wrangler versions upload 2>&1 | tee deploy-output.txt
+          VERSION_ID=$(grep -oP 'Version ID: \K[a-f0-9-]+' deploy-output.txt)
+          PREVIEW_URL=$(grep -oP 'https://[a-zA-Z0-9.-]+\.workers\.dev' deploy-output.txt | head -1)
+          echo "version_id=$VERSION_ID" >> $GITHUB_OUTPUT
+          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Comment on PR
+        if: steps.deploy.outputs.preview_url != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --body "### Preview Deployment
+
+          **Commit:** \`${{ github.sha }}\`
+          **Version ID:** \`${{ steps.deploy.outputs.version_id }}\`
+          **Preview URL:** ${{ steps.deploy.outputs.preview_url }}
+          **Deployed at:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')
