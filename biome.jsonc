@@ -9,5 +9,17 @@
     "ultracite/biome/astro",
     "ultracite/biome/next",
     "ultracite/biome/remix"
-  ]
+  ],
+  "linter": {
+    "rules": {
+      "style": {
+        "useConsistentTypeDefinitions": {
+          "level": "error",
+          "options": {
+            "style": "type"
+          }
+        }
+      }
+    }
+  }
 }
