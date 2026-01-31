@@ -5,48 +5,28 @@ import SmallMirror1 from "@/assets/imgs/small-mirror-1.png";
 import SmallMirror2 from "@/assets/imgs/small-mirror-2.png";
 import YellowWindow from "@/assets/imgs/yellow-window.png";
 import { Image } from "astro:assets";
-import Layout from "../components/layout.astro";
 import Navbar from "../components/navbar.astro";
 ---
 
-<Layout
-  title="Page Not Found | TEDxUniversitasBrawijaya"
-  description="The page you are looking for does not exist."
->
-  <Navbar />
-  <main>
-    <Image
-      src={RedBrushStroke}
-      alt="Red Brush Stroke"
-      class="red-brush-stroke"
-    />
-    <Image src={PaperTexture1} alt="Paper Texture" class="paper-texture-1" />
-    <section class="section-1">
-      <div class="window-container">
-        <div class="yellow-window-group">
-          <Image src={YellowWindow} alt="Yellow Window" class="yellow-window" />
-          <Image
-            src={SmallMirror1}
-            alt="Small Mirror 1"
-            class="small-mirror-1"
-          />
-          <Image
-            src={SmallMirror2}
-            alt="Small Mirror 2"
-            class="small-mirror-2"
-          />
-        </div>
+<Navbar />
+<main>
+  <Image src={RedBrushStroke} alt="Red Brush Stroke" class="red-brush-stroke" />
+  <Image src={PaperTexture1} alt="Paper Texture" class="paper-texture-1" />
+  <section class="section-1">
+    <div class="window-container">
+      <div class="yellow-window-group">
+        <Image src={YellowWindow} alt="Yellow Window" class="yellow-window" />
+        <Image src={SmallMirror1} alt="Small Mirror 1" class="small-mirror-1" />
+        <Image src={SmallMirror2} alt="Small Mirror 2" class="small-mirror-2" />
       </div>
+    </div>
 
-      <div class="text-container">
-        <h1>Segera Hadir.</h1>
-        <p>
-          Kami sedang menyiapkan sesuatu yang akan segera bisa kamu jelajahi
-        </p>
-      </div>
-    </section>
-  </main>
-</Layout>
+    <div class="text-container">
+      <h1>Segera Hadir.</h1>
+      <p>Kami sedang menyiapkan sesuatu yang akan segera bisa kamu jelajahi</p>
+    </div>
+  </section>
+</main>
 <style>
   main {
     background-color: var(--color-red);
@@ -169,7 +149,7 @@ import Navbar from "../components/navbar.astro";
     color: var(--color-white);
   }
 
-  @media (min-width: 640px){
+  @media (min-width: 640px) {
     .text-container {
       width: 50%;
     }
