@@ -21,5 +21,12 @@
         }
       }
     }
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "off"
+      }
+    }
   }
 }
