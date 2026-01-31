@@ -50,6 +50,7 @@ h6 {
 :root {
   /* Colors */
   --color-red: oklch(0.351 0.094 20.649);
+  --color-red-2: oklch(0.577 0.215 27.527);
   --color-green: oklch(0.406 0.064 194.914);
   --color-black: oklch(0.26 0 0);
   --color-brown: oklch(0.576 0.137 58.326);
