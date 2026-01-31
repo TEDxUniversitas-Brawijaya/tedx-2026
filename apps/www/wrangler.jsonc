@@ -11,5 +11,11 @@
   "preview_urls": true,
   "observability": {
     "enabled": true
-  }
+  },
+  "routes": [
+    {
+      "pattern": "tedxuniversitasbrawijaya.com",
+      "custom_domain": true
+    }
+  ]
 }
