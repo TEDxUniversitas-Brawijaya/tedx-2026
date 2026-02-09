@@ -1,0 +1,133 @@
+---
+import "@/styles/globals.css";
+
+type Props = {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+};
+
+const {
+  title = "TEDx Universitas Brawijaya 2026",
+  description = "TEDx Universitas Brawijaya is an independently organized TED event dedicated to sharing ideas worth spreading.",
+  canonical,
+  ogImage,
+} = Astro.props;
+const siteUrl = "https://tedxuniversitasbrawijaya.com";
+const keywords = [
+  "TEDxUniversitasBrawijaya",
+  "TEDxUniversitasBrawijaya 2026",
+  "TEDx",
+  "TEDx Jatim",
+  "TEDx Jawa Timur",
+  "TEDx Malang",
+  "TEDx UB",
+  "TEDxUB",
+  "TEDxUB 2026",
+  "TEDx Universitas Brawijaya 2026",
+  "TEDx events in Indonesia",
+  "TEDx Malang 2026",
+  "TEDx Propaganda 3",
+  "TEDx Main Event",
+  "TEDx Jawa Timur",
+  "Inspirational talks Malang",
+  "TEDx Universitas Brawijaya tickets",
+  "Join TEDx 2026",
+  "TED talks Universitas Brawijaya",
+  "Book TEDx tickets Malang",
+  "TEDx ticket",
+  "TEDx tiket",
+  "Universitas Brawijaya events",
+  "Universitas Brawijaya",
+  "UB",
+  "Malang",
+  "Jatim",
+];
+const canonicalUrl = canonical || new URL(Astro.url.pathname, siteUrl).href;
+const ogImageUrl = ogImage
+  ? new URL(ogImage, siteUrl).href
+  : `${siteUrl}/og-image.png`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "TEDx Universitas Brawijaya",
+  url: siteUrl,
+  logo: `${siteUrl}/og-image.png`,
+  keywords: keywords.join(", "),
+  sameAs: [
+    "https://twitter.com/tedxuniversitasbrawijaya",
+    "https://instagram.com/tedxuniversitasbrawijaya",
+  ],
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "General Inquiry",
+    url: siteUrl,
+  },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content={Astro.generator}>
+
+    <title>{title}</title>
+    <meta name="description" content={description}>
+    <meta name="keywords" content={keywords.join(", ")}>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalUrl}>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#eb0028">
+
+    <!-- Preconnect for Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Google Fonts with optimized loading -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Della+Respira&family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap&font-display=swap"
+      rel="stylesheet"
+    >
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Della+Respira&family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet"
+      >
+    </noscript>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
+    <meta property="og:type" content="website">
+    <meta property="og:url" content={canonicalUrl}>
+    <meta property="og:image" content={ogImageUrl}>
+    <meta property="og:site_name" content="TEDx Universitas Brawijaya">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@tedxuniversitasbrawijaya">
+    <meta name="twitter:creator" content="@tedxuniversitasbrawijaya">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content={ogImageUrl}>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

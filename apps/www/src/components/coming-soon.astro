@@ -1,0 +1,177 @@
+---
+import PaperTexture1 from "@/assets/imgs/paper-texture-1.png";
+import RedBrushStroke from "@/assets/imgs/red-brush-stroke.png";
+import SmallMirror1 from "@/assets/imgs/small-mirror-1.png";
+import SmallMirror2 from "@/assets/imgs/small-mirror-2.png";
+import YellowWindow from "@/assets/imgs/yellow-window.png";
+import { Image } from "astro:assets";
+import Navbar from "../components/navbar.astro";
+---
+
+<Navbar />
+<main>
+  <Image src={RedBrushStroke} alt="" class="red-brush-stroke" />
+  <Image src={PaperTexture1} alt="" class="paper-texture-1" />
+  <section class="section-1">
+    <div class="window-container">
+      <div class="yellow-window-group">
+        <Image src={YellowWindow} alt="Yellow Window" class="yellow-window" />
+        <Image src={SmallMirror1} alt="Small Mirror 1" class="small-mirror-1" />
+        <Image src={SmallMirror2} alt="Small Mirror 2" class="small-mirror-2" />
+      </div>
+    </div>
+
+    <div class="text-container">
+      <h1>Segera Hadir.</h1>
+      <p>Kami sedang menyiapkan sesuatu yang akan segera bisa kamu jelajahi</p>
+    </div>
+  </section>
+</main>
+<style>
+  main {
+    background-color: var(--color-red);
+    height: 100dvh;
+    overflow: hidden;
+    position: relative;
+    padding-top: var(--navbar-height);
+  }
+
+  .paper-texture-1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+    object-fit: cover;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    aspect-ratio: 1.78 / 1;
+  }
+
+  .red-brush-stroke {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100dvw;
+    height: 140dvh;
+    object-fit: cover;
+    object-position: top;
+    opacity: 0.5;
+    pointer-events: none;
+    aspect-ratio: 1.3 / 1;
+    scale: 1;
+  }
+
+  .section-1 {
+    position: relative;
+    width: 100%;
+    height: calc(100dvh - var(--navbar-height));
+  }
+
+  .window-container {
+    position: relative;
+    top: -10%;
+    width: 100%;
+    height: 100%;
+  }
+
+  .yellow-window-group {
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 60dvh;
+    width: 100%;
+  }
+
+  .yellow-window {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: 60dvh;
+    object-fit: cover;
+    object-position: top;
+    pointer-events: none;
+    opacity: 1;
+    aspect-ratio: 1.13 / 1;
+    z-index: 1;
+  }
+
+  .small-mirror-1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(20%, -30%);
+    width: auto;
+    height: 20dvh;
+    object-fit: cover;
+    pointer-events: none;
+    aspect-ratio: 0.79 / 1;
+  }
+
+  .small-mirror-2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-120%, -70%);
+    width: auto;
+    height: 20dvh;
+    object-fit: contain;
+    pointer-events: none;
+    aspect-ratio: 0.79 / 1;
+  }
+
+  .text-container {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .text-container h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    color: var(--color-white);
+  }
+
+  .text-container p {
+    font-family: var(--font-sans);
+    font-size: var(--text-m);
+    color: var(--color-white);
+  }
+
+  @media (min-width: 640px) {
+    .text-container {
+      width: 50%;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .text-container {
+      width: 60%;
+    }
+
+    .text-container h1 {
+      font-size: var(--text-xxl);
+    }
+
+    .text-container p {
+      font-size: var(--text-l);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .text-container {
+      width: 40%;
+    }
+  }
+</style>

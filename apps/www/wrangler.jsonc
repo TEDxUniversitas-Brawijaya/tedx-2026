@@ -7,9 +7,15 @@
     "binding": "ASSETS",
     "directory": "./dist"
   },
-  "workers_dev": false,
+  "workers_dev": true,
   "preview_urls": true,
   "observability": {
     "enabled": true
-  }
+  },
+  "routes": [
+    {
+      "pattern": "tedxuniversitasbrawijaya.com",
+      "custom_domain": true
+    }
+  ]
 }
