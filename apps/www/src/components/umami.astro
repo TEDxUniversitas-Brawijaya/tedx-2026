@@ -86,4 +86,5 @@ const defaultConfig: TrackConfig = {
   };
 
   setupOutboundLinkTracking();
+  document.addEventListener("astro:page-load", setupOutboundLinkTracking);
 </script>
