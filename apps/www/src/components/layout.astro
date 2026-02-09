@@ -129,8 +129,10 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <!-- Umami Analytics -->
-    <link rel="preconnect" href="https://cloud.umami.is" crossorigin />
-    <Umami websiteId="058b766a-7eb6-4dbc-be65-2f1b329ec1f8" />
+    {import.meta.env.PROD && (
+      <link rel="preconnect" href="https://cloud.umami.is" crossorigin />
+      <Umami websiteId="058b766a-7eb6-4dbc-be65-2f1b329ec1f8" />
+    )}
   </head>
   <body>
     <slot />

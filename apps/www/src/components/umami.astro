@@ -6,9 +6,7 @@ type TrackConfig = {
   tag?: string;
   excludeSearch?: boolean;
   excludeHash?: boolean;
-  doNotTrack?: boolean;
   beforeSendHandler?: string | null;
-  withPartytown?: boolean;
 };
 
 export type Props = {
@@ -26,7 +24,6 @@ const defaultConfig: TrackConfig = {
   tag: "site",
   excludeSearch: false,
   excludeHash: false,
-  doNotTrack: false,
   beforeSendHandler: null,
 };
 ---
@@ -49,7 +46,6 @@ const defaultConfig: TrackConfig = {
   data-tag={defaultConfig.tag}
   data-exclude-search={defaultConfig.excludeSearch ? "true" : "false"}
   data-exclude-hash={defaultConfig.excludeHash ? "true" : "false"}
-  data-do-not-track={defaultConfig.doNotTrack ? "true" : "false"}
   data-before-send={defaultConfig.beforeSendHandler}
   data-astro-rerun="false"
 >
