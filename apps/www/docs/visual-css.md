@@ -21,7 +21,7 @@ pattern.
 .image {
   position: absolute;
 }
-````
+```
 
 * `position: relative` establishes a local coordinate system.
 * `position: absolute` allows images to escape normal document flow.
