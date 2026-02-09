@@ -27,14 +27,6 @@ const defaultConfig: TrackConfig = {
   beforeSendHandler: null,
 };
 ---
-
-<script>
-  const mode = import.meta.env.MODE;
-  if (mode === "development") {
-    localStorage.setItem("umami.disabled", "1");
-  }
-</script>
-
 <script
   defer
   src={scriptSrc}
