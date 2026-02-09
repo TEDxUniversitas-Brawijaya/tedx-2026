@@ -27,6 +27,7 @@ const defaultConfig: TrackConfig = {
   beforeSendHandler: null,
 };
 ---
+
 <script
   defer
   src={scriptSrc}
@@ -39,15 +40,17 @@ const defaultConfig: TrackConfig = {
   data-exclude-search={defaultConfig.excludeSearch ? "true" : "false"}
   data-exclude-hash={defaultConfig.excludeHash ? "true" : "false"}
   data-before-send={defaultConfig.beforeSendHandler}
-  data-astro-rerun="false"
->
-  const script = document.currentScript;
+  data-astro-rerun="false"></script>
 
-  const viewTransitionsEnabled = document.querySelector<HTMLMetaElement>(
+<script is:inline>
+  const umamiScript = document.querySelector("script[data-website-id]");
+
+  const viewTransitionsEnabled = document.querySelector(
     "meta[name='astro-view-transitions-enabled']"
   )?.content;
-  if (viewTransitionsEnabled === "true") {
-    script.setAttribute("data-astro-rerun", "true");
+
+  if (viewTransitionsEnabled === "true" && umamiScript) {
+    umamiScript.setAttribute("data-astro-rerun", "true");
   }
 </script>
 
