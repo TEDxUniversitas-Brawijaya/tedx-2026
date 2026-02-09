@@ -1,0 +1,695 @@
+---
+import HangingLamp from "@/assets/imgs/hanging-lamp.png";
+import PaperTexture1 from "@/assets/imgs/paper-texture-1.png";
+import SmallFramedArt1 from "@/assets/imgs/small-framed-art-1.png";
+import SmallFramedArt2 from "@/assets/imgs/small-framed-art-2.png";
+import Layout from "@/components/layout.astro";
+import Navbar from "@/components/navbar.astro";
+import { Image } from "astro:assets";
+---
+
+<Layout>
+  <Navbar />
+
+  <main>
+    <div class="background-container">
+      <div class="background"></div>
+      <div class="red-brush-stroke-mask"></div>
+      <Image src={PaperTexture1} alt="Paper Texture" class="paper-texture-1" />
+    </div>
+    <div class="small-framed-art-1-container">
+      <Image
+        src={SmallFramedArt1}
+        alt="Small Framed Art Overlay"
+        class="small-framed-art-1-overlay"
+      />
+      <Image
+        src={SmallFramedArt1}
+        alt="Small Framed Art"
+        class="small-framed-art-1"
+      />
+    </div>
+    <div class="small-framed-art-2-container">
+      <Image
+        src={SmallFramedArt2}
+        alt="Small Framed Art Overlay"
+        class="small-framed-art-2-overlay"
+      />
+      <Image
+        src={SmallFramedArt2}
+        alt="Small Framed Art"
+        class="small-framed-art-2"
+      />
+    </div>
+    <div class="hanging-lamp-1-container">
+      <Image src={HangingLamp} alt="Hanging Lamp" class="hanging-lamp-1" />
+      <svg
+        width="204"
+        height="112"
+        viewBox="0 0 204 112"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="hanging-lamp-1-ellipse"
+      >
+        <g filter="url(#hanging-lamp-1-ellipse-filter)">
+          <ellipse
+            cx="101.632"
+            cy="52.6358"
+            rx="59.7145"
+            ry="13.0521"
+            transform="rotate(-3.43409 101.632 52.6358)"
+            fill="#FF9500"
+          ></ellipse>
+        </g>
+        <defs>
+          <filter
+            id="hanging-lamp-1-ellipse-filter"
+            x="-5.96046e-05"
+            y="-0.000106096"
+            width="203.264"
+            height="111.068"
+            filterUnits="userSpaceOnUse"
+            color-interpolation-filters="sRGB"
+          >
+            <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+            <feColorMatrix
+              in="SourceAlpha"
+              type="matrix"
+              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+              result="hardAlpha"
+            ></feColorMatrix>
+            <feOffset dy="4.34685"></feOffset>
+            <feGaussianBlur stdDeviation="2.57189"></feGaussianBlur>
+            <feComposite in2="hardAlpha" operator="out"></feComposite>
+            <feColorMatrix
+              type="matrix"
+              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"
+            ></feColorMatrix>
+            <feBlend
+              mode="normal"
+              in2="BackgroundImageFix"
+              result="hanging-lamp-1-ellipse-drop-shadow-1"
+            ></feBlend>
+            <feColorMatrix
+              in="SourceAlpha"
+              type="matrix"
+              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+              result="hardAlpha"
+            ></feColorMatrix>
+            <feMorphology
+              radius="5.79581"
+              operator="dilate"
+              in="SourceAlpha"
+              result="hanging-lamp-1-ellipse-drop-shadow-2"
+            ></feMorphology>
+            <feOffset dy="2.8979"></feOffset>
+            <feGaussianBlur stdDeviation="18.1119"></feGaussianBlur>
+            <feComposite in2="hardAlpha" operator="out"></feComposite>
+            <feColorMatrix
+              type="matrix"
+              values="0 0 0 0 1 0 0 0 0 0.583333 0 0 0 0 0 0 0 0 0.5 0"
+            ></feColorMatrix>
+            <feBlend
+              mode="normal"
+              in2="hanging-lamp-1-ellipse-drop-shadow-1"
+              result="hanging-lamp-1-ellipse-drop-shadow-2"
+            ></feBlend>
+            <feBlend
+              mode="normal"
+              in="SourceGraphic"
+              in2="hanging-lamp-1-ellipse-drop-shadow-2"
+              result="shape"
+            ></feBlend>
+          </filter>
+        </defs>
+      </svg>
+      <svg
+        width="394"
+        height="299"
+        viewBox="0 0 394 299"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="hanging-lamp-1-triangle"
+      >
+        <g filter="url(#hanging-lamp-1-triangle-filter)">
+          <path
+            d="M196.558 43.4688L349.647 255.378H43.4686L196.558 43.4688Z"
+            fill="url(#hanging-lamp-1-triangle-gradient)"
+            fill-opacity="0.9"
+          ></path>
+        </g>
+        <defs>
+          <filter
+            id="hanging-lamp-1-triangle-filter"
+            x="0.000209808"
+            y="0.000209808"
+            width="393.115"
+            height="298.846"
+            filterUnits="userSpaceOnUse"
+            color-interpolation-filters="sRGB"
+          >
+            <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+            <feBlend
+              mode="normal"
+              in="SourceGraphic"
+              in2="BackgroundImageFix"
+              result="shape"
+            ></feBlend>
+            <feGaussianBlur
+              stdDeviation="21.7343"
+              result="hanging-lamp-1-triangle-blur"
+            ></feGaussianBlur>
+          </filter>
+          <linearGradient
+            id="hanging-lamp-1-triangle-gradient"
+            x1="196.558"
+            y1="43.4687"
+            x2="196.558"
+            y2="252.215"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stop-color="#FF9500"></stop>
+            <stop offset="1" stop-color="#995900" stop-opacity="0.1"></stop>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="hanging-lamp-2-container">
+      <Image src={HangingLamp} alt="Hanging Lamp" class="hanging-lamp-2" />
+      <svg
+        width="204"
+        height="112"
+        viewBox="0 0 204 112"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="hanging-lamp-2-ellipse"
+      >
+        <g filter="url(#hanging-lamp-2-ellipse-filter)">
+          <ellipse
+            cx="101.632"
+            cy="52.6358"
+            rx="59.7145"
+            ry="13.0521"
+            transform="rotate(-3.43409 101.632 52.6358)"
+            fill="#FF9500"
+          ></ellipse>
+        </g>
+        <defs>
+          <filter
+            id="hanging-lamp-2-ellipse-filter"
+            x="-5.96046e-05"
+            y="-0.000106096"
+            width="203.264"
+            height="111.068"
+            filterUnits="userSpaceOnUse"
+            color-interpolation-filters="sRGB"
+          >
+            <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+            <feColorMatrix
+              in="SourceAlpha"
+              type="matrix"
+              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+              result="hardAlpha"
+            ></feColorMatrix>
+            <feOffset dy="4.34685"></feOffset>
+            <feGaussianBlur stdDeviation="2.57189"></feGaussianBlur>
+            <feComposite in2="hardAlpha" operator="out"></feComposite>
+            <feColorMatrix
+              type="matrix"
+              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"
+            ></feColorMatrix>
+            <feBlend
+              mode="normal"
+              in2="BackgroundImageFix"
+              result="hanging-lamp-2-ellipse-drop-shadow-1"
+            ></feBlend>
+            <feColorMatrix
+              in="SourceAlpha"
+              type="matrix"
+              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+              result="hardAlpha"
+            ></feColorMatrix>
+            <feMorphology
+              radius="5.79581"
+              operator="dilate"
+              in="SourceAlpha"
+              result="hanging-lamp-2-ellipse-drop-shadow-2"
+            ></feMorphology>
+            <feOffset dy="2.8979"></feOffset>
+            <feGaussianBlur stdDeviation="18.1119"></feGaussianBlur>
+            <feComposite in2="hardAlpha" operator="out"></feComposite>
+            <feColorMatrix
+              type="matrix"
+              values="0 0 0 0 1 0 0 0 0 0.583333 0 0 0 0 0 0 0 0 0.5 0"
+            ></feColorMatrix>
+            <feBlend
+              mode="normal"
+              in2="hanging-lamp-2-ellipse-drop-shadow-1"
+              result="hanging-lamp-2-ellipse-drop-shadow-2"
+            ></feBlend>
+            <feBlend
+              mode="normal"
+              in="SourceGraphic"
+              in2="hanging-lamp-2-ellipse-drop-shadow-2"
+              result="shape"
+            ></feBlend>
+          </filter>
+        </defs>
+      </svg>
+      <svg
+        width="394"
+        height="299"
+        viewBox="0 0 394 299"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="hanging-lamp-2-triangle"
+      >
+        <g filter="url(#hanging-lamp-2-triangle-filter)">
+          <path
+            d="M196.558 43.4688L349.647 255.378H43.4686L196.558 43.4688Z"
+            fill="url(#hanging-lamp-2-triangle-gradient)"
+            fill-opacity="0.9"
+          ></path>
+        </g>
+        <defs>
+          <filter
+            id="hanging-lamp-2-triangle-filter"
+            x="0.000209808"
+            y="0.000209808"
+            width="393.115"
+            height="298.846"
+            filterUnits="userSpaceOnUse"
+            color-interpolation-filters="sRGB"
+          >
+            <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+            <feBlend
+              mode="normal"
+              in="SourceGraphic"
+              in2="BackgroundImageFix"
+              result="shape"
+            ></feBlend>
+            <feGaussianBlur
+              stdDeviation="21.7343"
+              result="hanging-lamp-2-triangle-blur"
+            ></feGaussianBlur>
+          </filter>
+          <linearGradient
+            id="hanging-lamp-2-triangle-gradient"
+            x1="196.558"
+            y1="43.4687"
+            x2="196.558"
+            y2="252.215"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stop-color="#FF9500"></stop>
+            <stop offset="1" stop-color="#995900" stop-opacity="0.1"></stop>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="content-container">
+      <div class="text-container">
+        <h1>Halaman Tidak Ditemukan</h1>
+        <p>Kami tidak dapat menemukan halaman yang kamu cari</p>
+      </div>
+      <a href="/">Kembali ke home</a>
+    </div>
+    <Image src={PaperTexture1} alt="Paper Texture" class="paper-texture-2" />
+  </main>
+  <style>
+    main {
+      background-color: var(--color-black);
+      height: 100dvh;
+      overflow: hidden;
+      position: relative;
+      padding-top: var(--navbar-height);
+    }
+
+    .background-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100dvw;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    .background {
+      background-color: oklch(0.371 0 0);
+      width: 100dvw;
+      height: 100dvh;
+      mix-blend-mode: multiply;
+    }
+
+    .red-brush-stroke-mask {
+      mask-image: url("../assets/imgs/red-brush-stroke.png");
+      mask-size: cover;
+      mask-position: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -40%);
+      width: 100dvw;
+      height: 160dvh;
+      background-color: oklch(0.252 0 0);
+      opacity: 0.2;
+    }
+
+    .paper-texture-1 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100dvw;
+      height: 100dvh;
+      object-fit: cover;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      aspect-ratio: 1.78 / 1;
+    }
+
+    .paper-texture-2 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100dvw;
+      height: 100dvh;
+      object-fit: cover;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      aspect-ratio: 1.78 / 1;
+    }
+
+    .hanging-lamp-1-container {
+      position: absolute;
+      top: 0;
+      left: 15%;
+      display: none;
+    }
+
+    .hanging-lamp-1 {
+      position: relative;
+      width: 10dvw;
+      height: auto;
+      object-fit: contain;
+      pointer-events: none;
+      aspect-ratio: 0.6 / 1;
+      z-index: 1;
+    }
+
+    .hanging-lamp-1-ellipse {
+      position: absolute;
+      top: 100%;
+      left: 0%;
+      scale: 1.5;
+      transform: translateY(-37.5%);
+    }
+
+    .hanging-lamp-1-triangle {
+      position: absolute;
+      top: 100%;
+      left: 0%;
+      scale: 3;
+      transform: translateY(-10%);
+      transition: opacity 0.3s linear;
+      opacity: 1;
+    }
+
+    .hanging-lamp-2-container {
+      position: absolute;
+      top: 0;
+      right: 50%;
+      transform: translateX(50%);
+    }
+
+    .hanging-lamp-2 {
+      position: relative;
+      width: 12dvh;
+      height: auto;
+      object-fit: contain;
+      pointer-events: none;
+      aspect-ratio: 0.6 / 1;
+      z-index: 1;
+    }
+
+    .hanging-lamp-2-ellipse {
+      position: absolute;
+      top: 100%;
+      left: 0%;
+      scale: 1.5;
+      transform: translateY(-37.5%);
+    }
+
+    .hanging-lamp-2-triangle {
+      position: absolute;
+      top: 100%;
+      left: 0%;
+      scale: 3;
+      transform: translateY(-10%);
+      transition: opacity 0.3s linear;
+      opacity: 1;
+    }
+
+    @keyframes blink {
+      0%,
+      30% {
+        opacity: 1;
+      }
+      31%,
+      40% {
+        opacity: 0;
+      }
+      41%,
+      50% {
+        opacity: 1;
+      }
+      51%,
+      55% {
+        opacity: 0;
+      }
+      56%,
+      60% {
+        opacity: 1;
+      }
+      61%,
+      70% {
+        opacity: 1;
+      }
+      71%,
+      80% {
+        opacity: 0;
+      }
+      81%,
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .hanging-lamp-1-triangle,
+    .hanging-lamp-1-ellipse,
+    .hanging-lamp-2-triangle,
+    .hanging-lamp-2-ellipse {
+      animation: blink 3s infinite;
+    }
+
+    .small-framed-art-1-container {
+      position: absolute;
+      top: 30%;
+      left: 55%;
+      width: auto;
+      height: 10dvh;
+    }
+
+    .small-framed-art-1-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: auto;
+      height: 10dvh;
+      object-fit: contain;
+      pointer-events: none;
+      aspect-ratio: 0.86 / 1;
+      z-index: 2;
+      filter: brightness(0) saturate(100%);
+      opacity: 0.4;
+    }
+
+    .small-framed-art-1 {
+      position: relative;
+      width: auto;
+      height: 10dvh;
+      object-fit: contain;
+      pointer-events: none;
+      aspect-ratio: 0.86 / 1;
+    }
+
+    .small-framed-art-2-container {
+      position: absolute;
+      top: 35%;
+      left: 35%;
+      width: auto;
+      height: 12.5dvh;
+    }
+
+    .small-framed-art-2-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: auto;
+      height: 12.5dvh;
+      object-fit: contain;
+      pointer-events: none;
+      aspect-ratio: 0.86 / 1;
+      z-index: 2;
+      filter: brightness(0) saturate(100%);
+      opacity: 0.4;
+    }
+
+    .small-framed-art-2 {
+      position: relative;
+      width: auto;
+      height: 12.5dvh;
+      object-fit: contain;
+      pointer-events: none;
+      aspect-ratio: 0.86 / 1;
+    }
+
+    .content-container {
+      position: absolute;
+      right: 50%;
+      bottom: 10%;
+      transform: translateX(50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .text-container {
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .text-container h1 {
+      font-family: var(--font-serif);
+      font-size: var(--text-xl);
+      color: var(--color-white);
+    }
+
+    .text-container p {
+      font-family: var(--font-sans);
+      font-size: var(--text-m);
+      color: var(--color-white);
+    }
+
+    .content-container a {
+      font-family: var(--font-serif);
+      font-size: var(--text-m);
+      color: var(--color-white);
+      padding: 1rem 2rem;
+      background-color: var(--color-red-2);
+      border-radius: 0.5rem;
+      text-decoration: none;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    .content-container a:hover {
+      background-color: color-mix(
+        in oklch,
+        var(--color-red-2) 80%,
+        transparent 20%
+      );
+    }
+
+    .content-container a:active {
+      background-color: color-mix(
+        in oklch,
+        var(--color-red-2) 60%,
+        transparent 40%
+      );
+    }
+
+    .content-container a:focus {
+      outline: 2px solid var(--color-white);
+      outline-offset: 4px;
+    }
+
+    @media (min-width: 768px) {
+      .hanging-lamp-1-container {
+        display: block;
+      }
+
+      .hanging-lamp-2-container {
+        top: 0;
+        right: 12.5%;
+        transform: none;
+      }
+
+      .small-framed-art-1-container {
+        top: 37.5%;
+        left: 25%;
+        width: auto;
+        height: 20dvh;
+      }
+
+      .small-framed-art-1-overlay {
+        width: auto;
+        height: 20dvh;
+      }
+
+      .small-framed-art-1 {
+        width: auto;
+        height: 20dvh;
+      }
+
+      .small-framed-art-2-container {
+        top: 50%;
+        left: 10%;
+        width: auto;
+        height: 25dvh;
+      }
+
+      .small-framed-art-2-overlay {
+        width: auto;
+        height: 25dvh;
+      }
+
+      .small-framed-art-2 {
+        width: auto;
+        height: 25dvh;
+      }
+
+      .hanging-lamp-2 {
+        width: 12.5dvw;
+        height: auto;
+      }
+
+      .content-container {
+        right: 5%;
+        bottom: 10%;
+        transform: none;
+        justify-content: end;
+        align-items: end;
+        gap: 4rem;
+      }
+
+      .text-container {
+        width: 80%;
+        text-align: end;
+        gap: 1.5rem;
+      }
+
+      .text-container h1 {
+        font-size: var(--text-xxl);
+      }
+
+      .text-container p {
+        font-size: var(--text-l);
+      }
+    }
+  </style>
+</Layout>
