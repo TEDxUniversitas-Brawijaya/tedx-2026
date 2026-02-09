@@ -7,4 +7,7 @@ export default defineConfig({
   site: "https://tedxuniversitasbrawijaya.com",
   adapter: cloudflare(),
   integrations: [sitemap()],
+  redirects: {
+    "/analytics": "https://cloud.umami.is/share/nFxmdZ9mkvCuOiHz",
+  },
 });
