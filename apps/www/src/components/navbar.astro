@@ -1,7 +1,16 @@
-<header><span>TODO</span></header>
+---
+import Logo from "@/assets/imgs/logo.png";
+import { Image } from "astro:assets";
+---
+
+<header>
+  <a href="/">
+    <Image src={Logo} alt="TEDx Universitas Brawijaya Logo" class="logo" />
+  </a>
+</header>
 <style>
   :root {
-    --navbar-height: 80px;
+    --navbar-height: 72px;
   }
 
   header {
@@ -12,12 +21,21 @@
     left: 0;
     right: 0;
     z-index: 9999;
+    padding: 1rem 1.25rem;
   }
 
-  span {
-    color: white;
-    line-height: 80px;
-    padding-left: 20px;
-    font-weight: bold;
+  .logo {
+    height: 100%;
+    width: auto;
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --navbar-height: 80px;
+    }
+
+    header {
+      padding: 1rem 9.375rem;
+    }
   }
 </style>
