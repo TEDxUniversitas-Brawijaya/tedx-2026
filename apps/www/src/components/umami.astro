@@ -69,8 +69,7 @@ const defaultConfig: TrackConfig = {
     const anchors = document.querySelectorAll("a");
     const currentHost = window.location.host;
 
-    for (let i = 0; i < anchors.length; i++) {
-      const anchor = anchors.item(i);
+    for (const anchor of anchors) {
       const { host, href } = anchor;
 
       if (host === currentHost) {
