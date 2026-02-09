@@ -1,0 +1,81 @@
+---
+type TrackConfig = {
+  autoTrack?: boolean;
+  hostUrl?: string;
+  domains?: string[];
+  tag?: string;
+  excludeSearch?: boolean;
+  excludeHash?: boolean;
+  beforeSendHandler?: string | null;
+};
+
+export type Props = {
+  websiteId: string;
+  scriptSrc?: string;
+};
+
+const { websiteId, scriptSrc = "https://cloud.umami.is/script.js" } =
+  Astro.props;
+
+const defaultConfig: TrackConfig = {
+  autoTrack: true,
+  hostUrl: "https://cloud.umami.is",
+  domains: ["tedxuniversitasbrawijaya.com", "www.tedxuniversitasbrawijaya.com"],
+  tag: "site",
+  excludeSearch: false,
+  excludeHash: false,
+  beforeSendHandler: null,
+};
+---
+
+<script
+  defer
+  src={scriptSrc}
+  data-website-id={websiteId}
+  is:inline
+  data-auto-track={defaultConfig.autoTrack ? "true" : "false"}
+  data-host-url={defaultConfig.hostUrl}
+  data-domains={defaultConfig.domains?.join(",")}
+  data-tag={defaultConfig.tag}
+  data-exclude-search={defaultConfig.excludeSearch ? "true" : "false"}
+  data-exclude-hash={defaultConfig.excludeHash ? "true" : "false"}
+  data-before-send={defaultConfig.beforeSendHandler}
+  data-astro-rerun="false"></script>
+
+<script is:inline>
+  const umamiScript = document.querySelector("script[data-website-id]");
+
+  const viewTransitionsEnabled = document.querySelector(
+    "meta[name='astro-view-transitions-enabled']"
+  )?.content;
+
+  if (viewTransitionsEnabled === "true" && umamiScript) {
+    umamiScript.setAttribute("data-astro-rerun", "true");
+  }
+</script>
+
+<script is:inline>
+  const setupOutboundLinkTracking = () => {
+    const eventName = "outbound-link-click";
+    const anchors = document.querySelectorAll("a");
+    const currentHost = window.location.host;
+
+    for (const anchor of anchors) {
+      const { host, href } = anchor;
+
+      if (host === currentHost) {
+        continue; // Skip internal links
+      }
+
+      if (anchor.hasAttribute("data-umami-event")) {
+        continue; // Skip if already has tracking (e.g., content-click)
+      }
+
+      anchor.setAttribute("data-umami-event", eventName);
+      anchor.setAttribute("data-umami-event-url", href);
+    }
+  };
+
+  setupOutboundLinkTracking();
+  document.addEventListener("astro:page-load", setupOutboundLinkTracking);
+</script>
