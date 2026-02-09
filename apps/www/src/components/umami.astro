@@ -54,7 +54,7 @@ const defaultConfig: TrackConfig = {
   }
 </script>
 
-<script>
+<script is:inline>
   const setupOutboundLinkTracking = () => {
     const eventName = "outbound-link-click";
     const anchors = document.querySelectorAll("a");
