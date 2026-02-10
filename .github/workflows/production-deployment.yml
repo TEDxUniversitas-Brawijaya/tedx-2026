@@ -14,8 +14,8 @@ on:
       - '!**/README*'
 
 concurrency:
-  group: production-${{ github.sha }}
-  cancel-in-progress: false
+  group: production-main
+  cancel-in-progress: true
 
 jobs:
   deploy:
