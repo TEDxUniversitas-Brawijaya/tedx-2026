@@ -1,7 +1,8 @@
 name: Production WWW Deployment
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - main
     paths:
@@ -20,6 +21,7 @@ jobs:
   deploy:
     name: Deploy to Cloudflare Workers Production
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     permissions:
       contents: read
       deployments: write
