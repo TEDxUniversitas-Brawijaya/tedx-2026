@@ -1,10 +1,10 @@
 ---
 import ClosedDoor from "@/assets/imgs/closed-door.png";
 import SemiOpenedDoor from "@/assets/imgs/semi-opened-door.png";
+import Window1 from "@/assets/imgs/window-1.png";
 import OpenedDoor from "@/assets/imgs/opened-door.png";
 import HouseNumber1 from "@/assets/imgs/house-number-1.png";
 import PrintTexture1 from "@/assets/imgs/print-texture-1.png";
-import ShadowOverlay1 from "@/assets/imgs/shadow-overlay-1.png";
 import FrameEP from "@/assets/imgs/frame-ep.png";
 import FrameEM from "@/assets/imgs/frame-em.png";
 import FrameCEM from "@/assets/imgs/frame-cem.png";
@@ -109,9 +109,9 @@ const divisons = {
 
       <Image src={HouseNumber1} alt="House Number 1" class="house-number-1" />
 
+      <Image src={Window1} alt="Window 1" class="window-1" />
+
       <Image src={PrintTexture1} alt="" class="print-texture-1" />
-      <Image src={ShadowOverlay1} alt="" class="shadow-overlay-1" />
-      <div class="shadow-overlay-1-overlay"></div>
 
       <div class="content">
         <h2>Masuk dan Jadilah Bagian dari Cerita.</h2>
@@ -379,6 +379,10 @@ const divisons = {
     transition: opacity 0.25s ease-in-out;
   }
 
+  .window-1 {
+    display: none;
+  }
+
   .house-number-1 {
     position: absolute;
     bottom: var(--door-height);
@@ -402,28 +406,6 @@ const divisons = {
     pointer-events: none;
     mix-blend-mode: overlay;
     aspect-ratio: 1.48 / 1;
-  }
-
-  .shadow-overlay-1 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100dvw;
-    height: 105dvh;
-    object-fit: cover;
-    object-position: center;
-    pointer-events: none;
-    aspect-ratio: 1.5 / 1;
-  }
-
-  .shadow-overlay-1-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100dvw;
-    height: 105dvh;
-    background: rgba(0, 0, 0, 0.25);
-    pointer-events: none;
   }
 
   #outside .content {
@@ -759,6 +741,7 @@ const divisons = {
     font-family: var(--font-sans);
     font-size: var(--text-m);
     color: var(--color-white);
+    text-wrap-style: pretty;
   }
 
   #inside .content button {
@@ -933,6 +916,216 @@ const divisons = {
 
   [data-frame].animating img {
     opacity: 0;
+  }
+
+  @media (min-width: 425px){
+    #inside .content {
+      max-width: 30rem;
+    }
+
+    #inside .content h1 {
+      font-size: var(--text-xl);
+    }
+
+    #inside .content p {
+      font-size: var(--text-m);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    #outside {
+      --door-height: 65dvh;
+
+      transform-origin: center bottom;
+    }
+
+    #door-container {
+      transform: translateX(-50%);
+    }
+
+    .window-1 {
+      display: block;
+      position: absolute;
+      bottom: var(--door-height);
+      left: 50%;
+      transform: translate(-170%, 100%);
+      width: auto;
+      height: 45dvh;
+      pointer-events: none;
+      aspect-ratio: 0.72 / 1;
+    }
+
+    .house-number-1 {
+      transform: translate(200%, 100%);
+    }
+
+    #outside .content {
+      left: 0%;
+      top: auto;
+      bottom: 10%;
+      padding: 0 9.375rem;
+      max-width: 50%;
+      transform: none;
+      justify-content: flex-start;
+      align-items: start;
+      text-align: left;
+      height: min-content;
+    }
+
+    /* Outside content children except background class set z-index to 2 */
+    #outside .content > *:not(.background) {
+      position: relative;
+      z-index: 2;
+    }
+
+    #outside .content .background {
+      z-index: 1;
+      opacity: 0.8;
+      height: 160%;
+      width: 100%;
+    }
+
+    .sofa-1 {
+      height: 40dvh;
+      left: 0;
+      transform: translateX(30%);
+      object-position: left;
+    }
+
+    .table-1 {
+      height: 40dvh;
+      left: 0;
+      bottom: 1rem;
+      transform: translateX(50%);
+      object-position: left;
+    }
+
+    .green-room-background-1 {
+      left: 0;
+      object-position: left;
+      transform: none;
+    }
+
+    #inside .content {
+      left: 0%;
+      top: 10%;
+      padding: var(--navbar-height) 9.375rem;
+      transform: none;
+      max-width: 50rem;
+      justify-content: flex-start;
+      align-items: start;
+      text-align: left;
+      gap: 2rem;
+    }
+
+    #inside .content h1 {
+      font-size: var(--text-xxl);
+    }
+
+    #inside .content p {
+      font-size: var(--text-m);
+    }
+
+    #inside .content button {
+      font-size: var(--text-m);
+      padding: 0.5rem 1rem;
+    }
+
+    .frame-ep-container {
+      top: 20%;
+      left: auto;
+      right: 13%;
+      transform: translateX(-160%);
+      height: 12.5dvh;
+    }
+
+    .frame-ep {
+      height: 12.5dvh;
+    }
+
+    .frame-em-container {
+      top: 18%;
+      left: auto;
+      right: 13%;
+      transform: none;
+      height: 15dvh;
+    }
+
+    .frame-em {
+      height: 15dvh;
+    }
+
+    .frame-cem-container {
+      top: 20%;
+      left: auto;
+      right: 13.5%;
+      transform: translateX(125%);
+      height: 13.5dvh;
+    }
+
+    .frame-cem {
+      height: 13.5dvh;
+    }
+
+    .frame-vp-container {
+      top: 34.5%;
+      left: auto;
+      right: 13%;
+      transform: translateX(-110%);
+      height: 9.5dvh;
+    }
+
+    .frame-vp {
+      height: 9.5dvh;
+    }
+
+    .frame-sponsorship-container {
+      top: 36.5%;
+      left: auto;
+      right: 13%;
+      transform: translateX(-10%);
+      height: 8.5dvh;
+    }
+
+    .frame-sponsorship {
+      height: 8.5dvh;
+    }
+
+    .frame-curator-container {
+      top: 36%;
+      left: auto;
+      right: 13%;
+      transform: translateX(110%);
+      height: 8.5dvh;
+    }
+
+    .frame-curator {
+      height: 8.5dvh;
+    }
+
+    .frame-design-container {
+      top: 46%;
+      left: auto;
+      right: 13%;
+      transform: translateX(-100%);
+      height: 11.5dvh;
+    }
+
+    .frame-design {
+      height: 11.5dvh;
+    }
+
+    .frame-website-container {
+      top: 46%;
+      left: auto;
+      right: 13%;
+      transform: translateX(20%);
+      height: 11.5dvh;
+    }
+
+    .frame-website {
+      height: 11.5dvh;
+    }
   }
 </style>
 <script>
