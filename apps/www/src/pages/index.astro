@@ -1,8 +1,328 @@
 ---
+import GrayscaleBook from "@/assets/imgs/grayscale-book.png";
+import GreenStripWall1 from "@/assets/imgs/green-strip-wall-1.png";
+import PaperGrainTexture1 from "@/assets/imgs/paper-grain-texture-1.png";
+import RedBook from "@/assets/imgs/red-book.png";
+import Shelf1 from "@/assets/imgs/shelf-1.png";
+import Table1 from "@/assets/imgs/table-1.png";
+import Window2 from "@/assets/imgs/window-2.png";
 import Layout from "@/components/layout.astro";
-import ComingSoon from "../components/coming-soon.astro";
+import { Image } from "astro:assets";
 ---
 
 <Layout>
-  <ComingSoon />
+  <main>
+    <Image src={GreenStripWall1} alt="" class="green-strip-wall-1" />
+    <div class="shelf-1-container-wrapper">
+      <div class="shelf-1-container">
+        <Image src={Shelf1} alt="Shelf" class="shelf-1" />
+      </div>
+    </div>
+    <div class="window-2-container-wrapper">
+      <div class="window-2-container">
+        <Image src={Window2} alt="Window 2" class="window-2" />
+        <svg
+          width="1008"
+          height="766"
+          viewBox="0 0 1008 766"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="window-2-light-effect"
+        >
+          <path
+            d="M1008 455.173L384.5 0L0 1.5V602.63L1008 765.5V455.173Z"
+            fill="url(#paint)"
+            fill-opacity="0.4"></path>
+          <defs>
+            <linearGradient
+              id="paint"
+              x1="400.5"
+              y1="124"
+              x2="1152"
+              y2="746.5"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#FF9305"></stop>
+              <stop offset="1" stop-color="#9B5800" stop-opacity="0.15"></stop>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+    <Image src={PaperGrainTexture1} alt="" class="paper-grain-texture" />
+    <div class="table-with-book-container-wrapper">
+      <div class="table-with-book-container">
+        <div class="table-container-wrapper">
+          <div class="table-container">
+            <Image src={Table1} alt="Table" class="table" />
+          </div>
+        </div>
+        <div class="book-container-wrapper">
+          <div class="book-container">
+            <Image
+              src={GrayscaleBook}
+              alt="Grayscale Book"
+              class="grayscale-book"
+            />
+            <Image src={RedBook} alt="Red Book" class="red-book" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-container">
+      <h1>Bertumbuh Bersama</h1>
+      <p>Cerita yang Kita Bawa, Rumah yang Kita Cipta</p>
+    </div>
+  </main>
 </Layout>
+<style>
+  main {
+    background-color: var(--color-green);
+    height: 100dvh;
+    overflow: hidden;
+    position: relative;
+    padding-top: var(--navbar-height);
+  }
+  .green-strip-wall-1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 110dvw;
+    height: 100dvh;
+    object-fit: cover;
+    pointer-events: none;
+    aspect-ratio: 1.34 / 1;
+  }
+  .shelf-1-container-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(60%, 50%);
+    width: 80dvw;
+    height: auto;
+  }
+  .shelf-1-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.18 / 1;
+  }
+  .shelf-1 {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 1.18 / 1;
+  }
+  .window-2-container-wrapper {
+    position: absolute;
+    top: 30%;
+    left: -30%;
+    width: 100dvw;
+    height: auto;
+  }
+  .window-2-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.3 / 1;
+  }
+  .window-2 {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 0.72 / 1;
+  }
+  .window-2-light-effect {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    filter: blur(20px);
+    animation: beam-pulse 4s ease-in-out infinite;
+  }
+  @keyframes beam-pulse {
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  .paper-grain-texture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 110dvw;
+    height: 100dvh;
+    object-fit: cover;
+    pointer-events: none;
+    aspect-ratio: 1.33 / 1;
+    mix-blend-mode: multiply;
+  }
+  .table-with-book-container-wrapper {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translate(26%, 40%);
+    width: 200dvw;
+  }
+  .table-with-book-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.9 / 1;
+  }
+  .table-container-wrapper {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+  }
+  .table-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2.74 / 1;
+  }
+  .table {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 2.74 / 1;
+  }
+
+  .book-container-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-20%, -110%);
+    width: 30%;
+    height: auto;
+  }
+
+  .book-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.25 / 1;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .grayscale-book {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 1.15 / 1;
+  }
+
+  .red-book {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 0.1 / 1;
+    transition: transform 0.3s ease;
+  }
+
+  /* if book container being hover, translate y red book */
+  .book-container:hover .red-book {
+    transform: translateY(-40px);
+  }
+
+  .text-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .text-container h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-l);
+    color: var(--color-white);
+  }
+
+  .text-container p {
+    font-family: var(--font-sans);
+    font-size: var(--text-m);
+    color: var(--color-white);
+  }
+
+  @media (min-width: 425px) {
+    .window-2-container-wrapper {
+      top: 5%;
+      left: -5%;
+      width: 75dvw;
+    }
+    .shelf-1-container-wrapper {
+      width: 80dvw;
+      transform: translate(50%, -20%);
+    }
+    .table-with-book-container-wrapper {
+      width: 125dvw;
+      transform: translate(26%, 20%);
+    }
+
+    .book-container-wrapper {
+      width: 35%;
+      transform: translate(-30%, -90%);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .window-2-container-wrapper {
+      top: 2%;
+      left: 2%;
+      width: 50dvw;
+    }
+    .window-2-light-effect {
+      top: 9%;
+      left: 7%;
+    }
+    .shelf-1-container-wrapper {
+      width: 50dvw;
+      transform: translate(50%, -20%);
+    }
+    .table-with-book-container-wrapper {
+      width: 75dvw;
+      transform: translate(26%, 20%);
+    }
+
+    .book-container-wrapper {
+      width: 35%;
+      transform: translate(-30%, -90%);
+    }
+
+    .text-container {
+      top: auto;
+      bottom: 15%;
+      left: 5%;
+      transform: none;
+      width: max-content;
+      text-align: left;
+    }
+
+    .text-container h1 {
+      font-size: var(--text-xxl);
+    }
+
+    .text-container p {
+      font-size: var(--text-l);
+    }
+  }
+</style>
