@@ -89,3 +89,9 @@ html {
     font-feature-settings: "cv05", "cv08", "ss01";
   }
 }
+
+/* Disable blue highlight on click */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
