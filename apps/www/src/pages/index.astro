@@ -64,7 +64,8 @@ const menu = [
           <path
             d="M1008 455.173L384.5 0L0 1.5V602.63L1008 765.5V455.173Z"
             fill="url(#paint)"
-            fill-opacity="0.4"></path>
+            fill-opacity="0.4"
+          ></path>
           <defs>
             <linearGradient
               id="paint"
@@ -126,8 +127,7 @@ const menu = [
                   <span>TEDX UNIVERSITAS BRAWIJAYA</span>
                 </div>
                 <ul>
-                  {
-                    menu.map((item) => (
+                  {menu.map((item) => (
                       <li>
                         {item.children ? (
                           <>
@@ -144,8 +144,7 @@ const menu = [
                           <a href={item.href}>{item.name}</a>
                         )}
                       </li>
-                    ))
-                  }
+                    ))}
                 </ul>
               </div>
             </div>
@@ -315,6 +314,8 @@ const menu = [
     padding: 0;
     margin: 0;
     cursor: pointer;
+    height: 100%;
+    display: flex;
   }
 
   .red-book-button:focus {
@@ -408,7 +409,7 @@ const menu = [
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -40%) scale(0.97);
+    transform: translate(-25%, -40%) scale(0.97);
     filter: blur(2px);
     width: 150%;
     height: auto;
@@ -451,7 +452,6 @@ const menu = [
     object-position: center;
     aspect-ratio: 1.39 / 1;
   }
-
 
   main:has(.modal.active) .red-book {
     opacity: 0;
@@ -746,6 +746,7 @@ const menu = [
     redBookButton.addEventListener("click", () => {
       modal.classList.add("active");
       modalContent.inert = false;
+      document.body.style.overflow = "hidden";
 
       redBookButton.blur();
     });
@@ -753,6 +754,7 @@ const menu = [
     grayscaleBook.addEventListener("click", () => {
       modal.classList.add("active");
       modalContent.inert = false;
+      document.body.style.overflow = "hidden";
 
       redBookButton.blur();
     });
@@ -760,6 +762,9 @@ const menu = [
     modalBackdrop.addEventListener("click", () => {
       modal.classList.remove("active");
       modalContent.inert = true;
+      document.body.style.overflow = "";
+
+      modalContent.dispatchEvent(new CustomEvent("modalClosed"));
 
       redBookButton.focus();
     });
@@ -769,6 +774,9 @@ const menu = [
       if (event.key === "Escape" && modal.classList.contains("active")) {
         modal.classList.remove("active");
         modalContent.inert = true;
+        document.body.style.overflow = "";
+
+        modalContent.dispatchEvent(new CustomEvent("modalClosed"));
 
         redBookButton.focus();
       }
@@ -779,8 +787,10 @@ const menu = [
     const modal = document.getElementById("modal");
     const modalContent =
       document.querySelector<HTMLDivElement>(".modal-content");
+    const menuContainer =
+      document.querySelector<HTMLDivElement>(".menu-container");
 
-    if (!(modal && modalContent)) {
+    if (!(modal && modalContent && menuContainer)) {
       return;
     }
 
@@ -802,19 +812,28 @@ const menu = [
     };
 
     let startX: number | null = null;
-    let endX: number | null = null;
+    let startY: number | null = null;
+    let isTouchInMenu = false;
+
+    modalContent.addEventListener("modalClosed", () => {
+      modalContent.style.transform = "";
+      page = "left";
+    });
 
     modalContent.addEventListener(
       "touchstart",
       (event) => {
-        event.preventDefault();
-
         const firstTouch = (event as TouchEvent).touches[0];
         if (!firstTouch) {
           return;
         }
 
+        // Check if touch started within the menu container
+        const target = event.target as HTMLElement;
+        isTouchInMenu = menuContainer.contains(target);
+
         startX = firstTouch.clientX;
+        startY = firstTouch.clientY;
       },
       false
     );
@@ -822,7 +841,12 @@ const menu = [
     modalContent.addEventListener(
       "touchmove",
       (event) => {
-        if (startX === null) {
+        if (startX === null || startY === null) {
+          return;
+        }
+
+        // If touch is in menu, allow default scrolling behavior
+        if (isTouchInMenu) {
           return;
         }
 
@@ -831,17 +855,35 @@ const menu = [
           return;
         }
 
-        endX = firstTouch.clientX;
+        const currentX = firstTouch.clientX;
+        const currentY = firstTouch.clientY;
+        const diffX = currentX - startX;
+        const diffY = currentY - startY;
 
-        const diffX = endX - startX;
-        const tolerance = 50; // Minimum distance in pixels to consider it a swipe
-        const direction = diffX > 0 ? "right" : "left";
+        // Only handle horizontal swipes (prevent default for horizontal movement)
+        // Allow vertical scrolling by checking if movement is more horizontal than vertical
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          event.preventDefault();
 
-        if (Math.abs(diffX) > tolerance) {
-          handleGesture(direction);
-          startX = null;
-          endX = null;
+          const tolerance = 50; // Minimum distance in pixels to consider it a swipe
+          const direction = diffX > 0 ? "right" : "left";
+
+          if (Math.abs(diffX) > tolerance) {
+            handleGesture(direction);
+            startX = null;
+            startY = null;
+          }
         }
+      },
+      false
+    );
+
+    modalContent.addEventListener(
+      "touchend",
+      () => {
+        startX = null;
+        startY = null;
+        isTouchInMenu = false;
       },
       false
     );
