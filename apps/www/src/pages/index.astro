@@ -121,7 +121,7 @@ const menu = [
               <div class="menu-container">
                 <div class="heading">
                   <h2>TABLE OF CONTENT</h2>
-                  <span> TEDX UNIVERSITAS BRAWIJAYA</span>
+                  <span>TEDX UNIVERSITAS BRAWIJAYA</span>
                 </div>
                 <ul>
                   {
@@ -717,26 +717,42 @@ const menu = [
       document.querySelector<HTMLImageElement>(".grayscale-book");
     const modal = document.getElementById("modal");
     const modalBackdrop = document.querySelector(".modal-backdrop");
+    const modalContent =
+      document.querySelector<HTMLDivElement>(".modal-content");
 
-    if (!(redBookButton && modal && modalBackdrop && grayscaleBook)) {
+    if (
+      !(
+        redBookButton &&
+        modal &&
+        modalBackdrop &&
+        grayscaleBook &&
+        modalContent
+      )
+    ) {
       return;
     }
+
+    // Set modal content as inert initially
+    modalContent.inert = true;
 
     // grayscale book should be clickable
     redBookButton.addEventListener("click", () => {
       modal.classList.add("active");
+      modalContent.inert = false;
 
       redBookButton.blur();
     });
 
     grayscaleBook.addEventListener("click", () => {
       modal.classList.add("active");
+      modalContent.inert = false;
 
       redBookButton.blur();
     });
 
     modalBackdrop.addEventListener("click", () => {
       modal.classList.remove("active");
+      modalContent.inert = true;
 
       redBookButton.focus();
     });
@@ -745,6 +761,7 @@ const menu = [
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && modal.classList.contains("active")) {
         modal.classList.remove("active");
+        modalContent.inert = true;
 
         redBookButton.focus();
       }
