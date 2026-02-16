@@ -9,6 +9,7 @@ import Window2 from "@/assets/imgs/window-2.png";
 import Layout from "@/components/layout.astro";
 import MenuBook from "@/assets/imgs/menu-book.png";
 import { Image } from "astro:assets";
+import Navbar from "../components/navbar.astro";
 
 const menu = [
   { name: "Home", href: "/" },
@@ -41,6 +42,7 @@ const menu = [
 ---
 
 <Layout>
+  <Navbar />
   <main>
     <Image src={GreenStripWall1} alt="" class="green-strip-wall-1" />
     <div class="shelf-1-container-wrapper">
