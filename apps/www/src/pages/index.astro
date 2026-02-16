@@ -1,8 +1,891 @@
 ---
+import GrayscaleBook from "@/assets/imgs/grayscale-book.png";
+import GreenStripWall1 from "@/assets/imgs/green-strip-wall-1.png";
+import PaperGrainTexture1 from "@/assets/imgs/paper-grain-texture-1.png";
+import RedBook from "@/assets/imgs/red-book.png";
+import Shelf1 from "@/assets/imgs/shelf-1.png";
+import Table1 from "@/assets/imgs/table-1.png";
+import Window2 from "@/assets/imgs/window-2.png";
 import Layout from "@/components/layout.astro";
-import ComingSoon from "../components/coming-soon.astro";
+import MenuBook from "@/assets/imgs/menu-book.png";
+import { Image } from "astro:assets";
+import Navbar from "../components/navbar.astro";
+
+const menu = [
+  { name: "Home", href: "/" },
+  {
+    name: "About Us",
+    children: [
+      { name: "About TED", href: "/about-ted" },
+      { name: "Grand Theme", href: "/grand-theme" },
+      { name: "Our Team", href: "/our-team" },
+    ],
+  },
+  {
+    name: "Event",
+    children: [
+      { name: "Propaganda 1", href: "/events/propaganda-1" },
+      { name: "Pre Event", href: "/events/pre-event" },
+      { name: "Propaganda 2", href: "/events/propaganda-2" },
+      { name: "Propaganda 3", href: "/events/propaganda-3" },
+      { name: "Main Event", href: "/events/main-event" },
+    ],
+  },
+  {
+    name: "Order",
+    children: [
+      { name: "Merch TEDx", href: "/orders/merchandise" },
+      { name: "Ticket", href: "/orders/tickets" },
+    ],
+  },
+];
 ---
 
 <Layout>
-  <ComingSoon />
+  <Navbar />
+  <main>
+    <Image src={GreenStripWall1} alt="" class="green-strip-wall-1" />
+    <div class="shelf-1-container-wrapper">
+      <div class="shelf-1-container">
+        <Image src={Shelf1} alt="Shelf" class="shelf-1" />
+      </div>
+    </div>
+    <div class="window-2-container-wrapper">
+      <div class="window-2-container">
+        <Image src={Window2} alt="Window 2" class="window-2" />
+        <svg
+          width="1008"
+          height="766"
+          viewBox="0 0 1008 766"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="window-2-light-effect"
+        >
+          <path
+            d="M1008 455.173L384.5 0L0 1.5V602.63L1008 765.5V455.173Z"
+            fill="url(#paint)"
+            fill-opacity="0.4"
+          ></path>
+          <defs>
+            <linearGradient
+              id="paint"
+              x1="400.5"
+              y1="124"
+              x2="1152"
+              y2="746.5"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#FF9305"></stop>
+              <stop offset="1" stop-color="#9B5800" stop-opacity="0.15"></stop>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+    <Image src={PaperGrainTexture1} alt="" class="paper-grain-texture" />
+    <div class="table-with-book-container-wrapper">
+      <div class="table-with-book-container">
+        <div class="table-container-wrapper">
+          <div class="table-container">
+            <Image src={Table1} alt="Table" class="table" />
+          </div>
+        </div>
+        <div class="book-container-wrapper">
+          <div class="book-container">
+            <Image
+              src={GrayscaleBook}
+              alt="Grayscale Book"
+              class="grayscale-book"
+            />
+            <button
+              type="button"
+              class="red-book-button"
+              aria-label="Open Menu"
+            >
+              <Image src={RedBook} alt="Red Book" class="red-book" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-container">
+      <h1>Bertumbuh Bersama</h1>
+      <p>Cerita yang Kita Bawa, Rumah yang Kita Cipta</p>
+    </div>
+
+    <div id="modal" class="modal">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <div class="menu-book-container-wrapper">
+          <div class="menu-book-container">
+            <Image src={MenuBook} alt="Menu Book" class="menu-book" />
+            <div class="menu-container-wrapper">
+              <div class="menu-container">
+                <div class="heading">
+                  <h2>TABLE OF CONTENT</h2>
+                  <span>TEDX UNIVERSITAS BRAWIJAYA</span>
+                </div>
+                <ul>
+                  {menu.map((item) => (
+                      <li>
+                        {item.children ? (
+                          <>
+                            <span>{item.name}</span>
+                            <ul>
+                              {item.children.map((child) => (
+                                <li>
+                                  <a href={child.href}>{child.name}</a>
+                                </li>
+                              ))}
+                            </ul>
+                          </>
+                        ) : (
+                          <a href={item.href}>{item.name}</a>
+                        )}
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 </Layout>
+<style>
+  main {
+    background-color: var(--color-green);
+    height: 100dvh;
+    overflow: hidden;
+    position: relative;
+    padding-top: var(--navbar-height);
+  }
+  .green-strip-wall-1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 110dvw;
+    height: 100dvh;
+    object-fit: cover;
+    pointer-events: none;
+    aspect-ratio: 1.34 / 1;
+  }
+  .shelf-1-container-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(60%, 50%);
+    width: 80dvw;
+    height: auto;
+  }
+  .shelf-1-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.18 / 1;
+  }
+  .shelf-1 {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 1.18 / 1;
+  }
+  .window-2-container-wrapper {
+    position: absolute;
+    top: 30%;
+    left: -30%;
+    width: 100dvw;
+    height: auto;
+  }
+  .window-2-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.3 / 1;
+  }
+  .window-2 {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 0.72 / 1;
+  }
+  .window-2-light-effect {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    filter: blur(8px);
+    animation: beam-pulse 4s ease-in-out infinite;
+  }
+  @keyframes beam-pulse {
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .window-2-light-effect {
+      animation: none;
+    }
+  }
+  .paper-grain-texture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 110dvw;
+    height: 100dvh;
+    object-fit: cover;
+    pointer-events: none;
+    aspect-ratio: 1.33 / 1;
+    mix-blend-mode: multiply;
+  }
+  .table-with-book-container-wrapper {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translate(26%, 40%);
+    width: 200dvw;
+  }
+  .table-with-book-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.9 / 1;
+  }
+  .table-container-wrapper {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+  }
+  .table-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2.74 / 1;
+  }
+  .table {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 2.74 / 1;
+  }
+
+  .book-container-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-20%, -110%);
+    width: 30%;
+    height: auto;
+  }
+
+  .book-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.25 / 1;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .grayscale-book {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 1.15 / 1;
+  }
+
+  .red-book-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+  }
+
+  .red-book-button:focus {
+    outline: none;
+  }
+
+  .red-book-button:focus-visible {
+    outline: none;
+  }
+
+  .red-book {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 0.1 / 1;
+    opacity: 1;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+  .red-book-button:focus .red-book {
+    transform: translateY(-40px);
+  }
+
+  .red-book-button:hover .red-book {
+    transform: translateY(-40px);
+  }
+
+  .book-container:hover .red-book {
+    transform: translateY(-40px);
+  }
+
+  .text-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .text-container h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-l);
+    color: var(--color-white);
+  }
+
+  .text-container p {
+    font-family: var(--font-sans);
+    font-size: var(--text-m);
+    color: var(--color-white);
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  .modal.active {
+    pointer-events: all;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .modal.active .modal-backdrop {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-25%, -40%) scale(0.97);
+    filter: blur(2px);
+    width: 150%;
+    height: auto;
+    overflow: visible;
+    opacity: 0;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease,
+      scale 0.3s ease,
+      filter 0.3s ease;
+    aspect-ratio: 1.39 / 1;
+  }
+
+  .modal.active .modal-content {
+    opacity: 1;
+    transform: translate(-25%, -50%) scale(1);
+    filter: blur(0px);
+  }
+
+  .menu-book-container-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: auto;
+  }
+
+  .menu-book-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.39 / 1;
+  }
+
+  .menu-book {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 1.39 / 1;
+  }
+
+  main:has(.modal.active) .red-book {
+    opacity: 0;
+  }
+
+  .menu-container-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 6%;
+    transform: translateY(-50%);
+    width: 44%;
+    height: 90%;
+    padding: 0.5rem 2rem;
+  }
+
+  .menu-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+
+    /* Remove scroll thumb */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+
+  .menu-container::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+
+  .menu-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .menu-container ul li {
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    color: black;
+  }
+
+  .menu-container ul li span {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+
+  .menu-container ul li span::after {
+    content: "";
+    border-bottom: 2px dotted #000;
+    transform: translateY(5px);
+  }
+
+  .menu-container ul li a {
+    color: black;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+
+  .menu-container ul li a::after {
+    content: "";
+    border-bottom: 2px dotted #000;
+    transform: translateY(9px);
+    transition: border-bottom 0.3s ease;
+  }
+
+  .menu-container ul li a:hover {
+    color: var(--color-red-2);
+  }
+
+  .menu-container ul li a:hover::after {
+    border-bottom: 2px dotted var(--color-red-2);
+  }
+
+  .menu-container ul li a:focus {
+    outline: none;
+    color: var(--color-red-2);
+  }
+
+  .menu-container ul li a:focus::after {
+    border-bottom: 2px dotted var(--color-red-2);
+  }
+
+  .menu-container ul li ul {
+    list-style: none;
+    padding-left: 1rem;
+    margin-top: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .menu-container ul li ul li {
+    font-family: var(--font-serif);
+    font-size: var(--text-s);
+    color: black;
+  }
+
+  .menu-container ul li ul li a {
+    color: black;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+
+  .menu-container ul li ul li a::after {
+    content: "";
+    border-bottom: 1px dotted #000;
+    transform: translateY(5px);
+    transition: border-bottom 0.3s ease;
+  }
+
+  .menu-container ul li ul li a:hover {
+    color: var(--color-red-2);
+  }
+
+  .menu-container ul li ul li a:hover::after {
+    border-bottom: 1px dotted var(--color-red-2);
+  }
+
+  .menu-container ul li ul li a:focus {
+    outline: none;
+    color: var(--color-red-2);
+  }
+
+  .menu-container ul li ul li a:focus::after {
+    border-bottom: 1px dotted var(--color-red-2);
+  }
+
+  .menu-container .heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .menu-container .heading h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    color: black;
+  }
+
+  .menu-container .heading span {
+    font-family: var(--font-sans);
+    font-size: var(--text-s);
+    color: black;
+  }
+
+  @media (min-width: 425px) {
+    .window-2-container-wrapper {
+      top: 5%;
+      left: -5%;
+      width: 75dvw;
+    }
+    .shelf-1-container-wrapper {
+      width: 80dvw;
+      transform: translate(50%, -20%);
+    }
+    .table-with-book-container-wrapper {
+      width: 125dvw;
+      transform: translate(26%, 20%);
+    }
+
+    .book-container-wrapper {
+      width: 35%;
+      transform: translate(-30%, -90%);
+    }
+
+    .modal-content {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -40%) scale(0.97);
+      width: 100%;
+      max-width: 90dvw;
+    }
+
+    .modal.active .modal-content {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .window-2-container-wrapper {
+      top: 2%;
+      left: 2%;
+      width: 50dvw;
+    }
+    .window-2-light-effect {
+      top: 9%;
+      left: 7%;
+    }
+    .shelf-1-container-wrapper {
+      width: 50dvw;
+      transform: translate(50%, -20%);
+    }
+    .table-with-book-container-wrapper {
+      width: 75dvw;
+      transform: translate(26%, 20%);
+    }
+
+    .book-container-wrapper {
+      width: 35%;
+      transform: translate(-30%, -90%);
+    }
+
+    .text-container {
+      top: auto;
+      bottom: 15%;
+      left: 5%;
+      transform: none;
+      width: max-content;
+      text-align: left;
+    }
+
+    .text-container h1 {
+      font-size: var(--text-xxl);
+    }
+
+    .text-container p {
+      font-size: var(--text-l);
+    }
+
+    .modal-content {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -40%) scale(0.97);
+      width: 90%;
+      max-width: 60dvw;
+    }
+
+    .modal.active .modal-content {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .menu-container .heading h2 {
+      font-size: var(--text-l);
+    }
+
+    .menu-container .heading span {
+      font-size: var(--text-m);
+    }
+
+    .menu-container ul li {
+      font-size: var(--text-l);
+    }
+
+    .menu-container ul li ul li {
+      font-size: var(--text-m);
+    }
+  }
+</style>
+<script>
+  (() => {
+    const redBookButton =
+      document.querySelector<HTMLButtonElement>(".red-book-button");
+    const grayscaleBook =
+      document.querySelector<HTMLImageElement>(".grayscale-book");
+    const modal = document.getElementById("modal");
+    const modalBackdrop = document.querySelector(".modal-backdrop");
+    const modalContent =
+      document.querySelector<HTMLDivElement>(".modal-content");
+
+    if (
+      !(
+        redBookButton &&
+        modal &&
+        modalBackdrop &&
+        grayscaleBook &&
+        modalContent
+      )
+    ) {
+      return;
+    }
+
+    // Set modal content as inert initially
+    modalContent.inert = true;
+
+    // grayscale book should be clickable
+    redBookButton.addEventListener("click", () => {
+      modal.classList.add("active");
+      modalContent.inert = false;
+      document.body.style.overflow = "hidden";
+
+      redBookButton.blur();
+    });
+
+    grayscaleBook.addEventListener("click", () => {
+      modal.classList.add("active");
+      modalContent.inert = false;
+      document.body.style.overflow = "hidden";
+
+      redBookButton.blur();
+    });
+
+    modalBackdrop.addEventListener("click", () => {
+      modal.classList.remove("active");
+      modalContent.inert = true;
+      document.body.style.overflow = "";
+
+      modalContent.dispatchEvent(new CustomEvent("modalClosed"));
+
+      redBookButton.focus();
+    });
+
+    // Accessibility: close modal with Escape key
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modal.classList.contains("active")) {
+        modal.classList.remove("active");
+        modalContent.inert = true;
+        document.body.style.overflow = "";
+
+        modalContent.dispatchEvent(new CustomEvent("modalClosed"));
+
+        redBookButton.focus();
+      }
+    });
+  })();
+
+  (() => {
+    const modal = document.getElementById("modal");
+    const modalContent =
+      document.querySelector<HTMLDivElement>(".modal-content");
+    const menuContainer =
+      document.querySelector<HTMLDivElement>(".menu-container");
+
+    if (!(modal && modalContent && menuContainer)) {
+      return;
+    }
+
+    let page: "left" | "right" = "left";
+
+    // Gesture handling for mobile
+    // if the page is left, user can swipe left to right to move modal content to right, and vice versa
+    const handleGesture = (direction: "left" | "right") => {
+      if (direction === "left" && page === "left") {
+        modalContent.style.transform = "translate(-75%, -50%) scale(1)";
+        page = "right";
+        return;
+      }
+
+      if (direction === "right" && page === "right") {
+        modalContent.style.transform = "translate(-25%, -50%) scale(1)";
+        page = "left";
+      }
+    };
+
+    let startX: number | null = null;
+    let startY: number | null = null;
+    let isTouchInMenu = false;
+
+    modalContent.addEventListener("modalClosed", () => {
+      modalContent.style.transform = "";
+      page = "left";
+    });
+
+    modalContent.addEventListener(
+      "touchstart",
+      (event) => {
+        const firstTouch = (event as TouchEvent).touches[0];
+        if (!firstTouch) {
+          return;
+        }
+
+        // Check if touch started within the menu container
+        const target = event.target as HTMLElement;
+        isTouchInMenu = menuContainer.contains(target);
+
+        startX = firstTouch.clientX;
+        startY = firstTouch.clientY;
+      },
+      false
+    );
+
+    modalContent.addEventListener(
+      "touchmove",
+      (event) => {
+        if (startX === null || startY === null) {
+          return;
+        }
+
+        // If touch is in menu, allow default scrolling behavior
+        if (isTouchInMenu) {
+          return;
+        }
+
+        const firstTouch = (event as TouchEvent).touches[0];
+        if (!firstTouch) {
+          return;
+        }
+
+        const currentX = firstTouch.clientX;
+        const currentY = firstTouch.clientY;
+        const diffX = currentX - startX;
+        const diffY = currentY - startY;
+
+        // Only handle horizontal swipes (prevent default for horizontal movement)
+        // Allow vertical scrolling by checking if movement is more horizontal than vertical
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          event.preventDefault();
+
+          const tolerance = 50; // Minimum distance in pixels to consider it a swipe
+          const direction = diffX > 0 ? "right" : "left";
+
+          if (Math.abs(diffX) > tolerance) {
+            handleGesture(direction);
+            startX = null;
+            startY = null;
+          }
+        }
+      },
+      false
+    );
+
+    modalContent.addEventListener(
+      "touchend",
+      () => {
+        startX = null;
+        startY = null;
+        isTouchInMenu = false;
+      },
+      false
+    );
+  })();
+</script>
