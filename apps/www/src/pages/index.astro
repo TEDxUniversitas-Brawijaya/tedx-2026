@@ -7,7 +7,37 @@ import Shelf1 from "@/assets/imgs/shelf-1.png";
 import Table1 from "@/assets/imgs/table-1.png";
 import Window2 from "@/assets/imgs/window-2.png";
 import Layout from "@/components/layout.astro";
+import MenuBook from "@/assets/imgs/menu-book.png";
 import { Image } from "astro:assets";
+
+const menu = [
+  { name: "Home", href: "/" },
+  {
+    name: "About Us",
+    children: [
+      { name: "About TED", href: "/about-ted" },
+      { name: "Grand Theme", href: "/grand-theme" },
+      { name: "Our Team", href: "/our-team" },
+    ],
+  },
+  {
+    name: "Event",
+    children: [
+      { name: "Propaganda 1", href: "/events/propaganda-1" },
+      { name: "Pre Event", href: "/events/pre-event" },
+      { name: "Propaganda 2", href: "/events/propaganda-2" },
+      { name: "Propaganda 3", href: "/events/propaganda-3" },
+      { name: "Main Event", href: "/events/main-event" },
+    ],
+  },
+  {
+    name: "Order",
+    children: [
+      { name: "Merch TEDx", href: "/orders/merchandise" },
+      { name: "Ticket", href: "/orders/tickets" },
+    ],
+  },
+];
 ---
 
 <Layout>
@@ -64,7 +94,13 @@ import { Image } from "astro:assets";
               alt="Grayscale Book"
               class="grayscale-book"
             />
-            <Image src={RedBook} alt="Red Book" class="red-book" />
+            <button
+              type="button"
+              class="red-book-button"
+              aria-label="Open Menu"
+            >
+              <Image src={RedBook} alt="Red Book" class="red-book" />
+            </button>
           </div>
         </div>
       </div>
@@ -73,6 +109,47 @@ import { Image } from "astro:assets";
     <div class="text-container">
       <h1>Bertumbuh Bersama</h1>
       <p>Cerita yang Kita Bawa, Rumah yang Kita Cipta</p>
+    </div>
+
+    <div id="modal" class="modal">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <div class="menu-book-container-wrapper">
+          <div class="menu-book-container">
+            <Image src={MenuBook} alt="Menu Book" class="menu-book" />
+            <div class="menu-container-wrapper">
+              <div class="menu-container">
+                <div class="heading">
+                  <h2>TABLE OF CONTENT</h2>
+                  <span> TEDX UNIVERSITAS BRAWIJAYA</span>
+                </div>
+                <ul>
+                  {
+                    menu.map((item) => (
+                      <li>
+                        {item.children ? (
+                          <>
+                            <span>{item.name}</span>
+                            <ul>
+                              {item.children.map((child) => (
+                                <li>
+                                  <a href={child.href}>{child.name}</a>
+                                </li>
+                              ))}
+                            </ul>
+                          </>
+                        ) : (
+                          <a href={item.href}>{item.name}</a>
+                        )}
+                      </li>
+                    ))
+                  }
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 </Layout>
@@ -225,13 +302,36 @@ import { Image } from "astro:assets";
     aspect-ratio: 1.15 / 1;
   }
 
+  .red-book-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .red-book-button:focus {
+    outline: 1px solid var(--color-white);
+    outline-offset: 1px;
+    border-radius: 1px;
+  }
+
+  .red-book-button:focus-visible {
+    outline: 2px solid var(--color-white);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
   .red-book {
     width: auto;
     height: 100%;
     object-fit: cover;
     object-position: center;
     aspect-ratio: 0.1 / 1;
-    transition: transform 0.3s ease;
+    opacity: 1;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
   }
 
   /* if book container being hover, translate y red book */
@@ -263,6 +363,228 @@ import { Image } from "astro:assets";
     color: var(--color-white);
   }
 
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  .modal.active {
+    pointer-events: all;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .modal.active .modal-backdrop {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -40%) scale(0.97);
+    filter: blur(2px);
+    width: 150%;
+    height: auto;
+    overflow: visible;
+    opacity: 0;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease,
+      scale 0.3s ease,
+      filter 0.3s ease;
+    aspect-ratio: 1.39 / 1;
+  }
+
+  .modal.active .modal-content {
+    opacity: 1;
+    transform: translate(-25%, -50%) scale(1);
+    filter: blur(0px);
+  }
+
+  .menu-book-container-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: auto;
+  }
+
+  .menu-book-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.39 / 1;
+  }
+
+  .menu-book {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 1.39 / 1;
+  }
+
+  /* Red book disappear when modal is active */
+  main:has(.modal.active) .red-book {
+    opacity: 0;
+  }
+
+  .menu-container-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 6%;
+    transform: translateY(-50%);
+    width: 44%;
+    height: 90%;
+    padding: 0.5rem 2rem;
+  }
+
+  .menu-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+
+    /* Remove scroll thumb */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+
+  .menu-container::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+
+  .menu-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .menu-container ul li {
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    color: black;
+  }
+
+  .menu-container ul li span {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+
+  .menu-container ul li span::after {
+    content: "";
+    border-bottom: 2px dotted #000;
+    transform: translateY(5px);
+  }
+
+  .menu-container ul li a {
+    color: black;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+
+  .menu-container ul li a::after {
+    content: "";
+    border-bottom: 2px dotted #000;
+    transform: translateY(5px);
+    transition: border-bottom 0.3s ease;
+  }
+
+  .menu-container ul li a:hover {
+    color: var(--color-red-2);
+  }
+
+  .menu-container ul li a:hover::after {
+    border-bottom: 2px dotted var(--color-red-2);
+  }
+
+  .menu-container ul li ul {
+    list-style: none;
+    padding-left: 1rem;
+    margin-top: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .menu-container ul li ul li {
+    font-family: var(--font-serif);
+    font-size: var(--text-s);
+    color: black;
+  }
+
+  .menu-container ul li ul li a {
+    color: black;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+
+  .menu-container ul li ul li a::after {
+    content: "";
+    border-bottom: 1px dotted #000;
+    transform: translateY(5px);
+    transition: border-bottom 0.3s ease;
+  }
+
+  .menu-container ul li ul li a:hover {
+    color: var(--color-red-2);
+  }
+
+  .menu-container ul li ul li a:hover::after {
+    border-bottom: 1px dotted var(--color-red-2);
+  }
+
+  .menu-container .heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .menu-container .heading h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    color: black;
+  }
+
+  .menu-container .heading span {
+    font-family: var(--font-sans);
+    font-size: var(--text-s);
+    color: black;
+  }
+
   @media (min-width: 425px) {
     .window-2-container-wrapper {
       top: 5%;
@@ -281,6 +603,18 @@ import { Image } from "astro:assets";
     .book-container-wrapper {
       width: 35%;
       transform: translate(-30%, -90%);
+    }
+
+    .modal-content {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -40%) scale(0.97);
+      width: 100%;
+      max-width: 90dvw;
+    }
+
+    .modal.active .modal-content {
+      transform: translate(-50%, -50%) scale(1);
     }
   }
 
@@ -324,5 +658,143 @@ import { Image } from "astro:assets";
     .text-container p {
       font-size: var(--text-l);
     }
+
+    .modal-content {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -40%) scale(0.97);
+      width: 90%;
+      max-width: 60dvw;
+    }
+
+    .modal.active .modal-content {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .menu-container .heading h2 {
+      font-size: var(--text-l);
+    }
+
+    .menu-container .heading span {
+      font-size: var(--text-m);
+    }
+
+    .menu-container ul li {
+      font-size: var(--text-l);
+    }
+
+    .menu-container ul li ul li {
+      font-size: var(--text-m);
+    }
   }
 </style>
+<script>
+  (() => {
+    const redBookButton =
+      document.querySelector<HTMLButtonElement>(".red-book-button");
+    const grayscaleBook =
+      document.querySelector<HTMLImageElement>(".grayscale-book");
+    const modal = document.getElementById("modal");
+    const modalBackdrop = document.querySelector(".modal-backdrop");
+
+    if (!(redBookButton && modal && modalBackdrop && grayscaleBook)) {
+      return;
+    }
+
+    // grayscale book should be clickable
+    redBookButton.addEventListener("click", () => {
+      modal.classList.add("active");
+
+      redBookButton.blur();
+    });
+
+    grayscaleBook.addEventListener("click", () => {
+      modal.classList.add("active");
+
+      redBookButton.blur();
+    });
+
+    modalBackdrop.addEventListener("click", () => {
+      modal.classList.remove("active");
+    });
+
+    // Accessibility: close modal with Escape key
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modal.classList.contains("active")) {
+        modal.classList.remove("active");
+      }
+    });
+  })();
+
+  (() => {
+    const modal = document.getElementById("modal");
+    const modalContent =
+      document.querySelector<HTMLDivElement>(".modal-content");
+
+    if (!(modal && modalContent)) {
+      return;
+    }
+
+    let page: "left" | "right" = "left";
+
+    // Gesture handling for mobile
+    // if the page is left, user can swipe left to right to move modal content to right, and vice versa
+    const handleGesture = (direction: "left" | "right") => {
+      if (direction === "left" && page === "left") {
+        modalContent.style.transform = "translate(-75%, -50%) scale(1)";
+        page = "right";
+        return;
+      }
+
+      if (direction === "right" && page === "right") {
+        modalContent.style.transform = "translate(-25%, -50%) scale(1)";
+        page = "left";
+      }
+    };
+
+    let startX: number | null = null;
+    let endX: number | null = null;
+
+    modalContent.addEventListener(
+      "touchstart",
+      (event) => {
+        event.preventDefault();
+
+        const firstTouch = (event as TouchEvent).touches[0];
+        if (!firstTouch) {
+          return;
+        }
+
+        startX = firstTouch.clientX;
+      },
+      false
+    );
+
+    modalContent.addEventListener(
+      "touchmove",
+      (event) => {
+        if (startX === null) {
+          return;
+        }
+
+        const firstTouch = (event as TouchEvent).touches[0];
+        if (!firstTouch) {
+          return;
+        }
+
+        endX = firstTouch.clientX;
+
+        const diffX = endX - startX;
+        const tolerance = 50; // Minimum distance in pixels to consider it a swipe
+        const direction = diffX > 0 ? "right" : "left";
+
+        if (Math.abs(diffX) > tolerance) {
+          handleGesture(direction);
+          startX = null;
+          endX = null;
+        }
+      },
+      false
+    );
+  })();
+</script>
