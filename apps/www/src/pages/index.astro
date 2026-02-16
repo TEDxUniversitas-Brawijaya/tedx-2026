@@ -514,7 +514,7 @@ const menu = [
   .menu-container ul li a::after {
     content: "";
     border-bottom: 2px dotted #000;
-    transform: translateY(5px);
+    transform: translateY(9px);
     transition: border-bottom 0.3s ease;
   }
 
@@ -523,6 +523,15 @@ const menu = [
   }
 
   .menu-container ul li a:hover::after {
+    border-bottom: 2px dotted var(--color-red-2);
+  }
+
+  .menu-container ul li a:focus {
+    outline: none;
+    color: var(--color-red-2);
+  }
+
+  .menu-container ul li a:focus::after {
     border-bottom: 2px dotted var(--color-red-2);
   }
 
@@ -562,6 +571,15 @@ const menu = [
   }
 
   .menu-container ul li ul li a:hover::after {
+    border-bottom: 1px dotted var(--color-red-2);
+  }
+
+  .menu-container ul li ul li a:focus {
+    outline: none;
+    color: var(--color-red-2);
+  }
+
+  .menu-container ul li ul li a:focus::after {
     border-bottom: 1px dotted var(--color-red-2);
   }
 
