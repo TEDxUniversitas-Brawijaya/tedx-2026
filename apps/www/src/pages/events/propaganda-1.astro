@@ -1,8 +1,411 @@
 ---
-import ComingSoon from "@/components/coming-soon.astro";
+import PaperTexture1 from "@/assets/imgs/paper-texture-1.png";
 import Layout from "@/components/layout.astro";
+import Navbar from "@/components/navbar.astro";
+import { Image } from "astro:assets";
 ---
 
 <Layout>
-  <ComingSoon />
+  <Navbar />
+  <main>
+    <div class="gradient-1"></div>
+
+    <section id="hero-section">
+      <div class="text-container">
+        <h1>Selasar Penerimaan</h1>
+        <p>
+          Pulang merupakan metafora dari rasa aman yang melampaui batas fisik
+          sebuah bangunan; ia adalah kondisi emosional di mana seseorang merasa
+          diterima seutuhnya, didengar tanpa rasa takut, dan dicintai tanpa
+          ancaman penolakan. Rumah menjadi ruang konsisten yang tidak
+          menggunakan kelemahan sebagai senjata atau membalas kegagalan dengan
+          penghakiman. Di tengah dunia yang semakin cepat dan terfragmentasi,
+          konsep pulang ini kemudian meluas menjadi sebuah kebutuhan untuk
+          merancang teknologi, sistem, dan desain ruang yang mampu menghadirkan
+          kembali ketenangan serta rasa keterhubungan yang menyembuhkan bagi
+          manusia.
+        </p>
+      </div>
+    </section>
+    <section id="explanation-section">
+      <div class="explanation-wrapper">
+        <div id="horizontal-scroll">
+          <div id="first-screen">
+            <div class="text-container">
+              <h2>Menanggalkan Asing</h2>
+              <p>
+                Menceritakan tentang momen saat kita sampai di depan pintu rumah
+                setelah seharian menghadapi dunia yang melelahkan. Di luar sana,
+                kita sering kali terpaksa berpura-pura kuat atau menjadi orang
+                lain hanya agar bisa diterima dan dihargai. Begitu sampai di
+                rumah, ambang pintu menjadi tempat kita "meletakkan" semua beban
+                dan sandiwara itu. Kita tidak lagi perlu memakai topeng; kita
+                bisa melepas rasa lelah, berhenti bersikap waspada, dan kembali
+                menjadi diri sendiri yang apa adanya—tanpa takut dihakimi atau
+                ditolak.
+              </p>
+            </div>
+          </div>
+          <div id="second-screen">
+            <div class="text-container">
+              <h2>Ruang Tumbuh</h2>
+              <p>
+                Membahas tentang pentingnya rasa aman (secure attachment)
+                sebagai fondasi karakter seseorang. Rumah diibaratkan sebagai
+                "laboratorium aman" di mana kita pertama kali belajar mencoba,
+                melakukan kesalahan, dan mengalami kegagalan. Jika di dalam
+                rumah setiap kegagalan kita disambut dengan pelukan, bukan
+                kemarahan atau penolakan, maka kita akan tumbuh dengan keyakinan
+                bahwa jatuh bukanlah akhir dari segalanya. Rasa aman inilah yang
+                nantinya kita bawa ke dunia luar; karena kita tahu ada tempat
+                pulang yang selalu menerima, kita pun berubah menjadi pribadi
+                yang lebih berani mengambil risiko, lebih tangguh, dan tidak
+                takut menghadapi tantangan hidup.
+              </p>
+            </div>
+          </div>
+          <div id="third-screen">
+            <div class="text-container">
+              <h2>Memahat Tenang</h2>
+              <p>
+                Berbicara tentang seni bertahan hidup di tengah dunia modern
+                yang berjalan sangat cepat dan penuh gangguan. Saat ini, kita
+                sering merasa "asing" dan kehilangan arah meski sedang berada di
+                tengah keramaian, karena rasa aman dan ketenangan tidak lagi
+                datang secara otomatis. Oleh karena itu, kita harus secara sadar
+                "memahat" atau membangun sendiri ruang dan kebiasaan yang bisa
+                menghadirkan kembali rasa tenang tersebut. Baik melalui desain
+                ruang yang nyaman, penggunaan teknologi yang bijak, maupun
+                menjaga hubungan yang berkualitas, kita sedang menciptakan
+                sistem perlindungan agar jiwa kita tetap memiliki tempat untuk
+                pulang dan beristirahat di tengah dunia yang kacau.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <Image src={PaperTexture1} alt="" class="paper-texture-1" />
+  </main>
 </Layout>
+<style>
+  main {
+    background-color: var(--color-black);
+    position: relative;
+  }
+  .gradient-1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 130dvh;
+    background: linear-gradient(to top, #0b4848 20%, #f8f1dc 70%);
+    pointer-events: none;
+  }
+  #hero-section {
+    height: 100dvh;
+    position: relative;
+    padding-top: var(--navbar-height);
+  }
+  #hero-section .text-container {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  #hero-section .text-container h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-l);
+    color: var(--color-black);
+  }
+  #hero-section .text-container p {
+    font-family: var(--font-sans);
+    font-size: var(--text-s);
+    color: var(--color-black);
+    width: 90dvw;
+    text-wrap-style: pretty;
+  }
+  #explanation-section {
+    height: 300dvh;
+    position: relative;
+  }
+  #explanation-section .explanation-wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    background-color: white;
+  }
+  #explanation-section .explanation-wrapper #horizontal-scroll {
+    position: relative;
+    height: 100dvh;
+    width: 100%;
+    display: flex;
+    flex-shrink: 0;
+    overflow: visible;
+    transform: translate(var(--translate-x), 0%);
+  }
+  #explanation-section .explanation-wrapper #first-screen {
+    height: 100dvh;
+    width: 100dvw;
+    padding-top: var(--navbar-height);
+    flex-shrink: 0;
+    background-color: red;
+    position: relative;
+  }
+  #explanation-section .explanation-wrapper #first-screen .text-container {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  #explanation-section .explanation-wrapper #first-screen .text-container h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    color: var(--color-white);
+  }
+  #explanation-section .explanation-wrapper #first-screen .text-container p {
+    font-family: var(--font-sans);
+    font-size: var(--text-s);
+    color: var(--color-white);
+    width: 90dvw;
+    text-wrap-style: pretty;
+  }
+  #explanation-section .explanation-wrapper #second-screen {
+    height: 100dvh;
+    width: 100dvw;
+    padding-top: var(--navbar-height);
+    flex-shrink: 0;
+    background-color: blue;
+    position: relative;
+  }
+  #explanation-section .explanation-wrapper #second-screen .text-container {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  #explanation-section .explanation-wrapper #second-screen .text-container h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    color: var(--color-white);
+  }
+  #explanation-section .explanation-wrapper #second-screen .text-container p {
+    font-family: var(--font-sans);
+    font-size: var(--text-s);
+    color: var(--color-white);
+    width: 90dvw;
+    text-wrap-style: pretty;
+  }
+  #explanation-section .explanation-wrapper #third-screen {
+    height: 100dvh;
+    width: 100dvw;
+    padding-top: var(--navbar-height);
+    flex-shrink: 0;
+    background-color: green;
+    position: relative;
+  }
+  #explanation-section .explanation-wrapper #third-screen .text-container {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  #explanation-section .explanation-wrapper #third-screen .text-container h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    color: var(--color-white);
+  }
+  #explanation-section .explanation-wrapper #third-screen .text-container p {
+    font-family: var(--font-sans);
+    font-size: var(--text-s);
+    color: var(--color-white);
+    width: 90dvw;
+    text-wrap-style: pretty;
+  }
+  .paper-texture-1 {
+    position: fixed;
+    top: calc(0% + var(--navbar-height));
+    left: 50%;
+    width: 200dvw;
+    height: 200dvh;
+    object-fit: cover;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    aspect-ratio: 1.78 / 1;
+    transform-origin: top center;
+    transform: rotate(0deg) translate(-50%, 0%);
+  }
+
+  @media (min-width: 768px) {
+    #hero-section .text-container {
+      top: 30%;
+      gap: 2.5rem;
+    }
+    #hero-section .text-container h1 {
+      font-size: var(--text-xl);
+    }
+    #hero-section .text-container p {
+      font-size: var(--text-m);
+      width: 60dvw;
+    }
+    #explanation-section .explanation-wrapper #first-screen .text-container {
+      top: 30%;
+      gap: 2.5rem;
+      transform: translate(0%, 0%);
+    }
+    #explanation-section .explanation-wrapper #first-screen .text-container h2 {
+      font-size: var(--text-l);
+    }
+    #explanation-section .explanation-wrapper #first-screen .text-container p {
+      font-size: var(--text-m);
+      width: 30dvw;
+    }
+    #explanation-section .explanation-wrapper #second-screen .text-container {
+      top: 30%;
+      gap: 2.5rem;
+    }
+    #explanation-section
+      .explanation-wrapper
+      #second-screen
+      .text-container
+      h2 {
+      font-size: var(--text-l);
+    }
+    #explanation-section .explanation-wrapper #second-screen .text-container p {
+      font-size: var(--text-m);
+      width: 40dvw;
+    }
+    #explanation-section .explanation-wrapper #third-screen .text-container {
+      top: 20%;
+      gap: 2.5rem;
+      transform: translate(0%, 0%);
+    }
+    #explanation-section .explanation-wrapper #third-screen .text-container h2 {
+      font-size: var(--text-l);
+    }
+    #explanation-section .explanation-wrapper #third-screen .text-container p {
+      font-size: var(--text-m);
+      width: 40dvw;
+    }
+  }
+</style>
+<script>
+  (() => {
+    const explanationSection = document.getElementById("explanation-section");
+    const horizontalScroll = document.getElementById("horizontal-scroll");
+
+    if (!(explanationSection && horizontalScroll)) {
+      return;
+    }
+
+    const animateParagraphs = () => {
+      const sectionRect = explanationSection.getBoundingClientRect();
+      const sectionHeight = explanationSection.offsetHeight;
+      const viewportHeight = window.innerHeight;
+
+      // Calculate scroll progress (0 to 1)
+      const scrollProgress = Math.max(
+        0,
+        Math.min(1, -sectionRect.top / (sectionHeight - viewportHeight))
+      );
+
+      // Easing functions for smooth animations
+      const easeInOutCubic = (t: number): number => {
+        return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+      };
+
+      function transform(
+        x: number,
+        input: number[],
+        output: number[],
+        easing: (t: number) => number = (t) => t
+      ) {
+        const firstInput = input[0];
+        const lastInput = input.at(-1);
+        const lastOutput = output.at(-1);
+
+        if (
+          !(
+            firstInput !== undefined &&
+            lastInput !== undefined &&
+            lastOutput !== undefined
+          )
+        ) {
+          return 0;
+        }
+
+        const clampedX = Math.max(firstInput, Math.min(lastInput, x));
+
+        for (let i = 0; i < input.length - 1; i++) {
+          const currentInput = input[i];
+          const nextInput = input[i + 1];
+
+          const currentOutput = output[i];
+          const nextOutput = output[i + 1];
+
+          if (
+            !(
+              currentInput !== undefined &&
+              nextInput !== undefined &&
+              currentOutput !== undefined &&
+              nextOutput !== undefined
+            )
+          ) {
+            continue;
+          }
+
+          if (clampedX >= currentInput && clampedX <= nextInput) {
+            const localProgress =
+              (clampedX - currentInput) / (nextInput - currentInput);
+            const easedProgress = easing(localProgress);
+
+            return currentOutput + easedProgress * (nextOutput - currentOutput);
+          }
+        }
+
+        return lastOutput;
+      }
+
+      const horizontalScrollX = transform(
+        scrollProgress,
+        [0, 1],
+        [0, -200],
+        easeInOutCubic
+      );
+      horizontalScroll.style.setProperty(
+        "--translate-x",
+        `${horizontalScrollX}dvw`
+      );
+    };
+
+    window.addEventListener("scroll", animateParagraphs);
+    animateParagraphs(); // Initial call
+  })();
+</script>
