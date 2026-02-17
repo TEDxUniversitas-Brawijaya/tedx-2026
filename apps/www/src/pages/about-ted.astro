@@ -567,22 +567,28 @@ import "lenis/dist/lenis.css";
     }
 
     #grand-theme #first-paragraph {
+      --first-paragraph-y: 50dvh;
+
       opacity: 1;
       top: 50%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, var(--first-paragraph-y));
     }
 
     #grand-theme #second-paragraph {
+      --second-paragraph-y: 100dvh;
+
       top: 50%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, var(--second-paragraph-y));
     }
 
     #grand-theme #third-paragraph {
+      --third-paragraph-y: 100dvh;
+
       top: 50%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, var(--third-paragraph-y));
     }
 
     @media (min-width: 425px) {
@@ -628,6 +634,12 @@ import "lenis/dist/lenis.css";
       #past-tedx-events .heading-container {
         padding: 0rem 1.25rem;
         width: 24rem;
+      }
+
+      #grand-theme #first-paragraph,
+      #grand-theme #second-paragraph,
+      #grand-theme #third-paragraph {
+        width: 80vw;
       }
     }
 
@@ -722,6 +734,8 @@ import "lenis/dist/lenis.css";
         width: 30dvw;
         text-align: justify;
         left: 10%;
+
+        transform: translate(0%, var(--first-paragraph-y));
       }
 
       #grand-theme #second-paragraph {
@@ -730,6 +744,8 @@ import "lenis/dist/lenis.css";
         text-align: justify;
         left: auto;
         right: 10%;
+
+        transform: translate(0%, var(--second-paragraph-y));
       }
 
       #grand-theme #third-paragraph {
@@ -738,6 +754,8 @@ import "lenis/dist/lenis.css";
         text-align: justify;
         left: 10%;
         bottom: 20%;
+
+        transform: translate(0%, var(--third-paragraph-y));
       }
     }
   </style>
@@ -959,7 +977,10 @@ import "lenis/dist/lenis.css";
           [0, -5],
           easeOutCubic
         );
-        firstParagraph.style.transform = `translateY(${firstTranslateY}dvh)`;
+        firstParagraph.style.setProperty(
+          "--first-paragraph-y",
+          `${firstTranslateY}dvh`
+        );
 
         const firstOpacity = transform(
           scrollProgress,
@@ -976,7 +997,10 @@ import "lenis/dist/lenis.css";
           [100, 0, 0, -5],
           easeInOutCubic
         );
-        secondParagraph.style.transform = `translateY(${secondTranslateY}dvh)`;
+        secondParagraph.style.setProperty(
+          "--second-paragraph-y",
+          `${secondTranslateY}dvh`
+        );
 
         const secondOpacity = transform(
           scrollProgress,
@@ -993,7 +1017,10 @@ import "lenis/dist/lenis.css";
           [100, 0],
           easeInCubic
         );
-        thirdParagraph.style.transform = `translateY(${thirdTranslateY}dvh)`;
+        thirdParagraph.style.setProperty(
+          "--third-paragraph-y",
+          `${thirdTranslateY}dvh`
+        );
 
         const thirdOpacity = transform(
           scrollProgress,
