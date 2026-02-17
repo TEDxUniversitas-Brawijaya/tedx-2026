@@ -262,13 +262,13 @@ const divisions = {
       <div class="content">
         <h1>Temukan Peranmu di Ruang Ini.</h1>
         <p>Arahkan kursor ke pigura dan lihat peran yang bisa kamu ambil.</p>
-        <!-- TODO: Replace button with anchor tag linking to Google Form -->
-        <button
-          type="button"
-          aria-label="Daftar untuk bergabung dengan TEDx Universitas Brawijaya"
+        <a
+          href="https://forms.gle/XgNruTUW3a2zwnf69"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           Daftar
-        </button>
+        </a>
 
         <div class="background"></div>
       </div>
@@ -778,7 +778,7 @@ const divisions = {
     text-wrap-style: pretty;
   }
 
-  #inside .content button {
+  #inside .content a {
     font-family: var(--font-serif);
     font-size: var(--text-m);
     color: var(--color-white);
@@ -790,7 +790,7 @@ const divisions = {
     cursor: pointer;
   }
 
-  #inside .content button:hover {
+  #inside .content a:hover {
     background-color: color-mix(
       in oklch,
       var(--color-red-2) 80%,
@@ -798,7 +798,7 @@ const divisions = {
     );
   }
 
-  #inside .content button:active {
+  #inside .content a:active {
     background-color: color-mix(
       in oklch,
       var(--color-red-2) 60%,
@@ -806,7 +806,7 @@ const divisions = {
     );
   }
 
-  #inside .content button:focus {
+  #inside .content a:focus {
     outline: 2px solid var(--color-white);
     outline-offset: 4px;
   }
@@ -1104,7 +1104,7 @@ const divisions = {
       font-size: var(--text-m);
     }
 
-    #inside .content button {
+    #inside .content a {
       font-size: var(--text-m);
       padding: 1rem 2rem;
     }
