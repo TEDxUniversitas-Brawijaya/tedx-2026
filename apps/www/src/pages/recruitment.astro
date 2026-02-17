@@ -919,7 +919,7 @@ const divisons = {
     opacity: 0;
   }
 
-  @media (min-width: 425px){
+  @media (min-width: 425px) {
     #inside .content {
       max-width: 30rem;
     }
@@ -1249,6 +1249,8 @@ const divisons = {
       imageClone.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
       imageClone.style.filter = "brightness(0.7)";
 
+      // Force a synchronous reflow so the initial transform/filter are applied
+      // before enabling the transition, ensuring the animation starts correctly.
       imageClone.offsetHeight;
 
       imageClone.style.transition =
