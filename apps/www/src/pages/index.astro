@@ -336,17 +336,34 @@ const menu = [
     transition:
       transform 0.3s ease,
       opacity 0.3s ease;
+
+    animation: bounce 2s ease-in-out infinite;
+    animation-delay: 5s;
+  }
+
+  /* Infinite bouncing red-book to indicate interactivity */
+  @keyframes bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-40px);
+    }
   }
 
   .red-book-button:focus .red-book {
+    animation: none;
     transform: translateY(-40px);
   }
 
   .red-book-button:hover .red-book {
+    animation: none;
     transform: translateY(-40px);
   }
 
   .book-container:hover .red-book {
+    animation: none;
     transform: translateY(-40px);
   }
 
