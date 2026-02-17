@@ -1177,6 +1177,9 @@ const divisions = {
   }
 </style>
 <script>
+  const delay = (ms: number): Promise<void> =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
   (() => {
     const continueBtn = document.getElementById("continue-btn");
     const openedDoor = document.getElementById("opened-door");
@@ -1199,29 +1202,22 @@ const divisions = {
       return;
     }
 
-    continueBtn.addEventListener("click", () => {
+    continueBtn.addEventListener("click", async () => {
       // Animate door opening
       closedDoor.style.opacity = "0";
-      setTimeout(() => {
-        semiOpenedDoor.style.opacity = "0";
-      }, 500);
-      setTimeout(() => {
-        openedDoor.style.opacity = "1";
-      }, 1000);
+      await delay(500);
+      semiOpenedDoor.style.opacity = "0";
+      await delay(500);
+      openedDoor.style.opacity = "1";
 
       // After door is fully opened, switch to inside view
-      setTimeout(() => {
-        outside.style.transform = "scale(2)";
-      }, 1500);
-
-      setTimeout(() => {
-        outside.style.opacity = "0";
-        inside.style.opacity = "1";
-      }, 2500);
-
-      setTimeout(() => {
-        outside.style.display = "none";
-      }, 3000);
+      await delay(500);
+      outside.style.transform = "scale(2)";
+      await delay(1000);
+      outside.style.opacity = "0";
+      inside.style.opacity = "1";
+      await delay(500);
+      outside.style.display = "none";
     });
   })();
 
@@ -1259,7 +1255,7 @@ const divisions = {
     let currentFrameContainer: HTMLDivElement | null = null;
     let triggeringElement: HTMLElement | null = null;
 
-    const openModal = (frameElement: HTMLDivElement) => {
+    const openModal = async (frameElement: HTMLDivElement) => {
       const title = frameElement.getAttribute("data-frame-title");
       const description = frameElement.getAttribute("data-frame-description");
       const frameImage = frameElement.querySelector("img");
@@ -1308,16 +1304,15 @@ const divisions = {
       imageClone.style.transform = "none";
       imageClone.style.filter = "brightness(1)";
 
-      setTimeout(() => {
-        document.body.style.overflow = "hidden";
-        frameModal.classList.add("active");
-        // Move focus to the close button so keyboard/screen-reader users
-        // can immediately interact with or dismiss the modal.
-        frameModalClose.focus();
-      }, 600);
+      await delay(600);
+      document.body.style.overflow = "hidden";
+      frameModal.classList.add("active");
+      // Move focus to the close button so keyboard/screen-reader users
+      // can immediately interact with or dismiss the modal.
+      frameModalClose.focus();
     };
 
-    const closeModal = () => {
+    const closeModal = async () => {
       if (!(currentImageClone && currentFrameImage)) {
         frameModal.classList.remove("active");
         document.body.style.overflow = "";
@@ -1327,50 +1322,44 @@ const divisions = {
       }
 
       frameModal.classList.remove("active");
+      await delay(300);
 
-      setTimeout(() => {
-        if (!(currentImageClone && currentFrameImage)) {
-          return;
-        }
+      if (!(currentImageClone && currentFrameImage)) {
+        return;
+      }
 
-        const currentRect = currentImageClone.getBoundingClientRect();
-        const targetRect = currentFrameImage.getBoundingClientRect();
+      const currentRect = currentImageClone.getBoundingClientRect();
+      const targetRect = currentFrameImage.getBoundingClientRect();
 
-        const deltaX = targetRect.left - currentRect.left;
-        const deltaY = targetRect.top - currentRect.top;
-        const scaleX = targetRect.width / currentRect.width;
-        const scaleY = targetRect.height / currentRect.height;
+      const deltaX = targetRect.left - currentRect.left;
+      const deltaY = targetRect.top - currentRect.top;
+      const scaleX = targetRect.width / currentRect.width;
+      const scaleY = targetRect.height / currentRect.height;
 
-        currentImageClone.style.transition =
-          "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
-        currentImageClone.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
-        currentImageClone.style.filter = "brightness(0.7)";
+      currentImageClone.style.transition =
+        "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+      currentImageClone.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
+      currentImageClone.style.filter = "brightness(0.7)";
+      await delay(600);
 
-        setTimeout(() => {
-          if (!(currentImageClone && currentFrameContainer)) {
-            return;
-          }
+      if (!(currentImageClone && currentFrameContainer)) {
+        return;
+      }
 
-          currentImageClone.style.transition = "opacity 0.3s ease-in-out";
-          currentImageClone.style.opacity = "0";
+      currentImageClone.style.transition = "opacity 0.3s ease-in-out";
+      currentImageClone.style.opacity = "0";
+      currentFrameContainer.classList.remove("animating");
+      await delay(300);
 
-          currentFrameContainer.classList.remove("animating");
+      document.body.style.overflow = "";
+      frameModalImageContainer.innerHTML = "";
+      currentFrameImage = null;
+      currentImageClone = null;
+      currentFrameContainer = null;
 
-          setTimeout(() => {
-            document.body.style.overflow = "";
-
-            frameModalImageContainer.innerHTML = "";
-
-            currentFrameImage = null;
-            currentImageClone = null;
-            currentFrameContainer = null;
-
-            // Return focus to the element that originally opened the modal.
-            triggeringElement?.focus();
-            triggeringElement = null;
-          }, 300);
-        }, 600);
-      }, 300);
+      // Return focus to the element that originally opened the modal.
+      triggeringElement?.focus();
+      triggeringElement = null;
     };
 
     for (const frame of frames) {
