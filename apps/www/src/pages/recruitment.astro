@@ -1254,8 +1254,13 @@ const divisions = {
     let currentImageClone: HTMLImageElement | null = null;
     let currentFrameContainer: HTMLDivElement | null = null;
     let triggeringElement: HTMLElement | null = null;
+    let isAnimating = false;
 
     const openModal = async (frameElement: HTMLDivElement) => {
+      if (isAnimating) {
+        return;
+      }
+      isAnimating = true;
       const title = frameElement.getAttribute("data-frame-title");
       const description = frameElement.getAttribute("data-frame-description");
       const frameImage = frameElement.querySelector("img");
@@ -1305,6 +1310,7 @@ const divisions = {
       imageClone.style.filter = "brightness(1)";
 
       await delay(600);
+      isAnimating = false;
       document.body.style.overflow = "hidden";
       frameModal.classList.add("active");
       // Move focus to the close button so keyboard/screen-reader users
@@ -1313,9 +1319,15 @@ const divisions = {
     };
 
     const closeModal = async () => {
+      if (isAnimating) {
+        return;
+      }
+      isAnimating = true;
+
       if (!(currentImageClone && currentFrameImage)) {
         frameModal.classList.remove("active");
         document.body.style.overflow = "";
+        isAnimating = false;
         triggeringElement?.focus();
         triggeringElement = null;
         return;
@@ -1325,6 +1337,7 @@ const divisions = {
       await delay(300);
 
       if (!(currentImageClone && currentFrameImage)) {
+        isAnimating = false;
         return;
       }
 
@@ -1343,6 +1356,7 @@ const divisions = {
       await delay(600);
 
       if (!(currentImageClone && currentFrameContainer)) {
+        isAnimating = false;
         return;
       }
 
@@ -1356,6 +1370,7 @@ const divisions = {
       currentFrameImage = null;
       currentImageClone = null;
       currentFrameContainer = null;
+      isAnimating = false;
 
       // Return focus to the element that originally opened the modal.
       triggeringElement?.focus();
