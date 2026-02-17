@@ -1,8 +1,1011 @@
 ---
-import ComingSoon from "@/components/coming-soon.astro";
+import House from "@/assets/imgs/house.png";
 import Layout from "@/components/layout.astro";
+import BrushArrow1 from "@/assets/imgs/brush-arrow-1.png";
+import Navbar from "@/components/navbar.astro";
+import PastSpeaker1 from "@/assets/imgs/past-speaker-1.png";
+import PastSpeaker2 from "@/assets/imgs/past-speaker-2.png";
+import PastSpeaker3 from "@/assets/imgs/past-speaker-3.png";
+import Documentation21 from "@/assets/imgs/documentation-21.png";
+import Documentation22 from "@/assets/imgs/documentation-22.png";
+import Documentation23 from "@/assets/imgs/documentation-23.png";
+import Documentation25 from "@/assets/imgs/documentation-25.png";
+import { Image } from "astro:assets";
+import "lenis/dist/lenis.css";
 ---
 
-<Layout>
-  <ComingSoon />
+<Layout
+  title="About TED | TEDx Universitas Brawijaya"
+  description="Learn about TED, its mission, and how it inspires us to spread ideas worth sharing at TEDx Universitas Brawijaya."
+  canonical="https://tedxuniversitasbrawijaya.com/about-ted"
+>
+  <Navbar />
+  <main>
+    <section id="about-ted">
+      <div class="hero-container">
+        <div class="hero-text-container">
+          <h1>
+            <span>Seputar</span>
+            <span>TED</span>
+          </h1>
+        </div>
+        <div class="house-container">
+          <Image src={House} alt="House" class="house" />
+        </div>
+      </div>
+      <div class="ted-definition-container">
+        <p>
+          TED adalah organisasi nirlaba yang ditujukan untuk menyebarkan ide
+          dalam bentuk talk singkat yang berisi gagasan-gagasan hebat dan unik
+          (18 menit atau kurang). TED dimulai pada tahun 1984 sebagai sebuah
+          konferensi dimana Teknologi, Hiburan dan Desain menjadi tema utamanya,
+          dan hari ini topik tidak hanya mencakup ketiga hal tersebut tapi juga
+          meliputi sains, bisnis, hingga masalah global yang dikemas dalam lebih
+          dari 100 bahasa.
+        </p>
+        <p>
+          Dengan semangat IDEAS CHANGE EVERYTHING, tercipta TEDx yang merupakan
+          sebuah program yang memungkinkan institusi sekolah, bisnis,
+          perusahaan, atau sekedar sekelompok orang untuk menikmati pengalaman
+          seperti TED melalui acara yang mereka selenggarakan secara mandiri
+          dengan keunikannya sendiri.
+        </p>
+      </div>
+    </section>
+    <section id="about-tedx">
+      <div class="past-speaker-1-container-wrapper">
+        <div class="past-speaker-1-container">
+          <Image
+            src={PastSpeaker1}
+            alt="Past Speaker 1"
+            class="past-speaker-1"
+          />
+        </div>
+      </div>
+      <div class="past-speaker-2-container-wrapper">
+        <div class="past-speaker-2-container">
+          <Image
+            src={PastSpeaker2}
+            alt="Past Speaker 2"
+            class="past-speaker-2"
+          />
+        </div>
+      </div>
+      <div class="tedx-definition-container">
+        <p>
+          TEDx merupakan acara independen berlisensi TED yang mengkolaborasikan
+          komunitas lokal untuk berbagi ide serta memicu diskusi dan koneksi
+          yang bermakna. Sebagai TEDx University pertama di Malang sejak 2015,
+          TEDxUniversitasBrawijaya berperan aktif dalam menyebarkan gagasan unik
+          dan transformatif melalui pembicara lokal maupun nasional yang telah
+          terkurasi, dengan keyakinan bahwa setiap ide memiliki kekuatan untuk
+          memperluas perspektif dan memberikan dampak nyata bagi audiens.
+        </p>
+      </div>
+      <div class="past-speaker-3-container-wrapper">
+        <div class="past-speaker-3-container">
+          <Image
+            src={PastSpeaker3}
+            alt="Past Speaker 3"
+            class="past-speaker-3"
+          />
+        </div>
+      </div>
+    </section>
+    <section id="past-tedx-events">
+      <div class="heading-container">
+        <h2>
+          <span>Mengenal TEDx</span>
+          <span>Universitas Brawijaya</span>
+        </h2>
+      </div>
+      <div class="carousel-container-wrapper">
+        <div class="carousel-container">
+          <div class="carousel">
+            <Image
+              src={Documentation21}
+              alt="Documentation 21"
+              class="carousel-image"
+              data-carousel-title="TEDXUB 2021"
+              data-carousel-description="MANIFESTASI PERADABAN: Yang Dibicarakan Ketika Membicarakan Manusia TEDxUniversitasBrawijaya 2021 memberikan perspektif yang berbeda tentang Pop Culture. Bahwa semata-mata Pop Culture tidak hanya disajikan dalam bentuk kesenian, musik, dan lukisan namun juga dapat dibagikan melalui perspektif sosiologis."
+            />
+            <Image
+              src={Documentation22}
+              alt="Documentation 22"
+              class="carousel-image"
+              data-carousel-title="TEDXUB 2022"
+              data-carousel-description="MERAYAKAN KEMBALI: Menggeedah Arus, Menilik Ruang. TEDxUniversitasBrawijaya tahun ini akan membawa penonton melalui perjalanan istirahat dari kejenuhan dan kompleksitas yang telah terbentuk dengan kembali menjelajahi makna nilai kearifan lokal sebagai bekal dalam menjalani era modernisasi saat ini."
+            />
+            <Image
+              src={Documentation23}
+              alt="Documentation 23"
+              class="carousel-image"
+              data-carousel-title="TEDXUB 2023"
+              data-carousel-description="2023: MEMANTIK BASKARA: Tersulut Tak Membara, Terbakar Tak Bersuara TEDxUniversitasBrawijaya 2023 memberikan sebuah pengalaman yang tak terlupakan, merajut satu cerita, berjalan bersama dengan mengajak audiens dalam perjalanan penuh ambiguitas atas jati dirinya hingga akhirnya memantik sebuah pencerahan ataupun melahirkan gagasan baru yang berkembang dari serangkaian variabel yang saling terhubung."
+            />
+            <Image
+              src={Documentation25}
+              alt="Documentation 24/25"
+              class="carousel-image"
+              data-carousel-title="TEDXUB 2024/2025"
+              data-carousel-description="2024/2025: MANTRA DIRI: Menembus Batas, Menyelami Realitas. TEDxUniversitasBrawijaya mengajak peserta untuk merangkai kembali mantra diri, untuk mengenali realita, dan mengekspresikan diri mereka. Menghidupkan motivasi dan potensi yang tersembunyi untuk diekspresikan dengan berani. Menghadapi realita dengan segala angan sebagai tumpuan untuk menembus batas."
+            />
+          </div>
+          <div class="carousel-content">
+            <div class="carousel-toolbar">
+              <button id="prev-carousel-btn">
+                <Image
+                  src={BrushArrow1}
+                  alt="Brush Arrow 1"
+                  class="brush-arrow-1"
+                />
+              </button>
+              <span id="carousel-title" class="carousel-title"></span>
+              <button id="next-carousel-btn">
+                <Image
+                  src={BrushArrow1}
+                  alt="Brush Arrow 1"
+                  class="brush-arrow-1"
+                />
+              </button>
+            </div>
+            <p id="carousel-description" class="carousel-description"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="grand-theme">
+      <div class="grand-theme-wrapper">
+        <div class="heading-container">
+          <h2>BERTUMBUH BERSAMA</h2>
+          <h3>Cerita yang Kita Bawa, Rumah yang Kita Cipta</h3>
+        </div>
+
+        <p id="first-paragraph">
+          Perjalanan panjang mendalami manusia, ruang, cahaya, dan diri menuntun
+          TEDxUniversitas Brawijaya 2026 pada puncak kesadaran bahwa tak ada
+          seorang pun yang bertumbuh sendirian. Lembaran baru ini mengantarkan
+          kita untuk kembali pulang ke rumah, naungan di mana keluarga hadir
+          untuk saling menjaga dan menguatkan tiap proses pertumbuhan.
+        </p>
+        <p id="second-paragraph">
+          Kamu akan dibawa menepi sejenak untuk merefleksikan hidup sebagai
+          perjalanan kebersamaan melalui genggaman hangat keluarga yang bersama
+          mengukir kisah, mewariskan nilai, memeluk lara yang belum pulih, serta
+          merayakan tawa yang saling melengkapi dalam kasih yang menguatkan.
+          Nyatanya, kita tidak pernah benar-benar bertumbuh dalam kesunyian
+          karena setiap jejak langkah manusia adalah gema dari sosok pribadi
+          lainnya. Dalam kebersamaan itu, keluarga berdiri dalam pondasi rumah
+          yang kokoh sebagai dekapan bagi jiwa dan raga untuk bernaung dan
+          diterima sepenuhnya.
+        </p>
+        <p id="third-paragraph">
+          Kini, rumah pun beralih rupa. Tak lagi dimaknai sebagai asal semata,
+          tetapi sebagai ruang hidup yang terus diciptakan melalui rasa yang
+          dijaga, dialog yang dipertemukan, dan perbedaan bersilangan yang akan
+          dirangkul sebagai jalan menuju pemahaman bersama. Di sanalah gagasan
+          bersemi menjadi makna, ada cerita yang saling menghidupi, dan setiap
+          insan hadir secara utuh, baik bagi diri sendiri maupun mereka yang
+          dikasihi.
+        </p>
+      </div>
+    </section>
+  </main>
+  <style>
+    main {
+      background-color: var(--color-white);
+      position: relative;
+    }
+
+    .hero-container {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(2, 1fr);
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+      height: 100dvh;
+      padding-top: calc(var(--navbar-height) + 1.25rem);
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+
+    .hero-text-container {
+      grid-area: 1 / 1 / 2 / 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-text-container h1 {
+      font-family: var(--font-serif);
+      font-size: var(--text-xxl);
+      color: var(--color-black);
+      display: flex;
+      flex-direction: column;
+      width: 16rem;
+    }
+
+    .hero-text-container h1 span:last-child {
+      text-align: right;
+    }
+
+    .house-container {
+      grid-area: 2 / 1 / 3 / 2;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .house {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+      aspect-ratio: 1.08 / 1;
+    }
+
+    .ted-definition-container {
+      padding: 2rem 1.25rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(2, auto);
+      grid-column-gap: 0px;
+      grid-row-gap: 2rem;
+    }
+
+    .ted-definition-container p {
+      font-family: var(--font-sans);
+      font-size: var(--text-s);
+      color: var(--color-black);
+      text-align: justify;
+      text-wrap-style: pretty;
+    }
+
+    #about-tedx {
+      height: 100dvh;
+      overflow: hidden;
+      position: relative;
+      padding-top: var(--navbar-height);
+    }
+    .past-speaker-1-container-wrapper {
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translate(-120%, 0%);
+      width: 20dvh;
+      height: auto;
+    }
+    .past-speaker-1-container {
+      position: relative;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1.24 / 1;
+    }
+
+    .past-speaker-1 {
+      width: auto;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      aspect-ratio: 1.24 / 1;
+      filter: drop-shadow(20px 20px 0px rgba(0, 0, 0, 0.7));
+    }
+    .past-speaker-2-container-wrapper {
+      position: absolute;
+      top: 10%;
+      right: 50%;
+      transform: translate(120%, 0%);
+      width: 20dvh;
+      height: auto;
+    }
+    .past-speaker-2-container {
+      position: relative;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 0.93 / 1;
+    }
+
+    .past-speaker-2 {
+      width: auto;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      aspect-ratio: 0.93 / 1;
+      filter: drop-shadow(20px 20px 0px rgba(0, 0, 0, 0.7));
+    }
+    .tedx-definition-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .tedx-definition-container p {
+      font-family: var(--font-sans);
+      font-size: var(--text-s);
+      color: var(--color-black);
+      text-align: center;
+      text-wrap-style: pretty;
+      width: 90vw;
+    }
+    .past-speaker-3-container-wrapper {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform: translate(-50%, 200%);
+      width: 40dvh;
+      height: auto;
+    }
+    .past-speaker-3-container {
+      position: relative;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 2.62 / 1;
+    }
+
+    .past-speaker-3 {
+      width: auto;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      aspect-ratio: 2.62 / 1;
+      filter: drop-shadow(20px 20px 0px rgba(0, 0, 0, 0.7));
+    }
+
+    #past-tedx-events {
+      height: 100dvh;
+      overflow: hidden;
+      position: relative;
+      padding-top: var(--navbar-height);
+      padding-bottom: 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    #past-tedx-events .heading-container {
+      width: 16rem;
+    }
+    #past-tedx-events .heading-container h2 {
+      font-family: var(--font-serif);
+      font-size: var(--text-l);
+      color: var(--color-black);
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    #past-tedx-events.heading-container h2 span:last-child {
+      text-align: right;
+    }
+
+    .carousel-container-wrapper {
+      width: 100%;
+    }
+
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .carousel {
+      width: 100%;
+      height: auto;
+      display: flex;
+      gap: 4rem;
+      padding: 0 calc((100dvw - 80dvw) / 2);
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+
+      /* Hide scroll */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* Internet Explorer 10+ */
+    }
+
+    .carousel::-webkit-scrollbar {
+      display: none; /* Safari and Chrome */
+    }
+
+    .carousel-image {
+      height: auto;
+      width: 80dvw;
+      flex-shrink: 0;
+      object-fit: cover;
+      object-position: center;
+      scroll-snap-align: center;
+      filter: drop-shadow(20px 20px 0px rgba(0, 0, 0, 0.7));
+      aspect-ratio: 1.43 / 1;
+    }
+
+    .carousel-content {
+      width: 80dvw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .carousel-toolbar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .carousel-toolbar button {
+      background-color: transparent;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: var(--text-s);
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .carousel-toolbar button:hover {
+      opacity: 0.8;
+    }
+
+    .carousel-toolbar button:disabled {
+      opacity: 0;
+      cursor: not-allowed;
+    }
+
+    .carousel-toolbar button:focus {
+      outline: 1px solid var(--color-black);
+      outline-offset: 1px;
+      border-radius: 4px;
+    }
+
+    .carousel-toolbar button:focus-visible {
+      outline: 2px solid var(--color-black);
+      outline-offset: 2px;
+    }
+
+    .carousel-toolbar button:active {
+      opacity: 0.6;
+    }
+
+    .carousel-toolbar .brush-arrow-1 {
+      width: auto;
+      height: 2rem;
+      object-fit: cover;
+      object-position: center;
+      aspect-ratio: 1.09 / 1;
+    }
+
+    .carousel-toolbar #prev-carousel-btn .brush-arrow-1 {
+      transform: rotate(-45deg);
+    }
+
+    .carousel-toolbar #next-carousel-btn .brush-arrow-1 {
+      transform: rotate(135deg);
+    }
+
+    .carousel-title {
+      font-family: var(--font-serif);
+      font-size: var(--text-m);
+      color: var(--color-black);
+      text-align: center;
+    }
+
+    .carousel-description {
+      font-family: var(--font-sans);
+      font-size: var(--text-s);
+      color: var(--color-black);
+      text-align: justify;
+      text-wrap-style: pretty;
+    }
+
+    #grand-theme {
+      height: 400dvh;
+      position: relative;
+      padding-top: var(--navbar-height);
+    }
+
+    #grand-theme .grand-theme-wrapper {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100dvh;
+    }
+
+    #grand-theme .heading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      text-wrap-style: pretty;
+      padding: 0rem 1.25rem;
+      gap: 0.5rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -150%);
+      width: 100dvw;
+      z-index: 1;
+    }
+
+    #grand-theme .heading-container h2 {
+      font-family: var(--font-serif);
+      font-size: var(--text-l);
+      color: var(--color-black);
+    }
+
+    #grand-theme .heading-container h3 {
+      font-family: var(--font-serif);
+      font-size: var(--text-l);
+      color: var(--color-black);
+    }
+
+    #grand-theme #first-paragraph,
+    #grand-theme #second-paragraph,
+    #grand-theme #third-paragraph {
+      position: absolute;
+      font-family: var(--font-sans);
+      font-size: var(--text-s);
+      color: var(--color-black);
+      text-align: center;
+      text-wrap-style: pretty;
+      padding: 0rem 1.25rem;
+      opacity: 1;
+      width: 100dvw;
+      transition: opacity 0.3s ease;
+    }
+
+    #grand-theme #first-paragraph {
+      opacity: 1;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    #grand-theme #second-paragraph {
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    #grand-theme #third-paragraph {
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @media (min-width: 425px) {
+      .hero-container {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 1fr;
+      }
+
+      .hero-text-container {
+        grid-area: 1 / 1 / 2 / 2;
+      }
+
+      .house-container {
+        grid-area: 1 / 2 / 2 / 3;
+      }
+
+      .past-speaker-1-container-wrapper {
+        top: 15%;
+        left: 5%;
+        transform: translate(0%, 0%);
+        width: 20dvh;
+      }
+
+      .past-speaker-2-container-wrapper {
+        top: 10%;
+        right: 5%;
+        transform: translate(0%, 0%);
+        width: 20dvh;
+      }
+
+      .tedx-definition-container p {
+        font-size: var(--text-s);
+        width: 80vw;
+      }
+
+      .past-speaker-3-container-wrapper {
+        bottom: 20%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        width: 40dvh;
+      }
+
+      #past-tedx-events .heading-container {
+        padding: 0rem 1.25rem;
+        width: 24rem;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .hero-text-container h1 {
+        font-size: var(--text-xxxl);
+        width: 24rem;
+      }
+
+      .ted-definition-container {
+        padding: 4rem 9.375rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 2rem;
+      }
+
+      .ted-definition-container p {
+        font-size: var(--text-m);
+      }
+
+      .past-speaker-1-container-wrapper {
+        top: 15%;
+        left: 5%;
+        transform: translate(0%, 0%);
+        width: 35dvh;
+      }
+
+      .past-speaker-2-container-wrapper {
+        top: 10%;
+        right: 5%;
+        transform: translate(0%, 0%);
+        width: 35dvh;
+      }
+
+      .tedx-definition-container p {
+        font-size: var(--text-m);
+        width: 60vw;
+      }
+
+      .past-speaker-3-container-wrapper {
+        bottom: 10%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        width: 60dvh;
+      }
+      #past-tedx-events {
+        align-items: flex-start;
+        gap: 4rem;
+      }
+      #past-tedx-events .heading-container {
+        padding: 0rem 9.375rem;
+        width: 50rem;
+      }
+      #past-tedx-events .heading-container h2 {
+        font-size: var(--text-xl);
+      }
+      .carousel {
+        padding: 0 calc((100dvw - 40dvw) / 2);
+      }
+
+      .carousel-image {
+        width: 40dvw;
+      }
+
+      .carousel-content {
+        width: 40dvw;
+      }
+
+      .carousel-title {
+        font-size: var(--text-xl);
+      }
+
+      .carousel-description {
+        font-size: var(--text-m);
+      }
+
+      #grand-theme .heading-container {
+        top: calc(var(--navbar-height) + 4rem);
+        transform: translate(-50%, 0%);
+      }
+
+      #grand-theme .heading-container h2 {
+        font-size: var(--text-xl);
+      }
+
+      #grand-theme .heading-container h3 {
+        font-size: var(--text-xl);
+      }
+
+      #grand-theme #first-paragraph {
+        font-size: var(--text-m);
+        width: 30dvw;
+        text-align: justify;
+        left: 10%;
+      }
+
+      #grand-theme #second-paragraph {
+        font-size: var(--text-m);
+        width: 30dvw;
+        text-align: justify;
+        left: auto;
+        right: 10%;
+      }
+
+      #grand-theme #third-paragraph {
+        font-size: var(--text-m);
+        width: 30dvw;
+        text-align: justify;
+        left: 10%;
+        bottom: 20%;
+      }
+    }
+  </style>
+  <script>
+    import Lenis from "lenis";
+
+    new Lenis({
+      autoRaf: true,
+      anchors: true,
+    });
+
+    (() => {
+      const carousel = document.querySelector(".carousel");
+      const carouselTitle = document.getElementById("carousel-title");
+      const carouselDescription = document.getElementById(
+        "carousel-description"
+      );
+      const nextBtn = document.getElementById("next-carousel-btn");
+      const prevBtn = document.getElementById("prev-carousel-btn");
+
+      if (
+        !(
+          carousel &&
+          carouselTitle &&
+          carouselDescription &&
+          nextBtn &&
+          prevBtn
+        )
+      ) {
+        return;
+      }
+
+      let currentIndex = 0;
+      const totalItems = carousel.children.length;
+
+      const updateCarouselContent = () => {
+        const currentItem = carousel.children[currentIndex];
+        if (!currentItem) {
+          return;
+        }
+        carouselTitle.textContent =
+          currentItem.getAttribute("data-carousel-title") || "";
+        carouselDescription.textContent =
+          currentItem.getAttribute("data-carousel-description") || "";
+      };
+
+      // Set up IntersectionObserver to detect which item is in view when scrolling
+      const observerOptions = {
+        root: carousel,
+        rootMargin: "0px",
+        threshold: [0, 0.5, 1],
+      } satisfies IntersectionObserverInit;
+
+      const observerCallback = () => {
+        // Find which item is closest to the center of the carousel
+        const carouselRect = carousel.getBoundingClientRect();
+        const carouselCenter = carouselRect.left + carouselRect.width / 2;
+
+        let closestIndex = 0;
+        let closestDistance = Number.POSITIVE_INFINITY;
+
+        for (let i = 0; i < totalItems; i++) {
+          const item = carousel.children[i] as HTMLElement;
+          const itemRect = item.getBoundingClientRect();
+          const itemCenter = itemRect.left + itemRect.width / 2;
+          const distance = Math.abs(carouselCenter - itemCenter);
+
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestIndex = i;
+          }
+        }
+
+        if (closestIndex !== currentIndex) {
+          currentIndex = closestIndex;
+          updateCarouselContent();
+        }
+      };
+
+      const observer = new IntersectionObserver(
+        observerCallback,
+        observerOptions
+      );
+
+      // Observe all carousel items
+      for (const child of carousel.children) {
+        observer.observe(child);
+      }
+
+      nextBtn.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % totalItems;
+        const currentItem = carousel.children[currentIndex];
+        if (!currentItem) {
+          return;
+        }
+        currentItem.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+        });
+        updateCarouselContent();
+      });
+
+      prevBtn.addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+        const currentItem = carousel.children[currentIndex];
+        if (!currentItem) {
+          return;
+        }
+        currentItem.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+        });
+        updateCarouselContent();
+      });
+
+      updateCarouselContent();
+    })();
+
+    // Grand theme scroll animation
+    (() => {
+      const grandThemeSection = document.getElementById("grand-theme");
+      const firstParagraph = document.getElementById("first-paragraph");
+      const secondParagraph = document.getElementById("second-paragraph");
+      const thirdParagraph = document.getElementById("third-paragraph");
+
+      if (
+        !(
+          grandThemeSection &&
+          firstParagraph &&
+          secondParagraph &&
+          thirdParagraph
+        )
+      ) {
+        return;
+      }
+
+      const animateParagraphs = () => {
+        const sectionRect = grandThemeSection.getBoundingClientRect();
+        const sectionHeight = grandThemeSection.offsetHeight;
+        const viewportHeight = window.innerHeight;
+
+        // Calculate scroll progress (0 to 1)
+        const scrollProgress = Math.max(
+          0,
+          Math.min(1, -sectionRect.top / (sectionHeight - viewportHeight))
+        );
+
+        // Easing functions for smooth animations
+        const easeInCubic = (t: number): number => {
+          return t * t * t;
+        };
+
+        const easeInOutCubic = (t: number): number => {
+          return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+        };
+
+        const easeOutCubic = (t: number): number => {
+          return 1 - (1 - t) ** 3;
+        };
+
+        function transform(
+          x: number,
+          input: number[],
+          output: number[],
+          easing: (t: number) => number = (t) => t
+        ) {
+          const firstInput = input[0];
+          const lastInput = input.at(-1);
+          const lastOutput = output.at(-1);
+
+          if (
+            !(
+              firstInput !== undefined &&
+              lastInput !== undefined &&
+              lastOutput !== undefined
+            )
+          ) {
+            return 0;
+          }
+
+          const clampedX = Math.max(firstInput, Math.min(lastInput, x));
+
+          for (let i = 0; i < input.length - 1; i++) {
+            const currentInput = input[i];
+            const nextInput = input[i + 1];
+
+            const currentOutput = output[i];
+            const nextOutput = output[i + 1];
+
+            if (
+              !(
+                currentInput !== undefined &&
+                nextInput !== undefined &&
+                currentOutput !== undefined &&
+                nextOutput !== undefined
+              )
+            ) {
+              continue;
+            }
+
+            if (clampedX >= currentInput && clampedX <= nextInput) {
+              const localProgress =
+                (clampedX - currentInput) / (nextInput - currentInput);
+              const easedProgress = easing(localProgress);
+
+              return (
+                currentOutput + easedProgress * (nextOutput - currentOutput)
+              );
+            }
+          }
+
+          return lastOutput;
+        }
+
+        // First paragraph animations with easing
+        const firstTranslateY = transform(
+          scrollProgress,
+          [0.2, 0.3],
+          [0, -5],
+          easeOutCubic
+        );
+        firstParagraph.style.transform = `translateY(${firstTranslateY}dvh)`;
+
+        const firstOpacity = transform(
+          scrollProgress,
+          [0.2, 0.3],
+          [1, 0],
+          easeOutCubic
+        );
+        firstParagraph.style.opacity = String(firstOpacity);
+
+        // Second paragraph animations with easing
+        const secondTranslateY = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.7],
+          [100, 0, 0, -5],
+          easeInOutCubic
+        );
+        secondParagraph.style.transform = `translateY(${secondTranslateY}dvh)`;
+
+        const secondOpacity = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.7],
+          [0, 1, 1, 0],
+          easeInOutCubic
+        );
+        secondParagraph.style.opacity = String(secondOpacity);
+
+        // Third paragraph animations with easing
+        const thirdTranslateY = transform(
+          scrollProgress,
+          [0.6, 0.8],
+          [100, 0],
+          easeInCubic
+        );
+        thirdParagraph.style.transform = `translateY(${thirdTranslateY}dvh)`;
+
+        const thirdOpacity = transform(
+          scrollProgress,
+          [0.6, 0.8],
+          [0, 1],
+          easeInCubic
+        );
+        thirdParagraph.style.opacity = String(thirdOpacity);
+      };
+
+      window.addEventListener("scroll", animateParagraphs);
+      animateParagraphs(); // Initial call
+    })();
+  </script>
 </Layout>
