@@ -140,6 +140,8 @@ const divisons = {
           class="frame-ep-container"
           data-frame-title={divisons.ep.title}
           data-frame-description={divisons.ep.description}
+          role="button"
+          tabindex="0"
         >
           <Image
             src={FrameEP}
@@ -153,6 +155,8 @@ const divisons = {
           class="frame-em-container"
           data-frame-title={divisons.em.title}
           data-frame-description={divisons.em.description}
+          role="button"
+          tabindex="0"
         >
           <Image
             src={FrameEM}
@@ -166,6 +170,8 @@ const divisons = {
           class="frame-cem-container"
           data-frame-title={divisons.cem.title}
           data-frame-description={divisons.cem.description}
+          role="button"
+          tabindex="0"
         >
           <Image
             src={FrameCEM}
@@ -179,6 +185,8 @@ const divisons = {
           class="frame-vp-container"
           data-frame-title={divisons.vp.title}
           data-frame-description={divisons.vp.description}
+          role="button"
+          tabindex="0"
         >
           <Image
             src={FrameVP}
@@ -192,6 +200,8 @@ const divisons = {
           class="frame-sponsorship-container"
           data-frame-title={divisons.sponsorship.title}
           data-frame-description={divisons.sponsorship.description}
+          role="button"
+          tabindex="0"
         >
           <Image
             src={FrameSponsorship}
@@ -205,6 +215,8 @@ const divisons = {
           class="frame-curator-container"
           data-frame-title={divisons.curator.title}
           data-frame-description={divisons.curator.description}
+          role="button"
+          tabindex="0"
         >
           <Image
             src={FrameCurator}
@@ -218,6 +230,8 @@ const divisons = {
           class="frame-design-container"
           data-frame-title={divisons.design.title}
           data-frame-description={divisons.design.description}
+          role="button"
+          tabindex="0"
         >
           <Image
             src={FrameDesign}
@@ -231,6 +245,8 @@ const divisons = {
           class="frame-website-container"
           data-frame-title={divisons.website.title}
           data-frame-description={divisons.website.description}
+          role="button"
+          tabindex="0"
         >
           <Image
             src={FrameWebsite}
@@ -268,11 +284,14 @@ const divisons = {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               aria-label="Close Modal"
+              role="button"
+              tabindex="0"
             >
               <title>Close Button</title>
               <path
                 d="M5.83357 14.5835L4.80253 15.6145L3.77148 14.5835L4.80253 13.5524L5.83357 14.5835ZM30.6252 26.2501C30.6252 26.6369 30.4716 27.0078 30.1981 27.2813C29.9246 27.5548 29.5537 27.7085 29.1669 27.7085C28.7801 27.7085 28.4092 27.5548 28.1357 27.2813C27.8622 27.0078 27.7086 26.6369 27.7086 26.2501H30.6252ZM12.0942 22.9062L4.80253 15.6145L6.86461 13.5524L14.1563 20.8441L12.0942 22.9062ZM4.80253 13.5524L12.0942 6.26074L14.1563 8.32282L6.86461 15.6145L4.80253 13.5524ZM5.83357 13.1251H20.4169V16.0418H5.83357V13.1251ZM30.6252 23.3335V26.2501H27.7086V23.3335H30.6252ZM20.4169 13.1251C23.1243 13.1251 25.7208 14.2006 27.6353 16.1151C29.5497 18.0295 30.6252 20.626 30.6252 23.3335H27.7086C27.7086 21.3996 26.9403 19.5449 25.5729 18.1775C24.2054 16.81 22.3508 16.0418 20.4169 16.0418V13.1251Z"
-                fill="#F8F1DC"></path>
+                fill="#F8F1DC"
+              ></path>
             </svg>
           </div>
         </div>
@@ -902,13 +921,27 @@ const divisons = {
     max-width: 40ch;
   }
 
-  [data-frame]:hover img {
+  [data-frame]:hover img,
+  [data-frame]:focus-visible img {
     filter: drop-shadow(0px 4px 25px rgba(255, 149, 0, 0.5))
       drop-shadow(0px 4px 3.5px rgba(0, 0, 0, 0.5));
   }
 
-  [data-frame]:hover .frame-text {
+  [data-frame]:hover .frame-text,
+  [data-frame]:focus-visible .frame-text {
     opacity: 1;
+  }
+
+  [data-frame]:focus-visible {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .frame-modal-close:focus-visible {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+    border-radius: 2px;
   }
 
   [data-frame].animating .frame-text {
@@ -1181,7 +1214,8 @@ const divisons = {
   (() => {
     const frames = document.querySelectorAll<HTMLDivElement>("[data-frame]");
     const frameModal = document.getElementById("frame-modal");
-    const frameModalClose = document.querySelector(".frame-modal-close");
+    const frameModalClose =
+      document.querySelector<HTMLElement>(".frame-modal-close");
     const frameModalBackdrop = document.querySelector(".frame-modal-backdrop");
     const frameModalImageContainer = document.querySelector(
       ".frame-modal-image-container"
@@ -1209,6 +1243,7 @@ const divisons = {
     let currentFrameImage: HTMLImageElement | null = null;
     let currentImageClone: HTMLImageElement | null = null;
     let currentFrameContainer: HTMLDivElement | null = null;
+    let triggeringElement: HTMLElement | null = null;
 
     const openModal = (frameElement: HTMLDivElement) => {
       const title = frameElement.getAttribute("data-frame-title");
@@ -1219,6 +1254,7 @@ const divisons = {
         return;
       }
 
+      triggeringElement = frameElement;
       currentFrameImage = frameImage;
       currentFrameContainer = frameElement;
 
@@ -1261,6 +1297,9 @@ const divisons = {
       setTimeout(() => {
         document.body.style.overflow = "hidden";
         frameModal.classList.add("active");
+        // Move focus to the close button so keyboard/screen-reader users
+        // can immediately interact with or dismiss the modal.
+        frameModalClose.focus();
       }, 600);
     };
 
@@ -1268,6 +1307,8 @@ const divisons = {
       if (!(currentImageClone && currentFrameImage)) {
         frameModal.classList.remove("active");
         document.body.style.overflow = "";
+        triggeringElement?.focus();
+        triggeringElement = null;
         return;
       }
 
@@ -1309,6 +1350,10 @@ const divisons = {
             currentFrameImage = null;
             currentImageClone = null;
             currentFrameContainer = null;
+
+            // Return focus to the element that originally opened the modal.
+            triggeringElement?.focus();
+            triggeringElement = null;
           }, 300);
         }, 600);
       }, 300);
@@ -1316,14 +1361,35 @@ const divisons = {
 
     for (const frame of frames) {
       frame.addEventListener("click", () => openModal(frame));
+      frame.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openModal(frame);
+        }
+      });
     }
 
     frameModalClose.addEventListener("click", closeModal);
+    frameModalClose.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        closeModal();
+      }
+    });
     frameModalBackdrop.addEventListener("click", closeModal);
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && frameModal.classList.contains("active")) {
+      if (!frameModal.classList.contains("active")) {
+        return;
+      }
+      if (event.key === "Escape") {
         closeModal();
+      }
+      // Trap focus inside the modal — the close button is the only
+      // focusable element, so Tab simply keeps focus there.
+      if (event.key === "Tab") {
+        event.preventDefault();
+        frameModalClose.focus();
       }
     });
   })();
