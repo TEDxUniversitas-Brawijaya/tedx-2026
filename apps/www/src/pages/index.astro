@@ -336,17 +336,39 @@ const menu = [
     transition:
       transform 0.3s ease,
       opacity 0.3s ease;
+
+    animation: bounce 2s ease-in-out infinite;
+    animation-delay: 5s;
+  }
+
+  /* Infinite bouncing red-book to indicate interactivity */
+  @keyframes bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-40px);
+    }
+  }
+  @media(prefers-reduced-motion: reduce) {
+    .red-book {
+      animation: none;
+    }
   }
 
   .red-book-button:focus .red-book {
+    animation: none;
     transform: translateY(-40px);
   }
 
   .red-book-button:hover .red-book {
+    animation: none;
     transform: translateY(-40px);
   }
 
   .book-container:hover .red-book {
+    animation: none;
     transform: translateY(-40px);
   }
 
@@ -673,7 +695,8 @@ const menu = [
     .text-container {
       top: auto;
       bottom: 15%;
-      left: 5%;
+      left: 0%;
+      padding-left: 9.375rem;
       transform: none;
       width: max-content;
       text-align: left;
@@ -697,6 +720,9 @@ const menu = [
 
     .modal.active .modal-content {
       transform: translate(-50%, -50%) scale(1);
+    }
+    .menu-container-wrapper {
+      padding: 1.5rem 2.5rem;
     }
 
     .menu-container .heading h2 {
