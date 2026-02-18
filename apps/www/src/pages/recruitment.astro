@@ -1,0 +1,1493 @@
+---
+import ClosedDoor from "@/assets/imgs/closed-door.png";
+import SemiOpenedDoor from "@/assets/imgs/semi-opened-door.png";
+import Window1 from "@/assets/imgs/window-1.png";
+import OpenedDoor from "@/assets/imgs/opened-door.png";
+import HouseNumber1 from "@/assets/imgs/house-number-1.png";
+import PrintTexture1 from "@/assets/imgs/print-texture-1.png";
+import FrameEP from "@/assets/imgs/frame-ep.png";
+import FrameEM from "@/assets/imgs/frame-em.png";
+import FrameCEM from "@/assets/imgs/frame-cem.png";
+import FrameVP from "@/assets/imgs/frame-vp.png";
+import FrameSponsorship from "@/assets/imgs/frame-sponsorship.png";
+import FrameCurator from "@/assets/imgs/frame-curator.png";
+import FrameDesign from "@/assets/imgs/frame-design.png";
+import FrameWebsite from "@/assets/imgs/frame-website.png";
+import WallTexture1 from "@/assets/imgs/wall-texture-1.png";
+import WhiteWallEffect1 from "@/assets/imgs/white-wall-effect-1.png";
+import Sofa1 from "@/assets/imgs/sofa-1.png";
+import Table2 from "@/assets/imgs/table-2.png";
+import Layout from "@/components/layout.astro";
+import Navbar from "@/components/navbar.astro";
+import { Image } from "astro:assets";
+import WindowLightShadow1 from "@/assets/imgs/window-light-shadow-1.png";
+import GreenRoomBackground1 from "@/assets/imgs/green-room-background-1.png";
+
+const divisions = {
+  ep: {
+    key: "ep",
+    title: "Executive Producer",
+    description:
+      "Memimpin semua produksi, perlengkapan, perencanaan, manajemen panggung, dan teknologi selama acara berlangsung.",
+  },
+  em: {
+    key: "em",
+    title: "Event Manager",
+    description:
+      'Bertanggung jawab atas "TEDx Experience" untuk para audiens serta merancang dan mengatur segala kebutuhan dan jalannya acara mulai dari propaganda, pre - event, hingga main event.',
+  },
+  cem: {
+    key: "cem",
+    title: "CEM",
+    description:
+      "Terdiri dari Communication, Editorial, and Marketing. Bertugas untuk mengelola segala bentuk publikasi melalui situs web, media sosial, dan agenda-agenda promosi acara lainnya sekaligus menjadi perantara antara TedxUniversitasBrawijaya dan berbagai stakeholder.",
+  },
+  vp: {
+    key: "vp",
+    title: "Video Production",
+    description:
+      "Memproduksi video, mulai dari mengelola kebutuhan audio, video, mengoperasikan kamera, hingga melakukan siaran langsung acara.",
+  },
+  sponsorship: {
+    key: "sponsorship",
+    title: "Sponsorship",
+    description:
+      "Mengelola hal-hal finansial seperti money flow dan bentuk penggalangan dana serta bekerjasama dengan pihak eksternal untuk mendapatkan dana dalam mendukung terpenuhinya kebutuhan acara.",
+  },
+  curator: {
+    key: "curator",
+    title: "Curator",
+    description:
+      "Menentukan siapa yang akan berbicara dalam pre-event dan main event serta ide talks yang akan dibawakan dan diselaraskan dengan grand theme yang telah ditentukan.",
+  },
+  design: {
+    key: "design",
+    title: "Design",
+    description:
+      "Mengonsep dan membuat desain serta aset estetika lainnya untuk pendukung visual acara.",
+  },
+  website: {
+    key: "website",
+    title: "Website",
+    description:
+      "Mengembangkan dan mengelola situs web yang dapat diakses dan digunakan secara intuitif.",
+  },
+};
+---
+
+<Layout
+  title="Join TEDx Universitas Brawijaya 2026 - Recruitment Now Open!"
+  description="Become a part of the TEDx Universitas Brawijaya 2026 team! We're looking for passionate individuals to help us spread ideas worth spreading. Apply now!"
+  canonical="https://tedxuniversitasbrawijaya.com/recruitment"
+>
+  <Navbar />
+  <main>
+    <div id="outside">
+      <Image src={WhiteWallEffect1} alt="" class="white-wall-effect-1" />
+      <Image src={WallTexture1} alt="" class="wall-texture-1" />
+      <Image src={WallTexture1} alt="" class="wall-texture-2" />
+      <div id="door-container">
+        <Image
+          src={OpenedDoor}
+          alt="Opened Door"
+          class="door"
+          id="opened-door"
+        />
+        <Image
+          src={SemiOpenedDoor}
+          alt="Semi-Opened Door"
+          class="door"
+          id="semi-opened-door"
+        />
+        <Image
+          src={ClosedDoor}
+          alt="Closed Door"
+          class="door"
+          id="closed-door"
+        />
+      </div>
+
+      <Image src={HouseNumber1} alt="House Number 1" class="house-number-1" />
+
+      <Image src={Window1} alt="Window 1" class="window-1" />
+
+      <Image src={PrintTexture1} alt="" class="print-texture-1" />
+
+      <div class="content">
+        <h2>Pencarian Volunteer TEDx UB 2026</h2>
+        <p>
+          Setiap perjalanan punya makna, dan setiap rumah dibangun dengan rasa.
+          Kami mencari tangan-tangan kreatif untuk merangkai narasi baru di
+          lingkungan Universitas Brawijaya. Apakah kamu siap membawa ceritamu
+          dan membangun "rumah" inspirasi bersama kami?
+        </p>
+        <button id="continue-btn" type="button">Lanjutkan</button>
+
+        <div class="background"></div>
+      </div>
+    </div>
+    <div id="inside">
+      <Image
+        src={GreenRoomBackground1}
+        alt=""
+        class="green-room-background-1"
+      />
+
+      <Image src={Sofa1} alt="Sofa" class="sofa-1" />
+      <Image src={Table2} alt="Table" class="table-2" />
+
+      <div id="frames">
+        <div
+          data-frame="ep"
+          class="frame-ep-container"
+          data-frame-title={divisions.ep.title}
+          data-frame-description={divisions.ep.description}
+          role="button"
+          tabindex="0"
+        >
+          <Image
+            src={FrameEP}
+            alt={`Frame ${divisions.ep.title}`}
+            class="frame-ep"
+          />
+          <span class="frame-text">{divisions.ep.title}</span>
+        </div>
+        <div
+          data-frame="em"
+          class="frame-em-container"
+          data-frame-title={divisions.em.title}
+          data-frame-description={divisions.em.description}
+          role="button"
+          tabindex="0"
+        >
+          <Image
+            src={FrameEM}
+            alt={`Frame ${divisions.em.title}`}
+            class="frame-em"
+          />
+          <span class="frame-text">{divisions.em.title}</span>
+        </div>
+        <div
+          data-frame="cem"
+          class="frame-cem-container"
+          data-frame-title={divisions.cem.title}
+          data-frame-description={divisions.cem.description}
+          role="button"
+          tabindex="0"
+        >
+          <Image
+            src={FrameCEM}
+            alt={`Frame ${divisions.cem.title}`}
+            class="frame-cem"
+          />
+          <span class="frame-text">{divisions.cem.title}</span>
+        </div>
+        <div
+          data-frame="vp"
+          class="frame-vp-container"
+          data-frame-title={divisions.vp.title}
+          data-frame-description={divisions.vp.description}
+          role="button"
+          tabindex="0"
+        >
+          <Image
+            src={FrameVP}
+            alt={`Frame ${divisions.vp.title}`}
+            class="frame-vp"
+          />
+          <span class="frame-text">{divisions.vp.title}</span>
+        </div>
+        <div
+          data-frame="sponsorship"
+          class="frame-sponsorship-container"
+          data-frame-title={divisions.sponsorship.title}
+          data-frame-description={divisions.sponsorship.description}
+          role="button"
+          tabindex="0"
+        >
+          <Image
+            src={FrameSponsorship}
+            alt={`Frame ${divisions.sponsorship.title}`}
+            class="frame-sponsorship"
+          />
+          <span class="frame-text">{divisions.sponsorship.title}</span>
+        </div>
+        <div
+          data-frame="curator"
+          class="frame-curator-container"
+          data-frame-title={divisions.curator.title}
+          data-frame-description={divisions.curator.description}
+          role="button"
+          tabindex="0"
+        >
+          <Image
+            src={FrameCurator}
+            alt={`Frame ${divisions.curator.title}`}
+            class="frame-curator"
+          />
+          <span class="frame-text">{divisions.curator.title}</span>
+        </div>
+        <div
+          data-frame="design"
+          class="frame-design-container"
+          data-frame-title={divisions.design.title}
+          data-frame-description={divisions.design.description}
+          role="button"
+          tabindex="0"
+        >
+          <Image
+            src={FrameDesign}
+            alt={`Frame ${divisions.design.title}`}
+            class="frame-design"
+          />
+          <span class="frame-text">{divisions.design.title}</span>
+        </div>
+        <div
+          data-frame="website"
+          class="frame-website-container"
+          data-frame-title={divisions.website.title}
+          data-frame-description={divisions.website.description}
+          role="button"
+          tabindex="0"
+        >
+          <Image
+            src={FrameWebsite}
+            alt={`Frame ${divisions.website.title}`}
+            class="frame-website"
+          />
+          <span class="frame-text">{divisions.website.title}</span>
+        </div>
+      </div>
+
+      <Image src={WindowLightShadow1} alt="" class="window-light-shadow-1" />
+
+      <div class="content">
+        <h1>Temukan Peranmu di Ruang Ini.</h1>
+        <p>Arahkan kursor ke pigura dan lihat peran yang bisa kamu ambil.</p>
+        <a
+          href="https://forms.gle/XgNruTUW3a2zwnf69"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Daftar
+        </a>
+
+        <div class="background"></div>
+      </div>
+    </div>
+
+    <div
+      id="frame-modal"
+      class="frame-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="frame-modal-title"
+    >
+      <div class="frame-modal-backdrop"></div>
+      <div class="frame-modal-content">
+        <div class="frame-modal-layout">
+          <svg
+            class="frame-modal-close"
+            width="35"
+            height="35"
+            viewBox="0 0 35 35"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="Close Modal"
+            role="button"
+            tabindex="0"
+          >
+            <title>Close Button</title>
+            <path
+              d="M5.83357 14.5835L4.80253 15.6145L3.77148 14.5835L4.80253 13.5524L5.83357 14.5835ZM30.6252 26.2501C30.6252 26.6369 30.4716 27.0078 30.1981 27.2813C29.9246 27.5548 29.5537 27.7085 29.1669 27.7085C28.7801 27.7085 28.4092 27.5548 28.1357 27.2813C27.8622 27.0078 27.7086 26.6369 27.7086 26.2501H30.6252ZM12.0942 22.9062L4.80253 15.6145L6.86461 13.5524L14.1563 20.8441L12.0942 22.9062ZM4.80253 13.5524L12.0942 6.26074L14.1563 8.32282L6.86461 15.6145L4.80253 13.5524ZM5.83357 13.1251H20.4169V16.0418H5.83357V13.1251ZM30.6252 23.3335V26.2501H27.7086V23.3335H30.6252ZM20.4169 13.1251C23.1243 13.1251 25.7208 14.2006 27.6353 16.1151C29.5497 18.0295 30.6252 20.626 30.6252 23.3335H27.7086C27.7086 21.3996 26.9403 19.5449 25.5729 18.1775C24.2054 16.81 22.3508 16.0418 20.4169 16.0418V13.1251Z"
+              fill="#F8F1DC"
+            ></path>
+          </svg>
+          <div class="frame-modal-image-container"></div>
+          <div class="frame-modal-text-content">
+            <h3 id="frame-modal-title" class="frame-modal-title"></h3>
+            <p class="frame-modal-description"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+<style>
+  main {
+    background-color: var(--color-green);
+    height: 100dvh;
+    position: relative;
+    overflow: hidden;
+    padding-top: var(--navbar-height);
+
+    transition: opacity 0.25s ease-in-out;
+  }
+
+  #outside {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    --door-height: 40dvh;
+    z-index: 2;
+
+    transform: scale(1);
+    transform-origin: 20% bottom;
+
+    /* TODO: honor prefers-reduced-motion — disable the transform transition and keep only opacity */
+    transition:
+      transform 3s ease-in-out,
+      opacity 0.25s ease-in-out;
+  }
+
+  #inside {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100dvw;
+    opacity: 1;
+    z-index: 1;
+
+    transition: opacity 0.25s ease-in-out;
+  }
+
+  .white-wall-effect-1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100dvw;
+    height: 110dvh;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+    aspect-ratio: 1.78 / 1;
+  }
+
+  .wall-texture-1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+    mix-blend-mode: soft-light;
+    aspect-ratio: 1.78 / 1;
+  }
+
+  .wall-texture-2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+    mix-blend-mode: color-burn;
+    aspect-ratio: 1.78 / 1;
+    opacity: 0.83;
+    filter: blur(25px);
+  }
+
+  #door-container {
+    position: absolute;
+    bottom: -2%;
+    left: 50%;
+    transform: translateX(-90%);
+    width: auto;
+    height: var(--door-height);
+    pointer-events: none;
+    object-position: center;
+    aspect-ratio: 0.49 / 1;
+  }
+
+  .door {
+    position: absolute;
+    width: auto;
+    height: auto;
+    transition: opacity 0.25s ease-in-out;
+  }
+
+  .window-1 {
+    display: none;
+  }
+
+  .house-number-1 {
+    position: absolute;
+    bottom: var(--door-height);
+    left: 50%;
+    transform: translate(40%, 100%);
+    width: auto;
+    height: 10dvh;
+    pointer-events: none;
+    aspect-ratio: 1.27 / 1;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+  }
+
+  .print-texture-1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 105dvh;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    aspect-ratio: 1.48 / 1;
+  }
+
+  #outside .content {
+    position: absolute;
+    top: calc(var(--navbar-height) + 1rem);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 30rem;
+    text-align: center;
+    color: var(--color-white);
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #outside .content .background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    height: 120%;
+    background-color: black;
+    z-index: -1;
+    opacity: 0.63;
+    filter: blur(75px);
+  }
+
+  #outside .content h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    color: var(--color-white);
+    text-wrap-style: balance;
+  }
+
+  #outside .content p {
+    font-family: var(--font-sans);
+    font-size: var(--text-m);
+    color: var(--color-white);
+    text-wrap-style: pretty;
+  }
+
+  #outside .content button {
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    color: var(--color-white);
+    padding: 1rem 2rem;
+    background-color: var(--color-red-2);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  #outside .content button:hover {
+    background-color: color-mix(
+      in oklch,
+      var(--color-red-2) 80%,
+      transparent 20%
+    );
+  }
+
+  #outside .content button:active {
+    background-color: color-mix(
+      in oklch,
+      var(--color-red-2) 60%,
+      transparent 40%
+    );
+  }
+
+  #outside .content button:focus {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+  }
+
+  .sofa-1 {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-60%);
+    width: auto;
+    height: 25dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    pointer-events: none;
+    aspect-ratio: 1.76 / 1;
+  }
+
+  .table-2 {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-40%);
+    width: auto;
+    height: 25dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    pointer-events: none;
+    aspect-ratio: 1.71 / 1;
+  }
+
+  .green-room-background-1 {
+    position: absolute;
+    bottom: -4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100dvw;
+    height: 130dvh;
+    object-fit: cover;
+    pointer-events: none;
+    overflow: visible;
+    aspect-ratio: 1.92 / 1;
+  }
+
+  .window-light-shadow-1 {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100dvw;
+    height: 100dvh;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+    aspect-ratio: 1.81 / 1;
+  }
+
+  .frame-ep-container {
+    position: absolute;
+    top: 14%;
+    left: 50%;
+    transform: translateX(-200%);
+    width: auto;
+    height: 12.5dvh;
+    aspect-ratio: 0.72 / 1;
+    cursor: pointer;
+  }
+
+  .frame-ep {
+    width: auto;
+    height: 12.5dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 0.72 / 1;
+    filter: none;
+    transition: filter 0.3s ease-in-out;
+  }
+
+  .frame-em-container {
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: 15dvh;
+    aspect-ratio: 0.83 / 1;
+    cursor: pointer;
+  }
+
+  .frame-em {
+    width: auto;
+    height: 15dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 0.83 / 1;
+    filter: none;
+    transition: filter 0.3s ease-in-out;
+  }
+
+  .frame-cem-container {
+    position: absolute;
+    top: 14%;
+    left: 50%;
+    transform: translateX(75%);
+    width: auto;
+    height: 13.5dvh;
+    aspect-ratio: 0.8 / 1;
+    cursor: pointer;
+  }
+
+  .frame-cem {
+    width: auto;
+    height: 13.5dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 0.8 / 1;
+    filter: none;
+    transition: filter 0.3s ease-in-out;
+  }
+
+  .frame-vp-container {
+    position: absolute;
+    top: 27.5%;
+    left: 50%;
+    transform: translateX(-160%);
+    width: auto;
+    height: 9.5dvh;
+    aspect-ratio: 1.26 / 1;
+    cursor: pointer;
+  }
+
+  .frame-vp {
+    width: auto;
+    height: 9.5dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 1.26 / 1;
+    filter: none;
+    transition: filter 0.3s ease-in-out;
+  }
+
+  .frame-sponsorship-container {
+    position: absolute;
+    top: 28%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: 8.5dvh;
+    aspect-ratio: 1.35 / 1;
+    cursor: pointer;
+  }
+
+  .frame-sponsorship {
+    width: auto;
+    height: 8.5dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 1.35 / 1;
+    filter: none;
+    transition: filter 0.3s ease-in-out;
+  }
+
+  .frame-curator-container {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(65%);
+    width: auto;
+    height: 8.5dvh;
+    aspect-ratio: 1.38 / 1;
+    cursor: pointer;
+  }
+
+  .frame-curator {
+    width: auto;
+    height: 8.5dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 1.38 / 1;
+    filter: none;
+    transition: filter 0.3s ease-in-out;
+  }
+
+  .frame-design-container {
+    position: absolute;
+    top: 39%;
+    left: 50%;
+    transform: translateX(-120%);
+    width: auto;
+    height: 11.5dvh;
+    aspect-ratio: 0.8 / 1;
+    cursor: pointer;
+  }
+
+  .frame-design {
+    width: auto;
+    height: 11.5dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 0.8 / 1;
+    filter: none;
+    transition: filter 0.3s ease-in-out;
+  }
+
+  .frame-website-container {
+    position: absolute;
+    top: 39%;
+    left: 50%;
+    transform: translateX(10%);
+    width: auto;
+    height: 11.5dvh;
+    aspect-ratio: 0.8 / 1;
+    cursor: pointer;
+  }
+
+  .frame-website {
+    width: auto;
+    height: 11.5dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 0.8 / 1;
+    filter: none;
+    transition: filter 0.3s ease-in-out;
+  }
+
+  #inside .content {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 24rem;
+    text-align: center;
+    color: var(--color-white);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+
+    transition: opacity 0.25s ease-in-out;
+  }
+
+  #inside .content h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-l);
+    color: var(--color-white);
+    text-wrap-style: pretty;
+  }
+
+  #inside .content p {
+    font-family: var(--font-sans);
+    font-size: var(--text-m);
+    color: var(--color-white);
+    text-wrap-style: pretty;
+  }
+
+  #inside .content a {
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    color: var(--color-white);
+    padding: 1rem 2rem;
+    background-color: var(--color-red-2);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  #inside .content a:hover {
+    background-color: color-mix(
+      in oklch,
+      var(--color-red-2) 80%,
+      transparent 20%
+    );
+  }
+
+  #inside .content a:active {
+    background-color: color-mix(
+      in oklch,
+      var(--color-red-2) 60%,
+      transparent 40%
+    );
+  }
+
+  #inside .content a:focus {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+  }
+
+  /* Inside content turns to opacity: 0 when div with id frame-modal has class active */
+  main:has(#frame-modal.active) #inside .content {
+    opacity: 0;
+  }
+
+  #inside .content .background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    height: 120%;
+    background-color: black;
+    z-index: -1;
+    opacity: 0.63;
+    filter: blur(75px);
+  }
+
+  .frame-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-serif);
+    font-size: var(--text-s);
+    color: var(--color-white);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+
+    width: 4rem;
+    text-wrap-mode: wrap;
+  }
+
+  .frame-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  .frame-modal.active {
+    pointer-events: all;
+  }
+
+  .frame-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+  }
+
+  .frame-modal.active .frame-modal-backdrop {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .frame-modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 90dvw;
+    max-height: 90dvh;
+    overflow: visible;
+  }
+
+  .frame-modal-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem;
+  }
+
+  .frame-modal-image-container {
+    order: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .frame-modal-text-content {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .frame-modal.active .frame-modal-text-content {
+    opacity: 1;
+  }
+
+  .frame-modal-close {
+    order: 3;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .frame-modal.active .frame-modal-close {
+    opacity: 1;
+  }
+
+  .frame-modal-image-container img {
+    width: auto;
+    height: 20dvh;
+    object-fit: contain;
+    will-change: transform;
+  }
+
+  .frame-modal-title {
+    font-family: var(--font-serif);
+    font-size: var(--text-l);
+    color: var(--color-white);
+    text-align: center;
+  }
+
+  .frame-modal-description {
+    font-family: var(--font-sans);
+    font-size: var(--text-m);
+    color: var(--color-white);
+    text-align: center;
+    width: 100%;
+    max-width: 40ch;
+  }
+
+  [data-frame]:hover img,
+  [data-frame]:focus-visible img {
+    filter: drop-shadow(0px 4px 25px rgba(255, 149, 0, 0.5))
+      drop-shadow(0px 4px 3.5px rgba(0, 0, 0, 0.5));
+  }
+
+  [data-frame]:hover .frame-text,
+  [data-frame]:focus-visible .frame-text {
+    opacity: 1;
+  }
+
+  [data-frame]:focus-visible {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .frame-modal-close:focus-visible {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .frame-modal-close:active {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .frame-modal-close:focus {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  [data-frame].animating .frame-text {
+    opacity: 0;
+  }
+
+  [data-frame].animating img {
+    opacity: 0;
+  }
+
+  @media (min-width: 425px) {
+    #inside .content {
+      max-width: 30rem;
+    }
+
+    #inside .content h1 {
+      font-size: var(--text-xl);
+    }
+
+    #inside .content p {
+      font-size: var(--text-m);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    #outside {
+      --door-height: 65dvh;
+
+      transform-origin: center bottom;
+    }
+
+    #door-container {
+      transform: translateX(-50%);
+    }
+
+    .window-1 {
+      display: block;
+      position: absolute;
+      bottom: var(--door-height);
+      left: 50%;
+      transform: translate(-170%, 100%);
+      width: auto;
+      height: 45dvh;
+      pointer-events: none;
+      aspect-ratio: 0.72 / 1;
+    }
+
+    .house-number-1 {
+      transform: translate(200%, 100%);
+    }
+
+    #outside .content {
+      left: 0%;
+      top: auto;
+      bottom: 10%;
+      padding-left: 9.375rem;
+      max-width: 50%;
+      transform: none;
+      justify-content: flex-start;
+      align-items: start;
+      text-align: left;
+      height: min-content;
+    }
+
+    /* Outside content children except background class set z-index to 2 */
+    #outside .content > *:not(.background) {
+      position: relative;
+      z-index: 2;
+    }
+
+    #outside .content .background {
+      z-index: 1;
+      opacity: 0.8;
+      height: 160%;
+      width: 100%;
+    }
+
+    .sofa-1 {
+      height: 40dvh;
+      left: 0;
+      transform: translateX(30%);
+      object-position: left;
+    }
+
+    .table-2 {
+      height: 40dvh;
+      left: 0;
+      bottom: 1rem;
+      transform: translateX(50%);
+      object-position: left;
+    }
+
+    .green-room-background-1 {
+      left: 0;
+      object-position: left;
+      transform: none;
+    }
+
+    #inside .content {
+      left: 0%;
+      top: 10%;
+      padding: var(--navbar-height) 9.375rem;
+      transform: none;
+      max-width: 50rem;
+      justify-content: flex-start;
+      align-items: start;
+      text-align: left;
+      gap: 2rem;
+    }
+
+    #inside .content h1 {
+      font-size: var(--text-xxl);
+    }
+
+    #inside .content p {
+      font-size: var(--text-m);
+    }
+
+    #inside .content a {
+      font-size: var(--text-m);
+      padding: 1rem 2rem;
+    }
+
+    .frame-ep-container {
+      top: 20%;
+      left: auto;
+      right: 13%;
+      transform: translateX(-160%);
+      height: 12.5dvh;
+    }
+
+    .frame-ep {
+      height: 12.5dvh;
+    }
+
+    .frame-em-container {
+      top: 18%;
+      left: auto;
+      right: 13%;
+      transform: none;
+      height: 15dvh;
+    }
+
+    .frame-em {
+      height: 15dvh;
+    }
+
+    .frame-cem-container {
+      top: 20%;
+      left: auto;
+      right: 13.5%;
+      transform: translateX(125%);
+      height: 13.5dvh;
+    }
+
+    .frame-cem {
+      height: 13.5dvh;
+    }
+
+    .frame-vp-container {
+      top: 34.5%;
+      left: auto;
+      right: 13%;
+      transform: translateX(-110%);
+      height: 9.5dvh;
+    }
+
+    .frame-vp {
+      height: 9.5dvh;
+    }
+
+    .frame-sponsorship-container {
+      top: 36.5%;
+      left: auto;
+      right: 13%;
+      transform: translateX(-10%);
+      height: 8.5dvh;
+    }
+
+    .frame-sponsorship {
+      height: 8.5dvh;
+    }
+
+    .frame-curator-container {
+      top: 36%;
+      left: auto;
+      right: 13%;
+      transform: translateX(110%);
+      height: 8.5dvh;
+    }
+
+    .frame-curator {
+      height: 8.5dvh;
+    }
+
+    .frame-design-container {
+      top: 46%;
+      left: auto;
+      right: 13%;
+      transform: translateX(-100%);
+      height: 11.5dvh;
+    }
+
+    .frame-design {
+      height: 11.5dvh;
+    }
+
+    .frame-website-container {
+      top: 46%;
+      left: auto;
+      right: 13%;
+      transform: translateX(20%);
+      height: 11.5dvh;
+    }
+
+    .frame-website {
+      height: 11.5dvh;
+    }
+
+    .frame-modal-content {
+      max-width: 60dvw;
+    }
+
+    .frame-modal-layout {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-areas:
+        "close close"
+        "image text";
+      align-items: start;
+    }
+
+    .frame-modal-close {
+      grid-area: close;
+      justify-self: start;
+    }
+
+    .frame-modal-image-container {
+      grid-area: image;
+      flex-shrink: 0;
+    }
+
+    .frame-modal-image-container img {
+      height: 30dvh;
+    }
+
+    .frame-modal-text-content {
+      grid-area: text;
+      align-items: flex-start;
+    }
+
+    .frame-modal-title {
+      font-size: var(--text-xxl);
+      text-align: left;
+    }
+
+    .frame-modal-description {
+      font-size: var(--text-l);
+      text-align: left;
+    }
+  }
+</style>
+<script>
+  const delay = (ms: number): Promise<void> =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
+  (() => {
+    const continueBtn = document.getElementById("continue-btn");
+    const openedDoor = document.getElementById("opened-door");
+    const semiOpenedDoor = document.getElementById("semi-opened-door");
+    const closedDoor = document.getElementById("closed-door");
+
+    const outside = document.getElementById("outside");
+    const inside = document.getElementById("inside");
+
+    if (
+      !(
+        continueBtn &&
+        openedDoor &&
+        semiOpenedDoor &&
+        closedDoor &&
+        outside &&
+        inside
+      )
+    ) {
+      return;
+    }
+
+    continueBtn.addEventListener("click", async () => {
+      // TODO: honor prefers-reduced-motion — skip delays/transforms and jump straight to inside view
+      // Animate door opening
+      closedDoor.style.opacity = "0";
+      await delay(500);
+      semiOpenedDoor.style.opacity = "0";
+      await delay(500);
+      openedDoor.style.opacity = "1";
+
+      // After door is fully opened, switch to inside view
+      await delay(500);
+      outside.style.transform = "scale(2)";
+      await delay(1000);
+      outside.style.opacity = "0";
+      inside.style.opacity = "1";
+      await delay(500);
+      outside.style.display = "none";
+    });
+  })();
+
+  (() => {
+    const frames = document.querySelectorAll<HTMLDivElement>("[data-frame]");
+    const frameModal = document.getElementById("frame-modal");
+    const frameModalClose =
+      document.querySelector<HTMLElement>(".frame-modal-close");
+    const frameModalBackdrop = document.querySelector(".frame-modal-backdrop");
+    const frameModalImageContainer = document.querySelector(
+      ".frame-modal-image-container"
+    );
+
+    const frameModalTitle = document.querySelector(".frame-modal-title");
+    const frameModalDescription = document.querySelector(
+      ".frame-modal-description"
+    );
+
+    if (
+      !(
+        frames &&
+        frameModal &&
+        frameModalClose &&
+        frameModalBackdrop &&
+        frameModalImageContainer &&
+        frameModalTitle &&
+        frameModalDescription
+      )
+    ) {
+      return;
+    }
+
+    let currentFrameImage: HTMLImageElement | null = null;
+    let currentImageClone: HTMLImageElement | null = null;
+    let currentFrameContainer: HTMLDivElement | null = null;
+    let triggeringElement: HTMLElement | null = null;
+    let isAnimating = false;
+
+    const openModal = async (frameElement: HTMLDivElement) => {
+      // TODO: honor prefers-reduced-motion — skip clone fly-in, insert image and open modal instantly
+      if (isAnimating) {
+        return;
+      }
+      isAnimating = true;
+      const title = frameElement.getAttribute("data-frame-title");
+      const description = frameElement.getAttribute("data-frame-description");
+      const frameImage = frameElement.querySelector("img");
+
+      if (!(title && description && frameImage)) {
+        return;
+      }
+
+      triggeringElement = frameElement;
+      currentFrameImage = frameImage;
+      currentFrameContainer = frameElement;
+
+      frameElement.classList.add("animating");
+
+      const initialRect = frameImage.getBoundingClientRect();
+
+      const imageClone = frameImage.cloneNode(true) as HTMLImageElement;
+
+      imageClone.style.transition = "none";
+      imageClone.style.opacity = "1";
+      currentImageClone = imageClone;
+
+      frameModalImageContainer.innerHTML = "";
+      frameModalImageContainer.appendChild(imageClone);
+
+      frameModalTitle.textContent = title;
+      frameModalDescription.textContent = description;
+
+      const finalRect = imageClone.getBoundingClientRect();
+
+      const deltaX = initialRect.left - finalRect.left;
+      const deltaY = initialRect.top - finalRect.top;
+      const scaleX = initialRect.width / finalRect.width;
+      const scaleY = initialRect.height / finalRect.height;
+
+      imageClone.style.transformOrigin = "top left";
+      imageClone.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
+      imageClone.style.filter = "brightness(0.7)";
+
+      // Force a synchronous reflow so the initial transform/filter are applied
+      // before enabling the transition, ensuring the animation starts correctly.
+      imageClone.offsetHeight;
+
+      imageClone.style.transition =
+        "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+      imageClone.style.transform = "none";
+      imageClone.style.filter = "brightness(1)";
+
+      await delay(600);
+      isAnimating = false;
+      document.body.style.overflow = "hidden";
+      frameModal.classList.add("active");
+      // Move focus to the close button so keyboard/screen-reader users
+      // can immediately interact with or dismiss the modal.
+      frameModalClose.focus();
+    };
+
+    const closeModal = async () => {
+      // TODO: honor prefers-reduced-motion — skip fly-out animation and close modal instantly
+      if (isAnimating) {
+        return;
+      }
+      isAnimating = true;
+
+      if (!(currentImageClone && currentFrameImage)) {
+        frameModal.classList.remove("active");
+        document.body.style.overflow = "";
+        isAnimating = false;
+        triggeringElement?.focus();
+        triggeringElement = null;
+        return;
+      }
+
+      frameModal.classList.remove("active");
+      await delay(300);
+
+      if (!(currentImageClone && currentFrameImage)) {
+        isAnimating = false;
+        return;
+      }
+
+      const currentRect = currentImageClone.getBoundingClientRect();
+      const targetRect = currentFrameImage.getBoundingClientRect();
+
+      const deltaX = targetRect.left - currentRect.left;
+      const deltaY = targetRect.top - currentRect.top;
+      const scaleX = targetRect.width / currentRect.width;
+      const scaleY = targetRect.height / currentRect.height;
+
+      currentImageClone.style.transition =
+        "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+      currentImageClone.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
+      currentImageClone.style.filter = "brightness(0.7)";
+      await delay(600);
+
+      if (!(currentImageClone && currentFrameContainer)) {
+        isAnimating = false;
+        return;
+      }
+
+      currentImageClone.style.transition = "opacity 0.3s ease-in-out";
+      currentImageClone.style.opacity = "0";
+      currentFrameContainer.classList.remove("animating");
+      await delay(300);
+
+      document.body.style.overflow = "";
+      frameModalImageContainer.innerHTML = "";
+      currentFrameImage = null;
+      currentImageClone = null;
+      currentFrameContainer = null;
+      isAnimating = false;
+
+      // Return focus to the element that originally opened the modal.
+      triggeringElement?.focus();
+      triggeringElement = null;
+    };
+
+    for (const frame of frames) {
+      frame.addEventListener("click", () => openModal(frame));
+      frame.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openModal(frame);
+        }
+      });
+    }
+
+    frameModalClose.addEventListener("click", closeModal);
+    frameModalClose.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        closeModal();
+      }
+    });
+    frameModalBackdrop.addEventListener("click", closeModal);
+
+    document.addEventListener("keydown", (event) => {
+      if (!frameModal.classList.contains("active")) {
+        return;
+      }
+      if (event.key === "Escape") {
+        closeModal();
+      }
+      // Trap focus inside the modal — the close button is the only
+      // focusable element, so Tab simply keeps focus there.
+      if (event.key === "Tab") {
+        event.preventDefault();
+        frameModalClose.focus();
+      }
+    });
+  })();
+</script>
