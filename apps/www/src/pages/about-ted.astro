@@ -14,6 +14,8 @@ import OpenedDoor from "@/assets/imgs/opened-door.png";
 import SemiOpenedDoor from "@/assets/imgs/semi-opened-door.png";
 import ClosedDoor from "@/assets/imgs/closed-door.png";
 import { Image } from "astro:assets";
+import Leaf1 from "@/assets/imgs/leaf-1.png";
+import Leaf2 from "@/assets/imgs/leaf-2.png";
 import "lenis/dist/lenis.css";
 ---
 
@@ -212,6 +214,9 @@ import "lenis/dist/lenis.css";
           insan hadir secara utuh, baik bagi diri sendiri maupun mereka yang
           dikasihi.
         </p>
+
+        <Image src={Leaf1} alt="Leaf 1" class="leaf-1" id="leaf-1" />
+        <Image src={Leaf2} alt="Leaf 2" class="leaf-2" id="leaf-2" />
       </div>
     </section>
   </main>
@@ -540,6 +545,7 @@ import "lenis/dist/lenis.css";
       left: 0;
       width: 100%;
       height: 100dvh;
+      overflow: hidden;
     }
 
     #grand-theme .heading-container {
@@ -628,6 +634,34 @@ import "lenis/dist/lenis.css";
       bottom: 10%;
       left: 50%;
       transform: translate(-50%, var(--third-paragraph-y));
+    }
+
+    .leaf-1 {
+      position: absolute;
+      left: -15%;
+      top: 35%;
+      width: auto;
+      height: 20dvh;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+      aspect-ratio: 0.72 / 1;
+      transform: translate(0%, var(--translate-y)) rotate(var(--rotate));
+      opacity: 0.2;
+    }
+
+    .leaf-2 {
+      position: absolute;
+      right: -20%;
+      top: 16%;
+      width: auto;
+      height: 15dvh;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+      aspect-ratio: 1.63 / 1;
+      transform: translate(0%, var(--translate-y)) rotate(var(--rotate));
+      opacity: 0.2;
     }
 
     @media (min-width: 425px) {
@@ -808,6 +842,20 @@ import "lenis/dist/lenis.css";
 
         transform: translate(0%, var(--third-paragraph-y));
       }
+
+      .leaf-1 {
+        left: -4%;
+        top: 35%;
+        width: auto;
+        height: 30dvh;
+      }
+
+      .leaf-2 {
+        right: -10%;
+        top: 16%;
+        width: auto;
+        height: 25dvh;
+      }
     }
   </style>
   <script>
@@ -936,6 +984,9 @@ import "lenis/dist/lenis.css";
       const semiOpenedDoor = document.getElementById("semi-opened-door");
       const closedDoor = document.getElementById("closed-door");
 
+      const leaf1 = document.getElementById("leaf-1");
+      const leaf2 = document.getElementById("leaf-2");
+
       if (
         !(
           grandThemeSection &&
@@ -944,7 +995,9 @@ import "lenis/dist/lenis.css";
           thirdParagraph &&
           openedDoor &&
           semiOpenedDoor &&
-          closedDoor
+          closedDoor &&
+          leaf1 &&
+          leaf2
         )
       ) {
         return;
@@ -1104,6 +1157,54 @@ import "lenis/dist/lenis.css";
           easeInOutCubic
         );
         semiOpenedDoor.style.opacity = String(semiOpenedDoorOpacity);
+
+        const leaf1Opacity = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.8],
+          [0.2, 0.4, 0.4, 1],
+          easeInOutCubic
+        );
+        leaf1.style.opacity = String(leaf1Opacity);
+
+        const leaf1TranslateY = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.8],
+          [0, 5, 5, 10],
+          easeInOutCubic
+        );
+        leaf1.style.setProperty("--translate-y", `${leaf1TranslateY}dvh`);
+
+        const leaf1Rotate = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.8],
+          [-80, -60, -60, -40],
+          easeInOutCubic
+        );
+        leaf1.style.setProperty("--rotate", `${leaf1Rotate}deg`);
+
+        const leaf2Opacity = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.8],
+          [0.2, 0.4, 0.4, 1],
+          easeInOutCubic
+        );
+        leaf2.style.opacity = String(leaf2Opacity);
+
+        const leaf2TranslateY = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.8],
+          [0, 10, 10, 20],
+          easeInOutCubic
+        );
+        leaf2.style.setProperty("--translate-y", `${leaf2TranslateY}dvh`);
+
+        const leaf2Rotate = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.8],
+          [-40, -60, -60, -80],
+          easeInOutCubic
+        );
+        leaf2.style.setProperty("--rotate", `${leaf2Rotate}deg`);
       };
 
       window.addEventListener("scroll", animateParagraphs);
