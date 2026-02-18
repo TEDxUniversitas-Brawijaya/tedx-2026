@@ -351,6 +351,11 @@ const menu = [
       transform: translateY(-40px);
     }
   }
+  @media(prefers-reduced-motion: reduce) {
+    .red-book {
+      animation: none;
+    }
+  }
 
   .red-book-button:focus .red-book {
     animation: none;
