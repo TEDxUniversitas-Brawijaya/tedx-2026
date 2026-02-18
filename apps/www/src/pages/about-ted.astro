@@ -699,8 +699,13 @@ import "lenis/dist/lenis.css";
       object-fit: cover;
       object-position: center;
       scroll-snap-align: center;
-      filter: drop-shadow(20px 20px 0px rgba(0, 0, 0, 0.7));
+      filter: drop-shadow(20px 20px 0px rgba(0, 0, 0, 0.7)) saturate(0);
       aspect-ratio: 1.43 / 1;
+      transition: filter 0.3s ease;
+    }
+
+    .carousel-image--active {
+      filter: drop-shadow(20px 20px 0px rgba(0, 0, 0, 0.7)) saturate(1);
     }
 
     .carousel-content {
@@ -1140,6 +1145,7 @@ import "lenis/dist/lenis.css";
 
       let currentIndex = 0;
       const totalItems = carousel.children.length;
+      let isNavigating = false;
 
       const updateCarouselContent = () => {
         const currentItem = carousel.children[currentIndex];
@@ -1150,6 +1156,11 @@ import "lenis/dist/lenis.css";
           currentItem.getAttribute("data-carousel-title") || "";
         carouselDescription.textContent =
           currentItem.getAttribute("data-carousel-description") || "";
+
+        for (const child of carousel.children) {
+          child.classList.remove("carousel-image--active");
+        }
+        currentItem.classList.add("carousel-image--active");
       };
 
       // Set up IntersectionObserver to detect which item is in view when scrolling
@@ -1179,7 +1190,7 @@ import "lenis/dist/lenis.css";
           }
         }
 
-        if (closestIndex !== currentIndex) {
+        if (closestIndex !== currentIndex && !isNavigating) {
           currentIndex = closestIndex;
           updateCarouselContent();
         }
@@ -1195,7 +1206,12 @@ import "lenis/dist/lenis.css";
         observer.observe(child);
       }
 
+      carousel.addEventListener("scrollend", () => {
+        isNavigating = false;
+      });
+
       nextBtn.addEventListener("click", () => {
+        isNavigating = true;
         currentIndex = (currentIndex + 1) % totalItems;
         const currentItem = carousel.children[currentIndex];
         if (!currentItem) {
@@ -1204,11 +1220,13 @@ import "lenis/dist/lenis.css";
         currentItem.scrollIntoView({
           behavior: "smooth",
           inline: "center",
+          block: "nearest",
         });
         updateCarouselContent();
       });
 
       prevBtn.addEventListener("click", () => {
+        isNavigating = true;
         currentIndex = (currentIndex - 1 + totalItems) % totalItems;
         const currentItem = carousel.children[currentIndex];
         if (!currentItem) {
@@ -1217,6 +1235,7 @@ import "lenis/dist/lenis.css";
         currentItem.scrollIntoView({
           behavior: "smooth",
           inline: "center",
+          block: "nearest",
         });
         updateCarouselContent();
       });
@@ -1476,9 +1495,8 @@ import "lenis/dist/lenis.css";
     })();
 
     (async () => {
-      const frontCanvas = document.querySelector<HTMLCanvasElement>(
-        "#leaves-canvas"
-      );
+      const frontCanvas =
+        document.querySelector<HTMLCanvasElement>("#leaves-canvas");
 
       if (!frontCanvas) {
         return;
