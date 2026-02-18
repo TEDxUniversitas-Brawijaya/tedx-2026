@@ -1,8 +1,1784 @@
 ---
-import ComingSoon from "@/components/coming-soon.astro";
+import House1 from "@/assets/imgs/house-1.png";
 import Layout from "@/components/layout.astro";
+import BrushArrow1 from "@/assets/imgs/brush-arrow-1.png";
+import Navbar from "@/components/navbar.astro";
+import PastSpeaker1 from "@/assets/imgs/past-speaker-1.png";
+import PastSpeaker2 from "@/assets/imgs/past-speaker-2.png";
+import PastSpeaker3 from "@/assets/imgs/past-speaker-3.png";
+import Documentation21 from "@/assets/imgs/documentation-21.png";
+import Documentation22 from "@/assets/imgs/documentation-22.png";
+import Documentation23 from "@/assets/imgs/documentation-23.png";
+import Documentation25 from "@/assets/imgs/documentation-25.png";
+import OpenedDoor from "@/assets/imgs/opened-door.png";
+import SemiOpenedDoor from "@/assets/imgs/semi-opened-door.png";
+import ClosedDoor from "@/assets/imgs/closed-door.png";
+import { Image } from "astro:assets";
+import Leaf1 from "@/assets/imgs/leaf-1.png";
+import Leaf2 from "@/assets/imgs/leaf-2.png";
+import SingleLeaf1 from "@/assets/imgs/single-leaf-1.png";
+import SingleLeaf2 from "@/assets/imgs/single-leaf-2.png";
+import SingleLeaf3 from "@/assets/imgs/single-leaf-3.png";
+import SingleLeaf4 from "@/assets/imgs/single-leaf-4.png";
+import SingleLeaf5 from "@/assets/imgs/single-leaf-5.png";
+import SingleLeaf6 from "@/assets/imgs/single-leaf-6.png";
+import SingleLeaf7 from "@/assets/imgs/single-leaf-7.png";
+import SingleLeaf8 from "@/assets/imgs/single-leaf-8.png";
+import SingleLeaf9 from "@/assets/imgs/single-leaf-9.png";
+import SingleLeaf10 from "@/assets/imgs/single-leaf-10.png";
+import SingleLeaf11 from "@/assets/imgs/single-leaf-11.png";
+import SingleLeaf12 from "@/assets/imgs/single-leaf-12.png";
+import "lenis/dist/lenis.css";
 ---
 
-<Layout>
-  <ComingSoon />
+<Layout
+  title="About TED | TEDx Universitas Brawijaya"
+  description="Learn about TED, its mission, and how it inspires us to spread ideas worth sharing at TEDx Universitas Brawijaya."
+  canonical="https://tedxuniversitasbrawijaya.com/about-ted"
+>
+  <Navbar />
+  <main>
+    <section id="about-ted">
+      <div id="leaves-static-back" aria-hidden="true">
+        <Image src={SingleLeaf1} alt="" class="leaf-b-1" />
+        <Image src={SingleLeaf2} alt="" class="leaf-b-2" />
+        <Image src={SingleLeaf3} alt="" class="leaf-b-3" />
+        <Image src={SingleLeaf4} alt="" class="leaf-b-4" />
+        <Image src={SingleLeaf5} alt="" class="leaf-b-5" />
+        <Image src={SingleLeaf6} alt="" class="leaf-b-6" />
+        <Image src={SingleLeaf7} alt="" class="leaf-b-7" />
+        <Image src={SingleLeaf8} alt="" class="leaf-b-8" />
+        <Image src={SingleLeaf9} alt="" class="leaf-b-9" />
+        <Image src={SingleLeaf10} alt="" class="leaf-b-10" />
+        <Image src={SingleLeaf11} alt="" class="leaf-b-11" />
+        <Image src={SingleLeaf12} alt="" class="leaf-b-12" />
+      </div>
+
+      <div class="hero-container">
+        <div class="hero-text-container">
+          <h1>
+            <span>Seputar</span>
+            <span>TED</span>
+          </h1>
+        </div>
+        <div class="house-container">
+          <Image src={House1} alt="House" class="house" />
+        </div>
+      </div>
+      <div class="ted-definition-container">
+        <p>
+          TED adalah organisasi nirlaba yang ditujukan untuk menyebarkan ide
+          dalam bentuk talk singkat yang berisi gagasan-gagasan hebat dan unik
+          (18 menit atau kurang). TED dimulai pada tahun 1984 sebagai sebuah
+          konferensi dimana Teknologi, Hiburan dan Desain menjadi tema utamanya,
+          dan hari ini topik tidak hanya mencakup ketiga hal tersebut tapi juga
+          meliputi sains, bisnis, hingga masalah global yang dikemas dalam lebih
+          dari 100 bahasa.
+        </p>
+        <p>
+          Dengan semangat IDEAS CHANGE EVERYTHING, tercipta TEDx yang merupakan
+          sebuah program yang memungkinkan institusi sekolah, bisnis,
+          perusahaan, atau sekedar sekelompok orang untuk menikmati pengalaman
+          seperti TED melalui acara yang mereka selenggarakan secara mandiri
+          dengan keunikannya sendiri.
+        </p>
+      </div>
+      <div id="leaves-static-front" aria-hidden="true">
+        <Image src={SingleLeaf1} alt="" class="leaf-f-1" />
+        <Image src={SingleLeaf2} alt="" class="leaf-f-2" />
+        <Image src={SingleLeaf3} alt="" class="leaf-f-3" />
+        <Image src={SingleLeaf4} alt="" class="leaf-f-4" />
+        <Image src={SingleLeaf5} alt="" class="leaf-f-5" />
+        <Image src={SingleLeaf6} alt="" class="leaf-f-6" />
+        <Image src={SingleLeaf7} alt="" class="leaf-f-7" />
+        <Image src={SingleLeaf8} alt="" class="leaf-f-8" />
+        <Image src={SingleLeaf9} alt="" class="leaf-f-9" />
+        <Image src={SingleLeaf10} alt="" class="leaf-f-10" />
+        <Image src={SingleLeaf11} alt="" class="leaf-f-11" />
+        <Image src={SingleLeaf12} alt="" class="leaf-f-12" />
+      </div>
+
+      <canvas
+        id="leaves-canvas"
+        data-leaf-srcs={JSON.stringify([
+          SingleLeaf1.src,
+          SingleLeaf2.src,
+          SingleLeaf3.src,
+          SingleLeaf4.src,
+          SingleLeaf5.src,
+          SingleLeaf6.src,
+          SingleLeaf7.src,
+          SingleLeaf8.src,
+          SingleLeaf9.src,
+          SingleLeaf10.src,
+          SingleLeaf11.src,
+          SingleLeaf12.src,
+        ])}
+      ></canvas>
+    </section>
+    <section id="about-tedx">
+      <div class="past-speaker-1-container-wrapper">
+        <div class="past-speaker-1-container">
+          <Image
+            src={PastSpeaker1}
+            alt="Past Speaker 1"
+            class="past-speaker-1"
+          />
+        </div>
+      </div>
+      <div class="past-speaker-2-container-wrapper">
+        <div class="past-speaker-2-container">
+          <Image
+            src={PastSpeaker2}
+            alt="Past Speaker 2"
+            class="past-speaker-2"
+          />
+        </div>
+      </div>
+      <div class="tedx-definition-container">
+        <p>
+          TEDx merupakan acara independen berlisensi TED yang mengkolaborasikan
+          komunitas lokal untuk berbagi ide serta memicu diskusi dan koneksi
+          yang bermakna. Sebagai TEDx University pertama di Malang sejak 2015,
+          TEDxUniversitasBrawijaya berperan aktif dalam menyebarkan gagasan unik
+          dan transformatif melalui pembicara lokal maupun nasional yang telah
+          terkurasi, dengan keyakinan bahwa setiap ide memiliki kekuatan untuk
+          memperluas perspektif dan memberikan dampak nyata bagi audiens.
+        </p>
+      </div>
+      <div class="past-speaker-3-container-wrapper">
+        <div class="past-speaker-3-container">
+          <Image
+            src={PastSpeaker3}
+            alt="Past Speaker 3"
+            class="past-speaker-3"
+          />
+        </div>
+      </div>
+    </section>
+    <section id="past-tedx-events">
+      <div class="heading-container">
+        <h2>
+          <span>Mengenal TEDx</span>
+          <span>Universitas Brawijaya</span>
+        </h2>
+      </div>
+      <div class="carousel-container-wrapper">
+        <div class="carousel-container">
+          <div class="carousel">
+            <Image
+              src={Documentation21}
+              alt="Documentation 21"
+              class="carousel-image"
+              data-carousel-title="TEDXUB 2021"
+              data-carousel-description="MANIFESTASI PERADABAN: Yang Dibicarakan Ketika Membicarakan Manusia TEDxUniversitasBrawijaya 2021 memberikan perspektif yang berbeda tentang Pop Culture. Bahwa semata-mata Pop Culture tidak hanya disajikan dalam bentuk kesenian, musik, dan lukisan namun juga dapat dibagikan melalui perspektif sosiologis."
+            />
+            <Image
+              src={Documentation22}
+              alt="Documentation 22"
+              class="carousel-image"
+              data-carousel-title="TEDXUB 2022"
+              data-carousel-description="MERAYAKAN KEMBALI: Menggeedah Arus, Menilik Ruang. TEDxUniversitasBrawijaya tahun ini akan membawa penonton melalui perjalanan istirahat dari kejenuhan dan kompleksitas yang telah terbentuk dengan kembali menjelajahi makna nilai kearifan lokal sebagai bekal dalam menjalani era modernisasi saat ini."
+            />
+            <Image
+              src={Documentation23}
+              alt="Documentation 23"
+              class="carousel-image"
+              data-carousel-title="TEDXUB 2023"
+              data-carousel-description="2023: MEMANTIK BASKARA: Tersulut Tak Membara, Terbakar Tak Bersuara TEDxUniversitasBrawijaya 2023 memberikan sebuah pengalaman yang tak terlupakan, merajut satu cerita, berjalan bersama dengan mengajak audiens dalam perjalanan penuh ambiguitas atas jati dirinya hingga akhirnya memantik sebuah pencerahan ataupun melahirkan gagasan baru yang berkembang dari serangkaian variabel yang saling terhubung."
+            />
+            <Image
+              src={Documentation25}
+              alt="Documentation 24/25"
+              class="carousel-image"
+              data-carousel-title="TEDXUB 2024/2025"
+              data-carousel-description="2024/2025: MANTRA DIRI: Menembus Batas, Menyelami Realitas. TEDxUniversitasBrawijaya mengajak peserta untuk merangkai kembali mantra diri, untuk mengenali realita, dan mengekspresikan diri mereka. Menghidupkan motivasi dan potensi yang tersembunyi untuk diekspresikan dengan berani. Menghadapi realita dengan segala angan sebagai tumpuan untuk menembus batas."
+            />
+          </div>
+          <div class="carousel-content">
+            <div class="carousel-toolbar">
+              <button id="prev-carousel-btn">
+                <Image
+                  src={BrushArrow1}
+                  alt="Brush Arrow 1"
+                  class="brush-arrow-1"
+                />
+              </button>
+              <span id="carousel-title" class="carousel-title"></span>
+              <button id="next-carousel-btn">
+                <Image
+                  src={BrushArrow1}
+                  alt="Brush Arrow 1"
+                  class="brush-arrow-1"
+                />
+              </button>
+            </div>
+            <p id="carousel-description" class="carousel-description"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="grand-theme">
+      <div class="grand-theme-wrapper">
+        <div class="heading-container">
+          <h2>BERTUMBUH BERSAMA</h2>
+          <h3>Cerita yang Kita Bawa, Rumah yang Kita Cipta</h3>
+        </div>
+
+        <div id="door-container">
+          <Image
+            src={OpenedDoor}
+            alt="Opened Door"
+            class="door"
+            id="opened-door"
+          />
+          <Image
+            src={SemiOpenedDoor}
+            alt="Semi-Opened Door"
+            class="door"
+            id="semi-opened-door"
+          />
+          <Image
+            src={ClosedDoor}
+            alt="Closed Door"
+            class="door"
+            id="closed-door"
+          />
+        </div>
+
+        <p id="first-paragraph">
+          Perjalanan panjang mendalami manusia, ruang, cahaya, dan diri menuntun
+          TEDxUniversitas Brawijaya 2026 pada puncak kesadaran bahwa tak ada
+          seorang pun yang bertumbuh sendirian. Lembaran baru ini mengantarkan
+          kita untuk kembali pulang ke rumah, naungan di mana keluarga hadir
+          untuk saling menjaga dan menguatkan tiap proses pertumbuhan.
+        </p>
+        <p id="second-paragraph">
+          Kamu akan dibawa menepi sejenak untuk merefleksikan hidup sebagai
+          perjalanan kebersamaan melalui genggaman hangat keluarga yang bersama
+          mengukir kisah, mewariskan nilai, memeluk lara yang belum pulih, serta
+          merayakan tawa yang saling melengkapi dalam kasih yang menguatkan.
+          Nyatanya, kita tidak pernah benar-benar bertumbuh dalam kesunyian
+          karena setiap jejak langkah manusia adalah gema dari sosok pribadi
+          lainnya. Dalam kebersamaan itu, keluarga berdiri dalam pondasi rumah
+          yang kokoh sebagai dekapan bagi jiwa dan raga untuk bernaung dan
+          diterima sepenuhnya.
+        </p>
+        <p id="third-paragraph">
+          Kini, rumah pun beralih rupa. Tak lagi dimaknai sebagai asal semata,
+          tetapi sebagai ruang hidup yang terus diciptakan melalui rasa yang
+          dijaga, dialog yang dipertemukan, dan perbedaan bersilangan yang akan
+          dirangkul sebagai jalan menuju pemahaman bersama. Di sanalah gagasan
+          bersemi menjadi makna, ada cerita yang saling menghidupi, dan setiap
+          insan hadir secara utuh, baik bagi diri sendiri maupun mereka yang
+          dikasihi.
+        </p>
+
+        <Image src={Leaf1} alt="Leaf 1" class="leaf-1" id="leaf-1" />
+        <Image src={Leaf2} alt="Leaf 2" class="leaf-2" id="leaf-2" />
+      </div>
+    </section>
+  </main>
+  <style>
+    main {
+      background-color: var(--color-white);
+      position: relative;
+    }
+    #about-ted {
+      overflow: hidden;
+      position: relative;
+    }
+    #leaves-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    #leaves-static-back,
+    #leaves-static-front {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    #leaves-static-back {
+      filter: saturate(0) blur(2px);
+      z-index: 0;
+    }
+
+    #leaves-static-front {
+      filter: saturate(0) blur(3px);
+      z-index: 2;
+    }
+
+    /* shared base for all static leaves */
+    #leaves-static-back img,
+    #leaves-static-front img {
+      position: absolute;
+      height: auto;
+      pointer-events: none;
+    }
+
+    .leaf-b-1 {
+      width: 35px;
+      top: 8dvh;
+      left: 8%;
+      transform: rotate(25deg);
+    }
+    .leaf-b-2 {
+      width: 20px;
+      top: 5dvh;
+      left: 30%;
+      transform: rotate(-48deg);
+    }
+    .leaf-b-3 {
+      width: 30px;
+      top: 12dvh;
+      left: 55%;
+      transform: rotate(135deg);
+    }
+    .leaf-b-4 {
+      width: 25px;
+      top: 7dvh;
+      left: 78%;
+      transform: rotate(-22deg);
+    }
+    .leaf-b-5 {
+      width: 28px;
+      top: 38dvh;
+      left: 5%;
+      transform: rotate(82deg);
+    }
+    .leaf-b-6 {
+      width: 15px;
+      top: 44dvh;
+      left: 28%;
+      transform: rotate(-108deg);
+    }
+    .leaf-b-7 {
+      width: 38px;
+      top: 40dvh;
+      left: 52%;
+      transform: rotate(158deg);
+    }
+    .leaf-b-8 {
+      width: 22px;
+      top: 46dvh;
+      left: 75%;
+      transform: rotate(-38deg);
+    }
+    .leaf-b-9 {
+      width: 18px;
+      top: 65dvh;
+      left: 12%;
+      transform: rotate(55deg);
+    }
+    .leaf-b-10 {
+      width: 32px;
+      top: 70dvh;
+      left: 38%;
+      transform: rotate(-82deg);
+    }
+    .leaf-b-11 {
+      width: 25px;
+      top: 63dvh;
+      left: 62%;
+      transform: rotate(122deg);
+    }
+    .leaf-b-12 {
+      width: 15px;
+      top: 68dvh;
+      left: 84%;
+      transform: rotate(-148deg);
+    }
+
+    .leaf-f-1 {
+      width: 38px;
+      top: 16dvh;
+      left: 20%;
+      transform: rotate(-32deg);
+    }
+    .leaf-f-2 {
+      width: 25px;
+      top: 10dvh;
+      left: 44%;
+      transform: rotate(62deg);
+    }
+    .leaf-f-3 {
+      width: 45px;
+      top: 20dvh;
+      left: 67%;
+      transform: rotate(-88deg);
+    }
+    .leaf-f-4 {
+      width: 30px;
+      top: 14dvh;
+      left: 88%;
+      transform: rotate(42deg);
+    }
+    .leaf-f-5 {
+      width: 42px;
+      top: 50dvh;
+      left: 15%;
+      transform: rotate(148deg);
+    }
+    .leaf-f-6 {
+      width: 28px;
+      top: 56dvh;
+      left: 40%;
+      transform: rotate(-58deg);
+    }
+    .leaf-f-7 {
+      width: 50px;
+      top: 48dvh;
+      left: 63%;
+      transform: rotate(95deg);
+    }
+    .leaf-f-8 {
+      width: 35px;
+      top: 54dvh;
+      left: 82%;
+      transform: rotate(-125deg);
+    }
+    .leaf-f-9 {
+      width: 40px;
+      top: 76dvh;
+      left: 4%;
+      transform: rotate(38deg);
+    }
+    .leaf-f-10 {
+      width: 32px;
+      top: 78dvh;
+      left: 30%;
+      transform: rotate(-72deg);
+    }
+    .leaf-f-11 {
+      width: 48px;
+      top: 73dvh;
+      left: 55%;
+      transform: rotate(162deg);
+    }
+    .leaf-f-12 {
+      width: 25px;
+      top: 80dvh;
+      left: 77%;
+      transform: rotate(-28deg);
+    }
+
+    .hero-container {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(2, 1fr);
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+      height: 100dvh;
+      padding-top: calc(var(--navbar-height) + 1.25rem);
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+
+    .hero-text-container {
+      grid-area: 1 / 1 / 2 / 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      will-change: transform;
+    }
+
+    .hero-text-container h1 {
+      font-family: var(--font-serif);
+      font-size: var(--text-xxl);
+      color: var(--color-black);
+      display: flex;
+      flex-direction: column;
+      width: 16rem;
+    }
+
+    .hero-text-container h1 span:last-child {
+      text-align: right;
+    }
+
+    .house-container {
+      grid-area: 2 / 1 / 3 / 2;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      will-change: transform;
+    }
+
+    .house {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+      aspect-ratio: 1.08 / 1;
+    }
+
+    .ted-definition-container {
+      position: relative;
+      z-index: 1;
+      padding: 2rem 1.25rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(2, auto);
+      grid-column-gap: 0px;
+      grid-row-gap: 2rem;
+    }
+
+    .ted-definition-container p {
+      font-family: var(--font-sans);
+      font-size: var(--text-s);
+      color: var(--color-black);
+      text-align: justify;
+      text-wrap-style: pretty;
+    }
+
+    #about-tedx {
+      height: 100dvh;
+      overflow: hidden;
+      position: relative;
+      padding-top: var(--navbar-height);
+    }
+    .past-speaker-1-container-wrapper {
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translate(-120%, 0%);
+      width: 20dvh;
+      height: auto;
+    }
+    .past-speaker-1-container {
+      position: relative;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1.24 / 1;
+    }
+
+    .past-speaker-1 {
+      width: auto;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      aspect-ratio: 1.24 / 1;
+      filter: drop-shadow(20px 20px 0px rgba(0, 0, 0, 0.7));
+    }
+    .past-speaker-2-container-wrapper {
+      position: absolute;
+      top: 10%;
+      right: 50%;
+      transform: translate(120%, 0%);
+      width: 20dvh;
+      height: auto;
+    }
+    .past-speaker-2-container {
+      position: relative;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 0.93 / 1;
+    }
+
+    .past-speaker-2 {
+      width: auto;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      aspect-ratio: 0.93 / 1;
+      filter: drop-shadow(20px 20px 0px rgba(0, 0, 0, 0.7));
+    }
+    .tedx-definition-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .tedx-definition-container p {
+      font-family: var(--font-sans);
+      font-size: var(--text-s);
+      color: var(--color-black);
+      text-align: center;
+      text-wrap-style: pretty;
+      width: 90vw;
+    }
+    .past-speaker-3-container-wrapper {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform: translate(-50%, 200%);
+      width: 40dvh;
+      height: auto;
+    }
+    .past-speaker-3-container {
+      position: relative;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 2.62 / 1;
+    }
+
+    .past-speaker-3 {
+      width: auto;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      aspect-ratio: 2.62 / 1;
+      filter: drop-shadow(20px 20px 0px rgba(0, 0, 0, 0.7));
+    }
+
+    #past-tedx-events {
+      height: 100dvh;
+      overflow: hidden;
+      position: relative;
+      padding-top: var(--navbar-height);
+      padding-bottom: 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+    }
+    #past-tedx-events .heading-container h2 {
+      font-family: var(--font-serif);
+      font-size: var(--text-l);
+      color: var(--color-black);
+      display: flex;
+      flex-direction: column;
+      width: 16rem;
+    }
+
+    #past-tedx-events .heading-container h2 span:last-child {
+      text-align: right;
+    }
+
+    .carousel-container-wrapper {
+      width: 100%;
+    }
+
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .carousel {
+      width: 100%;
+      height: auto;
+      display: flex;
+      gap: 4rem;
+      padding: 0 calc((100dvw - 80dvw) / 2);
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+
+      /* Hide scroll */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* Internet Explorer 10+ */
+    }
+
+    .carousel::-webkit-scrollbar {
+      display: none; /* Safari and Chrome */
+    }
+
+    .carousel-image {
+      height: auto;
+      width: 80dvw;
+      flex-shrink: 0;
+      object-fit: cover;
+      object-position: center;
+      scroll-snap-align: center;
+      filter: drop-shadow(20px 20px 0px rgba(0, 0, 0, 0.7)) saturate(0);
+      aspect-ratio: 1.43 / 1;
+      transition: filter 0.3s ease;
+    }
+
+    .carousel-image--active {
+      filter: drop-shadow(20px 20px 0px rgba(0, 0, 0, 0.7)) saturate(1);
+    }
+
+    .carousel-content {
+      width: 80dvw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .carousel-toolbar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .carousel-toolbar button {
+      background-color: transparent;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: var(--text-s);
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .carousel-toolbar button:hover {
+      opacity: 0.8;
+    }
+
+    .carousel-toolbar button:disabled {
+      opacity: 0;
+      cursor: not-allowed;
+    }
+
+    .carousel-toolbar button:focus {
+      outline: 1px solid var(--color-black);
+      outline-offset: 1px;
+      border-radius: 4px;
+    }
+
+    .carousel-toolbar button:focus-visible {
+      outline: 2px solid var(--color-black);
+      outline-offset: 2px;
+    }
+
+    .carousel-toolbar button:active {
+      opacity: 0.6;
+    }
+
+    .carousel-toolbar .brush-arrow-1 {
+      width: auto;
+      height: 2rem;
+      object-fit: cover;
+      object-position: center;
+      aspect-ratio: 1.09 / 1;
+    }
+
+    .carousel-toolbar #prev-carousel-btn .brush-arrow-1 {
+      transform: rotate(-45deg);
+    }
+
+    .carousel-toolbar #next-carousel-btn .brush-arrow-1 {
+      transform: rotate(135deg);
+    }
+
+    .carousel-title {
+      font-family: var(--font-serif);
+      font-size: var(--text-m);
+      color: var(--color-black);
+      text-align: center;
+    }
+
+    .carousel-description {
+      font-family: var(--font-sans);
+      font-size: var(--text-s);
+      color: var(--color-black);
+      text-align: justify;
+      text-wrap-style: pretty;
+    }
+
+    #grand-theme {
+      height: 400dvh;
+      position: relative;
+      padding-top: var(--navbar-height);
+    }
+
+    #grand-theme .grand-theme-wrapper {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    #grand-theme .heading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      text-wrap-style: pretty;
+      padding: 0rem 1.25rem;
+      gap: 0.5rem;
+      position: absolute;
+      top: calc(var(--navbar-height) + 1.25rem);
+      left: 50%;
+      transform: translate(-50%, 0%);
+      width: 100dvw;
+      z-index: 1;
+    }
+
+    #grand-theme .heading-container h2 {
+      font-family: var(--font-serif);
+      font-size: var(--text-l);
+      color: var(--color-black);
+    }
+
+    #grand-theme .heading-container h3 {
+      font-family: var(--font-serif);
+      font-size: var(--text-l);
+      color: var(--color-black);
+    }
+
+    #grand-theme #door-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: auto;
+      height: 40dvh;
+      pointer-events: none;
+      object-position: center;
+      aspect-ratio: 0.49 / 1;
+    }
+
+    #grand-theme .door {
+      position: absolute;
+      width: auto;
+      height: auto;
+      transition: opacity 0.25s ease-in-out;
+    }
+
+    #grand-theme #first-paragraph,
+    #grand-theme #second-paragraph,
+    #grand-theme #third-paragraph {
+      position: absolute;
+      font-family: var(--font-sans);
+      font-size: var(--text-s);
+      color: var(--color-black);
+      text-align: center;
+      text-wrap-style: pretty;
+      padding: 0rem 1.25rem;
+      opacity: 1;
+      width: 100dvw;
+      transition: opacity 0.3s ease;
+    }
+
+    #grand-theme #first-paragraph {
+      --first-paragraph-y: 50dvh;
+
+      opacity: 1;
+      bottom: 10%;
+      left: 50%;
+      transform: translate(-50%, var(--first-paragraph-y));
+    }
+
+    #grand-theme #second-paragraph {
+      --second-paragraph-y: 100dvh;
+
+      bottom: 10%;
+      left: 50%;
+      transform: translate(-50%, var(--second-paragraph-y));
+    }
+
+    #grand-theme #third-paragraph {
+      --third-paragraph-y: 100dvh;
+
+      bottom: 10%;
+      left: 50%;
+      transform: translate(-50%, var(--third-paragraph-y));
+    }
+
+    .leaf-1 {
+      position: absolute;
+      left: -15%;
+      top: 35%;
+      width: auto;
+      height: 20dvh;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+      aspect-ratio: 0.72 / 1;
+      transform: translate(0%, var(--translate-y)) rotate(var(--rotate));
+      opacity: 0.2;
+    }
+
+    .leaf-2 {
+      position: absolute;
+      right: -20%;
+      top: 16%;
+      width: auto;
+      height: 15dvh;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+      aspect-ratio: 1.63 / 1;
+      transform: translate(0%, var(--translate-y)) rotate(var(--rotate));
+      opacity: 0.2;
+    }
+
+    @media (min-width: 425px) {
+      .hero-container {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 1fr;
+      }
+
+      .hero-text-container {
+        grid-area: 1 / 1 / 2 / 2;
+      }
+
+      .house-container {
+        grid-area: 1 / 2 / 2 / 3;
+      }
+
+      .past-speaker-1-container-wrapper {
+        top: 15%;
+        left: 5%;
+        transform: translate(0%, 0%);
+        width: 20dvh;
+      }
+
+      .past-speaker-2-container-wrapper {
+        top: 10%;
+        right: 5%;
+        transform: translate(0%, 0%);
+        width: 20dvh;
+      }
+
+      .tedx-definition-container p {
+        font-size: var(--text-s);
+        width: 80vw;
+      }
+
+      .past-speaker-3-container-wrapper {
+        bottom: 20%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        width: 40dvh;
+      }
+
+      #past-tedx-events .heading-container {
+        padding: 0rem 1.25rem;
+        width: 24rem;
+      }
+
+      #grand-theme #first-paragraph,
+      #grand-theme #second-paragraph,
+      #grand-theme #third-paragraph {
+        width: 80vw;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .hero-text-container h1 {
+        font-size: var(--text-xxxl);
+        width: 24rem;
+      }
+
+      .ted-definition-container {
+        padding: 4rem 9.375rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 2rem;
+      }
+
+      .ted-definition-container p {
+        font-size: var(--text-m);
+      }
+
+      .past-speaker-1-container-wrapper {
+        top: 15%;
+        left: 5%;
+        transform: translate(0%, 0%);
+        width: 35dvh;
+      }
+
+      .past-speaker-2-container-wrapper {
+        top: 10%;
+        right: 5%;
+        transform: translate(0%, 0%);
+        width: 35dvh;
+      }
+
+      .tedx-definition-container p {
+        font-size: var(--text-m);
+        width: 60vw;
+      }
+
+      .past-speaker-3-container-wrapper {
+        bottom: 10%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        width: 60dvh;
+      }
+      #past-tedx-events {
+        align-items: flex-start;
+        gap: 4rem;
+      }
+      #past-tedx-events .heading-container {
+        padding: 0rem 9.375rem;
+      }
+      #past-tedx-events .heading-container h2 {
+        font-size: var(--text-xl);
+        width: 30rem;
+      }
+      .carousel {
+        padding: 0 calc((100dvw - 40dvw) / 2);
+      }
+
+      .carousel-image {
+        width: 40dvw;
+      }
+
+      .carousel-content {
+        width: 40dvw;
+      }
+
+      .carousel-title {
+        font-size: var(--text-xl);
+      }
+
+      .carousel-description {
+        font-size: var(--text-m);
+      }
+
+      #grand-theme .heading-container {
+        top: calc(var(--navbar-height) + 4rem);
+        transform: translate(-50%, 0%);
+      }
+
+      #grand-theme .heading-container h2 {
+        font-size: var(--text-xl);
+      }
+
+      #grand-theme .heading-container h3 {
+        font-size: var(--text-xl);
+      }
+      #grand-theme #door-container {
+        top: auto;
+        bottom: 10%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        width: auto;
+        height: 50dvh;
+      }
+
+      #grand-theme #first-paragraph {
+        font-size: var(--text-m);
+        width: 30dvw;
+        text-align: justify;
+        left: 10%;
+        bottom: auto;
+        top: 50%;
+
+        transform: translate(0%, var(--first-paragraph-y));
+      }
+
+      #grand-theme #second-paragraph {
+        font-size: var(--text-m);
+        width: 30dvw;
+        text-align: justify;
+        left: auto;
+        right: 10%;
+        bottom: auto;
+        top: 50%;
+
+        transform: translate(0%, var(--second-paragraph-y));
+      }
+
+      #grand-theme #third-paragraph {
+        font-size: var(--text-m);
+        width: 30dvw;
+        text-align: justify;
+        left: 10%;
+        bottom: 20%;
+
+        transform: translate(0%, var(--third-paragraph-y));
+      }
+
+      .leaf-1 {
+        left: -4%;
+        top: 35%;
+        width: auto;
+        height: 30dvh;
+      }
+
+      .leaf-2 {
+        right: -10%;
+        top: 16%;
+        width: auto;
+        height: 25dvh;
+      }
+    }
+  </style>
+  <script>
+    import Lenis from "lenis";
+
+    new Lenis({
+      autoRaf: true,
+      anchors: true,
+    });
+
+    (() => {
+      const carousel = document.querySelector(".carousel");
+      const carouselTitle = document.getElementById("carousel-title");
+      const carouselDescription = document.getElementById(
+        "carousel-description"
+      );
+      const nextBtn = document.getElementById("next-carousel-btn");
+      const prevBtn = document.getElementById("prev-carousel-btn");
+
+      if (
+        !(
+          carousel &&
+          carouselTitle &&
+          carouselDescription &&
+          nextBtn &&
+          prevBtn
+        )
+      ) {
+        return;
+      }
+
+      let currentIndex = 0;
+      const totalItems = carousel.children.length;
+      let isNavigating = false;
+
+      const updateCarouselContent = () => {
+        const currentItem = carousel.children[currentIndex];
+        if (!currentItem) {
+          return;
+        }
+        carouselTitle.textContent =
+          currentItem.getAttribute("data-carousel-title") || "";
+        carouselDescription.textContent =
+          currentItem.getAttribute("data-carousel-description") || "";
+
+        for (const child of carousel.children) {
+          child.classList.remove("carousel-image--active");
+        }
+        currentItem.classList.add("carousel-image--active");
+      };
+
+      // Set up IntersectionObserver to detect which item is in view when scrolling
+      const observerOptions = {
+        root: carousel,
+        rootMargin: "0px",
+        threshold: [0, 0.5, 1],
+      } satisfies IntersectionObserverInit;
+
+      const observerCallback = () => {
+        // Find which item is closest to the center of the carousel
+        const carouselRect = carousel.getBoundingClientRect();
+        const carouselCenter = carouselRect.left + carouselRect.width / 2;
+
+        let closestIndex = 0;
+        let closestDistance = Number.POSITIVE_INFINITY;
+
+        for (let i = 0; i < totalItems; i++) {
+          const item = carousel.children[i] as HTMLElement;
+          const itemRect = item.getBoundingClientRect();
+          const itemCenter = itemRect.left + itemRect.width / 2;
+          const distance = Math.abs(carouselCenter - itemCenter);
+
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestIndex = i;
+          }
+        }
+
+        if (closestIndex !== currentIndex && !isNavigating) {
+          currentIndex = closestIndex;
+          updateCarouselContent();
+        }
+      };
+
+      const observer = new IntersectionObserver(
+        observerCallback,
+        observerOptions
+      );
+
+      // Observe all carousel items
+      for (const child of carousel.children) {
+        observer.observe(child);
+      }
+
+      carousel.addEventListener("scrollend", () => {
+        isNavigating = false;
+      });
+
+      nextBtn.addEventListener("click", () => {
+        isNavigating = true;
+        currentIndex = (currentIndex + 1) % totalItems;
+        const currentItem = carousel.children[currentIndex];
+        if (!currentItem) {
+          return;
+        }
+        currentItem.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+        updateCarouselContent();
+      });
+
+      prevBtn.addEventListener("click", () => {
+        isNavigating = true;
+        currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+        const currentItem = carousel.children[currentIndex];
+        if (!currentItem) {
+          return;
+        }
+        currentItem.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+        updateCarouselContent();
+      });
+
+      updateCarouselContent();
+    })();
+
+    // Grand theme scroll animation
+    (() => {
+      const grandThemeSection = document.getElementById("grand-theme");
+      const firstParagraph = document.getElementById("first-paragraph");
+      const secondParagraph = document.getElementById("second-paragraph");
+      const thirdParagraph = document.getElementById("third-paragraph");
+
+      const openedDoor = document.getElementById("opened-door");
+      const semiOpenedDoor = document.getElementById("semi-opened-door");
+      const closedDoor = document.getElementById("closed-door");
+
+      const leaf1 = document.getElementById("leaf-1");
+      const leaf2 = document.getElementById("leaf-2");
+
+      if (
+        !(
+          grandThemeSection &&
+          firstParagraph &&
+          secondParagraph &&
+          thirdParagraph &&
+          openedDoor &&
+          semiOpenedDoor &&
+          closedDoor &&
+          leaf1 &&
+          leaf2
+        )
+      ) {
+        return;
+      }
+
+      const animateParagraphs = () => {
+        const sectionRect = grandThemeSection.getBoundingClientRect();
+        const sectionHeight = grandThemeSection.offsetHeight;
+        const viewportHeight = window.innerHeight;
+
+        // Calculate scroll progress (0 to 1)
+        const scrollProgress = Math.max(
+          0,
+          Math.min(1, -sectionRect.top / (sectionHeight - viewportHeight))
+        );
+
+        // Easing functions for smooth animations
+        const easeInCubic = (t: number): number => {
+          return t * t * t;
+        };
+
+        const easeInOutCubic = (t: number): number => {
+          return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+        };
+
+        const easeOutCubic = (t: number): number => {
+          return 1 - (1 - t) ** 3;
+        };
+
+        function transform(
+          x: number,
+          input: number[],
+          output: number[],
+          easing: (t: number) => number = (t) => t
+        ) {
+          const firstInput = input[0];
+          const lastInput = input.at(-1);
+          const lastOutput = output.at(-1);
+
+          if (
+            !(
+              firstInput !== undefined &&
+              lastInput !== undefined &&
+              lastOutput !== undefined
+            )
+          ) {
+            return 0;
+          }
+
+          const clampedX = Math.max(firstInput, Math.min(lastInput, x));
+
+          for (let i = 0; i < input.length - 1; i++) {
+            const currentInput = input[i];
+            const nextInput = input[i + 1];
+
+            const currentOutput = output[i];
+            const nextOutput = output[i + 1];
+
+            if (
+              !(
+                currentInput !== undefined &&
+                nextInput !== undefined &&
+                currentOutput !== undefined &&
+                nextOutput !== undefined
+              )
+            ) {
+              continue;
+            }
+
+            if (clampedX >= currentInput && clampedX <= nextInput) {
+              const localProgress =
+                (clampedX - currentInput) / (nextInput - currentInput);
+              const easedProgress = easing(localProgress);
+
+              return (
+                currentOutput + easedProgress * (nextOutput - currentOutput)
+              );
+            }
+          }
+
+          return lastOutput;
+        }
+
+        // First paragraph animations with easing
+        const firstTranslateY = transform(
+          scrollProgress,
+          [0.2, 0.3],
+          innerWidth < 768 ? [0, -5] : [-10, -15],
+          easeOutCubic
+        );
+        firstParagraph.style.setProperty(
+          "--first-paragraph-y",
+          `${firstTranslateY}dvh`
+        );
+
+        const firstOpacity = transform(
+          scrollProgress,
+          [0.2, 0.3],
+          [1, 0],
+          easeOutCubic
+        );
+        firstParagraph.style.opacity = String(firstOpacity);
+
+        // Second paragraph animations with easing
+        const secondTranslateY = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.7],
+          innerWidth < 768 ? [100, 0, 0, -5] : [100, 0, 0, -5],
+          easeInOutCubic
+        );
+        secondParagraph.style.setProperty(
+          "--second-paragraph-y",
+          `${secondTranslateY}dvh`
+        );
+
+        const secondOpacity = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.7],
+          [0, 1, 1, 0],
+          easeInOutCubic
+        );
+        secondParagraph.style.opacity = String(secondOpacity);
+
+        // Third paragraph animations with easing
+        const thirdTranslateY = transform(
+          scrollProgress,
+          [0.6, 0.8],
+          innerWidth < 768 ? [100, 0] : [100, 10],
+          easeInCubic
+        );
+        thirdParagraph.style.setProperty(
+          "--third-paragraph-y",
+          `${thirdTranslateY}dvh`
+        );
+
+        const thirdOpacity = transform(
+          scrollProgress,
+          [0.6, 0.8],
+          [0, 1],
+          easeInCubic
+        );
+        thirdParagraph.style.opacity = String(thirdOpacity);
+
+        // Door image opacity animations
+        const closedDoorOpacity = transform(
+          scrollProgress,
+          [0.2, 0.3],
+          [1, 0],
+          easeOutCubic
+        );
+        closedDoor.style.opacity = String(closedDoorOpacity);
+
+        const semiOpenedDoorOpacity = transform(
+          scrollProgress,
+          [0.6, 0.7],
+          [1, 0],
+          easeInOutCubic
+        );
+        semiOpenedDoor.style.opacity = String(semiOpenedDoorOpacity);
+
+        const leaf1Opacity = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.8],
+          [0.2, 0.4, 0.4, 1],
+          easeInOutCubic
+        );
+        leaf1.style.opacity = String(leaf1Opacity);
+
+        const leaf1TranslateY = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.8],
+          [0, 5, 5, 10],
+          easeInOutCubic
+        );
+        leaf1.style.setProperty("--translate-y", `${leaf1TranslateY}dvh`);
+
+        const leaf1Rotate = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.8],
+          [-80, -60, -60, -40],
+          easeInOutCubic
+        );
+        leaf1.style.setProperty("--rotate", `${leaf1Rotate}deg`);
+
+        const leaf2Opacity = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.8],
+          [0.2, 0.4, 0.4, 1],
+          easeInOutCubic
+        );
+        leaf2.style.opacity = String(leaf2Opacity);
+
+        const leaf2TranslateY = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.8],
+          [0, 10, 10, 20],
+          easeInOutCubic
+        );
+        leaf2.style.setProperty("--translate-y", `${leaf2TranslateY}dvh`);
+
+        const leaf2Rotate = transform(
+          scrollProgress,
+          [0.2, 0.4, 0.6, 0.8],
+          [-40, -60, -60, -80],
+          easeInOutCubic
+        );
+        leaf2.style.setProperty("--rotate", `${leaf2Rotate}deg`);
+      };
+
+      let scrollRafId: number | null = null;
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (scrollRafId !== null) {
+            return;
+          }
+          scrollRafId = requestAnimationFrame(() => {
+            animateParagraphs();
+            scrollRafId = null;
+          });
+        },
+        { passive: true }
+      );
+      animateParagraphs(); // Initial call
+    })();
+
+    (async () => {
+      const frontCanvas =
+        document.querySelector<HTMLCanvasElement>("#leaves-canvas");
+
+      if (!frontCanvas) {
+        return;
+      }
+
+      const frontCtx = frontCanvas.getContext("2d");
+      if (!frontCtx) {
+        return;
+      }
+
+      // Parse leaf image URLs injected at build time
+      const leafSrcs = JSON.parse(
+        frontCanvas.dataset.leafSrcs ?? "[]"
+      ) as string[];
+      if (leafSrcs.length === 0) {
+        return;
+      }
+
+      // Preload all leaf images
+      const leafImages = await Promise.all(
+        leafSrcs.map(
+          (src) =>
+            new Promise<HTMLImageElement>((resolve, reject) => {
+              const img = new globalThis.Image();
+              img.onload = () => resolve(img);
+              img.onerror = reject;
+              img.src = src;
+            })
+        )
+      );
+
+      const DEG_TO_RAD = Math.PI / 180;
+
+      function rand(min: number, max: number) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function pickImage(): HTMLImageElement {
+        return leafImages[
+          Math.floor(Math.random() * leafImages.length)
+        ] as HTMLImageElement;
+      }
+
+      // Sync canvas pixel buffer to CSS display size
+      function resizeCanvas() {
+        if (!frontCanvas) {
+          return;
+        }
+
+        frontCanvas.width = frontCanvas.offsetWidth;
+        frontCanvas.height = frontCanvas.offsetHeight;
+      }
+
+      resizeCanvas();
+      const resizeObserver = new ResizeObserver(resizeCanvas);
+      resizeObserver.observe(frontCanvas);
+
+      type Leaf = {
+        img: HTMLImageElement;
+        x: number;
+        y: number;
+        w: number;
+        h: number;
+        speed: number;
+        swing: number;
+        rot: number;
+        rotSpeed: number;
+        phase: number;
+        opacity: number;
+        fadeSpeed: number;
+        fading: boolean;
+        canvas: HTMLCanvasElement;
+        minScale: number;
+        maxScale: number;
+        minSpeed: number;
+        maxSpeed: number;
+        reset(): void;
+        update(): void;
+        draw(c: CanvasRenderingContext2D): void;
+      };
+
+      function createLeaf(
+        targetCanvas: HTMLCanvasElement,
+        minScale: number,
+        maxScale: number,
+        minSpeed: number,
+        maxSpeed: number
+      ): Leaf {
+        if (!frontCanvas) {
+          throw new Error("Canvas not found");
+        }
+
+        const img = pickImage();
+
+        const leaf: Leaf = {
+          img,
+          x: 0,
+          y: 0,
+          w: 0,
+          h: 0,
+          speed: 0,
+          swing: 0,
+          rot: 0,
+          rotSpeed: 0,
+          phase: 0,
+          opacity: 1,
+          fadeSpeed: 0,
+          fading: false,
+          canvas: targetCanvas,
+          minScale,
+          maxScale,
+          minSpeed,
+          maxSpeed,
+
+          reset() {
+            this.img = pickImage();
+            const scale = rand(this.minScale, this.maxScale);
+            this.w = this.img.naturalWidth * scale;
+            this.h = this.img.naturalHeight * scale;
+            this.x = rand(0, this.canvas.width);
+            this.y = rand(-this.canvas.height, 0);
+            this.speed = rand(this.minSpeed, this.maxSpeed);
+            this.swing = rand(15, 50);
+            this.rot = rand(0, 360);
+            this.rotSpeed = rand(-0.3, 0.3);
+            this.phase = rand(0, Math.PI * 2);
+            this.opacity = 1;
+            this.fading = false;
+            this.fadeSpeed = rand(0.008, 0.018);
+          },
+
+          update() {
+            this.y += this.speed;
+            this.rot += this.rotSpeed;
+
+            if (!this.fading && this.y > this.canvas.height * 0.8) {
+              this.fading = true;
+            }
+
+            if (this.fading) {
+              this.opacity -= this.fadeSpeed;
+            }
+
+            if (this.opacity <= 0) {
+              this.reset();
+              this.y = -this.h;
+            }
+          },
+
+          draw(c: CanvasRenderingContext2D) {
+            const sway = Math.sin(this.y * 0.015 + this.phase) * this.swing;
+
+            c.save();
+            c.globalAlpha = Math.max(0, this.opacity);
+            c.translate(this.x + sway, this.y);
+            c.rotate(this.rot * DEG_TO_RAD);
+            c.drawImage(this.img, -this.w / 2, -this.h / 2, this.w, this.h);
+            c.restore();
+          },
+        };
+
+        leaf.reset();
+        // Stagger initial y positions so they don't all start together
+        leaf.y = rand(-frontCanvas.height, 0);
+        return leaf;
+      }
+
+      const frontLeaves: Leaf[] = Array.from({ length: 24 }, () =>
+        createLeaf(frontCanvas, 0.7, 1.3, 0.8, 1.5)
+      );
+
+      let rafId: number | null = null;
+      let isSectionVisible = false;
+
+      function animate() {
+        if (!(frontCanvas && frontCtx)) {
+          return;
+        }
+
+        if (!document.hidden && isSectionVisible) {
+          frontCtx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
+          for (const leaf of frontLeaves) {
+            leaf.update();
+            leaf.draw(frontCtx);
+          }
+        }
+        rafId = requestAnimationFrame(animate);
+      }
+
+      const sectionObserver = new IntersectionObserver(
+        ([entry]) => {
+          isSectionVisible = entry?.isIntersecting ?? false;
+        },
+        { threshold: 0 }
+      );
+
+      const aboutTedSection = document.getElementById("about-ted");
+      if (aboutTedSection) {
+        sectionObserver.observe(aboutTedSection);
+      }
+
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden && isSectionVisible && rafId === null) {
+          animate();
+        }
+      });
+
+      animate();
+    })();
+
+    // Hero section scroll parallax
+    (() => {
+      const heroText = document.querySelector<HTMLElement>(
+        ".hero-text-container"
+      );
+      const house = document.querySelector<HTMLElement>(".house-container");
+
+      if (!(heroText && house)) {
+        return;
+      }
+
+      const applyParallax = () => {
+        const sy = window.scrollY;
+        heroText.style.transform = `translateY(${-sy * 0.1}px)`;
+        house.style.transform = `translateY(${sy * 0.08}px)`;
+      };
+
+      let pRafId: number | null = null;
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (pRafId !== null) {
+            return;
+          }
+          pRafId = requestAnimationFrame(() => {
+            applyParallax();
+            pRafId = null;
+          });
+        },
+        { passive: true }
+      );
+
+      applyParallax();
+    })();
+
+    // Static leaf containers scroll parallax
+    (() => {
+      const backContainer = document.querySelector<HTMLElement>(
+        "#leaves-static-back"
+      );
+      const frontContainer = document.querySelector<HTMLElement>(
+        "#leaves-static-front"
+      );
+
+      if (!(backContainer && frontContainer)) {
+        return;
+      }
+
+      const applyLeafParallax = () => {
+        const sy = window.scrollY;
+        // Back layer moves slower (farther away)
+        backContainer.style.transform = `translateY(${sy * 0.12}px)`;
+        // Front layer moves faster (closer)
+        frontContainer.style.transform = `translateY(${sy * 0.28}px)`;
+      };
+
+      let leafRafId: number | null = null;
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (leafRafId !== null) {
+            return;
+          }
+          leafRafId = requestAnimationFrame(() => {
+            applyLeafParallax();
+            leafRafId = null;
+          });
+        },
+        { passive: true }
+      );
+
+      applyLeafParallax();
+    })();
+  </script>
 </Layout>
