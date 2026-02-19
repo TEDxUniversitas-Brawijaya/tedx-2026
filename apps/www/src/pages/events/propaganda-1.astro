@@ -4,6 +4,13 @@ import Layout from "@/components/layout.astro";
 import Navbar from "@/components/navbar.astro";
 import { Image } from "astro:assets";
 import House1 from "@/assets/imgs/house-1.png";
+import GreenRoomBackground2 from "@/assets/imgs/green-room-background-2.png";
+import Chandelier1 from "@/assets/imgs/chandelier-1.png";
+import ClosedDoorSkewed from "@/assets/imgs/closed-door-skewed.png";
+import Sofa2 from "@/assets/imgs/sofa-2.png";
+import Table2 from "@/assets/imgs/table-2.png";
+import Bench1 from "@/assets/imgs/bench-1.png";
+import Tree1 from "@/assets/imgs/tree-1.png";
 ---
 
 <Layout
@@ -36,6 +43,20 @@ import House1 from "@/assets/imgs/house-1.png";
     <section id="explanation-section">
       <div class="explanation-wrapper">
         <div id="horizontal-scroll">
+          <Image
+            src={GreenRoomBackground2}
+            alt=""
+            class="green-room-background-2"
+          />
+          <div class="green-room-background-2-things">
+            <Image src={Chandelier1} alt="" class="chandelier-1" />
+            <Image src={Chandelier1} alt="" class="chandelier-2" />
+            <div class="closed-door-skewed-container">
+              <Image src={ClosedDoorSkewed} alt="" class="closed-door-skewed" />
+            </div>
+            <Image src={Sofa2} alt="" class="sofa-2" />
+            <Image src={Table2} alt="" class="table-2" />
+          </div>
           <div id="first-screen">
             <div class="text-container">
               <h2>Menanggalkan Asing</h2>
@@ -71,6 +92,16 @@ import House1 from "@/assets/imgs/house-1.png";
             </div>
           </div>
           <div id="third-screen">
+            <div class="outside-background"></div>
+          </div>
+          <div id="fourth-screen">
+            <div class="outside-things">
+              <div class="tree-1-container">
+                <Image src={Tree1} alt="" class="tree-1 tree-1-shadow" />
+                <Image src={Tree1} alt="" class="tree-1" />
+              </div>
+              <Image src={Bench1} alt="" class="bench-1" />
+            </div>
             <div class="text-container">
               <h2>Memahat Tenang</h2>
               <p>
@@ -112,7 +143,7 @@ import House1 from "@/assets/imgs/house-1.png";
     height: 100dvh;
     width: 100dvw;
     position: relative;
-    overflow: visible;
+    overflow: hidden;
     padding-top: var(--navbar-height);
   }
   #hero-section .text-container {
@@ -170,7 +201,7 @@ import House1 from "@/assets/imgs/house-1.png";
     mask-composite: intersect;
   }
   #explanation-section {
-    height: 300dvh;
+    height: 500dvh;
     position: relative;
   }
   #explanation-section .explanation-wrapper {
@@ -181,6 +212,107 @@ import House1 from "@/assets/imgs/house-1.png";
     height: 100dvh;
     overflow: hidden;
     background-color: var(--color-green);
+  }
+  #explanation-section .explanation-wrapper .green-room-background-2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 250dvw;
+    max-width: none;
+    height: calc(100dvh - var(--navbar-height));
+    object-fit: cover;
+    object-position: right center;
+    pointer-events: none;
+    aspect-ratio: 5.43 / 1;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 10%);
+    mask-composite: intersect;
+
+    z-index: 0;
+  }
+  #explanation-section
+    .explanation-wrapper
+    .green-room-background-2-things
+    .chandelier-1 {
+    position: absolute;
+    top: var(--navbar-height);
+    left: 30%;
+    width: auto;
+    max-width: none;
+    height: 25dvh;
+    object-fit: contain;
+    pointer-events: none;
+    aspect-ratio: 0.97 / 1;
+  }
+  #explanation-section
+    .explanation-wrapper
+    .green-room-background-2-things
+    .chandelier-2 {
+    position: absolute;
+    top: var(--navbar-height);
+    left: 170%;
+    width: auto;
+    max-width: none;
+    height: 25dvh;
+    object-fit: contain;
+    pointer-events: none;
+    aspect-ratio: 0.97 / 1;
+  }
+  #explanation-section
+    .explanation-wrapper
+    .green-room-background-2-things
+    .closed-door-skewed-container {
+    position: absolute;
+    bottom: 0;
+    left: 250dvw;
+    transform: translate(-31%, 0%);
+    width: auto;
+    height: 60dvh;
+    object-fit: contain;
+    pointer-events: none;
+    aspect-ratio: 0.78 / 1;
+    z-index: 20;
+  }
+  #explanation-section
+    .explanation-wrapper
+    .green-room-background-2-things
+    .closed-door-skewed {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    aspect-ratio: 0.25 / 1;
+  }
+  #explanation-section
+    .explanation-wrapper
+    .green-room-background-2-things
+    .sofa-2 {
+    position: absolute;
+    bottom: 5%;
+    left: 0%;
+    transform: translate(-50%, 0%);
+    width: auto;
+    max-width: none;
+    height: 30dvh;
+    object-fit: contain;
+    pointer-events: none;
+    aspect-ratio: 2.29 / 1;
+  }
+  #explanation-section
+    .explanation-wrapper
+    .green-room-background-2-things
+    .table-2 {
+    position: absolute;
+    bottom: 2%;
+    left: 65%;
+    width: auto;
+    max-width: none;
+    height: 30dvh;
+    object-fit: contain;
+    pointer-events: none;
+    aspect-ratio: 1.71 / 1;
   }
   #explanation-section .explanation-wrapper #horizontal-scroll {
     position: relative;
@@ -200,9 +332,9 @@ import House1 from "@/assets/imgs/house-1.png";
   }
   #explanation-section .explanation-wrapper #first-screen .text-container {
     position: absolute;
-    top: 20%;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, 0%);
+    transform: translate(-50%, -50%);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -231,9 +363,9 @@ import House1 from "@/assets/imgs/house-1.png";
   }
   #explanation-section .explanation-wrapper #second-screen .text-container {
     position: absolute;
-    top: 20%;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, 0%);
+    transform: translate(-50%, -50%);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -259,8 +391,26 @@ import House1 from "@/assets/imgs/house-1.png";
     padding-top: var(--navbar-height);
     flex-shrink: 0;
     position: relative;
+    display: block;
   }
-  #explanation-section .explanation-wrapper #third-screen .text-container {
+  #explanation-section .explanation-wrapper #third-screen .outside-background {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    background-color: var(--color-white);
+  }
+  #explanation-section .explanation-wrapper #fourth-screen {
+    height: 100dvh;
+    width: 100dvw;
+    padding-top: var(--navbar-height);
+    flex-shrink: 0;
+    position: relative;
+    background-color: var(--color-white);
+    overflow: hidden;
+  }
+  #explanation-section .explanation-wrapper #fourth-screen .text-container {
     position: absolute;
     top: 20%;
     left: 50%;
@@ -272,17 +422,72 @@ import House1 from "@/assets/imgs/house-1.png";
     justify-content: center;
     gap: 1rem;
   }
-  #explanation-section .explanation-wrapper #third-screen .text-container h2 {
+  #explanation-section .explanation-wrapper #fourth-screen .text-container h2 {
     font-family: var(--font-serif);
     font-size: var(--text-m);
-    color: var(--color-white);
+    color: var(--color-black);
   }
-  #explanation-section .explanation-wrapper #third-screen .text-container p {
+  #explanation-section .explanation-wrapper #fourth-screen .text-container p {
     font-family: var(--font-sans);
     font-size: var(--text-s);
-    color: var(--color-white);
+    color: var(--color-black);
     width: 90dvw;
     text-wrap-style: pretty;
+  }
+  #explanation-section .explanation-wrapper .outside-things {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100dvw;
+    height: 100dvh;
+  }
+  #explanation-section .explanation-wrapper .outside-things .bench-1 {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: auto;
+    height: 20dvh;
+    object-fit: contain;
+    pointer-events: none;
+    aspect-ratio: 1.74 / 1;
+  }
+  #explanation-section .explanation-wrapper .outside-things .tree-1-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translate(50%, 0%);
+    width: auto;
+    height: 50dvh;
+    object-fit: cover;
+    pointer-events: none;
+    aspect-ratio: 0.92 / 1;
+    mask-composite: intersect;
+  }
+  #explanation-section .explanation-wrapper .outside-things .tree-1 {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    aspect-ratio: 0.73 / 1;
+    mask-image: linear-gradient(to right, transparent 10%, black 50%);
+    mask-composite: intersect;
+  }
+  #explanation-section .explanation-wrapper .outside-things .tree-1-shadow {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: skew(30deg, 0deg) translate(-120%, 0%);
+    width: auto;
+    height: 50%;
+    object-fit: contain;
+    pointer-events: none;
+    aspect-ratio: 0.73 / 1;
+    filter: saturate(0) blur(5px);
+    opacity: 0.3;
   }
   .paper-texture-1 {
     position: fixed;
@@ -323,6 +528,54 @@ import House1 from "@/assets/imgs/house-1.png";
       font-size: var(--text-m);
       width: 60dvw;
     }
+    #explanation-section {
+      height: 400dvh;
+    }
+    #explanation-section .explanation-wrapper .green-room-background-2 {
+      width: 220dvw;
+    }
+    #explanation-section
+      .explanation-wrapper
+      .green-room-background-2-things
+      .chandelier-1 {
+      top: var(--navbar-height);
+      left: 30%;
+      width: 15dvw;
+    }
+    #explanation-section
+      .explanation-wrapper
+      .green-room-background-2-things
+      .chandelier-2 {
+      top: var(--navbar-height);
+      left: 170%;
+      width: 15dvw;
+    }
+    #explanation-section
+      .explanation-wrapper
+      .green-room-background-2-things
+      .closed-door-skewed-container {
+      height: 80dvh;
+      left: 220dvw;
+      transform: translate(-31%, 0%);
+    }
+    #explanation-section
+      .explanation-wrapper
+      .green-room-background-2-things
+      .sofa-2 {
+      bottom: 0;
+      left: -5%;
+      width: auto;
+      height: 35dvh;
+    }
+    #explanation-section
+      .explanation-wrapper
+      .green-room-background-2-things
+      .table-2 {
+      bottom: 0;
+      left: 85%;
+      width: auto;
+      height: 40dvh;
+    }
     #explanation-section .explanation-wrapper #first-screen .text-container {
       top: 30%;
       gap: 2.5rem;
@@ -333,10 +586,10 @@ import House1 from "@/assets/imgs/house-1.png";
     }
     #explanation-section .explanation-wrapper #first-screen .text-container p {
       font-size: var(--text-m);
-      width: 30dvw;
+      width: 40dvw;
     }
     #explanation-section .explanation-wrapper #second-screen .text-container {
-      top: 30%;
+      top: 40%;
       gap: 2.5rem;
     }
     #explanation-section
@@ -350,17 +603,50 @@ import House1 from "@/assets/imgs/house-1.png";
       font-size: var(--text-m);
       width: 40dvw;
     }
-    #explanation-section .explanation-wrapper #third-screen .text-container {
+    #explanation-section .explanation-wrapper #third-screen {
+      width: 40dvw;
+    }
+    #explanation-section .explanation-wrapper #fourth-screen {
+      width: 60dvw;
+    }
+    #explanation-section .explanation-wrapper #fourth-screen .text-container {
       top: 20%;
       gap: 2.5rem;
-      transform: translate(0%, 0%);
+      transform: translate(-50%, 0%);
     }
-    #explanation-section .explanation-wrapper #third-screen .text-container h2 {
+    #explanation-section
+      .explanation-wrapper
+      #fourth-screen
+      .text-container
+      h2 {
       font-size: var(--text-l);
     }
-    #explanation-section .explanation-wrapper #third-screen .text-container p {
+    #explanation-section .explanation-wrapper #fourth-screen .text-container p {
       font-size: var(--text-m);
       width: 40dvw;
+    }
+    #explanation-section .explanation-wrapper .outside-things {
+      width: 100%;
+    }
+    #explanation-section .explanation-wrapper .outside-things .bench-1 {
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 0%);
+      width: auto;
+      height: 30dvh;
+    }
+    #explanation-section
+      .explanation-wrapper
+      .outside-things
+      .tree-1-container {
+      bottom: 0;
+      right: 0;
+      transform: translate(30%, 0%);
+      width: auto;
+      height: 80dvh;
+    }
+    #explanation-section .explanation-wrapper .outside-things .tree-1 {
+      mask-image: linear-gradient(to right, transparent 10%, black 80%);
     }
   }
 </style>
@@ -444,7 +730,7 @@ import House1 from "@/assets/imgs/house-1.png";
       const horizontalScrollX = transform(
         scrollProgress,
         [0, 1],
-        [0, -200],
+        innerWidth < 768 ? [0, -300] : [0, -200],
         easeInOutCubic
       );
       horizontalScroll.style.setProperty(
