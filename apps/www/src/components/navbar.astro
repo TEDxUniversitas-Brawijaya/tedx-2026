@@ -1,13 +1,110 @@
 ---
 import Logo from "@/assets/imgs/logo.png";
+import MenuBook from "@/assets/imgs/menu-book.png";
 import { Image } from "astro:assets";
+
+const menu = [
+  { name: "Home", href: "/" },
+  {
+    name: "About Us",
+    children: [
+      { name: "About TED", href: "/about-ted" },
+      { name: "Grand Theme", href: "/about-ted#grand-theme" },
+      { name: "Our Team", href: "/our-team" },
+      { name: "Volunteer Recruitment", href: "/recruitment" },
+    ],
+  },
+  {
+    name: "Event",
+    children: [
+      { name: "Propaganda 1", href: "/events/propaganda-1" },
+      { name: "Pre Event", href: "/events/pre-event" },
+      { name: "Propaganda 2", href: "/events/propaganda-2" },
+      { name: "Propaganda 3", href: "/events/propaganda-3" },
+      { name: "Main Event", href: "/events/main-event" },
+    ],
+  },
+  {
+    name: "Order",
+    children: [
+      { name: "Merch TEDx", href: "/orders/merchandise" },
+      { name: "Ticket", href: "/orders/tickets" },
+    ],
+  },
+];
 ---
 
 <header>
   <a href="/">
     <Image src={Logo} alt="TEDx Universitas Brawijaya Logo" class="logo" />
   </a>
+  <button
+    type="button"
+    aria-label="Menu"
+    class="menu-button"
+    id="navbar-menu-button"
+  >
+    <span>Menu</span>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-menu-icon lucide-menu"
+    >
+      <title>Menu</title>
+      <path d="M4 5h16"></path>
+      <path d="M4 12h16"></path>
+      <path d="M4 19h16"></path>
+    </svg>
+  </button>
 </header>
+
+<div id="modal" class="modal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content">
+    <div class="menu-book-container-wrapper">
+      <div class="menu-book-container">
+        <Image src={MenuBook} alt="Menu Book" class="menu-book" />
+        <div class="menu-container-wrapper">
+          <div class="menu-container">
+            <div class="heading">
+              <h2>TABLE OF CONTENT</h2>
+              <span>TEDX UNIVERSITAS BRAWIJAYA</span>
+            </div>
+            <ul>
+              {
+                menu.map((item) => (
+                  <li>
+                    {item.children ? (
+                      <>
+                        <span>{item.name}</span>
+                        <ul>
+                          {item.children.map((child) => (
+                            <li>
+                              <a href={child.href}>{child.name}</a>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    ) : (
+                      <a href={item.href}>{item.name}</a>
+                    )}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <style>
   :root {
     --navbar-height: 72px;
@@ -22,11 +119,46 @@ import { Image } from "astro:assets";
     right: 0;
     z-index: 9999;
     padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  a {
+    display: inline-block;
+    height: 100%;
+    width: auto;
+  }
+
+  a:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 
   .logo {
     height: 100%;
     width: auto;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 3.78 / 1;
+  }
+
+  .menu-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .menu-button:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 
   @media (min-width: 768px) {
@@ -37,5 +169,439 @@ import { Image } from "astro:assets";
     header {
       padding: 1rem 9.375rem;
     }
+
+    .menu-button {
+      padding: 1rem 2rem;
+    }
+  }
+
+  /* Modal styles */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+  .modal.active {
+    pointer-events: all;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .modal.active .modal-backdrop {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-25%, -40%) scale(0.97);
+    filter: blur(2px);
+    width: 150%;
+    height: auto;
+    overflow: visible;
+    opacity: 0;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease,
+      scale 0.3s ease,
+      filter 0.3s ease;
+    aspect-ratio: 1.39 / 1;
+  }
+
+  .modal.active .modal-content {
+    opacity: 1;
+    transform: translate(-25%, -50%) scale(1);
+    filter: blur(0px);
+  }
+
+  .menu-book-container-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: auto;
+  }
+
+  .menu-book-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.39 / 1;
+  }
+
+  .menu-book {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 1.39 / 1;
+  }
+
+  .menu-container-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 6%;
+    transform: translateY(-50%);
+    width: 44%;
+    height: 90%;
+    padding: 0.5rem 2rem;
+  }
+
+  .menu-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+
+    /* Remove scroll thumb */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+
+  .menu-container::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+
+  .menu-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .menu-container ul li {
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    color: black;
+  }
+
+  .menu-container ul li span {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+
+  .menu-container ul li span::after {
+    content: "";
+    border-bottom: 2px dotted #000;
+    transform: translateY(5px);
+  }
+
+  .menu-container ul li a {
+    color: black;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+
+  .menu-container ul li a::after {
+    content: "";
+    border-bottom: 2px dotted #000;
+    transform: translateY(9px);
+    transition: border-bottom 0.3s ease;
+  }
+
+  .menu-container ul li a:hover {
+    color: var(--color-red-2);
+  }
+
+  .menu-container ul li a:hover::after {
+    border-bottom: 2px dotted var(--color-red-2);
+  }
+
+  .menu-container ul li a:focus {
+    outline: none;
+    color: var(--color-red-2);
+  }
+
+  .menu-container ul li a:focus::after {
+    border-bottom: 2px dotted var(--color-red-2);
+  }
+
+  .menu-container ul li ul {
+    list-style: none;
+    padding-left: 1rem;
+    margin-top: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .menu-container ul li ul li {
+    font-family: var(--font-serif);
+    font-size: var(--text-s);
+    color: black;
+  }
+
+  .menu-container ul li ul li a {
+    color: black;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+
+  .menu-container ul li ul li a::after {
+    content: "";
+    border-bottom: 1px dotted #000;
+    transform: translateY(5px);
+    transition: border-bottom 0.3s ease;
+  }
+
+  .menu-container ul li ul li a:hover {
+    color: var(--color-red-2);
+  }
+
+  .menu-container ul li ul li a:hover::after {
+    border-bottom: 1px dotted var(--color-red-2);
+  }
+
+  .menu-container ul li ul li a:focus {
+    outline: none;
+    color: var(--color-red-2);
+  }
+
+  .menu-container ul li ul li a:focus::after {
+    border-bottom: 1px dotted var(--color-red-2);
+  }
+
+  .menu-container .heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .menu-container .heading h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    color: black;
+  }
+
+  .menu-container .heading span {
+    font-family: var(--font-sans);
+    font-size: var(--text-s);
+    color: black;
+  }
+
+  @media (min-width: 425px) {
+    .modal-content {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -40%) scale(0.97);
+      width: 100%;
+      max-width: 90dvw;
+    }
+
+    .modal.active .modal-content {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .modal-content {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -40%) scale(0.97);
+      width: 90%;
+      max-width: 60dvw;
+    }
+
+    .modal.active .modal-content {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .menu-container-wrapper {
+      padding: 1.5rem 2.5rem;
+    }
+
+    .menu-container .heading h2 {
+      font-size: var(--text-l);
+    }
+
+    .menu-container .heading span {
+      font-size: var(--text-m);
+    }
+
+    .menu-container ul li {
+      font-size: var(--text-l);
+    }
+
+    .menu-container ul li ul li {
+      font-size: var(--text-m);
+    }
   }
 </style>
+
+<script>
+  (() => {
+    const menuButton = document.getElementById("navbar-menu-button");
+    const modal = document.getElementById("modal");
+    const modalBackdrop = document.querySelector(".modal-backdrop");
+    const modalContent =
+      document.querySelector<HTMLDivElement>(".modal-content");
+
+    if (!(menuButton && modal && modalBackdrop && modalContent)) {
+      return;
+    }
+
+    // Set modal content as inert initially
+    modalContent.inert = true;
+
+    // Menu button click handler
+    menuButton.addEventListener("click", () => {
+      modal.classList.add("active");
+      modalContent.inert = false;
+      document.body.style.overflow = "hidden";
+      menuButton.blur();
+    });
+
+    // Backdrop click to close
+    modalBackdrop.addEventListener("click", () => {
+      modal.classList.remove("active");
+      modalContent.inert = true;
+      document.body.style.overflow = "";
+      modalContent.dispatchEvent(new CustomEvent("modalClosed"));
+      menuButton.focus();
+    });
+
+    // Escape key to close
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modal.classList.contains("active")) {
+        modal.classList.remove("active");
+        modalContent.inert = true;
+        document.body.style.overflow = "";
+        modalContent.dispatchEvent(new CustomEvent("modalClosed"));
+        menuButton.focus();
+      }
+    });
+  })();
+
+  (() => {
+    const modal = document.getElementById("modal");
+    const modalContent =
+      document.querySelector<HTMLDivElement>(".modal-content");
+    const menuContainer =
+      document.querySelector<HTMLDivElement>(".menu-container");
+
+    if (!(modal && modalContent && menuContainer)) {
+      return;
+    }
+
+    let page: "left" | "right" = "left";
+
+    // Gesture handling for mobile - swipe to flip pages
+    const handleGesture = (direction: "left" | "right") => {
+      if (direction === "left" && page === "left") {
+        modalContent.style.transform = "translate(-75%, -50%) scale(1)";
+        page = "right";
+        return;
+      }
+
+      if (direction === "right" && page === "right") {
+        modalContent.style.transform = "translate(-25%, -50%) scale(1)";
+        page = "left";
+      }
+    };
+
+    let startX: number | null = null;
+    let startY: number | null = null;
+    let isTouchInMenu = false;
+
+    modalContent.addEventListener("modalClosed", () => {
+      modalContent.style.transform = "";
+      page = "left";
+    });
+
+    modalContent.addEventListener(
+      "touchstart",
+      (event) => {
+        const firstTouch = (event as TouchEvent).touches[0];
+        if (!firstTouch) {
+          return;
+        }
+
+        const target = event.target as HTMLElement;
+        isTouchInMenu = menuContainer.contains(target);
+
+        startX = firstTouch.clientX;
+        startY = firstTouch.clientY;
+      },
+      false
+    );
+
+    modalContent.addEventListener(
+      "touchmove",
+      (event) => {
+        if (startX === null || startY === null) {
+          return;
+        }
+
+        if (isTouchInMenu) {
+          return;
+        }
+
+        const firstTouch = (event as TouchEvent).touches[0];
+        if (!firstTouch) {
+          return;
+        }
+
+        const currentX = firstTouch.clientX;
+        const currentY = firstTouch.clientY;
+        const diffX = currentX - startX;
+        const diffY = currentY - startY;
+
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          event.preventDefault();
+
+          const tolerance = 50;
+          const direction = diffX > 0 ? "right" : "left";
+
+          if (Math.abs(diffX) > tolerance) {
+            handleGesture(direction);
+            startX = null;
+            startY = null;
+          }
+        }
+      },
+      false
+    );
+
+    modalContent.addEventListener(
+      "touchend",
+      () => {
+        startX = null;
+        startY = null;
+        isTouchInMenu = false;
+      },
+      false
+    );
+  })();
+</script>
