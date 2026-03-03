@@ -1,8 +1,8 @@
 ---
 import Logo from "@/assets/imgs/logo.png";
 import FooterAssets from "@/assets/imgs/book-carpet-tedx.png";
-import silhouetteOfLight from "@/assets/imgs/silhouette-of-light.png";
-import silhouetteOfLightMobile from "@/assets/imgs/silhouette-of-light-mobile.png";
+import silhouetteOfLight from "@/assets/imgs/silhouette-of-light.svg";
+import silhouetteOfLightMobile from "@/assets/imgs/silhouette-of-light-mobile.svg";
 import Texture from "@/assets/imgs/rough-texture.png";
 import { Image } from "astro:assets";
 ---
@@ -17,16 +17,16 @@ import { Image } from "astro:assets";
     aria-hidden="true"
   />
   <div class="footer-backdrop">
-    <Image
-      src={silhouetteOfLight}
+    <img
+      src={silhouetteOfLight.src}
       alt=""
       class="footer-light footer-light-desktop"
       loading="lazy"
       decoding="async"
       aria-hidden="true"
     />
-    <Image
-      src={silhouetteOfLightMobile}
+    <img
+      src={silhouetteOfLightMobile.src}
       alt=""
       class="footer-light footer-light-mobile"
       loading="lazy"
