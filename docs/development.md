@@ -93,4 +93,10 @@ bun x tsc --noEmit
 3. Stage files
 4. Commit, make sure to write clear commit messages.
 5. Push
-6. Open a Pull Request on GitHub, targeting `main`, make sure follow contribution guidelines.
+6. Open a Pull Request on GitHub, targeting `main`
+
+See [`WORKFLOW.md`](./WORKFLOW.md) for detailed contribution guidelines including:
+- Code and asset naming conventions
+- Commit message format
+- Branch naming standards
+- Pull request best practices
