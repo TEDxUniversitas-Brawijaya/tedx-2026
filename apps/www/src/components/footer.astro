@@ -46,10 +46,20 @@ import { Image } from "astro:assets";
       </div>
 
       <div class="footer-copy">
-        <p>© {new Date().getFullYear()}. TEDxUniversitasBrawijaya</p>
+        <p>
+          © <span id="footer-year"></span>. TEDxUniversitasBrawijaya
+        </p>
         <p>An independently organized TED-like event under license from TED.</p>
       </div>
 
+      <script is:inline>
+        if (typeof window !== "undefined") {
+          const yearElement = document.getElementById("footer-year");
+          if (yearElement) {
+            yearElement.textContent = String(new Date().getFullYear());
+          }
+        }
+      </script>
       <nav class="footer-social" aria-label="Social links">
         <ul>
           <li>
