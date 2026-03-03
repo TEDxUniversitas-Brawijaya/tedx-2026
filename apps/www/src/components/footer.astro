@@ -17,22 +17,23 @@ import { Image } from "astro:assets";
     aria-hidden="true"
   />
   <div class="footer-backdrop">
-    <Image
-      src={SiluetCahaya}
-      alt=""
-      class="footer-light footer-light-desktop"
-      loading="lazy"
-      decoding="async"
-      aria-hidden="true"
-    />
-    <Image
-      src={SiluetCahayaMobile}
-      alt=""
-      class="footer-light footer-light-mobile"
-      loading="lazy"
-      decoding="async"
-      aria-hidden="true"
-    />
+    <picture class="footer-light">
+      <source
+        srcset={SiluetCahaya.src}
+        media="(min-width: 768px)"
+      />
+      <source
+        srcset={SiluetCahayaMobile.src}
+        media="(max-width: 767px)"
+      />
+      <img
+        src={SiluetCahayaMobile.src}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        aria-hidden="true"
+      />
+    </picture>
     <div class="footer-content">
       <div class="footer-brand">
         <a href="/" class="footer-logo-link">
