@@ -12,7 +12,7 @@ import { Image } from "astro:assets";
     src={Texture}
     alt=""
     class="footer-texture"
-    loading="eager"
+    loading="lazy"
     decoding="async"
     aria-hidden="true"
   />
@@ -21,7 +21,7 @@ import { Image } from "astro:assets";
       src={SiluetCahaya}
       alt=""
       class="footer-light footer-light-desktop"
-      loading="eager"
+      loading="lazy"
       decoding="async"
       aria-hidden="true"
     />
@@ -29,7 +29,7 @@ import { Image } from "astro:assets";
       src={SiluetCahayaMobile}
       alt=""
       class="footer-light footer-light-mobile"
-      loading="eager"
+      loading="lazy"
       decoding="async"
       aria-hidden="true"
     />
@@ -46,7 +46,7 @@ import { Image } from "astro:assets";
       </div>
 
       <div class="footer-copy">
-        <p>© 2026. TEDxUniversitasBrawijaya</p>
+        <p>© {new Date().getFullYear()}. TEDxUniversitasBrawijaya</p>
         <p>An independently organized TED-like event under license from TED.</p>
       </div>
 
@@ -127,7 +127,7 @@ import { Image } from "astro:assets";
     </div>
     <Image
       src={FooterAssets}
-      alt="footer"
+      alt=""
       class="footer-decoration"
       loading="lazy"
       aria-hidden="true"
@@ -297,7 +297,6 @@ import { Image } from "astro:assets";
   }
 
   .footer-social svg {
-    color: var(--color-red-2);
     width: 0.88em;
     height: 0.88em;
   }
