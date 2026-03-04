@@ -1,6 +1,9 @@
 ---
 import Layout from "@/components/layout.astro";
 import Navbar from "@/components/navbar.astro";
+import PaperTexture from "@/assets/imgs/paper-texture-1.png";
+import Image from "astro/components/Image.astro";
+import Cobblestone from "@/assets/imgs/cobblestone.png";
 ---
 
 <Layout
@@ -12,11 +15,29 @@ import Navbar from "@/components/navbar.astro";
     <section id="horizontal-scroll-section">
       <div id="sticky-wrapper">
         <div id="horizontal-canvas">
-          <div class="debug-section">
-            <span>1</span>
+          <div class="canvas-section section-1">
+            <Image
+              src={PaperTexture}
+              alt={"Paper Texture"}
+              class="paper-texture"
+            />
+            <Image
+              src={Cobblestone}
+              alt={"Cobblestone"}
+              class="cobblestone-1"
+            />
           </div>
-          <div class="debug-section">
-            <span>2</span>
+          <div class="canvas-section section-2">
+            <Image
+              src={PaperTexture}
+              alt={"Paper Texture"}
+              class="paper-texture"
+            />
+            <Image
+              src={Cobblestone}
+              alt={"Cobblestone"}
+              class="cobblestone-1"
+            />
           </div>
         </div>
       </div>
@@ -33,7 +54,7 @@ import Navbar from "@/components/navbar.astro";
   #horizontal-scroll-section {
     height: 600dvh;
     position: relative;
-    background-color: red;
+    background-color: #050505;
   }
 
   #sticky-wrapper {
@@ -58,7 +79,7 @@ import Navbar from "@/components/navbar.astro";
     background: radial-gradient(circle at center, #111 0%, #000 100%);
   }
 
-  .debug-section {
+  .canvas-section {
     flex-shrink: 0;
     width: 100dvw;
     height: 100%;
@@ -66,10 +87,9 @@ import Navbar from "@/components/navbar.astro";
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
   }
 
-  .debug-section span {
+  .canvas-section span {
     font-family: var(--font-serif);
     font-size: 20rem;
     font-weight: 900;
@@ -78,12 +98,27 @@ import Navbar from "@/components/navbar.astro";
     line-height: 1;
   }
 
-  .debug-label {
-    font-family: var(--font-sans);
-    color: var(--color-red-2);
-    text-transform: uppercase;
-    letter-spacing: 0.5em;
-    font-weight: 500;
+  .paper-texture {
+    z-index: 1;
+    position: absolute;
+    width: 102dvw;
+    height: 100dvh;
+    object-fit: cover;
+    pointer-events: none;
+  }
+  .cobblestone-1 {
+    width: 100dvw;
+    aspect-ratio: 1440 / 196;
+    height: auto;
+    object-fit: cover;
+    z-index: 2;
+    position: absolute;
+    bottom: 0;
+  }
+  .section-1 {
+    position: relative;
+    width: 100dvw;
+    height: 100dvh;
   }
 </style>
 
