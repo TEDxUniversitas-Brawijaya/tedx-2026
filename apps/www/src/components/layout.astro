@@ -126,7 +126,7 @@ const jsonLd = {
     <meta name="twitter:image" content={ogImageUrl} />
 
     <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
 
     <!-- Umami Analytics -->
     {import.meta.env.PROD && (

@@ -77,8 +77,7 @@ const menu = [
               <span>TEDX UNIVERSITAS BRAWIJAYA</span>
             </div>
             <ul>
-              {
-                menu.map((item) => (
+              {menu.map((item) => (
                   <li>
                     {item.children ? (
                       <>
@@ -95,8 +94,7 @@ const menu = [
                       <a href={item.href}>{item.name}</a>
                     )}
                   </li>
-                ))
-              }
+                ))}
             </ul>
           </div>
         </div>
@@ -553,7 +551,7 @@ const menu = [
         startX = firstTouch.clientX;
         startY = firstTouch.clientY;
       },
-      false,
+      false
     );
 
     modalContent.addEventListener(
@@ -590,7 +588,7 @@ const menu = [
           }
         }
       },
-      false,
+      false
     );
 
     modalContent.addEventListener(
@@ -600,7 +598,7 @@ const menu = [
         startY = null;
         isTouchInMenu = false;
       },
-      false,
+      false
     );
   })();
 </script>
