@@ -4,6 +4,10 @@ import Navbar from "@/components/navbar.astro";
 import PaperTexture from "@/assets/imgs/paper-texture-1.png";
 import Image from "astro/components/Image.astro";
 import Cobblestone from "@/assets/imgs/cobblestone.png";
+import Wall from "@/assets/imgs/wall.png";
+import Trees from "@/assets/imgs/tree-1.png";
+import Bushes1 from "@/assets/imgs/bushes.png";
+import BuildingWithWindow from "@/assets/imgs/building-with-window.png";
 ---
 
 <Layout
@@ -26,6 +30,14 @@ import Cobblestone from "@/assets/imgs/cobblestone.png";
               alt={"Cobblestone"}
               class="cobblestone-1"
             />
+            <Image src={Wall} alt={"Wall"} class="wall" />
+            <Image src={Trees} alt={"trees"} class="trees" />
+            <Image
+              src={BuildingWithWindow}
+              alt={"building-with-window"}
+              class="building-with-window"
+            />
+            <Image src={Bushes1} alt={"bushes"} class="bushes-1" />
           </div>
           <div class="canvas-section section-2">
             <Image
@@ -59,17 +71,17 @@ import Cobblestone from "@/assets/imgs/cobblestone.png";
 
   #sticky-wrapper {
     position: sticky;
-    top: 0;
+    top: var(--navbar-height, 64px);
     left: 0;
     width: 100%;
-    height: 100dvh;
+    height: calc(100dvh - var(--navbar-height, 64px));
     overflow: hidden;
     background-color: #050505;
   }
 
   #horizontal-canvas {
     position: relative;
-    height: 100dvh;
+    height: 100%;
     width: 200dvw;
     display: flex;
     flex-shrink: 0;
@@ -102,7 +114,7 @@ import Cobblestone from "@/assets/imgs/cobblestone.png";
     z-index: 1;
     position: absolute;
     width: 102dvw;
-    height: 100dvh;
+    height: 100%;
     object-fit: cover;
     pointer-events: none;
   }
@@ -115,10 +127,42 @@ import Cobblestone from "@/assets/imgs/cobblestone.png";
     position: absolute;
     bottom: 0;
   }
+  .wall {
+    position: absolute;
+    z-index: 1;
+    height: 100dvh;
+    width: auto;
+    aspect-ratio: 833 / 608.68;
+  }
+  .section-1 .trees {
+    z-index: 3;
+    position: absolute;
+    left: -18dvw;
+    height: 100dvh;
+    width: auto;
+    bottom: 0;
+  }
+
+  .section-1 .building-with-window {
+    position: absolute;
+    z-index: 2;
+    height: 100dvh;
+    width: auto;
+    bottom: 0;
+    left: 0;
+  }
+  .section-1 .bushes-1 {
+    position: absolute;
+    z-index: 2;
+    height: 35dvh;
+    width: 43.4dvw;
+    bottom: 0;
+    left: 0;
+  }
   .section-1 {
     position: relative;
     width: 100dvw;
-    height: 100dvh;
+    height: 100%;
   }
 </style>
 
