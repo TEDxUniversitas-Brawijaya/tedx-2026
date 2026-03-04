@@ -1,8 +1,175 @@
 ---
-import ComingSoon from "@/components/coming-soon.astro";
 import Layout from "@/components/layout.astro";
+import Navbar from "@/components/navbar.astro";
 ---
 
-<Layout>
-  <ComingSoon />
+<Layout
+  title="Teras Cerita | TEDx Universitas Brawijaya"
+  description="Teras Cerita merupakan gerbang awal menuju panggung utama TEDxUniversitasBrawijaya 2026, sebuah ruang bagi mahasiswa untuk mengeksplorasi makna keluarga. Kami tidak sekadar mencari pembicara mahasiswa, melainkan pemikiran tajam yang mampu membedah setiap sisi peran manusia. Pre-event hadir untuk merayakan kreativitas dan potensi generasi muda dalam memaknai kembali posisi mereka. Di bawah kurasi yang mendalam, setiap konsep akan diasah agar mampu menyampaikan pesan yang kuat dan autentik. Ini adalah panggung untuk mendefinisikan siapa kita di bawah atap yang sama, sebelum akhirnya satu suara terpilih akan bersinar di panggung utama."
+>
+  <Navbar />
+  <main>
+    <section id="horizontal-scroll-section">
+      <div id="sticky-wrapper">
+        <div id="horizontal-canvas">
+          <div class="debug-section">
+            <span>1</span>
+          </div>
+          <div class="debug-section">
+            <span>2</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </Layout>
+
+<style>
+  main {
+    background-color: var(--color-black);
+    position: relative;
+  }
+
+  #horizontal-scroll-section {
+    height: 600dvh;
+    position: relative;
+    background-color: red;
+  }
+
+  #sticky-wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    background-color: #050505;
+  }
+
+  #horizontal-canvas {
+    position: relative;
+    height: 100dvh;
+    width: 200dvw;
+    display: flex;
+    flex-shrink: 0;
+    overflow: visible;
+    transform: translate(var(--translate-x, 0dvw), 0%);
+    will-change: transform;
+    background: radial-gradient(circle at center, #111 0%, #000 100%);
+  }
+
+  .debug-section {
+    flex-shrink: 0;
+    width: 100dvw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .debug-section span {
+    font-family: var(--font-serif);
+    font-size: 20rem;
+    font-weight: 900;
+    color: white;
+    opacity: 0.1;
+    line-height: 1;
+  }
+
+  .debug-label {
+    font-family: var(--font-sans);
+    color: var(--color-red-2);
+    text-transform: uppercase;
+    letter-spacing: 0.5em;
+    font-weight: 500;
+  }
+</style>
+
+<script>
+  (() => {
+    const section = document.getElementById("horizontal-scroll-section");
+    const canvas = document.getElementById("horizontal-canvas");
+
+    if (!(section && canvas)) return;
+
+    const easeInOutCubic = (t: number): number => {
+      return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+    };
+
+    function transform(
+      x: number,
+      input: number[],
+      output: number[],
+      easing: (t: number) => number = (t) => t,
+    ) {
+      const firstInput = input[0];
+      const lastInput = input.at(-1);
+      const lastOutput = output.at(-1);
+
+      if (
+        firstInput === undefined ||
+        lastInput === undefined ||
+        lastOutput === undefined
+      ) {
+        return 0;
+      }
+
+      const clampedX = Math.max(firstInput, Math.min(lastInput, x));
+
+      for (let i = 0; i < input.length - 1; i++) {
+        const currentInput = input[i]!;
+        const nextInput = input[i + 1]!;
+        const currentOutput = output[i]!;
+        const nextOutput = output[i + 1]!;
+
+        if (clampedX >= currentInput && clampedX <= nextInput) {
+          const localProgress =
+            (clampedX - currentInput) / (nextInput - currentInput);
+          const easedProgress = easing(localProgress);
+          return currentOutput + easedProgress * (nextOutput - currentOutput);
+        }
+      }
+
+      return lastOutput;
+    }
+
+    const updateScroll = () => {
+      const sectionRect = section.getBoundingClientRect();
+      const sectionHeight = section.offsetHeight;
+      const viewportHeight = window.innerHeight;
+
+      const scrollProgress = Math.max(
+        0,
+        Math.min(1, -sectionRect.top / (sectionHeight - viewportHeight)),
+      );
+
+      const translateX = transform(
+        scrollProgress,
+        [0, 1],
+        [0, -100],
+        easeInOutCubic,
+      );
+
+      canvas.style.setProperty("--translate-x", `${translateX}dvw`);
+    };
+
+    let scrollRafId: number | null = null;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (scrollRafId !== null) return;
+        scrollRafId = requestAnimationFrame(() => {
+          updateScroll();
+          scrollRafId = null;
+        });
+      },
+      { passive: true },
+    );
+
+    updateScroll();
+
+    document.addEventListener("astro:page-load", updateScroll);
+  })();
+</script>
