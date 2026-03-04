@@ -1,6 +1,6 @@
 ---
 import Logo from "@/assets/imgs/logo.png";
-import FooterAssets from "@/assets/imgs/book-carpet-tedx.png";
+import FooterAssets from "@/assets/imgs/carpet-2.png";
 import silhouetteOfLight from "@/assets/svgs/silhouette-of-light.svg";
 import silhouetteOfLightMobile from "@/assets/svgs/silhouette-of-light-mobile.svg";
 import Texture from "@/assets/imgs/paper-texture-1.png";
@@ -133,13 +133,16 @@ import { Image } from "astro:assets";
         </ul>
       </nav>
     </div>
-    <Image
-      src={FooterAssets}
-      alt=""
-      class="footer-decoration"
-      loading="lazy"
-      aria-hidden="true"
-    />
+    <div class="footer-decoration-container">
+      <Image
+        src={FooterAssets}
+        alt=""
+        class="footer-decoration-image"
+        loading="lazy"
+        aria-hidden="true"
+      />
+      <p class="footer-decoration-text">X</p>
+    </div>
   </div>
 </footer>
 
@@ -196,7 +199,16 @@ import { Image } from "astro:assets";
     filter: brightness(4) contrast(3.8);
   }
 
-  .footer-decoration {
+  .footer-decoration-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .footer-decoration-image {
     position: absolute;
     right: -16%;
     bottom: -0.4rem;
@@ -206,6 +218,30 @@ import { Image } from "astro:assets";
     z-index: 2;
     pointer-events: none;
     user-select: none;
+  }
+
+  .footer-decoration-text {
+    position: absolute;
+    right: -6%;
+    bottom: -10%;
+    transform: translate(6%, 10%);
+    font-family: var(--font-sans);
+    font-size: 14rem;
+    font-weight: 900;
+    /* text color is not in the design system by default  */
+    color: #a01a1a;
+    z-index: 3;
+  }
+
+  .footer-decoration-text::before {
+    content: "X";
+    right: 4%;
+    transform: translateX(-4%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    color: var(--color-red-2);
+    z-index: -1;
   }
 
   .footer-content {
@@ -321,9 +357,15 @@ import { Image } from "astro:assets";
       align-items: center;
     }
 
-    .footer-decoration {
+    .footer-decoration-image {
       right: -5%;
       width: 95%;
+    }
+
+    .footer-decoration-text {
+      right: 2%;
+      bottom: -6%;
+      transform: translate(-2%, 6%);
     }
 
     .footer-content {
@@ -359,6 +401,10 @@ import { Image } from "astro:assets";
     .footer-light-desktop {
       display: block;
     }
+
+    .footer-decoration-text {
+      font-size: 10rem;
+    }
   }
 
   @media (min-width: 960px) {
@@ -375,11 +421,14 @@ import { Image } from "astro:assets";
       display: block;
     }
 
-    .footer-decoration {
+    .footer-decoration-image {
       right: -1%;
       width: min(39vw, 500px);
     }
 
+    .footer-decoration-text {
+      font-size: 12rem;
+    }
     .footer-content {
       max-width: 500px;
       gap: 1.2rem;
@@ -401,7 +450,7 @@ import { Image } from "astro:assets";
       min-height: 255px;
     }
 
-    .footer-decoration {
+    .footer-decoration-image {
       right: 0;
       width: min(38vw, 520px);
     }
