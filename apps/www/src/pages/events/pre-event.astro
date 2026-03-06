@@ -4,7 +4,6 @@ import Navbar from "@/components/navbar.astro";
 import PaperTexture from "@/assets/imgs/paper-texture-1.png";
 import Image from "astro/components/Image.astro";
 import Cobblestone from "@/assets/imgs/cobblestone.png";
-import Wall from "@/assets/imgs/wall.png";
 import Trees from "@/assets/imgs/tree-1.png";
 import Bushes1 from "@/assets/imgs/bushes.png";
 import BuildingWithWindow from "@/assets/imgs/building-with-window.png";
@@ -13,7 +12,6 @@ import Chair1 from "@/assets/imgs/chair-1.png";
 import Table4 from "@/assets/imgs/table-4.png";
 import Bushes2 from "@/assets/imgs/bushes-2.png";
 import Bushes3 from "@/assets/imgs/bushes-3.png";
-import Wall2 from "@/assets/imgs/wall-2.png";
 import Mailbox from "@/assets/imgs/mailbox.png";
 import PreEvent1 from "@/assets/imgs/pre-event-1.png";
 import PreEvent2 from "@/assets/imgs/pre-event-2.png";
@@ -44,7 +42,42 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
               alt={"Cobblestone"}
               class="cobblestone-1"
             />
-            <Image src={Wall} alt={"Wall"} class="wall" />
+            <svg
+              class="wall"
+              viewBox="0 0 833 609"
+              fill="none"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <pattern
+                  id="paperTex"
+                  patternUnits="userSpaceOnUse"
+                  width="1024"
+                  height="1024"
+                >
+                  <image
+                    href={PaperTexture.src}
+                    width="1024"
+                    height="1024"
+                    preserveAspectRatio="xMidYMid slice"
+                    opacity="0.6"
+                    style={{ mixBlendMode: "multiply" }}
+                  />
+                </pattern>
+              </defs>
+              <path
+                d="M417 260.178V608.678H26V20H833C592.998 31.6184 417 58.6777 417 260.178Z"
+                fill="black"
+                fill-opacity="0.2"></path>
+              <path
+                d="M391 240.178V588.678H0V0H807C566.998 11.6184 391 38.6777 391 240.178Z"
+                fill="white"></path>
+              <path
+                d="M391 240.178V588.678H0V0H807C566.998 11.6184 391 38.6777 391 240.178Z"
+                fill="url(#paperTex)"></path>
+            </svg>
             <Image src={Trees} alt={"trees"} class="trees" />
             <Image
               src={BuildingWithWindow}
@@ -84,7 +117,25 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
             </div>
             <Image src={Mailbox} alt={"mailbox"} class="mailbox" />
             <Image src={Bushes3} alt={"Bushes3"} class="bushes-3" />
-            <Image src={Wall2} alt={"Wall2"} class="wall-2" />
+            <svg
+              class="wall-2"
+              viewBox="0 0 1061 609"
+              fill="none"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M416 260.178V608.678H807V20H0C240.002 31.6184 416 58.6777 416 260.178Z"
+                fill="black"
+                fill-opacity="0.2"></path>
+              <path
+                d="M442 240.178V588.678H1060.5V0H26C266.002 11.6184 442 38.6777 442 240.178Z"
+                fill="white"></path>
+              <path
+                d="M442 240.178V588.678H1060.5V0H26C266.002 11.6184 442 38.6777 442 240.178Z"
+                fill="url(#paperTex)"></path>
+            </svg>
             <Image src={PreEvent1} alt={"PreEvent1"} class="pre-event-1" />
             <Image src={PreEvent2} alt={"PreEvent2"} class="pre-event-2" />
             <div class="section-2-content">
@@ -363,7 +414,7 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
   .section-2-content {
     position: absolute;
     z-index: 5;
-    right: 2dvw;
+    right: 5dvw;
     top: 50%;
     transform: translateY(-50%);
     width: 35dvw;
@@ -419,7 +470,7 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
 
   @media (max-width: 767px) {
     .wall {
-      height: 100%;
+      height: 100dvh;
       width: auto;
       bottom: 0dvh;
       left: 0dvw;
