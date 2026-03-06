@@ -1,8 +1,803 @@
 ---
-import ComingSoon from "@/components/coming-soon.astro";
 import Layout from "@/components/layout.astro";
+import Navbar from "@/components/navbar.astro";
+import PaperTexture from "@/assets/imgs/paper-texture-1.png";
+import Image from "astro/components/Image.astro";
+import Cobblestone from "@/assets/imgs/cobblestone.png";
+import Trees from "@/assets/imgs/tree-1.png";
+import Bushes1 from "@/assets/imgs/bushes.png";
+import BuildingWithWindow from "@/assets/imgs/building-with-window.png";
+import PastelCoastalLandscape from "@/assets/imgs/pastel-coastal-landscape.png";
+import Chair1 from "@/assets/imgs/chair-1.png";
+import Table4 from "@/assets/imgs/table-4.png";
+import Bushes2 from "@/assets/imgs/bushes-2.png";
+import Bushes3 from "@/assets/imgs/bushes-3.png";
+import Mailbox from "@/assets/imgs/mailbox.png";
+import PreEvent1 from "@/assets/imgs/pre-event-1.png";
+import PreEvent2 from "@/assets/imgs/pre-event-2.png";
 ---
 
-<Layout>
-  <ComingSoon />
+<Layout
+  title="Teras Cerita | TEDx Universitas Brawijaya"
+  description="Teras Cerita merupakan gerbang awal menuju panggung utama TEDxUniversitasBrawijaya 2026, sebuah ruang bagi mahasiswa untuk mengeksplorasi makna keluarga. Kami tidak sekadar mencari pembicara mahasiswa, melainkan pemikiran tajam yang mampu membedah setiap sisi peran manusia. Pre-event hadir untuk merayakan kreativitas dan potensi generasi muda dalam memaknai kembali posisi mereka. Di bawah kurasi yang mendalam, setiap konsep akan diasah agar mampu menyampaikan pesan yang kuat dan autentik. Ini adalah panggung untuk mendefinisikan siapa kita di bawah atap yang sama, sebelum akhirnya satu suara terpilih akan bersinar di panggung utama."
+>
+  <Navbar />
+  <main>
+    <section id="horizontal-scroll-section">
+      <div id="sticky-wrapper">
+        <div id="horizontal-canvas">
+          <Image
+            src={PaperTexture}
+            alt={"Paper Texture"}
+            class="paper-texture"
+          />
+          <Image
+            src={PastelCoastalLandscape}
+            alt={"Pastel Coastal Landscape"}
+            class="pastel-coastal-landscape"
+          />
+          <div class="canvas-section section-1">
+            <Image
+              src={Cobblestone}
+              alt={"Cobblestone"}
+              class="cobblestone-1"
+            />
+            <svg
+              class="wall"
+              viewBox="0 0 833 609"
+              fill="none"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <pattern
+                  id="paperTex"
+                  patternUnits="userSpaceOnUse"
+                  width="1024"
+                  height="1024"
+                >
+                  <image
+                    href={PaperTexture.src}
+                    width="1024"
+                    height="1024"
+                    preserveAspectRatio="xMidYMid slice"
+                    opacity="0.6"
+                    style={{ mixBlendMode: "multiply" }}
+                  />
+                </pattern>
+              </defs>
+              <path
+                d="M417 260.178V608.678H26V20H833C592.998 31.6184 417 58.6777 417 260.178Z"
+                fill="black"
+                fill-opacity="0.2"></path>
+              <path
+                d="M391 240.178V588.678H0V0H807C566.998 11.6184 391 38.6777 391 240.178Z"
+                fill="white"></path>
+              <path
+                d="M391 240.178V588.678H0V0H807C566.998 11.6184 391 38.6777 391 240.178Z"
+                fill="url(#paperTex)"></path>
+            </svg>
+            <Image src={Trees} alt={"trees"} class="trees" />
+            <Image
+              src={BuildingWithWindow}
+              alt={"building-with-window"}
+              class="building-with-window"
+            />
+            <Image src={Bushes1} alt={"bushes"} class="bushes-1" />
+            <Image src={Chair1} alt={"chair"} class="chair-1" />
+            <Image src={Table4} alt={"table"} class="table-4" />
+
+            <Image src={Bushes2} alt={"bushes"} class="bushes-2" />
+            <div class="section-content">
+              <h2>Teras Cerita</h2>
+              <p>
+                Teras Cerita merupakan gerbang awal menuju panggung utama
+                TEDxUniversitasBrawijaya 2026, sebuah ruang bagi mahasiswa untuk
+                mengeksplorasi makna keluarga. Kami tidak sekadar mencari
+                pembicara mahasiswa, melainkan pemikiran tajam yang mampu
+                membedah setiap sisi peran manusia. Pre-event hadir untuk
+                merayakan kreativitas dan potensi generasi muda dalam memaknai
+                kembali posisi mereka. Di bawah kurasi yang mendalam, setiap
+                konsep akan diasah agar mampu menyampaikan pesan yang kuat dan
+                autentik. Ini adalah panggung untuk mendefinisikan siapa kita di
+                bawah atap yang sama, sebelum akhirnya satu suara terpilih akan
+                bersinar di panggung utama.
+              </p>
+            </div>
+          </div>
+          <div class="canvas-section section-2">
+            <Image
+              src={Cobblestone}
+              alt={"Cobblestone"}
+              class="cobblestone-1"
+            />
+            <div class="video-placeholder">
+              <span>video</span>
+            </div>
+            <Image src={Mailbox} alt={"mailbox"} class="mailbox" />
+            <Image src={Bushes3} alt={"Bushes3"} class="bushes-3" />
+            <svg
+              class="wall-2"
+              viewBox="0 0 1061 609"
+              fill="none"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M416 260.178V608.678H807V20H0C240.002 31.6184 416 58.6777 416 260.178Z"
+                fill="black"
+                fill-opacity="0.2"></path>
+              <path
+                d="M442 240.178V588.678H1060.5V0H26C266.002 11.6184 442 38.6777 442 240.178Z"
+                fill="white"></path>
+              <path
+                d="M442 240.178V588.678H1060.5V0H26C266.002 11.6184 442 38.6777 442 240.178Z"
+                fill="url(#paperTex)"></path>
+            </svg>
+            <Image src={PreEvent1} alt={"PreEvent1"} class="pre-event-1" />
+            <Image src={PreEvent2} alt={"PreEvent2"} class="pre-event-2" />
+            <div class="section-2-content">
+              <h3>Catat Tanggal <br /> dan Waktunya</h3>
+              <div class="details">
+                <p>Hari, Tanggal: Kamis</p>
+                <p>12 Maret 2026</p>
+                <p>Tempat: Jeda cafe</p>
+              </div>
+              <a href="#" class="cta-button">Buy ticket Pre Event</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </Layout>
+
+<style>
+  main {
+    background-color: var(--color-black);
+    position: relative;
+  }
+
+  #horizontal-scroll-section {
+    height: 600dvh;
+    position: relative;
+    background-color: #050505;
+  }
+
+  #sticky-wrapper {
+    position: sticky;
+    top: calc(var(--navbar-height, 64px) - 2px);
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - var(--navbar-height, 64px) + 2px);
+    overflow: hidden;
+    background-color: #050505;
+  }
+
+  #horizontal-canvas {
+    position: relative;
+    height: 100%;
+    width: 200dvw;
+    display: flex;
+    flex-shrink: 0;
+    overflow: visible;
+    transform: translate(var(--translate-x, 0dvw), 0%);
+    will-change: transform;
+    background: radial-gradient(circle at center, #111 0%, #000 100%);
+  }
+
+  .canvas-section {
+    flex-shrink: 0;
+    width: 100dvw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: -1px; /* Overlap to prevent sub-pixel gaps */
+  }
+
+  .section-content {
+    position: absolute;
+    z-index: 5;
+    right: 5%;
+    top: 40%;
+    transform: translateY(-50%);
+    width: 36dvw;
+    text-align: center;
+    color: var(--color-black);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5dvw;
+    pointer-events: none;
+  }
+
+  .section-content h2 {
+    font-family: var(--font-serif);
+    font-size: 2.2dvw;
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: -0.01em;
+    color: var(--color-black);
+  }
+
+  .section-content p {
+    font-family: var(--font-sans);
+    font-size: 1.1dvw;
+    margin: 0;
+    font-weight: 400;
+    text-align: center;
+    color: var(--color-black);
+    text-wrap-style: pretty;
+  }
+
+  .paper-texture {
+    z-index: 50;
+    position: absolute;
+    top: -2px;
+    left: 0;
+    width: 100%;
+    height: calc(100% + 4px);
+    object-fit: cover;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+  .cobblestone-1 {
+    width: 100dvw;
+    height: 18dvh;
+    object-fit: cover;
+    z-index: 2;
+    position: absolute;
+    bottom: 0;
+  }
+  .wall {
+    position: absolute;
+    z-index: 1;
+    height: 100dvh;
+    width: auto;
+    aspect-ratio: 833 / 608.68;
+  }
+  .section-1 .trees {
+    z-index: 3;
+    position: absolute;
+    left: -18dvw;
+    height: 100dvh;
+    width: auto;
+    bottom: 0;
+  }
+
+  .section-1 .building-with-window {
+    position: absolute;
+    z-index: 2;
+    height: 100dvh;
+    width: auto;
+    bottom: 0;
+    left: 0;
+  }
+  .section-1 .bushes-1 {
+    position: absolute;
+    z-index: 2;
+    height: 35dvh;
+    width: 43.4dvw;
+    bottom: 0;
+    left: 0;
+  }
+  .section-1 .chair-1 {
+    position: absolute;
+    z-index: 3;
+    width: 26.25dvw;
+    height: 52.4dvh;
+    aspect-ratio: 378 / 472;
+    object-fit: contain;
+    bottom: -5dvh;
+    left: 10dvw;
+    pointer-events: none;
+  }
+  .section-1 .table-4 {
+    position: absolute;
+    z-index: 3;
+    width: 24.3dvw;
+    height: auto;
+    aspect-ratio: 350 / 438;
+    bottom: 0;
+    left: 30dvw;
+    pointer-events: none;
+  }
+
+  .pastel-coastal-landscape {
+    position: absolute;
+    z-index: 0;
+    width: 200dvw;
+    height: calc(100% + 4px);
+    top: -2px;
+    left: 0;
+    object-fit: cover;
+    object-position: top;
+    pointer-events: none;
+  }
+  .section-1 {
+    position: relative;
+    width: 100dvw;
+    height: 100%;
+  }
+  .section-2 {
+    position: relative;
+    width: 100dvw;
+    height: 100%;
+  }
+
+  .bushes-2 {
+    position: absolute;
+    z-index: 4;
+    height: 35dvh;
+    width: auto;
+    bottom: -4dvh;
+    aspect-ratio: 507/228;
+    right: -25dvw;
+  }
+  .bushes-3 {
+    position: absolute;
+    z-index: 4;
+    height: 35.37dvh;
+    width: auto;
+    aspect-ratio: 507.49 / 215.3;
+    bottom: -4dvh;
+    right: -2dvw;
+  }
+
+  .section-2 .mailbox {
+    position: absolute;
+    left: 4dvw;
+    bottom: -15%;
+    width: 19.33dvw;
+    height: auto;
+    aspect-ratio: 278.43 / 464.38;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .section-2 .video-placeholder {
+    position: absolute;
+    z-index: 1;
+    left: 5dvw;
+    top: 12dvh;
+    width: 45dvw;
+    aspect-ratio: 1045 / 588;
+    background: #d9d9d9;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .section-2 .video-placeholder span {
+    font-family: var(--font-sans);
+    font-size: var(--text-m);
+    color: var(--color-black);
+    opacity: 0.6;
+  }
+
+  .section-2 .wall-2 {
+    position: absolute;
+    z-index: 0;
+    width: 73.65dvw;
+    height: 100dvh;
+    aspect-ratio: 1060.5 / 608.68;
+    bottom: 0;
+    right: 0;
+    pointer-events: none;
+  }
+
+  .section-2 .pre-event-1 {
+    position: absolute;
+    z-index: 3;
+    width: 20.45dvw;
+    height: auto;
+    top: 5dvh;
+    right: 5dvw;
+    pointer-events: none;
+  }
+  .section-2 .pre-event-2 {
+    position: absolute;
+    z-index: 3;
+    width: 18dvw;
+    height: auto;
+    bottom: 22dvh;
+    right: 0;
+    transform: rotate(4deg);
+    pointer-events: none;
+  }
+
+  .section-2-content {
+    position: absolute;
+    z-index: 5;
+    right: 5dvw;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35dvw;
+    display: flex;
+    flex-direction: column;
+    gap: 2dvw;
+    color: var(--color-black);
+    align-items: flex-start;
+  }
+
+  .section-2-content h3 {
+    font-family: var(--font-serif);
+    font-size: 2.2dvw;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .section-2-content .details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4dvw;
+  }
+
+  .section-2-content .details p {
+    font-family: var(--font-sans);
+    font-size: 1.1dvw;
+    margin: 0;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  .section-2-content .cta-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    padding: 1.2rem 2.4rem;
+    background-color: #e62b1e;
+    color: white;
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    border-radius: 0.6rem;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    box-shadow: 0 0.4dvw 1.5dvw rgba(230, 43, 30, 0.3);
+  }
+
+  .section-2-content .cta-button:hover {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 767px) {
+    .wall {
+      height: 100dvh;
+      width: auto;
+      bottom: 0dvh;
+      left: 0dvw;
+      position: absolute;
+    }
+
+    .section-1 .trees {
+      display: none;
+    }
+
+    .section-1 .building-with-window {
+      display: none;
+    }
+
+    .section-2 .bushes-2 {
+      /* display: none; */
+    }
+    .bushes-3 {
+      display: none;
+    }
+    .bushes-2 {
+      position: absolute;
+      height: auto;
+      aspect-ratio: 258.46 / 116.57;
+      bottom: 0dvh;
+      right: -64dvw;
+      z-index: 4;
+    }
+
+    .section-2 .video-placeholder {
+      width: 17rem;
+      max-width: 17rem;
+      aspect-ratio: 309 / 370;
+      left: 50%;
+      top: 5dvh;
+      z-index: 23;
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    .section-2 .wall-2 {
+      height: 100dvh;
+      width: auto;
+      bottom: 0;
+      right: 0;
+      position: absolute;
+    }
+
+    .section-2 .mailbox {
+      width: 30dvw;
+      left: 0dvw;
+      bottom: 4dvh;
+      z-index: 2;
+    }
+
+    .section-2-content {
+      width: 85dvw;
+      left: 50%;
+      top: 60%;
+      position: absolute;
+      height: auto;
+      transform: translateX(-50%);
+      align-items: center;
+      text-align: center;
+      gap: 1.2dvh;
+      z-index: 5;
+    }
+
+    .section-2-content h3 {
+      font-size: var(--text-l);
+      line-height: 1.2;
+      font-weight: 500;
+    }
+
+    .section-2-content .details {
+      font-size: var(--text-m);
+      gap: 0.4dvh;
+    }
+
+    .section-2-content .details p {
+      font-size: 0.9rem;
+      color: rgba(0, 0, 0, 0.85);
+    }
+
+    .section-2-content .cta-button {
+      padding: 0.6rem 1.4rem;
+      margin-top: 1dvh;
+    }
+
+    .section-1 .bushes-1 {
+      height: 20dvh;
+      width: auto;
+      position: absolute;
+      bottom: -1dvh;
+      left: -60dvw;
+    }
+
+    .section-1 .table-4 {
+      position: absolute;
+      width: 40dvw;
+      height: auto;
+      bottom: 4dvh;
+    }
+
+    .section-1 .chair-1 {
+      width: 40dvw;
+      height: auto;
+      bottom: 2dvh;
+      left: 0dvw;
+      position: absolute;
+    }
+    .cobblestone-1 {
+      width: 100dvw;
+      height: 14%;
+      position: absolute;
+      bottom: 0;
+    }
+
+    .section-1 .section-content {
+      width: 85dvw;
+      left: 50%;
+      top: 35%;
+      transform: translate(-50%, -50%);
+      gap: 1rem;
+    }
+
+    .section-1 .section-content h2 {
+      font-size: var(--text-l);
+      letter-spacing: normal;
+    }
+
+    .section-1 .section-content p {
+      font-size: var(--text-s);
+      line-height: inherit;
+      width: 90%;
+      max-width: none;
+      margin: auto;
+    }
+
+    .pastel-coastal-landscape {
+      object-position: 50% 10%;
+      height: 150dvh;
+      top: 0;
+    }
+
+    .section-2 .pre-event-1 {
+      width: 80dvw;
+      top: 5dvh;
+      z-index: 1;
+      position: absolute;
+      right: -50dvw;
+    }
+
+    .section-2 .pre-event-2 {
+      width: 60dvw;
+      bottom: 20dvh;
+      z-index: 1;
+      right: -45dvw;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 840px) {
+    .section-content {
+      width: 32dvw;
+      right: 4%;
+      top: 30%;
+      gap: 0.8rem;
+    }
+    .section-1 .building-with-window {
+      left: -40%;
+    }
+    .section-1 .wall {
+      left: -10%;
+    }
+    .section-1 .trees {
+      left: -50%;
+    }
+    .section-1 .table-4 {
+      bottom: 5%;
+      left: 75%;
+    }
+
+    .section-1 .chair-1 {
+      left: 50%;
+    }
+
+    .section-1 .bushes-1 {
+      width: auto;
+      left: -50%;
+      bottom: -5%;
+    }
+    .section-1 .bushes-2 {
+      display: none;
+    }
+    .section-1 .mailbox {
+      z-index: 2;
+      bottom: 0;
+      position: absolute;
+    }
+    .section-2 .mailbox {
+      position: absolute;
+      height: auto;
+      bottom: 0;
+      width: 25dvw;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .section-2 .video-placeholder {
+      top: 20%;
+      ition:;
+    }
+    .section-2-content h3 {
+      font-family: var(--font-serif);
+      font-size: var(--text-l);
+      font-weight: 500;
+      margin: 0;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    .section-2-content .details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4dvw;
+    }
+
+    .section-2-content .details p {
+      font-family: var(--font-sans);
+      font-size: var(--text-m);
+      margin: 0;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.85);
+    }
+
+    .section-2-content .cta-button {
+      padding: 0.8rem 1.6rem;
+    }
+
+    .section-2-content .cta-button:hover {
+      transform: scale(1.05);
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const section = document.getElementById("horizontal-scroll-section");
+    const canvas = document.getElementById("horizontal-canvas");
+
+    if (!(section && canvas)) return;
+
+    const easeInOutCubic = (t: number): number => {
+      return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+    };
+
+    function transform(
+      x: number,
+      input: number[],
+      output: number[],
+      easing: (t: number) => number = (t) => t,
+    ) {
+      const firstInput = input[0];
+      const lastInput = input.at(-1);
+      const lastOutput = output.at(-1);
+
+      if (
+        firstInput === undefined ||
+        lastInput === undefined ||
+        lastOutput === undefined
+      ) {
+        return 0;
+      }
+
+      const clampedX = Math.max(firstInput, Math.min(lastInput, x));
+
+      for (let i = 0; i < input.length - 1; i++) {
+        const currentInput = input[i]!;
+        const nextInput = input[i + 1]!;
+        const currentOutput = output[i]!;
+        const nextOutput = output[i + 1]!;
+
+        if (clampedX >= currentInput && clampedX <= nextInput) {
+          const localProgress =
+            (clampedX - currentInput) / (nextInput - currentInput);
+          const easedProgress = easing(localProgress);
+          return currentOutput + easedProgress * (nextOutput - currentOutput);
+        }
+      }
+
+      return lastOutput;
+    }
+
+    const updateScroll = () => {
+      const sectionRect = section.getBoundingClientRect();
+      const sectionHeight = section.offsetHeight;
+      const viewportHeight = window.innerHeight;
+
+      const scrollProgress = Math.max(
+        0,
+        Math.min(1, -sectionRect.top / (sectionHeight - viewportHeight)),
+      );
+
+      const translateX = transform(
+        scrollProgress,
+        [0, 1],
+        [0, -100],
+        easeInOutCubic,
+      );
+
+      canvas.style.setProperty("--translate-x", `${translateX}dvw`);
+    };
+
+    let scrollRafId: number | null = null;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (scrollRafId !== null) return;
+        scrollRafId = requestAnimationFrame(() => {
+          updateScroll();
+          scrollRafId = null;
+        });
+      },
+      { passive: true },
+    );
+
+    updateScroll();
+
+    document.addEventListener("astro:page-load", updateScroll);
+  })();
+</script>
