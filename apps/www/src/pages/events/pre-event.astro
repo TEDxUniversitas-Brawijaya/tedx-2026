@@ -686,7 +686,6 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
     }
     .section-2 .video-placeholder {
       top: 20%;
-      ition:;
     }
     .section-2-content h3 {
       font-family: var(--font-serif);
@@ -726,7 +725,9 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
     const section = document.getElementById("horizontal-scroll-section");
     const canvas = document.getElementById("horizontal-canvas");
 
-    if (!(section && canvas)) return;
+    if (!(section && canvas)) {
+      return;
+    }
 
     const easeInOutCubic = (t: number): number => {
       return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
@@ -753,12 +754,19 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
       const clampedX = Math.max(firstInput, Math.min(lastInput, x));
 
       for (let i = 0; i < input.length - 1; i++) {
-        const currentInput = input[i]!;
-        const nextInput = input[i + 1]!;
-        const currentOutput = output[i]!;
-        const nextOutput = output[i + 1]!;
+        const currentInput = input[i];
+        const nextInput = input[i + 1];
+        const currentOutput = output[i];
+        const nextOutput = output[i + 1];
 
-        if (clampedX >= currentInput && clampedX <= nextInput) {
+        if (
+          currentInput !== undefined &&
+          nextInput !== undefined &&
+          currentOutput !== undefined &&
+          nextOutput !== undefined &&
+          clampedX >= currentInput &&
+          clampedX <= nextInput
+        ) {
           const localProgress =
             (clampedX - currentInput) / (nextInput - currentInput);
           const easedProgress = easing(localProgress);
@@ -793,7 +801,9 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
     window.addEventListener(
       "scroll",
       () => {
-        if (scrollRafId !== null) return;
+        if (scrollRafId !== null) {
+          return;
+        }
         scrollRafId = requestAnimationFrame(() => {
           updateScroll();
           scrollRafId = null;
