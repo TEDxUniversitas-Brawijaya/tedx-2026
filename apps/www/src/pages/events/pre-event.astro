@@ -113,7 +113,13 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
               class="cobblestone-1"
             />
             <div class="video-placeholder">
-              <span>video</span>
+              <video
+                src="https://cdn.tedxuniversitasbrawijaya.com/teasers/pre-event-teaser.MP4"
+                autoplay
+                loop
+                muted
+                playsinline
+                controls></video>
             </div>
             <Image src={Mailbox} alt={"mailbox"} class="mailbox" />
             <Image src={Bushes3} alt={"Bushes3"} class="bushes-3" />
@@ -161,7 +167,7 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
   }
 
   #horizontal-scroll-section {
-    height: 600dvh;
+    height: 600vh;
     position: relative;
     background-color: #050505;
   }
@@ -171,7 +177,7 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
     top: calc(var(--navbar-height, 64px) - 2px);
     left: 0;
     width: 100%;
-    height: calc(100dvh - var(--navbar-height, 64px) + 2px);
+    height: calc(100vh - var(--navbar-height, 64px) + 2px);
     overflow: hidden;
     background-color: #050505;
   }
@@ -179,18 +185,18 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
   #horizontal-canvas {
     position: relative;
     height: 100%;
-    width: 200dvw;
+    width: 200vw;
     display: flex;
     flex-shrink: 0;
     overflow: visible;
-    transform: translate(var(--translate-x, 0dvw), 0%);
+    transform: translate(var(--translate-x, 0vw), 0%);
     will-change: transform;
     background: radial-gradient(circle at center, #111 0%, #000 100%);
   }
 
   .canvas-section {
     flex-shrink: 0;
-    width: 100dvw;
+    width: 100vw;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -205,18 +211,18 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
     right: 5%;
     top: 40%;
     transform: translateY(-50%);
-    width: 36dvw;
+    width: 36vw;
     text-align: center;
     color: var(--color-black);
     display: flex;
     flex-direction: column;
-    gap: 1.5dvw;
+    gap: 1.5vw;
     pointer-events: none;
   }
 
   .section-content h2 {
     font-family: var(--font-serif);
-    font-size: 2.2dvw;
+    font-size: 2.2vw;
     font-weight: 500;
     margin: 0;
     letter-spacing: -0.01em;
@@ -225,7 +231,7 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
 
   .section-content p {
     font-family: var(--font-sans);
-    font-size: 1.1dvw;
+    font-size: 1.1vw;
     margin: 0;
     font-weight: 400;
     text-align: center;
@@ -245,8 +251,8 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
     pointer-events: none;
   }
   .cobblestone-1 {
-    width: 100dvw;
-    height: 18dvh;
+    width: 100vw;
+    height: 18vh;
     object-fit: cover;
     z-index: 2;
     position: absolute;
@@ -255,61 +261,62 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
   .wall {
     position: absolute;
     z-index: 1;
-    height: 100dvh;
+    height: 100vh;
     width: auto;
     aspect-ratio: 833 / 608.68;
   }
   .section-1 .trees {
     z-index: 3;
     position: absolute;
-    left: -18dvw;
-    height: 100dvh;
-    width: auto;
+    left: -18vw;
+    height: 100vh;
     bottom: 0;
+    width: auto;
   }
 
   .section-1 .building-with-window {
     position: absolute;
     z-index: 2;
-    height: 100dvh;
+    height: 100vh;
     width: auto;
-    bottom: 0;
+    aspect-ratio: 862 / 869;
+    bottom: 1;
     left: 0;
   }
   .section-1 .bushes-1 {
     position: absolute;
     z-index: 2;
-    height: 35dvh;
-    width: 43.4dvw;
+    height: 35vh;
+    width: 43.4vw;
     bottom: 0;
     left: 0;
   }
   .section-1 .chair-1 {
     position: absolute;
     z-index: 3;
-    width: 26.25dvw;
-    height: 52.4dvh;
+    width: 26.25vw;
+    height: 52.4vh;
     aspect-ratio: 378 / 472;
     object-fit: contain;
-    bottom: -5dvh;
-    left: 10dvw;
+    bottom: -5vh;
+    left: 10vw;
     pointer-events: none;
   }
   .section-1 .table-4 {
     position: absolute;
     z-index: 3;
-    width: 24.3dvw;
+    width: 24.3vw;
     height: auto;
     aspect-ratio: 350 / 438;
     bottom: 0;
-    left: 30dvw;
+    left: 30vw;
     pointer-events: none;
   }
 
   .pastel-coastal-landscape {
     position: absolute;
     z-index: 0;
-    width: 200dvw;
+    width: 200vw;
     height: calc(100% + 4px);
     top: -2px;
     left: 0;
@@ -319,39 +326,39 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
   }
   .section-1 {
     position: relative;
-    width: 100dvw;
+    width: 100vw;
     height: 100%;
   }
   .section-2 {
     position: relative;
-    width: 100dvw;
+    width: 100vw;
     height: 100%;
   }
 
   .bushes-2 {
     position: absolute;
     z-index: 4;
-    height: 35dvh;
+    height: 35vh;
     width: auto;
-    bottom: -4dvh;
+    bottom: -4vh;
     aspect-ratio: 507/228;
-    right: -25dvw;
+    right: -25vw;
   }
   .bushes-3 {
     position: absolute;
     z-index: 4;
-    height: 35.37dvh;
+    height: 35.37vh;
     width: auto;
     aspect-ratio: 507.49 / 215.3;
-    bottom: -4dvh;
-    right: -2dvw;
+    bottom: -4vh;
+    right: -2vw;
   }
 
   .section-2 .mailbox {
     position: absolute;
-    left: 4dvw;
+    left: 4vw;
     bottom: -15%;
-    width: 19.33dvw;
+    width: 19.33vw;
     height: auto;
     aspect-ratio: 278.43 / 464.38;
     z-index: 1;
@@ -361,30 +368,29 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
   .section-2 .video-placeholder {
     position: absolute;
     z-index: 1;
-    left: 5dvw;
-    top: 12dvh;
-    width: 45dvw;
+    left: 5vw;
+    top: 12vh;
+    width: 45vw;
     aspect-ratio: 1045 / 588;
     background: #d9d9d9;
     border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
-    pointer-events: none;
+    overflow: hidden;
   }
 
-  .section-2 .video-placeholder span {
-    font-family: var(--font-sans);
-    font-size: var(--text-m);
-    color: var(--color-black);
-    opacity: 0.6;
+  .section-2 .video-placeholder video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .section-2 .wall-2 {
     position: absolute;
     z-index: 0;
-    width: 73.65dvw;
-    height: 100dvh;
+    width: 73.65vw;
+    height: 100vh;
     aspect-ratio: 1060.5 / 608.68;
     bottom: 0;
     right: 0;
@@ -394,18 +400,18 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
   .section-2 .pre-event-1 {
     position: absolute;
     z-index: 3;
-    width: 20.45dvw;
+    width: 20.45vw;
     height: auto;
-    top: 5dvh;
-    right: 5dvw;
+    top: 5vh;
+    right: 5vw;
     pointer-events: none;
   }
   .section-2 .pre-event-2 {
     position: absolute;
     z-index: 3;
-    width: 18dvw;
+    width: 18vw;
     height: auto;
-    bottom: 22dvh;
+    bottom: 22vh;
     right: 0;
     transform: rotate(4deg);
     pointer-events: none;
@@ -414,20 +420,20 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
   .section-2-content {
     position: absolute;
     z-index: 5;
-    right: 5dvw;
+    right: 5vw;
     top: 50%;
     transform: translateY(-50%);
-    width: 35dvw;
+    width: 35vw;
     display: flex;
     flex-direction: column;
-    gap: 2dvw;
+    gap: 2vw;
     color: var(--color-black);
     align-items: flex-start;
   }
 
   .section-2-content h3 {
     font-family: var(--font-serif);
-    font-size: 2.2dvw;
+    font-size: 2.2vw;
     font-weight: 500;
     margin: 0;
     line-height: 1.25;
@@ -437,12 +443,12 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
   .section-2-content .details {
     display: flex;
     flex-direction: column;
-    gap: 0.4dvw;
+    gap: 0.4vw;
   }
 
   .section-2-content .details p {
     font-family: var(--font-sans);
-    font-size: 1.1dvw;
+    font-size: 1.1vw;
     margin: 0;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.85);
@@ -461,7 +467,7 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
     border-radius: 0.6rem;
     text-decoration: none;
     transition: transform 0.2s ease;
-    box-shadow: 0 0.4dvw 1.5dvw rgba(230, 43, 30, 0.3);
+    box-shadow: 0 0.4vw 1.5vw rgba(230, 43, 30, 0.3);
   }
 
   .section-2-content .cta-button:hover {
@@ -470,10 +476,10 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
 
   @media (max-width: 767px) {
     .wall {
-      height: 100dvh;
+      height: 100vh;
       width: auto;
-      bottom: 0dvh;
-      left: 0dvw;
+      bottom: 0vh;
+      left: 0vw;
       position: absolute;
     }
 
@@ -495,8 +501,8 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
       position: absolute;
       height: auto;
       aspect-ratio: 258.46 / 116.57;
-      bottom: 0dvh;
-      right: -64dvw;
+      bottom: 0vh;
+      right: -64vw;
       z-index: 4;
     }
 
@@ -505,14 +511,14 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
       max-width: 17rem;
       aspect-ratio: 309 / 370;
       left: 50%;
-      top: 5dvh;
+      top: 5vh;
       z-index: 23;
       position: absolute;
       transform: translateX(-50%);
     }
 
     .section-2 .wall-2 {
-      height: 100dvh;
+      height: 100vh;
       width: auto;
       bottom: 0;
       right: 0;
@@ -520,14 +526,14 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
     }
 
     .section-2 .mailbox {
-      width: 30dvw;
-      left: 0dvw;
-      bottom: 4dvh;
+      width: 30vw;
+      left: 0vw;
+      bottom: 4vh;
       z-index: 2;
     }
 
     .section-2-content {
-      width: 85dvw;
+      width: 85vw;
       left: 50%;
       top: 60%;
       position: absolute;
@@ -535,7 +541,7 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
       transform: translateX(-50%);
       align-items: center;
       text-align: center;
-      gap: 1.2dvh;
+      gap: 1.2vh;
       z-index: 5;
     }
 
@@ -547,7 +553,7 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
 
     .section-2-content .details {
       font-size: var(--text-m);
-      gap: 0.4dvh;
+      gap: 0.4vh;
     }
 
     .section-2-content .details p {
@@ -557,40 +563,40 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
 
     .section-2-content .cta-button {
       padding: 0.6rem 1.4rem;
-      margin-top: 1dvh;
+      margin-top: 1vh;
     }
 
     .section-1 .bushes-1 {
-      height: 20dvh;
+      height: 20vh;
       width: auto;
       position: absolute;
-      bottom: -1dvh;
-      left: -60dvw;
+      bottom: -1vh;
+      left: -60vw;
     }
 
     .section-1 .table-4 {
       position: absolute;
-      width: 40dvw;
+      width: 40vw;
       height: auto;
-      bottom: 4dvh;
+      bottom: 4vh;
     }
 
     .section-1 .chair-1 {
-      width: 40dvw;
+      width: 40vw;
       height: auto;
-      bottom: 2dvh;
-      left: 0dvw;
+      bottom: 2vh;
+      left: 0vw;
       position: absolute;
     }
     .cobblestone-1 {
-      width: 100dvw;
+      width: 100vw;
       height: 14%;
       position: absolute;
       bottom: 0;
     }
 
     .section-1 .section-content {
-      width: 85dvw;
+      width: 85vw;
       left: 50%;
       top: 35%;
       transform: translate(-50%, -50%);
@@ -612,35 +618,35 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
 
     .pastel-coastal-landscape {
       object-position: 50% 10%;
-      height: 150dvh;
+      height: 150vh;
       top: 0;
     }
 
     .section-2 .pre-event-1 {
-      width: 80dvw;
-      top: 5dvh;
+      width: 80vw;
+      top: 5vh;
       z-index: 1;
       position: absolute;
-      right: -50dvw;
+      right: -50vw;
     }
 
     .section-2 .pre-event-2 {
-      width: 60dvw;
-      bottom: 20dvh;
+      width: 60vw;
+      bottom: 20vh;
       z-index: 1;
-      right: -45dvw;
+      right: -45vw;
     }
   }
 
   @media (min-width: 768px) and (max-width: 840px) {
     .section-content {
-      width: 32dvw;
+      width: 32vw;
       right: 4%;
       top: 30%;
       gap: 0.8rem;
     }
     .section-1 .building-with-window {
-      left: -40%;
+      left: -15%;
     }
     .section-1 .wall {
       left: -10%;
@@ -674,7 +680,7 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
       position: absolute;
       height: auto;
       bottom: 0;
-      width: 25dvw;
+      width: 25vw;
       z-index: 2;
       pointer-events: none;
     }
@@ -694,7 +700,7 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
     .section-2-content .details {
       display: flex;
       flex-direction: column;
-      gap: 0.4dvw;
+      gap: 0.4vw;
     }
 
     .section-2-content .details p {
@@ -780,7 +786,7 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
         easeInOutCubic,
       );
 
-      canvas.style.setProperty("--translate-x", `${translateX}dvw`);
+      canvas.style.setProperty("--translate-x", `${translateX}vw`);
     };
 
     let scrollRafId: number | null = null;
