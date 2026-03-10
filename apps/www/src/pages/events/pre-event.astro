@@ -15,6 +15,8 @@ import Bushes3 from "@/assets/imgs/bushes-3.png";
 import Mailbox from "@/assets/imgs/mailbox.png";
 import PreEvent1 from "@/assets/imgs/pre-event-1.png";
 import PreEvent2 from "@/assets/imgs/pre-event-2.png";
+import Envelope from "@/assets/imgs/envelope.png";
+import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
 ---
 
 <Layout
@@ -22,6 +24,13 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
   description="Teras Cerita merupakan gerbang awal menuju panggung utama TEDxUniversitasBrawijaya 2026, sebuah ruang bagi mahasiswa untuk mengeksplorasi makna keluarga. Kami tidak sekadar mencari pembicara mahasiswa, melainkan pemikiran tajam yang mampu membedah setiap sisi peran manusia. Pre-event hadir untuk merayakan kreativitas dan potensi generasi muda dalam memaknai kembali posisi mereka. Di bawah kurasi yang mendalam, setiap konsep akan diasah agar mampu menyampaikan pesan yang kuat dan autentik. Ini adalah panggung untuk mendefinisikan siapa kita di bawah atap yang sama, sebelum akhirnya satu suara terpilih akan bersinar di panggung utama."
 >
   <Navbar />
+  <div class="envelope-overlay" id="envelope-overlay"></div>
+  <Image
+    src={EnvelopeOpen}
+    alt="Envelope Open"
+    class="opened-envelope"
+    id="opened-envelope"
+  />
   <main>
     <section id="horizontal-scroll-section">
       <div id="sticky-wrapper">
@@ -144,6 +153,12 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
             </svg>
             <Image src={PreEvent1} alt={"PreEvent1"} class="pre-event-1" />
             <Image src={PreEvent2} alt={"PreEvent2"} class="pre-event-2" />
+            <Image
+              src={Envelope}
+              alt="Envelope"
+              class="floating-envelope"
+              id="floating-envelope"
+            />
             <div class="section-2-content">
               <h3>Catat Tanggal <br /> dan Waktunya</h3>
               <div class="details">
@@ -151,7 +166,9 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
                 <p>12 Maret 2026</p>
                 <p>Tempat: Jeda cafe</p>
               </div>
-              <a href="#" class="cta-button">Buy ticket Pre Event</a>
+              <a href="#" class="cta-button" id="buy-ticket-btn"
+                >Buy ticket Pre Event</a
+              >
             </div>
           </div>
         </div>
@@ -468,10 +485,80 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
     text-decoration: none;
     transition: transform 0.2s ease;
     box-shadow: 0 0.4vw 1.5vw rgba(230, 43, 30, 0.3);
+    position: relative;
+    z-index: 6;
   }
 
   .section-2-content .cta-button:hover {
     transform: scale(1.05);
+  }
+
+  .floating-envelope {
+    position: absolute;
+    width: 25vw;
+    max-width: 350px;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .floating-envelope.is-animating {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    animation: envelope-wiggle 2s ease-in-out infinite;
+  }
+
+  @keyframes envelope-wiggle {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) scale(1) rotate(-5deg);
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.05) rotate(5deg);
+    }
+  }
+
+  .envelope-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+  .envelope-overlay.is-active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .opened-envelope {
+    position: fixed;
+    width: 28vw;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    z-index: 1001;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.5s ease,
+      transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .opened-envelope.is-open {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: all;
   }
 
   @media (max-width: 767px) {
@@ -636,6 +723,14 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
       z-index: 1;
       right: -45vw;
     }
+
+    .floating-envelope {
+      width: 80vw;
+    }
+
+    .opened-envelope {
+      width: 80vw;
+    }
   }
 
   @media (min-width: 768px) and (max-width: 840px) {
@@ -716,6 +811,13 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
 
     .section-2-content .cta-button:hover {
       transform: scale(1.05);
+    }
+    .floating-envelope {
+      width: 60vw;
+    }
+
+    .opened-envelope {
+      width: 60vw;
     }
   }
 </style>
@@ -815,5 +917,28 @@ import PreEvent2 from "@/assets/imgs/pre-event-2.png";
     updateScroll();
 
     document.addEventListener("astro:page-load", updateScroll);
+
+    const buyBtn = document.getElementById("buy-ticket-btn");
+    const envelope = document.getElementById("floating-envelope");
+    const envelopeOpen = document.getElementById("opened-envelope");
+    const overlay = document.getElementById("envelope-overlay");
+
+    if (buyBtn && envelope && envelopeOpen && overlay) {
+      buyBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        envelope.classList.add("is-animating");
+
+        setTimeout(() => {
+          envelope.classList.remove("is-animating");
+          overlay.classList.add("is-active");
+          envelopeOpen.classList.add("is-open");
+        }, 1500);
+      });
+
+      overlay.addEventListener("click", () => {
+        overlay.classList.remove("is-active");
+        envelopeOpen.classList.remove("is-open");
+      });
+    }
   })();
 </script>
