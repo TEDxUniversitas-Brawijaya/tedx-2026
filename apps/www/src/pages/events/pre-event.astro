@@ -25,12 +25,35 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
 >
   <Navbar />
   <div class="envelope-overlay" id="envelope-overlay"></div>
-  <Image
-    src={EnvelopeOpen}
-    alt="Envelope Open"
-    class="opened-envelope"
-    id="opened-envelope"
-  />
+  <div class="opened-envelope-container-wrapper" id="opened-envelope-wrapper">
+    <div class="opened-envelope-container">
+      <Image src={EnvelopeOpen} alt="Envelope Open" class="opened-envelope" />
+      <div class="envelope-content-wrapper">
+        <div class="envelope-content">
+          <h4>Benefit</h4>
+          <ol>
+            <li>
+              Kesempatan mengenal lebih dekat semangat dan pengalaman khas TEDX
+            </li>
+            <li>
+              Mendapatkan akses untuk mendengarkan insight yang disampaikan oleh
+              Student Speaker dengan ide-ide segar yang menginspirasi
+            </li>
+            <li>
+              Harga tiket sudah termasuk sajian berbuka puasa yang hangat dan
+              berkesan
+            </li>
+            <li>
+              Dapatkan voucher diskon 10% untuk pembelian tiket Main Event
+            </li>
+            <li>Perfume</li>
+            <li>Setangkai Bunga</li>
+          </ol>
+          <a href="#" class="envelope-buy-btn">Buy ticket</a>
+        </div>
+      </div>
+    </div>
+  </div>
   <main>
     <section id="horizontal-scroll-section">
       <div id="sticky-wrapper">
@@ -167,7 +190,7 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
                 <p>Tempat: Jeda cafe</p>
               </div>
               <a href="#" class="cta-button" id="buy-ticket-btn"
-                >Buy ticket Pre Event</a
+                >Buy ticket for Pre Event</a
               >
             </div>
           </div>
@@ -219,7 +242,7 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-right: -1px; /* Overlap to prevent sub-pixel gaps */
+    margin-right: -1px;
   }
 
   .section-content {
@@ -540,11 +563,11 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
     pointer-events: all;
   }
 
-  .opened-envelope {
+  .opened-envelope-container-wrapper {
     position: fixed;
-    width: 28vw;
+    width: 420px;
     height: auto;
-    top: 50%;
+    top: 52%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.5);
     z-index: 1001;
@@ -555,10 +578,98 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
       transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
-  .opened-envelope.is-open {
+  .opened-envelope-container-wrapper.is-open {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
     pointer-events: all;
+  }
+
+  .opened-envelope-container {
+    position: relative;
+    width: 90%;
+    rotate: -4.79deg;
+    height: auto;
+  }
+
+  .opened-envelope {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .envelope-content-wrapper {
+    position: absolute;
+    top: 65%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    width: 86%;
+    height: 82%;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 30px 10px 25px;
+  }
+
+  .envelope-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    color: #242424;
+    pointer-events: all;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .envelope-content::-webkit-scrollbar {
+    display: none;
+  }
+
+  .envelope-content h4 {
+    font-family: var(--font-serif);
+    font-size: var(--text-l);
+    margin-bottom: 20px;
+  }
+
+  .envelope-content ol {
+    padding-left: 18px;
+    margin: 0 0 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .envelope-content li {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.15;
+    font-weight: 400;
+  }
+
+  .envelope-buy-btn {
+    margin-bottom: 24px;
+    margin-right: 4px;
+    align-self: flex-end;
+    background-color: #dc2625;
+    color: white;
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    padding: 8px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease;
+    box-shadow: 0 0.5rem 1.5rem rgba(230, 43, 30, 0.4);
+  }
+
+  .envelope-buy-btn:hover {
+    transform: scale(1.05) rotate(1deg);
+    background-color: #cf261b;
   }
 
   @media (max-width: 767px) {
@@ -622,7 +733,7 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
     .section-2-content {
       width: 85vw;
       left: 50%;
-      top: 60%;
+      top: 65%;
       position: absolute;
       height: auto;
       transform: translateX(-50%);
@@ -728,8 +839,33 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
       width: 80vw;
     }
 
-    .opened-envelope {
-      width: 80vw;
+    .opened-envelope-container-wrapper {
+      width: 90%;
+      left: 50%;
+      top: 50%;
+    }
+
+    .envelope-content-wrapper {
+      top: 65%;
+      left: 47%;
+      width: 90%;
+      height: 78%;
+      padding: 24px 25px 10px 25px;
+    }
+
+    .envelope-content h4 {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .envelope-content li {
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    .envelope-buy-btn {
+      font-size: 12px;
+      padding: 6px 18px;
     }
   }
 
@@ -818,6 +954,30 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
 
     .opened-envelope {
       width: 60vw;
+    }
+    .envelope-content-wrapper {
+      position: absolute;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 86%;
+      height: 82%;
+      display: flex;
+      flex-direction: column;
+      padding: 30px 25px 15px 30px;
+    }
+
+    .envelope-content h4 {
+      font-size: 20px;
+    }
+
+    .envelope-content li {
+      font-size: 15px;
+    }
+
+    .envelope-buy-btn {
+      font-size: 14px;
+      padding: 1vw 2vw;
     }
   }
 </style>
@@ -920,7 +1080,7 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
 
     const buyBtn = document.getElementById("buy-ticket-btn");
     const envelope = document.getElementById("floating-envelope");
-    const envelopeOpen = document.getElementById("opened-envelope");
+    const envelopeOpen = document.getElementById("opened-envelope-wrapper");
     const overlay = document.getElementById("envelope-overlay");
 
     if (buyBtn && envelope && envelopeOpen && overlay) {
