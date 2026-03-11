@@ -204,6 +204,9 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
 </Layout>
 
 <style>
+  body.no-scroll {
+    overflow: hidden;
+  }
   main {
     background-color: var(--color-black);
     position: relative;
@@ -1097,12 +1100,14 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
           envelope.classList.remove("is-animating");
           overlay.classList.add("is-active");
           envelopeOpen.classList.add("is-open");
+          document.body.classList.add("no-scroll");
         }, 1500);
       });
 
       overlay.addEventListener("click", () => {
         overlay.classList.remove("is-active");
         envelopeOpen.classList.remove("is-open");
+        document.body.classList.remove("no-scroll");
       });
     }
   })();
