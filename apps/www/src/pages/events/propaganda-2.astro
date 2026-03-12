@@ -1,8 +1,96 @@
 ---
-import ComingSoon from "@/components/coming-soon.astro";
 import Layout from "@/components/layout.astro";
+import { Image } from "astro:assets";
+import backgroundImage from "@/assets/imgs/green-room-background-3.png";
+import floor from "@/assets/imgs/wood-floor.png";
+import texture from "@/assets/imgs/paper-grain-texture-1.png";
+import window from "@/assets/imgs/window-2.png";
+import lighting from "@/assets/svgs/window-lighting.svg";
+import lamp from "@/assets/imgs/chandelier-1.png";
+import sofaSeat from "@/assets/imgs/sofa-seat.png";
+import carpet from "@/assets/imgs/green-carpet.png";
+import window2 from "@/assets/imgs/window-3.png";
+import diningTable from "@/assets/imgs/dining-seat.png";
+import vase from "@/assets/imgs/flower-vase.png";
+import vaseShine from "@/assets/svgs/flower-vase-shine.svg";
 ---
 
+<link rel="stylesheet" href="/src/styles/propaganda-2.css">
+
 <Layout>
-  <ComingSoon />
+  <main id="propa2-main">
+    <!-- frame 1 -->
+    <section class="frame-1" style="position: relative;">
+      <Image src={backgroundImage} class="background" alt="Propaganda 2" />
+      <Image src={floor} class="floor" alt="Wood Floor" />
+      <div class="window-1-container">
+        <Image src={window} class="window-1" alt="Window-1" />
+        <Image src={lighting} class="lighting" alt="Window Lighting" />
+      </div>
+      <Image src={lamp} class="hanging-lamp" alt="Hanging Lamp" />
+      <Image src={sofaSeat} class="sofa-seat" alt="Sofa Seat" />
+      <div class="text">
+        <h3 style="font-size: 1.5rem;">ANTOLOGI RASA</h3>
+        <p>
+          Jauh sebelum kita mengenal kata-kata, perasaan adalah cara pertama
+          manusia berkomunikasi dengan dunia. Di dalam lingkungan keluarga,
+          emosi berperan sebagai jembatan utama bagi kita untuk memahami diri
+          sendiri sekaligus orang-orang di sekitar. Keluarga yang harmonis bukan
+          berarti keluarga yang selalu tenang tanpa perselisihan, melainkan
+          keluarga yang berani memberi ruang bagi setiap anggotanya untuk merasa
+          bahagia, sedih, hingga kecewa tanpa perlu merasa dihakimi. Dengan
+          menghargai setiap rasa yang muncul, kita belajar bahwa memiliki emosi
+          bukanlah sebuah kelemahan, melainkan bukti nyata bahwa kita adalah
+          manusia yang utuh.
+        </p>
+      </div>
+    </section>
+    <!-- frame 2 -->
+    <section class="frame-2" style="position: relative;">
+      <Image src={carpet} class="carpet" alt="Green Carpet" />
+      <div class="frame-2-content">
+        <div class="placeholder">placeholder</div>
+        <p
+          class="text-2-content"
+          style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem' }}
+        >
+          Dalam perspektif yang lebih luas, topik ini mengajak kita melihat
+          bagaimana elemen modern seperti teknologi dan hiburan mempengaruhi
+          cara kita mengelola perasaan. Teknologi saat ini berperan bear dalam
+          membantu atau justru menghambat cara kita mengekspresikan diri,
+          sementara hiburan sering menjadi tempat kita melepas beban batin dan
+          mencari makna hidup. Tantangan besarnya adalah bagaimana kita dapat
+          merancang pola komunikasi dan interaksi sosial yang lebih terbuka.
+          Tujuannya agar tercipta rang dialog yang jujur, aman, dan merangkul
+          semua orang, baik di dalam lingkup kecil keluarga maupun di tengah
+          masyarakat luas.
+        </p>
+      </div>
+    </section>
+    <!-- frame 3 -->
+    <section class="frame-3" style="position: relative;">
+      <Image src={window2} class="window-frame-3" alt="Window 2" />
+      <Image src={backgroundImage} class="background" alt="Propaganda 2" />
+      <Image src={diningTable} class="dining-table" alt="Dining Table" />
+      <div class="vase-container">
+        <div class="vase-wrapper">
+          <Image src={vase} class="vase" alt="Flower Vase" />
+          <Image src={vaseShine} class="vase-shine" alt="Vase Shine" />
+        </div>
+      </div>
+      <div class="text-3">
+        <h3 style="font-size: 1.5rem;">PRASASTI TANPA AKSARA</h3>
+        <p>
+          Sebelum lidah mampu mengeja kata dan logika mulai menyusun alasan,
+          manusia telah lebih dulu "berbicara" melalui getaran perasaan. Bagian
+          ini menjelaskan bahwa rasa adalah medium komunikasi yang paling jujur.
+          Dalam lingkup keluarga, rasa bukan sekadar reaksi, melainkan kompas
+          pertama bagi seorang individu untuk mengenali siapa dirinya dan siapa
+          orang di sekitarnya.
+        </p>
+      </div>
+    </section>
+
+    <Image src={texture} class="texture" alt="Paper Grain Texture" />
+  </main>
 </Layout>
