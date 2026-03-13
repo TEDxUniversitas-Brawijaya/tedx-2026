@@ -517,12 +517,13 @@ import "lenis/dist/lenis.css";
       align-items: center;
       justify-content: center;
       will-change: transform;
+      overflow: hidden;
     }
 
     .house {
       width: 100%;
-      height: auto;
-      object-fit: cover;
+      height: 100%;
+      object-fit: contain;
       object-position: center;
       pointer-events: none;
       aspect-ratio: 1.08 / 1;
