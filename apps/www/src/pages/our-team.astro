@@ -1,8 +1,1233 @@
 ---
-import ComingSoon from "@/components/coming-soon.astro";
 import Layout from "@/components/layout.astro";
+import NavBar from "@/components/navbar.astro";
+import Image from "astro/components/image.astro";
+import TileFloor from "@/assets/imgs/tile-floor.png";
+import PaperTexture from "@/assets/imgs/paper-texture-1.png";
+import GreenBackground from "@/assets/imgs/green-background.png";
+import FamilyOne from "@/assets/imgs/family-1.png";
+import FamilyTwo from "@/assets/imgs/family-2.png";
+import FamilyThreeLeft from "@/assets/imgs/family-3-left.png";
+import FamilyThreeRight from "@/assets/imgs/family-3-right.png";
+import EventManagerPiece from "@/assets/imgs/em-piece.png";
+import CemPiece from "@/assets/imgs/cem-piece.png";
+import BudgetPiece from "@/assets/imgs/budget-piece.png";
+import DesignPiece from "@/assets/imgs/design-piece.png";
+import CuratorPiece from "@/assets/imgs/curator-piece.png";
+import EpPiece from "@/assets/imgs/ep-piece.png";
+import OrganizerPiece from "@/assets/imgs/organizer-piece.png";
+import SponsorshipPiece from "@/assets/imgs/sponsorship-piece.png";
+import VpPiece from "@/assets/imgs/vp-piece.png";
+import WebsitePiece from "@/assets/imgs/website-piece.png";
+import EmptyPieceTop from "@/assets/imgs/empty-piece-top.png";
+import EmptyPieceBottom from "@/assets/imgs/empty-piece-bottom.png";
+import EmptyPieceTopRight from "@/assets/imgs/empty-piece-top-right.png";
+// import EventManagerPiece from "@/assets/svgs/em-piece.svg";
+// import CemPiece from "@/assets/svgs/cem-piece.svg";
+// import BudgetPiece from "@/assets/svgs/bm-piece.svg";
+// import DesignPiece from "@/assets/svgs/design-piece.svg";
+// import CuratorPiece from "@/assets/svgs/curator-piece.svg";
+// import EpPiece from "@/assets/svgs/ep-piece.svg";
+// import OrganizerPiece from "@/assets/svgs/organizer-piece.svg";
+// import SponsorshipPiece from "@/assets/svgs/sponsorship-piece.svg";
+// import VpPiece from "@/assets/svgs/vp-piece.svg";
+// import WebsitePiece from "@/assets/svgs/website-piece.svg";
+// import EmptyPieceTop from "@/assets/svgs/empty-container-top.svg";
+// import EmptyPieceBottom from "@/assets/svgs/empty-piece-bottom.svg";
+// import EmptyPieceTopRight from "@/assets/svgs/empty-container-top-right.svg";
+
+import TeamFrame from "@/assets/imgs/team-frame.png";
+import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 ---
 
-<Layout>
-  <ComingSoon />
+<Layout
+  title="Meet Our Team | TEDx Universitas Brawijaya"
+  description="Inilah insan-insan di balik TEDxUniversitasBrawijaya 2026. Bukan sekadar tim, melainkan sebuah keluarga yang Bertumbuh Bersama demi membangun rumah bagi setiap ide yang layak diperjuangkan."
+>
+  <NavBar />
+  <main>
+    <section id="our-team">
+      <div class="our-team-wrapper">
+        <Image src={PaperTexture} alt={"Paper Texture"} class="paper-texture" />
+        <Image
+          src={GreenBackground}
+          alt={"Green Background"}
+          class="green-background"
+        />
+        <Image src={TileFloor} alt={"Tile Floor"} class="tile-floor" />
+        <div class="team-frame-container" id="team-frame-container">
+          <Image
+            src={TeamFrame}
+            id={"team-frame"}
+            class="team-frame"
+            alt={"Team Frame"}
+          />
+          <Image
+            src={TeamFrameBackground}
+            id={"team-frame-background"}
+            class="team-frame-background"
+            alt={"Team Frame Background"}
+          />
+          <Image
+            src={EventManagerPiece}
+            id={"event-manager-piece"}
+            alt={"Event Manager Piece"}
+          />
+          <Image
+            src={CemPiece}
+            id={"cem-piece"}
+            alt={"Content & Events Manager Piece"}
+          />
+          <Image src={BudgetPiece} id={"budget-piece"} alt={"Budget Piece"} />
+          <Image
+            src={CuratorPiece}
+            id={"curator-piece"}
+            alt={"Curator Piece"}
+          />
+          <Image src={EpPiece} id={"ep-piece"} alt={"Events Producer Piece"} />
+          <Image
+            src={OrganizerPiece}
+            id={"organizer-piece"}
+            alt={"Organizer Piece"}
+          />
+          <Image src={DesignPiece} id={"design-piece"} alt={"Design Piece"} />
+          <Image
+            src={SponsorshipPiece}
+            id={"sponsorship-piece"}
+            alt={"Sponsorship Piece"}
+          />
+          <Image src={VpPiece} id={"vp-piece"} alt={"Vice President Piece"} />
+          <Image
+            src={WebsitePiece}
+            id={"website-piece"}
+            alt={"Website Piece"}
+          />
+          <div class="piece-hitbox-layer">
+            <button
+              class="piece-hitbox-btn piece-hitbox-event-manager"
+              aria-label="Event Manager"
+              data-role="Event Manager"
+            ></button>
+            <button
+              class="piece-hitbox-btn piece-hitbox-cem"
+              aria-label="Communication, Editorial & Marketing"
+              data-role="Communication, Editorial & Marketing"
+            ></button>
+            <button
+              class="piece-hitbox-btn piece-hitbox-budget"
+              aria-label="Budget Manager"
+              data-role="Budget Manager"
+            ></button>
+            <button
+              class="piece-hitbox-btn piece-hitbox-curator"
+              aria-label="Curator"
+              data-role="Curator"
+            ></button>
+            <button
+              class="piece-hitbox-btn piece-hitbox-ep"
+              aria-label="Executive Producer"
+              data-role="Executive Producer"
+            ></button>
+            <button
+              class="piece-hitbox-btn piece-hitbox-organizer"
+              aria-label="Organizer"
+              data-role="Organizer,Co-Organizer"
+            ></button>
+            <button
+              class="piece-hitbox-btn piece-hitbox-design"
+              aria-label="Design"
+              data-role="Design"
+            ></button>
+            <button
+              class="piece-hitbox-btn piece-hitbox-sponsorship"
+              aria-label="Sponsorship"
+              data-role="Sponsorship"
+            ></button>
+            <button
+              class="piece-hitbox-btn piece-hitbox-vp"
+              aria-label="Video Production"
+              data-role="Video Production"
+            ></button>
+            <button
+              class="piece-hitbox-btn piece-hitbox-website"
+              aria-label="Website"
+              data-role="Website"
+            ></button>
+          </div>
+          <Image
+            src={EmptyPieceTop}
+            id={"empty-piece-top"}
+            alt={"Empty Piece Top"}
+          />
+          <Image
+            src={EmptyPieceBottom}
+            id={"empty-piece-bottom"}
+            alt={"Empty Piece Bottom"}
+          />
+          <Image
+            src={EmptyPieceTopRight}
+            id={"empty-piece-top-right"}
+            alt={"Empty Piece Top Right"}
+          />
+        </div>
+        <div
+          class="family-container"
+          id="family-container"
+          role="button"
+          tabindex="0"
+          aria-label="Klik untuk melihat keluarga kami"
+        >
+          <Image
+            src={FamilyOne}
+            class="family"
+            id="family-one"
+            alt="family-one"
+          />
+          <Image
+            src={FamilyTwo}
+            class="family"
+            id="family-two"
+            alt="family-two"
+          />
+          <Image
+            src={FamilyThreeLeft}
+            class="family"
+            id="family-three-left"
+            alt="Family Three Left"
+          />
+          <Image
+            src={FamilyThreeRight}
+            class="family"
+            id="family-three-right"
+            alt="Family Three Right"
+          />
+        </div>
+        <div class="section-content">
+          <h2>DIBALIK KELUARGA TEDX Universitas Brawijaya</h2>
+          <p>
+            Inilah insan-insan di balik TEDxUniversitasBrawijaya 2026. Bukan
+            sekadar tim, melainkan sebuah keluarga yang Bertumbuh Bersama demi
+            membangun rumah bagi setiap ide yang layak diperjuangkan.
+          </p>
+        </div>
+      </div>
+    </section>
+    <button
+      class="modal-close-btn"
+      id="modal-close-btn"
+      aria-label="Tutup modal"
+    >
+      &times;
+    </button>
+    <dialog id="family-modal" class="family-modal">
+      <div class="family-modal-header">
+        <h2 class="family-modal-heading">Meet the Team</h2>
+        <p class="family-modal-description">
+          Setiap divisi memiliki peran penting dalam menghadirkan
+          TEDxUniversitasBrawijaya. Klik divisi untuk melihat tim di baliknya.
+        </p>
+      </div>
+      <div class="family-modal-content" id="family-modal-content">
+        <button
+          class="piece-panel-close"
+          id="piece-panel-close"
+          aria-label="Tutup panel"
+        >
+          &times;
+        </button>
+        <h2 class="piece-panel-title" id="piece-panel-title"></h2>
+        <div class="piece-panel-body" id="piece-panel-body"></div>
+      </div>
+    </dialog>
+  </main>
 </Layout>
+<style>
+  #our-team {
+    position: relative;
+    height: 600dvh;
+  }
+
+  .our-team-wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .team-frame-container {
+    position: absolute;
+    top: 20%;
+    right: 0;
+    width: 40%;
+    height: 40%;
+    transform: none;
+  }
+  .team-frame {
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    object-fit: contain;
+    object-position: center;
+  }
+  #team-frame {
+    z-index: 80;
+  }
+
+  #team-frame-background {
+    z-index: 90;
+  }
+  #event-manager-piece,
+  #cem-piece,
+  #budget-piece,
+  #curator-piece,
+  #design-piece,
+  #ep-piece,
+  #organizer-piece,
+  #design-piece,
+  #sponsorship-piece,
+  #vp-piece,
+  #website-piece,
+  #empty-piece-top,
+  #empty-piece-top-right,
+  #empty-piece-bottom {
+    z-index: 100;
+  }
+  #event-manager-piece,
+  #cem-piece,
+  #budget-piece,
+  #curator-piece,
+  #design-piece,
+  #ep-piece,
+  #organizer-piece,
+  #design-piece,
+  #sponsorship-piece,
+  #vp-piece,
+  #website-piece,
+  #empty-piece-top,
+  #empty-piece-top-right,
+  #empty-piece-bottom,
+  .team-frame-background {
+    top: 50%;
+    left: 50%;
+    width: 95%;
+    height: 95%;
+    transform: translate(-50%, -50%);
+    object-fit: contain;
+    object-position: center;
+  }
+  .piece-hitbox-layer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 95%;
+    height: 95%;
+    transform: translate(-50%, -50%);
+    z-index: 130;
+  }
+
+  .piece-hitbox-btn {
+    position: absolute;
+    top: var(--hitbox-y, 50%);
+    left: var(--hitbox-x, 50%);
+    width: var(--hitbox-w, 10%);
+    height: var(--hitbox-h, 10%);
+    transform: translate(-50%, -50%);
+    background: var(--hitbox-color, rgba(255, 255, 255, 0.25));
+    border: 1px dashed rgba(255, 255, 255, 0.9);
+    border-radius: 0.3rem;
+    padding: 0;
+    cursor: default;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .team-frame-container.modal-open .piece-hitbox-btn {
+    cursor: pointer;
+    opacity: 0.38;
+  }
+
+  .team-frame-container.modal-open .piece-hitbox-btn:hover,
+  .team-frame-container.modal-open .piece-hitbox-btn:focus-visible {
+    opacity: 0.68;
+  }
+
+  .piece-hitbox-btn:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 2px;
+  }
+
+  .piece-hitbox-event-manager {
+    --hitbox-color: rgba(255, 99, 71, 0.5);
+    --hitbox-x: 36%;
+    --hitbox-y: 16.5%;
+    --hitbox-w: 22%;
+    --hitbox-h: 25%;
+  }
+
+  .piece-hitbox-cem {
+    --hitbox-color: rgba(0, 191, 255, 0.5);
+    --hitbox-x: 47%;
+    --hitbox-y: 55%;
+    --hitbox-w: 24%;
+    --hitbox-h: 30%;
+  }
+
+  .piece-hitbox-budget {
+    --hitbox-color: rgba(255, 215, 0, 0.5);
+    --hitbox-x: 46%;
+    --hitbox-y: 85%;
+    --hitbox-w: 22%;
+    --hitbox-h: 30%;
+  }
+
+  .piece-hitbox-curator {
+    --hitbox-color: rgba(186, 85, 211, 0.5);
+    --hitbox-x: 36%;
+    --hitbox-y: 45.5%;
+    --hitbox-w: 20%;
+    --hitbox-h: 25%;
+  }
+
+  .piece-hitbox-ep {
+    --hitbox-color: rgba(34, 197, 94, 0.5);
+    --hitbox-x: 17.5%;
+    --hitbox-y: 19%;
+    --hitbox-w: 15%;
+    --hitbox-h: 30%;
+  }
+
+  .piece-hitbox-organizer {
+    --hitbox-color: rgba(249, 115, 22, 0.5);
+    --hitbox-x: 20%;
+    --hitbox-y: 72.5%;
+    --hitbox-w: 20%;
+    --hitbox-h: 55%;
+  }
+
+  .piece-hitbox-design {
+    --hitbox-color: rgba(16, 185, 129, 0.5);
+    --hitbox-x: 72.5%;
+    --hitbox-y: 82.5%;
+    --hitbox-w: 15%;
+    --hitbox-h: 35%;
+  }
+
+  .piece-hitbox-sponsorship {
+    --hitbox-color: rgba(236, 72, 153, 0.5);
+    --hitbox-x: 73%;
+    --hitbox-y: 25%;
+    --hitbox-w: 10%;
+    --hitbox-h: 40%;
+  }
+
+  .piece-hitbox-vp {
+    --hitbox-color: rgba(99, 102, 241, 0.5);
+    --hitbox-x: 60%;
+    --hitbox-y: 62.5%;
+    --hitbox-w: 10%;
+    --hitbox-h: 25%;
+  }
+
+  .piece-hitbox-website {
+    --hitbox-color: rgba(6, 182, 212, 0.5);
+    --hitbox-x: 85%;
+    --hitbox-y: 70%;
+    --hitbox-w: 10%;
+    --hitbox-h: 40%;
+  }
+
+  .team-frame-container.modal-open:has(.piece-hitbox-event-manager:hover)
+    #event-manager-piece,
+  .team-frame-container.modal-open:has(
+      .piece-hitbox-event-manager:focus-visible
+    )
+    #event-manager-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-cem:hover) #cem-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-cem:focus-visible)
+    #cem-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-budget:hover)
+    #budget-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-budget:focus-visible)
+    #budget-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-curator:hover)
+    #curator-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-curator:focus-visible)
+    #curator-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-ep:hover) #ep-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-ep:focus-visible)
+    #ep-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-organizer:hover)
+    #organizer-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-organizer:focus-visible)
+    #organizer-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-design:hover)
+    #design-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-design:focus-visible)
+    #design-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-sponsorship:hover)
+    #sponsorship-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-sponsorship:focus-visible)
+    #sponsorship-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-vp:hover) #vp-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-vp:focus-visible)
+    #vp-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-website:hover)
+    #website-piece,
+  .team-frame-container.modal-open:has(.piece-hitbox-website:focus-visible)
+    #website-piece {
+    filter: brightness(1.4) drop-shadow(0px 4px 25px rgba(255, 149, 0, 0.5));
+  }
+
+  .team-frame-container img {
+    position: absolute;
+  }
+
+  #empty-piece-top,
+  #empty-piece-top-right,
+  #empty-piece-bottom,
+  #event-manager-piece,
+  #cem-piece,
+  #budget-piece,
+  #curator-piece,
+  #design-piece,
+  #ep-piece,
+  #organizer-piece,
+  #sponsorship-piece,
+  #vp-piece,
+  #website-piece {
+    pointer-events: none;
+  }
+
+  .family-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 120;
+  }
+
+  .family-container .family {
+    position: absolute;
+    top: 10%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+    transition: opacity 0.15s ease;
+  }
+
+  #family-three-left,
+  #family-three-right {
+    position: absolute;
+    top: 10%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+    transition: opacity 0.15s ease;
+  }
+
+  #family-three-left {
+    left: 40%;
+  }
+
+  #family-three-right {
+    right: 40%;
+    left: auto;
+  }
+
+  .section-content {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3rem;
+    margin-left: 5%;
+    width: 25vw;
+    height: 80vh;
+    z-index: 200;
+  }
+
+  .section-content h2 {
+    font-family: var(--font-serif);
+    font-size: 1.8vw;
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: -0.01em;
+    color: var(--color-white);
+  }
+
+  .section-content p {
+    font-family: var(--font-sans);
+    font-size: 0.8vw;
+    margin: 0;
+    font-weight: 400;
+    color: var(--color-white);
+    text-wrap-style: pretty;
+  }
+
+  .paper-texture {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 150;
+  }
+
+  .green-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  .tile-floor {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  .family-modal {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: unset;
+    max-height: unset;
+    background: transparent;
+    border: none;
+    padding: 2rem;
+    display: none;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 1000;
+    color: var(--color-white);
+    pointer-events: none;
+    overflow-y: auto;
+  }
+
+  .family-modal[open] {
+    display: flex;
+  }
+
+  .family-modal::backdrop {
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .modal-close-btn {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    color: var(--color-white);
+    font-size: 2.5rem;
+    cursor: pointer;
+    width: 3.5rem;
+    height: 3.5rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    pointer-events: auto;
+    line-height: 1;
+    z-index: 1100;
+    transition: background 0.2s ease;
+  }
+
+  .modal-close-btn.visible {
+    display: flex;
+  }
+
+  .family-modal-header {
+    width: min(92vw, 50rem);
+    margin-top: 4.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    opacity: 0;
+  }
+
+  .family-modal-heading {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 4vw, 2.8rem);
+    font-weight: 500;
+    color: var(--color-white);
+    margin: 0;
+  }
+
+  .family-modal-description {
+    font-family: var(--font-sans);
+    font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+    max-width: 46rem;
+    margin: 0 auto;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.9);
+    text-wrap-style: pretty;
+  }
+
+  .modal-close-btn:hover,
+  .modal-close-btn:focus-visible {
+    background: rgba(255, 255, 255, 0.15);
+    outline: 2px solid rgba(255, 255, 255, 0.6);
+    outline-offset: 2px;
+  }
+
+  .family-modal-content {
+    pointer-events: auto;
+    position: relative;
+    background: rgba(15, 15, 15, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 1rem;
+    padding: 2rem;
+    max-width: 34rem;
+    width: min(92vw, 34rem);
+    max-height: min(78vh, 42rem);
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .family-modal-content.active {
+    display: flex;
+  }
+
+  .piece-panel-title {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--color-white);
+    margin: 0;
+    padding-right: 2rem;
+  }
+
+  .piece-panel-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .piece-panel-body {
+    max-height: min(52vh, 27rem);
+    overflow-y: auto;
+    padding-right: 0.35rem;
+  }
+
+  .piece-panel-group-label {
+    font-family: var(--font-sans);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255, 149, 0, 0.9);
+    margin: 0 0 0.3rem;
+  }
+
+  .piece-panel-member {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .family-modal {
+      padding: 1rem;
+      gap: 1rem;
+    }
+
+    .family-modal-header {
+      margin-top: 4rem;
+      width: 100%;
+    }
+
+    .section-content {
+      width: 90%;
+      height: auto;
+      padding: 2rem;
+    }
+
+    .section-content h2 {
+      font-size: 6vw;
+    }
+
+    .section-content p {
+      font-size: 3vw;
+    }
+  }
+</style>
+<script>
+(() => {
+    const ourTeamSection = document.getElementById("our-team");
+
+    const familyOne = document.getElementById("family-one");
+    const familyTwo = document.getElementById("family-two");
+    const familyThreeLeft = document.getElementById("family-three-left");
+    const familyThreeRight = document.getElementById("family-three-right");
+    const familyContainer = document.getElementById("family-container");
+    const teamFrameContainer = document.getElementById("team-frame-container");
+    const modal = document.getElementById(
+      "family-modal"
+    ) as HTMLDialogElement | null;
+    const familyModalContent = document.getElementById("family-modal-content");
+    const piecePanelTitle = document.getElementById("piece-panel-title");
+    const piecePanelBody = document.getElementById("piece-panel-body");
+    const piecePanelClose = document.getElementById("piece-panel-close");
+    const modalCloseBtn = document.getElementById("modal-close-btn");
+    const familyModalHeader = document.querySelector(
+      ".family-modal-header"
+    ) as HTMLElement | null;
+    const sectionContent = document.querySelector(".section-content");
+
+    const tileFloor = document.querySelector(
+      ".tile-floor"
+    ) as HTMLElement | null;
+    if (
+      !familyOne ||
+      !familyTwo ||
+      !familyThreeLeft ||
+      !familyThreeRight ||
+      !ourTeamSection ||
+      !teamFrameContainer
+    )
+      return;
+
+    const easeInOutCubic = (t: number): number => {
+      return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+    };
+
+    function transform(
+      x: number,
+      input: number[],
+      output: number[],
+      easing: (t: number) => number = (t) => t
+    ) {
+      const firstInput = input[0];
+      const lastInput = input.at(-1);
+      const lastOutput = output.at(-1);
+
+      if (
+        !(
+          firstInput !== undefined &&
+          lastInput !== undefined &&
+          lastOutput !== undefined
+        )
+      ) {
+        return 0;
+      }
+
+      const clampedX = Math.max(firstInput, Math.min(lastInput, x));
+
+      for (let i = 0; i < input.length - 1; i++) {
+        const currentInput = input[i];
+        const nextInput = input[i + 1];
+
+        const currentOutput = output[i];
+        const nextOutput = output[i + 1];
+
+        if (
+          !(
+            currentInput !== undefined &&
+            nextInput !== undefined &&
+            currentOutput !== undefined &&
+            nextOutput !== undefined
+          )
+        ) {
+          continue;
+        }
+
+        if (clampedX >= currentInput && clampedX <= nextInput) {
+          const localProgress =
+            (clampedX - currentInput) / (nextInput - currentInput);
+          const easedProgress = easing(localProgress);
+
+          return currentOutput + easedProgress * (nextOutput - currentOutput);
+        }
+      }
+
+      return lastOutput;
+    }
+
+    const animateFamily = (scrollProgress: number) => {
+      // Family one: visible 0–0.25, fades out by 0.33
+      const familyOneOpacity = transform(
+        scrollProgress,
+        [0, 0.25, 0.33],
+        [1, 1, 0],
+        easeInOutCubic
+      );
+      familyOne.style.opacity = String(familyOneOpacity);
+
+      // Family two: fades in 0.2–0.5, stays visible; fades out when modal opens
+      const familyTwoScrollOpacity = transform(
+        scrollProgress,
+        [0.3, 0.6, 0.8],
+        [0, 1, 1],
+        easeInOutCubic
+      );
+      familyTwo.style.opacity = String(
+        familyTwoScrollOpacity * (1 - familyTransitionProgress)
+      );
+
+      // Family three left & right: crossfade in when modal opens
+      familyThreeLeft.style.opacity = String(familyTransitionProgress);
+      familyThreeRight.style.opacity = String(familyTransitionProgress);
+    };
+    const animateSectionContent = (scrollProgress: number) => {
+      if (!sectionContent) return;
+
+      const contentOpacity = transform(
+        scrollProgress,
+        [0, 0.1, 0.5],
+        [1, 1, 0],
+        easeInOutCubic
+      );
+
+      (sectionContent as HTMLElement).style.opacity = String(contentOpacity);
+    };
+ const DESIGN_WIDTH = 625;
+
+const animateTeamFrame = (scrollProgress: number, zoom: number) => {
+  if (!teamFrameContainer) {
+    return;
+  }
+
+  const targetX = -(window.innerWidth * 0.3);
+  const translateX = transform(
+    scrollProgress,
+    [0.2, 0.9],
+    [0, targetX],
+    easeInOutCubic
+  );
+
+  // Auto scale berdasarkan ukuran container saat ini
+  const autoScale = teamFrameContainer.clientWidth / DESIGN_WIDTH;
+
+  // Gabung dengan zoom existing (modal/animasi)
+  const finalScale = zoom * autoScale;
+
+  (teamFrameContainer as HTMLElement).style.transform =
+    `translateX(${translateX}px) translateY(${frameTranslateY}vh) scale(${finalScale})`;
+};
+    let modalOpenTime = 0;
+    const MODAL_EXIT_DELAY = 1000; // ms before animations start
+    const MODAL_EXIT_DURATION = 700; // ms for the animation itself
+
+    const animateModalTransition = () => {
+      if (!modal?.open) return;
+
+      const elapsed = performance.now() - modalOpenTime;
+      const t = Math.max(
+        0,
+        Math.min(1, (elapsed - MODAL_EXIT_DELAY) / MODAL_EXIT_DURATION)
+      );
+      const eased = easeInOutCubic(t);
+
+      // Zoom up and slide down slightly after delay
+      targetZoom = MODAL_ZOOM + (MODAL_ZOOM_POST_DELAY - MODAL_ZOOM) * eased;
+      frameTranslateY = eased * 20;
+
+      if (tileFloor) {
+        tileFloor.style.transform = `translateY(${eased * 120}%)`;
+      }
+
+      familyThreeLeft.style.transform = `translateX(${eased * 100}%)`;
+      familyThreeRight.style.transform = `translateX(${eased * -100}%)`;
+
+      if (familyModalHeader) familyModalHeader.style.opacity = String(eased);
+    };
+    let smoothProgress = 0;
+    let targetProgress = 0;
+    let currentZoom = 1;
+    let targetZoom = 1;
+    let familyTransitionProgress = 0;
+    let targetFamilyTransition = 0;
+    let frameTranslateY = 0;
+    const LERP_FACTOR = 0.08;
+
+    const getScrollProgress = () => {
+      const sectionRect = ourTeamSection.getBoundingClientRect();
+      const sectionHeight = ourTeamSection.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      return Math.max(
+        0,
+        Math.min(1, -sectionRect.top / (sectionHeight - viewportHeight))
+      );
+    };
+
+    const tick = () => {
+      targetProgress = getScrollProgress();
+      smoothProgress += (targetProgress - smoothProgress) * LERP_FACTOR;
+      currentZoom += (targetZoom - currentZoom) * LERP_FACTOR;
+      familyTransitionProgress +=
+        (targetFamilyTransition - familyTransitionProgress) * LERP_FACTOR;
+
+      animateTeamFrame(smoothProgress, currentZoom);
+      animateFamily(smoothProgress);
+      animateSectionContent(smoothProgress);
+      animateModalTransition();
+      updateCursor(smoothProgress);
+
+      requestAnimationFrame(tick);
+    };
+
+    requestAnimationFrame(tick);
+
+    // Modal interactions — only available after the section has been scrolled through
+    const MODAL_THRESHOLD = 0.5;
+    const MODAL_ZOOM = window.matchMedia("(max-width: 768px)").matches
+      ? 1.1
+      : 1.2;
+    const MODAL_ZOOM_POST_DELAY = window.matchMedia("(max-width: 768px)")
+      .matches
+      ? 1.25
+      : 1.35;
+
+    const openModal = () => {
+      if (smoothProgress < MODAL_THRESHOLD) return;
+      modal?.show();
+      document.body.style.overflowY = "hidden";
+      modalCloseBtn?.classList.add("visible");
+      (teamFrameContainer as HTMLElement).style.zIndex = "130";
+      (teamFrameContainer as HTMLElement).classList.add("modal-open");
+      if (familyContainer) familyContainer.style.pointerEvents = "none";
+      targetZoom = MODAL_ZOOM;
+      targetFamilyTransition = 1;
+      modalOpenTime = performance.now();
+    };
+
+    const closeModal = () => {
+      modal?.close();
+    };
+
+    modal?.addEventListener("close", () => {
+      if (familyModalContent) familyModalContent.classList.remove("active");
+      document.body.style.overflowY = "";
+      modalCloseBtn?.classList.remove("visible");
+      (teamFrameContainer as HTMLElement).style.zIndex = "";
+      (teamFrameContainer as HTMLElement).classList.remove("modal-open");
+      if (familyContainer) familyContainer.style.pointerEvents = "";
+      targetZoom = 1;
+      targetFamilyTransition = 0;
+      if (tileFloor) tileFloor.style.transform = "";
+      familyThreeLeft.style.transform = "";
+      familyThreeRight.style.transform = "";
+      frameTranslateY = 0;
+      if (familyModalHeader) familyModalHeader.style.opacity = "0";
+    });
+
+    modal?.addEventListener("cancel", (e) => {
+      e.preventDefault();
+    });
+
+    // Update cursor to signal interactability dynamically
+    const updateCursor = (progress: number) => {
+      if (familyContainer) {
+        familyContainer.style.cursor =
+          progress >= MODAL_THRESHOLD ? "pointer" : "default";
+      }
+    };
+
+    familyContainer?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openModal();
+    });
+    familyContainer?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openModal();
+      }
+    });
+
+    const teamMembers = [
+      { role: "Organizer", name: "Muhammad Harffin", team: null },
+      { role: "Co-Organizer", name: "Aisyah Dyah", team: null },
+
+      { role: "Budget Manager", name: "Haura Sekar", team: null },
+      { role: "Budget Manager", name: "Muhammad Akmal", team: null },
+
+      { role: "Curator", name: "Tsabita Hana", team: "Core Team" },
+      { role: "Curator", name: "Rimalya Valerina", team: "Core Team" },
+      { role: "Curator", name: "Syarifah Nurul", team: "Core Team" },
+      { role: "Curator", name: "Muhammad Abiyyu", team: "Volunteer" },
+      { role: "Curator", name: "Muchamad Farrel", team: "Volunteer" },
+      { role: "Curator", name: "Nasyabila Rizqita", team: "Volunteer" },
+      { role: "Curator", name: "Attariq Muhammad", team: "Volunteer" },
+      { role: "Curator", name: "Gwen Rose", team: "Volunteer" },
+
+      {
+        role: "Communication, Editorial & Marketing",
+        name: "Ghina Salsabila",
+        team: "Core Team",
+      },
+      {
+        role: "Communication, Editorial & Marketing",
+        name: "Aulia Siti",
+        team: "Core Team",
+      },
+      {
+        role: "Communication, Editorial & Marketing",
+        name: "Rizky Putra",
+        team: "Core Team",
+      },
+      {
+        role: "Communication, Editorial & Marketing",
+        name: "Xabi Muhammad",
+        team: "Volunteer",
+      },
+      {
+        role: "Communication, Editorial & Marketing",
+        name: "Denaya Danardon",
+        team: "Volunteer",
+      },
+      {
+        role: "Communication, Editorial & Marketing",
+        name: "Claudya Isabel",
+        team: "Volunteer",
+      },
+      {
+        role: "Communication, Editorial & Marketing",
+        name: "Maheza Mahardika",
+        team: "Volunteer",
+      },
+
+      { role: "Sponsorship", name: "Khalilah Ferline", team: "Core Team" },
+      { role: "Sponsorship", name: "Kamilah Putri", team: "Core Team" },
+      { role: "Sponsorship", name: "Kyara Azzahra", team: "Core Team" },
+      { role: "Sponsorship", name: "Imam Fachriza", team: "Core Team" },
+      { role: "Sponsorship", name: "Nayla Diandra", team: "Volunteer" },
+      { role: "Sponsorship", name: "Andera Early", team: "Volunteer" },
+      { role: "Sponsorship", name: "Bagas Aryadita", team: "Volunteer" },
+      { role: "Sponsorship", name: "Zahra Nadira", team: "Volunteer" },
+
+      { role: "Event Manager", name: "Ajeng Regina", team: "Core Team" },
+      { role: "Event Manager", name: "Fazqeela Nazyyara", team: "Core Team" },
+      { role: "Event Manager", name: "Zeke Ubas", team: "Core Team" },
+      { role: "Event Manager", name: "Katyusha Parikesit", team: "Volunteer" },
+      { role: "Event Manager", name: "Venesya Sitompul", team: "Volunteer" },
+      { role: "Event Manager", name: "Raisha Fahria", team: "Volunteer" },
+      { role: "Event Manager", name: "Bagus Eko", team: "Volunteer" },
+      { role: "Event Manager", name: "Putu Luna", team: "Volunteer" },
+      { role: "Event Manager", name: "Adela Milarosnida", team: "Volunteer" },
+
+      { role: "Executive Producer", name: "Muhammad Hanif", team: "Core Team" },
+      {
+        role: "Executive Producer",
+        name: "Muhammad Haidar",
+        team: "Core Team",
+      },
+      { role: "Executive Producer", name: "Nahida Chanun", team: "Core Team" },
+      { role: "Executive Producer", name: "Risman Ariel", team: "Volunteer" },
+      {
+        role: "Executive Producer",
+        name: "Syauqi Amrullah",
+        team: "Volunteer",
+      },
+      { role: "Executive Producer", name: "Muhammad Zidan", team: "Volunteer" },
+      { role: "Executive Producer", name: "Ayyash Musyari", team: "Volunteer" },
+      { role: "Executive Producer", name: "Dania Zahira", team: "Volunteer" },
+
+      { role: "Design", name: "Dini Septianing", team: "Core Team" },
+      { role: "Design", name: "Azzahro Fatimah", team: "Core Team" },
+      { role: "Design", name: "Karunia Puteri", team: "Core Team" },
+      { role: "Design", name: "Nisrina Jasmine", team: "Core Team" },
+
+      { role: "Video Production", name: "Sayyid Muhammad", team: "Core Team" },
+      { role: "Video Production", name: "Muhammad Abid", team: "Core Team" },
+      { role: "Video Production", name: "Ignatius Evan", team: "Core Team" },
+      { role: "Video Production", name: "Muhammad Haikal", team: "Core Team" },
+      { role: "Video Production", name: "Pieter Wenesdy", team: "Volunteer" },
+      { role: "Video Production", name: "Khaizuran Rafie", team: "Volunteer" },
+      { role: "Video Production", name: "Alfa Nafi", team: "Volunteer" },
+      { role: "Video Production", name: "Abrar Galant", team: "Volunteer" },
+
+      { role: "Website", name: "Hafiz Rizky", team: "Core Team" },
+      { role: "Website", name: "Nugraha Billy", team: "Core Team" },
+      { role: "Website", name: "Alfredo Radhinal", team: "Core Team" },
+      { role: "Website", name: "Rahmi Arsy", team: "Volunteer" },
+      { role: "Website", name: "Exel Boy", team: "Volunteer" },
+      { role: "Website", name: "Risqi Achmad", team: "Volunteer" },
+      { role: "Website", name: "Muhammad Syauqi", team: "Volunteer" },
+    ];
+
+    const showPiecePanel = (roleAttr: string, displayTitle: string) => {
+      if (!familyModalContent || !piecePanelTitle || !piecePanelBody) return;
+      const roles = roleAttr.split(",").map((r) => r.trim());
+      const members = teamMembers.filter((m) => roles.includes(m.role));
+
+      piecePanelTitle.textContent = displayTitle;
+
+      const coreTeam = members.filter((m) => m.team === "Core Team");
+      const volunteers = members.filter((m) => m.team === "Volunteer");
+      const noTeam = members.filter((m) => !m.team);
+
+      let html = "";
+      if (noTeam.length > 0) {
+        html += '<div class="piece-panel-group">';
+        for (const m of noTeam) {
+          html += `<p class="piece-panel-member">${m.name}</p>`;
+        }
+        html += "</div>";
+      }
+      if (coreTeam.length > 0) {
+        html +=
+          '<div class="piece-panel-group"><p class="piece-panel-group-label">Core Team</p>';
+        for (const m of coreTeam) {
+          html += `<p class="piece-panel-member">${m.name}</p>`;
+        }
+        html += "</div>";
+      }
+      if (volunteers.length > 0) {
+        html +=
+          '<div class="piece-panel-group"><p class="piece-panel-group-label">Volunteer</p>';
+        for (const m of volunteers) {
+          html += `<p class="piece-panel-member">${m.name}</p>`;
+        }
+        html += "</div>";
+      }
+
+      piecePanelBody.innerHTML = html;
+      familyModalContent.classList.add("active");
+    };
+
+    const pieceHitboxBtns =
+      document.querySelectorAll<HTMLButtonElement>(".piece-hitbox-btn");
+    for (const btn of Array.from(pieceHitboxBtns)) {
+      btn.addEventListener("click", (e: Event) => {
+        e.stopPropagation();
+        if (!modal?.open) return;
+        const role = btn.dataset.role;
+        const label = btn.getAttribute("aria-label") ?? role ?? "";
+        if (role) showPiecePanel(role, label);
+      });
+    }
+
+    piecePanelClose?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (familyModalContent) familyModalContent.classList.remove("active");
+    });
+
+    modalCloseBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closeModal();
+    });
+  })();
+</script>
