@@ -407,22 +407,13 @@ const menu = [
     font-size: var(--text-s);
     color: black;
   }
-
-  @media (min-width: 425px) {
+  @media (min-width: 768px){
     .modal-content {
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -40%) scale(0.97);
-      width: 100%;
       max-width: 90dvw;
-    }
-
-    .modal.active .modal-content {
-      transform: translate(-50%, -50%) scale(1);
     }
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .modal-content {
       top: 50%;
       left: 50%;
@@ -453,6 +444,19 @@ const menu = [
 
     .menu-container ul li ul li {
       font-size: var(--text-m);
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .modal-content {
+      width: 80%;
+      max-width: 60dvw;
+    }
+  }
+  @media (min-width: 1920px) {
+    .modal-content {
+      width: 80%;
+      max-width: 50dvw;
     }
   }
 </style>

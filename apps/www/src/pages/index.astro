@@ -350,7 +350,7 @@ import Navbar from "@/components/navbar.astro";
     }
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1280px) {
     .window-2-container-wrapper {
       top: 2%;
       left: 2%;
@@ -390,6 +390,23 @@ import Navbar from "@/components/navbar.astro";
 
     .text-container p {
       font-size: var(--text-l);
+    }
+  }
+
+  @media (min-width: 1440px){
+    .window-2-container-wrapper {
+      top: 10%;
+      left: 4%;
+      width: 30dvw;
+    }
+    .shelf-1-container-wrapper {
+      width: 30dvw;
+      transform: translate(50%, -20%);
+    }
+
+    .table-with-book-container-wrapper {
+      width: 55dvw;
+      transform: translate(26%, 20%);
     }
   }
 </style>
