@@ -10,33 +10,36 @@ import FamilyTwo from "@/assets/imgs/family-2.png";
 import FamilyThreeLeft from "@/assets/imgs/family-3-left.png";
 import FamilyThreeRight from "@/assets/imgs/family-3-right.png";
 
-import EventManagerPiece from "@/assets/svgs/em-piece.svg";
-import CemPiece from "@/assets/svgs/cem-piece.svg";
-import BudgetPiece from "@/assets/svgs/budget-piece.svg";
-import DesignPiece from "@/assets/svgs/design-piece.svg";
-import CuratorPiece from "@/assets/svgs/curator-piece.svg";
-import EpPiece from "@/assets/svgs/ep-piece.svg";
-import OrganizerPiece from "@/assets/svgs/organizer-piece.svg";
-import SponsorshipPiece from "@/assets/svgs/sponsorship-piece.svg";
-import VpPiece from "@/assets/svgs/vp-piece.svg";
-import WebsitePiece from "@/assets/svgs/website-piece.svg";
-import EmptyPieceTop from "@/assets/svgs/empty-piece-top.svg";
-import EmptyPieceBottom from "@/assets/svgs/empty-piece-bottom.svg";
-import EmptyPieceTopRight from "@/assets/svgs/empty-piece-top-right.svg";
-// import EventManagerPiece from "@/assets/imgs/em-piece.png";
-// import CemPiece from "@/assets/imgs/cem-piece.png";
-// import BudgetPiece from "@/assets/imgs/budget-piece.png";
-// import DesignPiece from "@/assets/imgs/design-piece.png";
-// import CuratorPiece from "@/assets/imgs/curator-piece.png";
-// import EpPiece from "@/assets/imgs/ep-piece.png";
-// import OrganizerPiece from "@/assets/imgs/organizer-piece.png";
-// import SponsorshipPiece from "@/assets/imgs/sponsorship-piece.png";
-// import VpPiece from "@/assets/imgs/vp-piece.png";
-// import WebsitePiece from "@/assets/imgs/website-piece.png";
-// import EmptyPieceTop from "@/assets/imgs/empty-piece-top.png";
-// import EmptyPieceBottom from "@/assets/imgs/empty-piece-bottom.png";
-// import EmptyPieceTopRight from "@/assets/imgs/empty-piece-top-right.png";
+// import EventManagerPiece from "@/assets/svgs/em-piece.svg";
+// import CemPiece from "@/assets/svgs/cem-piece.svg";
+// import BudgetPiece from "@/assets/svgs/budget-piece.svg";
+// import DesignPiece from "@/assets/svgs/design-piece.svg";
+// import CuratorPiece from "@/assets/svgs/curator-piece.svg";
+// import EpPiece from "@/assets/svgs/ep-piece.svg";
+// import OrganizerPiece from "@/assets/svgs/organizer-piece.svg";
+// import SponsorshipPiece from "@/assets/svgs/sponsorship-piece.svg";
+// import VpPiece from "@/assets/svgs/vp-piece.svg";
+// import WebsitePiece from "@/assets/svgs/website-piece.svg";
+// import EmptyPieceTop from "@/assets/svgs/empty-piece-top.svg";
+// import EmptyPieceBottom from "@/assets/svgs/empty-piece-bottom.svg";
+// import EmptyPieceTopRight from "@/assets/svgs/empty-piece-top-right.svg";
 
+import EventManagerPiece from "@/assets/imgs/em-piece.png";
+import CemPiece from "@/assets/imgs/cem-piece.png";
+import BudgetPiece from "@/assets/imgs/budget-piece.png";
+import DesignPiece from "@/assets/imgs/design-piece.png";
+import CuratorPiece from "@/assets/imgs/curator-piece.png";
+import EpPiece from "@/assets/imgs/ep-piece.png";
+import OrganizerPiece from "@/assets/imgs/organizer-piece.png";
+import SponsorshipPiece from "@/assets/imgs/sponsorship-piece.png";
+import VpPiece from "@/assets/imgs/vp-piece.png";
+import WebsitePiece from "@/assets/imgs/website-piece.png";
+import EmptyPieceTop from "@/assets/imgs/empty-piece-top.png";
+import EmptyPieceBottom from "@/assets/imgs/empty-piece-bottom.png";
+import EmptyPieceTopRight from "@/assets/imgs/empty-piece-top-right.png";
+import VolunteerChip from "@/assets/imgs/volunteer-chip.png";
+
+import Line from "@/assets/imgs/line-1.png";
 import TeamFrame from "@/assets/imgs/team-frame.png";
 import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 ---
@@ -242,31 +245,36 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         </div>
       </div>
     </section>
-    <button
-      class="modal-close-btn"
-      id="modal-close-btn"
-      aria-label="Tutup modal"
-    >
-      &times;
-    </button>
     <dialog id="family-modal" class="family-modal">
-      <div class="family-modal-header">
-        <h2 class="family-modal-heading">Meet the Team</h2>
-        <p class="family-modal-description">
-          Setiap divisi memiliki peran penting dalam menghadirkan
-          TEDxUniversitasBrawijaya. Klik divisi untuk melihat tim di baliknya.
-        </p>
-      </div>
-      <div class="family-modal-content" id="family-modal-content">
+      <div class="family-modal-topbar">
+        <div class="family-modal-header">
+          <h2 class="family-modal-heading">Meet the Team</h2>
+          <p class="family-modal-description" id="family-modal-description">
+            Setiap divisi memiliki peran penting dalam menghadirkan
+            TEDxUniversitasBrawijaya. Klik divisi untuk melihat tim di baliknya.
+          </p>
+          <Image
+            src={Line}
+            alt="Line"
+            id="family-modal-line"
+            class="family-modal-line"
+          />
+        </div>
         <button
-          class="piece-panel-close"
-          id="piece-panel-close"
-          aria-label="Tutup panel"
+          class="modal-close-btn"
+          id="modal-close-btn"
+          aria-label="Tutup modal"
         >
           &times;
         </button>
-        <h2 class="piece-panel-title" id="piece-panel-title"></h2>
-        <div class="piece-panel-body" id="piece-panel-body"></div>
+      </div>
+      <div class="family-modal-content" id="family-modal-content">
+        <div class="piece-panel-separator" aria-hidden="true"></div>
+        <div
+          class="piece-panel-body"
+          id="piece-panel-body"
+          data-volunteer-chip-src={VolunteerChip.src}
+        ></div>
       </div>
     </dialog>
   </main>
@@ -316,7 +324,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 
   .team-frame-container {
     position: absolute;
-    top:38%;
+    top: 38%;
     left: 80%;
     width: clamp(20rem, 40vw, 40rem);
     aspect-ratio: 1 / 1;
@@ -372,12 +380,14 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     border: 1px dashed rgba(255, 255, 255, 0.9);
     border-radius: 0.3rem;
     padding: 0;
+    pointer-events: none;
     cursor: default;
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
   }
 
-  .team-frame-container.modal-open .piece-hitbox-btn {
+  .team-frame-container.hitbox-active .piece-hitbox-btn {
+    pointer-events: auto;
     cursor: pointer;
     opacity: 0.38;
   }
@@ -387,8 +397,8 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     outline-offset: 2px;
   }
 
-  .team-frame-container.modal-open .piece-hitbox-btn:hover,
-  .team-frame-container.modal-open .piece-hitbox-btn:focus-visible {
+  .team-frame-container.hitbox-active .piece-hitbox-btn:hover,
+  .team-frame-container.hitbox-active .piece-hitbox-btn:focus-visible {
     opacity: 0.68;
   }
 
@@ -472,43 +482,43 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     --hitbox-h: 30%;
   }
 
-  .team-frame-container.modal-open:has(
+  .team-frame-container.hitbox-active:has(
       .piece-hitbox-event-manager:is(:hover, :focus-visible)
     )
     #event-manager-piece,
-  .team-frame-container.modal-open:has(
+  .team-frame-container.hitbox-active:has(
       .piece-hitbox-cem:is(:hover, :focus-visible)
     )
     #cem-piece,
-  .team-frame-container.modal-open:has(
+  .team-frame-container.hitbox-active:has(
       .piece-hitbox-budget:is(:hover, :focus-visible)
     )
     #budget-piece,
-  .team-frame-container.modal-open:has(
+  .team-frame-container.hitbox-active:has(
       .piece-hitbox-curator:is(:hover, :focus-visible)
     )
     #curator-piece,
-  .team-frame-container.modal-open:has(
+  .team-frame-container.hitbox-active:has(
       .piece-hitbox-ep:is(:hover, :focus-visible)
     )
     #ep-piece,
-  .team-frame-container.modal-open:has(
+  .team-frame-container.hitbox-active:has(
       .piece-hitbox-organizer:is(:hover, :focus-visible)
     )
     #organizer-piece,
-  .team-frame-container.modal-open:has(
+  .team-frame-container.hitbox-active:has(
       .piece-hitbox-design:is(:hover, :focus-visible)
     )
     #design-piece,
-  .team-frame-container.modal-open:has(
+  .team-frame-container.hitbox-active:has(
       .piece-hitbox-sponsorship:is(:hover, :focus-visible)
     )
     #sponsorship-piece,
-  .team-frame-container.modal-open:has(
+  .team-frame-container.hitbox-active:has(
       .piece-hitbox-vp:is(:hover, :focus-visible)
     )
     #vp-piece,
-  .team-frame-container.modal-open:has(
+  .team-frame-container.hitbox-active:has(
       .piece-hitbox-website:is(:hover, :focus-visible)
     )
     #website-piece {
@@ -568,6 +578,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     gap: clamp(1.2rem, 2vw, 2.5rem);
     width: clamp(16rem, 28vw, 30rem);
     z-index: 200;
+    pointer-events: none;
   }
 
   .section-content h2 {
@@ -614,44 +625,82 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     display: flex;
   }
 
+  .family-modal::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: rgba(8, 9, 11, 0.32);
+    backdrop-filter: blur(0px);
+    transition:
+      opacity 0.28s ease,
+      backdrop-filter 0.28s ease;
+  }
+
+  .family-modal > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .family-modal.role-active::before {
+    opacity: 1;
+    backdrop-filter: blur(10px);
+  }
+
   .family-modal::backdrop {
     background: transparent;
     pointer-events: none;
   }
 
   .modal-close-btn {
-    position: fixed;
-    top: 1.5rem;
-    right: 1.5rem;
-    background: rgba(0, 0, 0, 0.6);
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    border-radius: 50%;
-    color: var(--color-white);
-    font-size: 2.5rem;
-    cursor: pointer;
-    width: 3.5rem;
-    height: 3.5rem;
+    position: absolute;
+    right: 0;
     display: none;
-    align-items: center;
-    justify-content: center;
+    border: none;
+    background: none;
     padding: 0;
-    pointer-events: auto;
+    color: white;
+    font-size: 2.2rem;
+    cursor: pointer;
     line-height: 1;
+    pointer-events: auto;
     z-index: 1100;
-    transition: background 0.2s ease;
+    transition: color 0.2s ease;
   }
 
   .modal-close-btn.visible {
+    display: block;
+  }
+
+  .modal-close-btn:hover,
+  .modal-close-btn:focus-visible {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .family-modal-topbar {
+    width: min(92vw, 50rem);
+    margin-top: 4.5rem;
     display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    pointer-events: auto;
   }
 
   .family-modal-header {
-    width: min(92vw, 50rem);
-    margin-top: 4.5rem;
+    width: 100%;
+    margin-top: 0;
     text-align: center;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .team-frame-container.modal-open ~ .section-content {
     opacity: 0;
   }
 
@@ -659,7 +708,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     font-family: var(--font-serif);
     font-size: clamp(1.75rem, 4vw, 2.8rem);
     font-weight: 500;
-    color: var(--color-white);
+    color: white;
     margin: 0;
   }
 
@@ -673,31 +722,42 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     text-wrap-style: pretty;
   }
 
-  .modal-close-btn:hover,
-  .modal-close-btn:focus-visible {
-    background: rgba(255, 255, 255, 0.15);
-    outline: 2px solid rgba(255, 255, 255, 0.6);
-    outline-offset: 2px;
+  .family-modal-line {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .family-modal-line.visible {
+    opacity: 1;
   }
 
   .family-modal-content {
     pointer-events: auto;
     position: relative;
-    background: rgba(15, 15, 15, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 1rem;
     padding: 2rem;
-    max-width: 34rem;
-    width: min(92vw, 34rem);
+    width: min(92vw, 100%);
+    max-width: 92vw;
     max-height: min(78vh, 42rem);
     overflow: hidden;
     display: none;
     flex-direction: column;
     gap: 1.25rem;
+    margin-inline: auto;
   }
 
   .family-modal-content.active {
     display: flex;
+  }
+  .family-modal-content h2 {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: clamp(1.35rem, 2.2vw, 2.2rem);
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: -0.01em;
+    color: white;
+    text-wrap: balance;
   }
 
   .piece-panel-title {
@@ -716,8 +776,9 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   }
 
   .piece-panel-body {
-    max-height: min(52vh, 27rem);
-    overflow-y: auto;
+    width: 100%;
+    margin-inline: auto;
+    max-height: min(52vh, 30rem);
     padding-right: 0.35rem;
   }
 
@@ -735,6 +796,48 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     font-size: 0.875rem;
     color: rgba(255, 255, 255, 0.8);
     margin: 0;
+  }
+
+  .volunteer-chip-wrap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 12.5rem);
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .volunteer-chip {
+    position: relative;
+    width: 12.5rem;
+    min-height: 2.35rem;
+  }
+
+  .volunteer-chip-bg {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .volunteer-chip-name {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding-inline: 0.95rem;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    text-align: center;
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   @media (max-width: 1024px) {
@@ -809,6 +912,10 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     }
 
     .family-modal-header {
+      width: 100%;
+    }
+
+    .family-modal-topbar {
       margin-top: 4rem;
       width: 100%;
     }
@@ -828,6 +935,15 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     .section-content p {
       font-size: clamp(0.88rem, 3.8vw, 1rem);
     }
+
+    .family-modal-content {
+      max-height: min(78vh, 42rem);
+      padding: 1rem;
+    }
+
+    .core-team-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 <script>
@@ -844,10 +960,20 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       "family-modal"
     ) as HTMLDialogElement | null;
     const familyModalContent = document.getElementById("family-modal-content");
-    const piecePanelTitle = document.getElementById("piece-panel-title");
     const piecePanelBody = document.getElementById("piece-panel-body");
+    const volunteerChipSrc =
+      piecePanelBody?.getAttribute("data-volunteer-chip-src") ?? "";
+    const scopeAttrName =
+      piecePanelBody
+        ?.getAttributeNames()
+        .find((name) => name.startsWith("data-astro-cid-")) ?? "";
+    const scopeAttr = scopeAttrName ? ` ${scopeAttrName}` : "";
     const piecePanelClose = document.getElementById("piece-panel-close");
     const modalCloseBtn = document.getElementById("modal-close-btn");
+    const familyModalDescription = document.getElementById(
+      "family-modal-description"
+    );
+    const familyModalLine = document.getElementById("family-modal-line");
     const familyModalHeader = document.querySelector(
       ".family-modal-header"
     ) as HTMLElement | null;
@@ -874,6 +1000,8 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     const familyThreeRightEl = familyThreeRight as HTMLElement;
     const ourTeamSectionEl = ourTeamSection as HTMLElement;
     const teamFrameContainerEl = teamFrameContainer as HTMLElement;
+    const defaultFamilyModalDescription =
+      familyModalDescription?.textContent?.trim() ?? "";
 
     const easeInOutCubic = (t: number): number => {
       return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
@@ -1005,6 +1133,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     let modalOpenTime = 0;
     const MODAL_EXIT_DELAY = 1000; // ms before animations start
     const MODAL_EXIT_DURATION = 700; // ms for the animation itself
+    const MODAL_HITBOX_READY_TIME = MODAL_EXIT_DELAY + MODAL_EXIT_DURATION;
 
     const animateModalTransition = () => {
       if (!modal?.open) {
@@ -1017,6 +1146,12 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         Math.min(1, (elapsed - MODAL_EXIT_DELAY) / MODAL_EXIT_DURATION)
       );
       const eased = easeInOutCubic(t);
+
+      if (elapsed >= MODAL_HITBOX_READY_TIME) {
+        teamFrameContainerEl.classList.add("hitbox-active");
+      } else {
+        teamFrameContainerEl.classList.remove("hitbox-active");
+      }
 
       // Zoom up and slide down slightly after delay
       targetZoom = MODAL_ZOOM + (MODAL_ZOOM_POST_DELAY - MODAL_ZOOM) * eased;
@@ -1071,7 +1206,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     requestAnimationFrame(tick);
 
     // Modal interactions — only available after the section has been scrolled through
-    const MODAL_THRESHOLD = 0.5;
+    const MODAL_THRESHOLD = 0.8;
     const MODAL_ZOOM = isMobileViewport ? 1.1 : 1.2;
     const MODAL_ZOOM_POST_DELAY = isMobileViewport ? 1.25 : 1.35;
 
@@ -1081,10 +1216,12 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       }
 
       modal?.show();
+      modal?.classList.remove("role-active");
+      familyModalLine?.classList.remove("visible");
       document.body.style.overflowY = "hidden";
-      modalCloseBtn?.classList.add("visible");
       teamFrameContainerEl.style.zIndex = "130";
       teamFrameContainerEl.classList.add("modal-open");
+      teamFrameContainerEl.classList.remove("hitbox-active");
       if (familyContainer) {
         familyContainer.style.pointerEvents = "none";
       }
@@ -1099,14 +1236,24 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     };
 
     modal?.addEventListener("close", () => {
+      modal.classList.remove("role-active");
       if (familyModalContent) {
         familyModalContent.classList.remove("active");
+      }
+      if (familyModalDescription) {
+        familyModalDescription.textContent = defaultFamilyModalDescription;
+      }
+      familyModalLine?.classList.remove("visible");
+
+      if (piecePanelBody) {
+        piecePanelBody.innerHTML = "";
       }
 
       document.body.style.overflowY = "";
       modalCloseBtn?.classList.remove("visible");
       teamFrameContainerEl.style.zIndex = "";
       teamFrameContainerEl.classList.remove("modal-open");
+      teamFrameContainerEl.classList.remove("hitbox-active");
       if (familyContainer) {
         familyContainer.style.pointerEvents = "";
       }
@@ -1259,46 +1406,74 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       { role: "Website", name: "Muhammad Syauqi", team: "Volunteer" },
     ];
 
+    const createInitials = (name: string) => {
+      const words = name
+        .trim()
+        .split(" ")
+        .filter((word) => word.length > 0);
+      const initials = words
+        .slice(0, 2)
+        .map((word) => word.charAt(0).toUpperCase())
+        .join("");
+      return initials || "TM";
+    };
+
+    const sanitize = (value: string) => {
+      return value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    };
+
     const showPiecePanel = (roleAttr: string, displayTitle: string) => {
-      if (!(familyModalContent && piecePanelTitle && piecePanelBody)) {
+      if (!(familyModalContent && piecePanelBody && modal)) {
         return;
       }
 
       const roles = roleAttr.split(",").map((r) => r.trim());
       const members = teamMembers.filter((m) => roles.includes(m.role));
 
-      piecePanelTitle.textContent = displayTitle;
+      if (familyModalDescription) {
+        familyModalDescription.textContent = displayTitle;
+      }
 
-      const coreTeam = members.filter((m) => m.team === "Core Team");
+      const coreTeam = members.filter((m) => m.team !== "Volunteer");
       const volunteers = members.filter((m) => m.team === "Volunteer");
-      const noTeam = members.filter((m) => !m.team);
 
-      let html = "";
-      if (noTeam.length > 0) {
-        html += '<div class="piece-panel-group">';
-        for (const m of noTeam) {
-          html += `<p class="piece-panel-member">${m.name}</p>`;
-        }
-        html += "</div>";
-      }
-      if (coreTeam.length > 0) {
-        html +=
-          '<div class="piece-panel-group"><p class="piece-panel-group-label">Core Team</p>';
-        for (const m of coreTeam) {
-          html += `<p class="piece-panel-member">${m.name}</p>`;
-        }
-        html += "</div>";
-      }
-      if (volunteers.length > 0) {
-        html +=
-          '<div class="piece-panel-group"><p class="piece-panel-group-label">Volunteer</p>';
-        for (const m of volunteers) {
-          html += `<p class="piece-panel-member">${m.name}</p>`;
-        }
-        html += "</div>";
+      const coreCards = coreTeam
+        .map((member) => {
+          const safeName = sanitize(member.name);
+          const initials = sanitize(createInitials(member.name));
+          return `<article${scopeAttr} class="member-card"><div${scopeAttr} class="member-card-photo" aria-hidden="true">${initials}</div><p${scopeAttr} class="member-card-name">${safeName}</p></article>`;
+        })
+        .join("");
+
+      const safeChipSrc = sanitize(volunteerChipSrc);
+      const volunteerChips = volunteers
+        .map((member) => {
+          const safeName = sanitize(member.name);
+          return `<article${scopeAttr} class="volunteer-chip"><img${scopeAttr} class="volunteer-chip-bg" src="${safeChipSrc}" alt="" aria-hidden="true" /><p${scopeAttr} class="volunteer-chip-name">${safeName}</p></article>`;
+        })
+        .join("");
+
+      let html = `<section${scopeAttr}><h2${scopeAttr} class="piece-panel-section-title">Core Team</h2><div${scopeAttr} class="core-team-grid">`;
+      html +=
+        coreCards ||
+        `<article${scopeAttr} class="member-card"><div${scopeAttr} class="member-card-photo" aria-hidden="true">TM</div><p${scopeAttr} class="member-card-name">Soon</p></article>`;
+      html += "</div></section>";
+
+      if (volunteerChips) {
+        html += `<section${scopeAttr}><h2${scopeAttr} class="piece-panel-section-title">Volunteer</h2><div${scopeAttr} class="volunteer-chip-wrap">`;
+        html += volunteerChips;
+        html += "</div></section>";
       }
 
       piecePanelBody.innerHTML = html;
+      modal.classList.add("role-active");
+      familyModalLine?.classList.add("visible");
+      modalCloseBtn?.classList.add("visible");
       familyModalContent.classList.add("active");
     };
 
@@ -1321,9 +1496,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 
     piecePanelClose?.addEventListener("click", (e) => {
       e.stopPropagation();
-      if (familyModalContent) {
-        familyModalContent.classList.remove("active");
-      }
+      closeModal();
     });
 
     modalCloseBtn?.addEventListener("click", (e) => {
