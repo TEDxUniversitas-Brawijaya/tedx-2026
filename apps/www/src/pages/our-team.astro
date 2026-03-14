@@ -47,8 +47,8 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         />
         <Image src={TileFloor} alt={"Tile Floor"} class="tile-floor" />
         <div class="team-frame-container" id="team-frame-container">
-        <svg class="team-frame-outline" width="625" height="379" viewBox="0 0 625 379" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="7.07089" y="7.06992" width="610.732" height="364.141" stroke="currentColor" stroke-width="14.1414"/>
+        <svg class="team-frame-outline" width="625" height="378" viewBox="0 0 625 379" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="7.07089" y="7.06992" width="609.732" height="364.141" stroke="currentColor" stroke-width="14.1414"/>
         </svg>
           <Image
             src={TeamFrameBackground}
@@ -240,19 +240,19 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         </div>
       </div>
     </section>
-    <dialog id="family-modal" class="family-modal">
-      <div class="family-modal-topbar">
-        <div class="family-modal-header">
-          <h2 class="family-modal-heading">Meet the Team</h2>
-          <p class="family-modal-description" id="family-modal-description">
+    <dialog id="family" class="family">
+      <div class="family-topbar">
+        <div class="family-header">
+          <h2 class="family-heading">Meet the Team</h2>
+          <p class="family-description" id="family-description">
             Setiap divisi memiliki peran penting dalam menghadirkan
             TEDxUniversitasBrawijaya. Klik divisi untuk melihat tim di baliknya.
           </p>
           <Image
             src={Line}
             alt="Line"
-            id="family-modal-line"
-            class="family-modal-line"
+            id="family-line"
+            class="family-line"
           />
         </div>
         <button
@@ -260,10 +260,22 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
           id="modal-close-btn"
           aria-label="Tutup modal"
         >
-          &times;
+          <svg
+            width="50"
+            height="50"
+            viewBox="0 0 50 50"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M20.0003 22.3327L11.8337 30.4993C11.5281 30.8049 11.1392 30.9577 10.667 30.9577C10.1948 30.9577 9.80588 30.8049 9.50032 30.4993C9.19477 30.1938 9.04199 29.8049 9.04199 29.3327C9.04199 28.8605 9.19477 28.4716 9.50032 28.166L17.667 19.9993L9.50032 11.8327C9.19477 11.5271 9.04199 11.1382 9.04199 10.666C9.04199 10.1938 9.19477 9.8049 9.50032 9.49935C9.80588 9.19379 10.1948 9.04102 10.667 9.04102C11.1392 9.04102 11.5281 9.19379 11.8337 9.49935L20.0003 17.666L28.167 9.49935C28.4725 9.19379 28.8614 9.04102 29.3337 9.04102C29.8059 9.04102 30.1948 9.19379 30.5003 9.49935C30.8059 9.8049 30.9587 10.1938 30.9587 10.666C30.9587 11.1382 30.8059 11.5271 30.5003 11.8327L22.3337 19.9993L30.5003 28.166C30.8059 28.4716 30.9587 28.8605 30.9587 29.3327C30.9587 29.8049 30.8059 30.1938 30.5003 30.4993C30.1948 30.8049 29.8059 30.9577 29.3337 30.9577C28.8614 30.9577 28.4725 30.8049 28.167 30.4993L20.0003 22.3327Z"
+              fill="white"
+            />
+          </svg>
         </button>
       </div>
-      <div class="family-modal-content" id="family-modal-content">
+      <div class="family-content" id="family-content">
         <div class="piece-panel-separator" aria-hidden="true"></div>
         <div
           class="piece-panel-body"
@@ -293,8 +305,8 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   .paper-texture {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
+    width: 102%;
+    height: 102%;
     object-fit: cover;
     pointer-events: none;
   }
@@ -320,8 +332,9 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     position: absolute;
     top: 38%;
     left:85%;
-    width: clamp(40rem, 40vw, 40rem);
+    width: clamp(40rem, 30vw, 45rem);
     aspect-ratio: 1 / 1;
+    pointer-events: auto;
     transform-origin: center;
     will-change: transform;
   }
@@ -347,16 +360,15 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     height: 100%;
     object-fit: contain;
     object-position: center;
-  }
-
-  .team-frame {
-    z-index: 80;
+    pointer-events: none;
   }
 
   .team-layer,
   .team-piece,
   .team-empty-piece {
-    transform: translateZ(0) scale(0.96);
+    transform: translateZ(0) scale(0.95);
+    backface-visibility: hidden;
+    will-change: transform;
   }
 
   #team-frame-background {
@@ -372,6 +384,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   .piece-hitbox-layer {
     position: absolute;
     inset: 2.5%;
+    pointer-events: none;
     z-index: 130;
   }
 
@@ -384,15 +397,17 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     transform: translate(-50%, -50%);
     padding: 0;
     pointer-events: none;
-    pointer-events: auto;
     cursor: pointer;
     opacity: 0;
+  }
+
+  .team-frame-container.hitbox-active .piece-hitbox-btn {
+    pointer-events: auto;
   }
 
 
 
   .piece-hitbox-event-manager {
-    /* --hitbox-color: rgba(255, 99, 71, 0.5); */
     --hitbox-x: 33%;
     --hitbox-y: 28%;
     --hitbox-w: 24%;
@@ -400,7 +415,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   }
 
   .piece-hitbox-cem {
-    /* --hitbox-color: rgba(0, 191, 255, 0.5); */
     --hitbox-x: 47%;
     --hitbox-y: 50%;
     --hitbox-w: 15%;
@@ -408,7 +422,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   }
 
   .piece-hitbox-budget {
-    /* --hitbox-color: rgba(255, 215, 0, 0.5); */
     --hitbox-x: 46%;
     --hitbox-y: 75%;
     --hitbox-w: 35%;
@@ -416,7 +429,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   }
 
   .piece-hitbox-curator {
-    /* --hitbox-color: rgba(186, 85, 211, 0.5); */
     --hitbox-x: 30%;
     --hitbox-y: 45%;
     --hitbox-w: 10%;
@@ -424,7 +436,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   }
 
   .piece-hitbox-ep {
-    /* --hitbox-color: rgba(34, 197, 94, 0.5); */
     --hitbox-x: 10%;
     --hitbox-y: 30%;
     --hitbox-w: 15%;
@@ -432,7 +443,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   }
 
   .piece-hitbox-organizer {
-    /* --hitbox-color: rgba(249, 115, 22, 0.5); */
     --hitbox-x: 10%;
     --hitbox-y: 60%;
     --hitbox-w: 20%;
@@ -440,7 +450,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   }
 
   .piece-hitbox-design {
-    /* --hitbox-color: rgba(16, 185, 129, 0.5); */
     --hitbox-x: 80.5%;
     --hitbox-y: 70.5%;
     --hitbox-w: 15%;
@@ -448,7 +457,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   }
 
   .piece-hitbox-sponsorship {
-    /* --hitbox-color: rgba(236, 72, 153, 0.5); */
     --hitbox-x: 80%;
     --hitbox-y: 40%;
     --hitbox-w: 20%;
@@ -456,7 +464,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   }
 
   .piece-hitbox-vp {
-    /* --hitbox-color: rgba(99, 102, 241, 0.5); */
     --hitbox-x: 65%;
     --hitbox-y: 60%;
     --hitbox-w: 10%;
@@ -464,7 +471,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   }
 
   .piece-hitbox-website {
-    /* --hitbox-color: rgba(6, 182, 212, 0.5); */
     --hitbox-x: 95%;
     --hitbox-y: 65%;
     --hitbox-w: 10%;
@@ -513,7 +519,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     #website-piece {
     filter: brightness(1.4) drop-shadow(0px 4px 25px rgba(255, 149, 0, 0.5));
   }
-  
+
   .family-container{
 
     /* Desktop placeholders: adjust these values freely */
@@ -540,12 +546,9 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     width: 100%;
     height:100%;
     aspect-ratio: 16 / 10;
-    object-fit: contain;
     opacity: 1;
-    transition:
-      opacity 0.15s ease,
-      transform 0.35s ease;
-    will-change: opacity, transform;
+    transition: opacity 0.15s ease;
+    will-change: opacity;
   }
 
   .family-father,.family-mother,.family-sister,.family-uncle,.family-daughter{
@@ -618,7 +621,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     text-wrap-style: pretty;
   }
 
-  .family-modal {
+  .family {
     position: fixed;
     inset: 0;
     width: 100%;
@@ -638,11 +641,11 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     overflow-y: auto;
   }
 
-  .family-modal[open] {
+  .family[open] {
     display: flex;
   }
 
-  .family-modal::before {
+  .family::before {
     content: "";
     position: fixed;
     inset: 0;
@@ -656,17 +659,17 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       backdrop-filter 0.28s ease;
   }
 
-  .family-modal > * {
+  .family > * {
     position: relative;
     z-index: 1;
   }
 
-  .family-modal.role-active::before {
+  .family.role-active::before {
     opacity: 1;
     backdrop-filter: blur(10px);
   }
 
-  .family-modal::backdrop {
+  .family::backdrop {
     background: transparent;
     pointer-events: none;
   }
@@ -679,7 +682,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     background: none;
     padding: 0;
     color: white;
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     cursor: pointer;
     line-height: 1;
     pointer-events: auto;
@@ -696,17 +699,17 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     color: rgba(255, 255, 255, 0.85);
   }
 
-  .family-modal-topbar {
-    width: min(92vw, 50rem);
+  .family-topbar {
+    width: min(92vw, 100rem);
     margin-top: 4.5rem;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 1rem;
     pointer-events: auto;
   }
 
-  .family-modal-header {
+  .family-header {
     width: 100%;
     margin-top: 0;
     text-align: center;
@@ -721,7 +724,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     opacity: 0;
   }
 
-  .family-modal-heading {
+  .family-heading {
     font-family: var(--font-serif);
     font-size: clamp(1.75rem, 4vw, 2.8rem);
     font-weight: 500;
@@ -729,27 +732,31 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     margin: 0;
   }
 
-  .family-modal-description {
+  .family-description {
     font-family: var(--font-sans);
-    font-size: clamp(0.9rem, 1.8vw, 1.05rem);
-    max-width: 46rem;
+    font-size: clamp(0.9rem, 2.2vw, 1.3rem);
+    max-width: 50rem;
     margin: 0 auto;
     line-height: 1.45;
     color: rgba(255, 255, 255, 0.9);
     text-wrap-style: pretty;
   }
-
-  .family-modal-line {
+  .family.role-active .family-description {
+    font-size: clamp(0.9rem, 2.5vw, 1.8rem);
+    
+  }
+  .family-line {
+    width:100%;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
   }
 
-  .family-modal-line.visible {
+  .family-line.visible {
     opacity: 1;
   }
 
-  .family-modal-content {
+  .family-content {
     pointer-events: auto;
     position: relative;
     padding: 2rem;
@@ -763,10 +770,10 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     margin-inline: auto;
   }
 
-  .family-modal-content.active {
+  .family-content.active {
     display: flex;
   }
-  .family-modal-content h2 {
+  .family-content h2 {
     text-align: center;
     font-family: var(--font-serif);
     font-size: clamp(1.35rem, 2.2vw, 2.2rem);
@@ -777,21 +784,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     text-wrap: balance;
   }
 
-  .piece-panel-title {
-    font-family: var(--font-serif);
-    font-size: 1.4rem;
-    font-weight: 500;
-    color: var(--color-white);
-    margin: 0;
-    padding-right: 2rem;
-  }
-
-  .piece-panel-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
   .piece-panel-body {
     width: 100%;
     margin-inline: auto;
@@ -799,21 +791,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     padding-right: 0.35rem;
   }
 
-  .piece-panel-group-label {
-    font-family: var(--font-sans);
-    font-size: 0.6rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: rgba(255, 149, 0, 0.9);
-    margin: 0 0 0.3rem;
-  }
-
-  .piece-panel-member {
-    font-family: var(--font-sans);
-    font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.8);
-    margin: 0;
-  }
+  
 
   .volunteer-chip-wrap {
     display: grid;
@@ -901,33 +879,32 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     }
 
     .team-frame-container {
-      width: clamp(15rem, 100vw, 40rem);
+      width: clamp(15rem, 90vw, 40rem);
     }
 
     .family-container {
       scale:0.8;
       
       --family-father-top: 60vh;
-
       --family-mother-top: 70vh;
-
+      
       --family-sister-top: 70vh;
-
+      
       --family-uncle-top: 60vh;
 
       --family-daughter-left: -10vw;
-      --family-daughter-top: 80vh;
+      --family-daughter-top: 90vh;
     }
-    .family-modal {
+    .family {
       padding: 1rem;
       gap: 1rem;
     }
 
-    .family-modal-header {
+    .family-header {
       width: 100%;
     }
 
-    .family-modal-topbar {
+    .family-topbar {
       margin-top: 10rem;
       width: 100%;
     }
@@ -948,7 +925,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       font-size: clamp(0.88rem, 3.8vw, 1rem);
     }
 
-    .family-modal-content {
+    .family-content {
       max-height: min(78vh, 42rem);
       padding: 1rem;
     }
@@ -967,12 +944,9 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     const familySister = document.getElementById("family-sister");
     const familyUncle = document.getElementById("family-uncle");
     const familyDaughter = document.getElementById("family-daughter");
-    const familyContainer = document.getElementById("family-container");
+    const family = document.getElementById("family") as HTMLDialogElement | null;
     const teamFrameContainer = document.getElementById("team-frame-container");
-    const modal = document.getElementById(
-      "family-modal"
-    ) as HTMLDialogElement | null;
-    const familyModalContent = document.getElementById("family-modal-content");
+    const familyContent = document.getElementById("family-content");
     const piecePanelBody = document.getElementById("piece-panel-body");
     const volunteerChipSrc =
       piecePanelBody?.getAttribute("data-volunteer-chip-src") ?? "";
@@ -981,26 +955,22 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         ?.getAttributeNames()
         .find((name) => name.startsWith("data-astro-cid-")) ?? "";
     const scopeAttr = scopeAttrName ? ` ${scopeAttrName}` : "";
-    const piecePanelClose = document.getElementById("piece-panel-close");
     const modalCloseBtn = document.getElementById("modal-close-btn");
-    const familyModalDescription = document.getElementById(
-      "family-modal-description"
+    const familyDescription = document.getElementById(
+      "family-description"
     );
-    const familyModalLine = document.getElementById("family-modal-line");
-    const familyModalHeader = document.querySelector(
-      ".family-modal-header"
+    const familyLine = document.getElementById("family-line");
+    const familyHeader = document.querySelector(
+      ".family-header"
     ) as HTMLElement | null;
     const sectionContent = document.querySelector(".section-content");
-
-    const tileFloor = document.querySelector(
-      ".tile-floor"
-    ) as HTMLElement | null;
     const requiredElements =
       familyFather &&
       familyMother &&
       familySister &&
       familyUncle &&
       familyDaughter &&
+      family &&
       ourTeamSection &&
       teamFrameContainer;
 
@@ -1015,11 +985,13 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     const familyDaughterEl = familyDaughter as HTMLElement;
     const ourTeamSectionEl = ourTeamSection as HTMLElement;
     const teamFrameContainerEl = teamFrameContainer as HTMLElement;
-    const defaultFamilyModalDescription =
-      familyModalDescription?.textContent?.trim() ?? "";
+    const defaultFamilyDescription =
+      familyDescription?.textContent?.trim() ?? "";
     const isMobileViewport = window.matchMedia("(max-width: 768px)").matches;
     const isTabletViewport = window.matchMedia("(max-width: 1024px)").matches;
-        const DESIGN_WIDTH = 625;
+    const DESIGN_WIDTH = 625;
+    const HEADER_REVEAL_START = 0.7;
+    const SCROLL_MAX_THRESHOLD = 0.99;
     const BASE_FRAME_TRANSLATE = "translate(-50%, -50%)";
     const easeInOutCubic = (t: number): number => {
       return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
@@ -1077,65 +1049,87 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       return lastOutput;
     }
     const animateFamily = (scrollProgress: number) => {
-      // Fade all family members using the existing opacity curve.
-     let familyFatherOpacity;
-   let familyMotherOpacity;
-   let familyUncleOpacity;
-   let familySisterOpacity;
-      let familyDaughterOpacity;
-      const firstFamilyOpacityTransform = transform(
+      const centerPhaseProgress = transform(
         scrollProgress,
-        [0, 0.5, 1],
-        [1, 0, 1],
-        easeInOutCubic
-      );
-      const firstFamilyOpacityTransformMobile = transform(
-        scrollProgress,
-        [0, 0.5, 1],
-        [0, 0, 1],
-        easeInOutCubic
-      );
-      familyDaughterOpacity = firstFamilyOpacityTransform;
-      if(isMobileViewport){
-        familyFatherOpacity =  familyMotherOpacity =  familyUncleOpacity =  familySisterOpacity = firstFamilyOpacityTransformMobile;
-      }
-      else{
-        familyFatherOpacity = familyMotherOpacity = familyUncleOpacity = familySisterOpacity = firstFamilyOpacityTransform;
-      }
-
-      const centerProgress = transform(
-        scrollProgress,
-        [0.5, 0.8],
+        [0.3, 0.68],
         [0, 1],
         easeInOutCubic
       );
 
+      const exitPhaseProgress = transform(
+        scrollProgress,
+        [0.68, 1],
+        [0, 1],
+        easeInOutCubic
+      );
       const centerOffsetByMember = {
-        father: window.innerWidth * (isMobileViewport ? -0.15 : isTabletViewport ? -0.3 : -0.35),
-        mother: window.innerWidth * (isMobileViewport ? -0.3 : isTabletViewport ? -0.4 : -0.35),
-        sister: window.innerWidth * (isMobileViewport ? -0.1  : isTabletViewport ? -0.25 : -0.35),
-        uncle: window.innerWidth * (isMobileViewport ? 0.1 : isTabletViewport ? -0.15 : -0.35),
-        daughter: window.innerWidth * (isMobileViewport ? 0.1 : isTabletViewport ? 0.23 : 0.3),
+        father:
+          window.innerWidth *
+          (isMobileViewport ? -0.35: isTabletViewport ? -0.3 : -0.35),
+        mother:
+          window.innerWidth *
+          (isMobileViewport ? -0.45 : isTabletViewport ? -0.4 : -0.34),
+        sister:
+          window.innerWidth *
+          (isMobileViewport ? -0.2 : isTabletViewport ? -0.25 : -0.35),
+        uncle:
+          window.innerWidth *
+          (isMobileViewport ? -0.025 : isTabletViewport ? -0.15 : -0.35),
+        daughter:
+          window.innerWidth *
+          (isMobileViewport ? 0.1 : isTabletViewport ? 0.23 : 0.35),
       };
 
-      const moveTowardTargetX = (el: HTMLElement, centerOffsetX: number) => {
-        const centeredDeltaX = centerOffsetX * centerProgress;
-        const deltaX = Number(centeredDeltaX.toFixed(2));
-
-        el.style.transform = `translate(${deltaX}px, 0)`;
+      const directionByMember = {
+        father: -1,
+        mother: -1,
+        sister: 1,
+        uncle: 1,
+        daughter: -1,
       };
 
-      moveTowardTargetX(familyFatherEl, centerOffsetByMember.father);
-      moveTowardTargetX(familyMotherEl, centerOffsetByMember.mother);
-      moveTowardTargetX(familyUncleEl, centerOffsetByMember.uncle);
-      moveTowardTargetX(familySisterEl, centerOffsetByMember.sister);
-      moveTowardTargetX(familyDaughterEl, centerOffsetByMember.daughter);
+      const outOfBoundsDistance =
+        window.innerWidth * (isMobileViewport ? 1.2 : isTabletViewport ? 1.35 : 1.5);
 
-      familyFatherEl.style.opacity = String(familyFatherOpacity);
-      familyMotherEl.style.opacity = String(familyMotherOpacity);
-      familyUncleEl.style.opacity = String(familyUncleOpacity);
-      familySisterEl.style.opacity = String(familySisterOpacity);
-      familyDaughterEl.style.opacity = String(familyDaughterOpacity);
+      const moveFamilyMemberToCenter = (
+        el: HTMLElement,
+        centerOffsetX: number,
+        direction: number
+      ) => {
+        const centeredDeltaX = centerOffsetX * centerPhaseProgress;
+        const finalOutOfBoundsX = centerOffsetX + outOfBoundsDistance * direction;
+        const deltaX =
+          centeredDeltaX +
+          (finalOutOfBoundsX - centerOffsetX) * exitPhaseProgress;
+
+        el.style.transform = `translate(${Number(deltaX.toFixed(2))}px, 0)`;
+      };
+
+      moveFamilyMemberToCenter(
+        familyFatherEl,
+        centerOffsetByMember.father,
+        directionByMember.father
+      );
+      moveFamilyMemberToCenter(
+        familyMotherEl,
+        centerOffsetByMember.mother,
+        directionByMember.mother
+      );
+      moveFamilyMemberToCenter(
+        familyUncleEl,
+        centerOffsetByMember.uncle,
+        directionByMember.uncle
+      );
+      moveFamilyMemberToCenter(
+        familySisterEl,
+        centerOffsetByMember.sister,
+        directionByMember.sister
+      );
+      moveFamilyMemberToCenter(
+        familyDaughterEl,
+        centerOffsetByMember.daughter,
+        directionByMember.daughter
+      );
     };
 
 
@@ -1178,145 +1172,97 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
           )
         : transform(scrollProgress, [0.2, 0.9], [0, targetX], easeInOutCubic);
 
+      const zoomBoost = transform(
+        scrollProgress,
+        [0.7, 1],
+        [1, isMobileViewport ? 1.5 : 1.5],
+        easeInOutCubic
+      );
+      const frameDropY =
+        frameTranslateY +
+        transform(
+          scrollProgress,
+          [0.7, 1],
+          [0, isMobileViewport ? 10 : 25],
+          easeInOutCubic
+        );
+
       const autoScale = teamFrameContainerEl.clientWidth / DESIGN_WIDTH;
-      const finalScale = zoom * autoScale;
+      const finalScale = zoom * autoScale * zoomBoost;
+
+      const roundedTranslateX = Number(translateX.toFixed(2));
+      const roundedFrameTranslateY = Number(frameDropY.toFixed(2));
+      const roundedScale = Number(finalScale.toFixed(4));
 
       teamFrameContainerEl.style.transform =
-        `${BASE_FRAME_TRANSLATE} translateX(${translateX}px) translateY(${frameTranslateY}vh) ` +
-        `scale(${finalScale})`;
+        `${BASE_FRAME_TRANSLATE} translateX(${roundedTranslateX}px) translateY(${roundedFrameTranslateY}vh) ` +
+        `scale(${roundedScale})`;
     };
-    let modalOpenTime = 0;
-    const MODAL_EXIT_DELAY = 1000; // ms before animations start
-    const MODAL_EXIT_DURATION = 700; // ms for the animation itself
-    const MODAL_HITBOX_READY_TIME = MODAL_EXIT_DELAY + MODAL_EXIT_DURATION;
 
-    const animateModalTransition = () => {
-      if (!modal?.open) {
+    const syncTeamFrameZIndex = (scrollProgress: number) => {
+      teamFrameContainerEl.style.zIndex =
+        scrollProgress >= SCROLL_MAX_THRESHOLD ? "150" : "";
+    };
+   
+    const animateFamilyHeader = (scrollProgress: number) => {
+      if (!familyHeader) {
         return;
       }
 
-      const elapsed = performance.now() - modalOpenTime;
-      const t = Math.max(
-        0,
-        Math.min(1, (elapsed - MODAL_EXIT_DELAY) / MODAL_EXIT_DURATION)
-      );
-      const eased = easeInOutCubic(t);
+      const isPiecePanelPhase =
+        scrollProgress >= HEADER_REVEAL_START;
 
-      if (elapsed >= MODAL_HITBOX_READY_TIME) {
-        teamFrameContainerEl.classList.add("hitbox-active");
-      } else {
-        teamFrameContainerEl.classList.remove("hitbox-active");
+      familyHeader.style.opacity =
+        isPiecePanelPhase ? "1" : "0";
+    };
+
+    const syncFamilyWithScroll = (scrollProgress: number) => {
+      if (!family) {
+        return;
       }
 
-      // Zoom up and slide down slightly after delay
-      targetZoom = MODAL_ZOOM + (MODAL_ZOOM_POST_DELAY - MODAL_ZOOM) * eased;
-      frameTranslateY = eased * 20;
+      const shouldShowPiecePanel =
+        scrollProgress >= HEADER_REVEAL_START;
 
-      if (tileFloor) {
-        tileFloor.style.transform = `translateX(-50%) translateY(${eased * 120}%)`;
+      if (!shouldShowPiecePanel) {
+        isModalDismissed = false;
       }
 
-      const centerProgress = transform(
-        smoothProgress,
-        [0.5, 0.8],
-        [0, 1],
-        easeInOutCubic
-      );
+      const canOpenPiecePanel = shouldShowPiecePanel;
+      teamFrameContainerEl.classList.toggle("hitbox-active", canOpenPiecePanel);
 
-      const centerOffsetByMember = {
-        father: window.innerWidth * (isMobileViewport ? -0.08 : -0.35),
-        mother: window.innerWidth * (isMobileViewport ? -0.04 : -0.35),
-        sister: window.innerWidth * (isMobileViewport ? 0.03 : -0.35),
-        uncle: window.innerWidth * (isMobileViewport ? 0.08 : -0.35),
-        daughter: window.innerWidth * (isMobileViewport ? 0.01 : 0.3),
-      };
+      if (canOpenPiecePanel && !family.open) {
+        family.show();
+        return;
+      }
 
-      const sideDirectionByMember = {
-        father: -1,
-        mother: -1,
-        sister: 1,
-        uncle: 1,
-        daughter: -1,
-      };
-
-      const FAMILY_TO_SIDE_DURATION = 150;
-      const FAMILY_SIDE_HOLD_DELAY = 950  ;
-      const FAMILY_TO_OUT_DURATION = 800;
-
-      const sidePhaseProgress = Math.max(
-        0,
-        Math.min(1, elapsed / FAMILY_TO_SIDE_DURATION)
-      );
-      const outPhaseProgress = Math.max(
-        0,
-        Math.min(
-          1,
-          (elapsed - FAMILY_TO_SIDE_DURATION - FAMILY_SIDE_HOLD_DELAY) /
-            FAMILY_TO_OUT_DURATION
-        )
-      );
-
-      const sideTravel = window.innerWidth * (isMobileViewport ? 0.24 : 0.32);
-      const outTravel = window.innerWidth * (isMobileViewport ? 1.05 : 1.25);
-      const outTravelY = isTabletViewport
-        ? window.innerHeight * (isMobileViewport ? 1.15 : 1.05)
-        : 0;
-
-      const applyModalFamilyTransform = (
-        el: HTMLElement,
-        centerOffsetX: number,
-        sideDirection: number
-      ) => {
-        const centeredDeltaX = centerOffsetX * centerProgress;
-        const sidePhaseDeltaX = sideTravel * sideDirection * sidePhaseProgress;
-        const outPhaseDeltaX = outTravel * sideDirection * outPhaseProgress;
-        const outPhaseDeltaY = outTravelY * outPhaseProgress;
-        const modalDeltaX =
-          (sidePhaseDeltaX + outPhaseDeltaX) * familyTransitionProgress;
-        const modalDeltaY = outPhaseDeltaY * familyTransitionProgress;
-        const deltaX = Number((centeredDeltaX + modalDeltaX).toFixed(2));
-        const deltaY = Number(modalDeltaY.toFixed(2));
-
-        el.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
-      };
-
-      applyModalFamilyTransform(
-        familyFatherEl,
-        centerOffsetByMember.father,
-        sideDirectionByMember.father
-      );
-      applyModalFamilyTransform(
-        familyMotherEl,
-        centerOffsetByMember.mother,
-        sideDirectionByMember.mother
-      );
-      applyModalFamilyTransform(
-        familyDaughterEl,
-        centerOffsetByMember.daughter,
-        sideDirectionByMember.daughter
-      );
-      applyModalFamilyTransform(
-        familySisterEl,
-        centerOffsetByMember.sister,
-        sideDirectionByMember.sister
-      );
-      applyModalFamilyTransform(
-        familyUncleEl,
-        centerOffsetByMember.uncle,
-        sideDirectionByMember.uncle
-      );
-
-      if (familyModalHeader) {
-        familyModalHeader.style.opacity = String(eased);
+      if (!shouldShowPiecePanel && family.open) {
+        resetFamilyState();
+        family.close();
       }
     };
+
+    const resetFamilyState = () => {
+      if (familyDescription) {
+        familyDescription.textContent = defaultFamilyDescription;
+      }
+
+      family.classList.remove("role-active");
+      familyLine?.classList.remove("visible");
+      modalCloseBtn?.classList.remove("visible");
+      familyContent?.classList.remove("active");
+
+      if (piecePanelBody) {
+        piecePanelBody.innerHTML = "";
+      }
+    };
+
     let smoothProgress = 0;
     let targetProgress = 0;
     let currentZoom = 1;
     let targetZoom = 1;
-    let familyTransitionProgress = 0;
-    let targetFamilyTransition = 0;
     let frameTranslateY = 0;
+    let isModalDismissed = false;
     const LERP_FACTOR = 0.08;
 
     const getScrollProgress = () => {
@@ -1333,109 +1279,17 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       targetProgress = getScrollProgress();
       smoothProgress += (targetProgress - smoothProgress) * LERP_FACTOR;
       currentZoom += (targetZoom - currentZoom) * LERP_FACTOR;
-      familyTransitionProgress +=
-        (targetFamilyTransition - familyTransitionProgress) * LERP_FACTOR;
-
       animateTeamFrame(smoothProgress, currentZoom);
       animateFamily(smoothProgress);
       animateSectionContent(smoothProgress);
-      animateModalTransition();
-      updateCursor(smoothProgress);
-
+      syncFamilyWithScroll(targetProgress);
+      syncTeamFrameZIndex(targetProgress);
+      animateFamilyHeader(targetProgress);
       requestAnimationFrame(tick);
     };
 
     requestAnimationFrame(tick);
 
-    // Modal interactions — only available after the section has been scrolled through
-    const MODAL_THRESHOLD = 0.8;
-    const MODAL_ZOOM = isMobileViewport ? 1.1 : 1.2;
-    const MODAL_ZOOM_POST_DELAY = isMobileViewport ? 1.25 : 1.35;
-
-    const openModal = () => {
-      if (smoothProgress < MODAL_THRESHOLD) {
-        return;
-      }
-
-      modal?.show();
-      modal?.classList.remove("role-active");
-      familyModalLine?.classList.remove("visible");
-      document.body.style.overflowY = "hidden";
-      teamFrameContainerEl.style.zIndex = "130";
-      teamFrameContainerEl.classList.add("modal-open");
-      teamFrameContainerEl.classList.remove("hitbox-active");
-      if (familyContainer) {
-        familyContainer.style.pointerEvents = "none";
-        familyContainer.style.opacity = "1";
-      }
-
-      targetZoom = MODAL_ZOOM;
-      targetFamilyTransition = 1;
-      modalOpenTime = performance.now();
-    };
-
-    const closeModal = () => {
-      modal?.close();
-    };
-
-    modal?.addEventListener("close", () => {
-      modal.classList.remove("role-active");
-      if (familyModalContent) {
-        familyModalContent.classList.remove("active");
-      }
-      if (familyModalDescription) {
-        familyModalDescription.textContent = defaultFamilyModalDescription;
-      }
-      familyModalLine?.classList.remove("visible");
-
-      if (piecePanelBody) {
-        piecePanelBody.innerHTML = "";
-      }
-
-      document.body.style.overflowY = "";
-      modalCloseBtn?.classList.remove("visible");
-      teamFrameContainerEl.style.zIndex = "";
-      teamFrameContainerEl.classList.remove("modal-open");
-      teamFrameContainerEl.classList.remove("hitbox-active");
-      if (familyContainer) {
-        familyContainer.style.pointerEvents = "";
-        familyContainer.style.opacity = "1";
-      }
-
-      targetZoom = 1;
-      targetFamilyTransition = 0;
-      if (tileFloor) {
-        tileFloor.style.transform = "";
-      }
-
-      frameTranslateY = 0;
-      if (familyModalHeader) {
-        familyModalHeader.style.opacity = "0";
-      }
-    });
-
-    modal?.addEventListener("cancel", (e) => {
-      e.preventDefault();
-    });
-
-    // Update cursor to signal interactability dynamically
-    const updateCursor = (progress: number) => {
-      if (familyContainer) {
-        familyContainer.style.cursor =
-          progress >= MODAL_THRESHOLD ? "pointer" : "default";
-      }
-    };
-
-    familyContainer?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      openModal();
-    });
-    familyContainer?.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        openModal();
-      }
-    });
 
     const teamMembers = [
       { role: "Organizer", name: "Muhammad Harffin", team: null },
@@ -1570,15 +1424,15 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     };
 
     const showPiecePanel = (roleAttr: string, displayTitle: string) => {
-      if (!(familyModalContent && piecePanelBody && modal)) {
+      if (!(familyContent && piecePanelBody)) {
         return;
       }
 
       const roles = roleAttr.split(",").map((r) => r.trim());
       const members = teamMembers.filter((m) => roles.includes(m.role));
 
-      if (familyModalDescription) {
-        familyModalDescription.textContent = displayTitle;
+      if (familyDescription) {
+        familyDescription.textContent = displayTitle;
       }
 
       const coreTeam = members.filter((m) => m.team !== "Volunteer");
@@ -1613,20 +1467,30 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       }
 
       piecePanelBody.innerHTML = html;
-      modal.classList.add("role-active");
-      familyModalLine?.classList.add("visible");
+      family.classList.add("role-active");
+      familyLine?.classList.add("visible");
       modalCloseBtn?.classList.add("visible");
-      familyModalContent.classList.add("active");
+      familyContent.classList.add("active");
     };
+
+    modalCloseBtn?.addEventListener("click", () => {
+      isModalDismissed = true;
+      resetFamilyState();
+      if (family.open) {
+        family.close();
+      }
+    });
 
     const pieceHitboxBtns =
       document.querySelectorAll<HTMLButtonElement>(".piece-hitbox-btn");
     for (const btn of Array.from(pieceHitboxBtns)) {
       btn.addEventListener("click", (e: Event) => {
         e.stopPropagation();
-        if (!modal?.open) {
+
+        if (!teamFrameContainerEl.classList.contains("hitbox-active")) {
           return;
         }
+
 
         const role = btn.dataset.role;
         const label = btn.getAttribute("aria-label") ?? role ?? "";
@@ -1635,15 +1499,5 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         }
       });
     }
-
-    piecePanelClose?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      closeModal();
-    });
-
-    modalCloseBtn?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      closeModal();
-    });
   })();
 </script>
