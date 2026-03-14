@@ -1078,20 +1078,31 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     }
     const animateFamily = (scrollProgress: number) => {
       // Fade all family members using the existing opacity curve.
+     let familyFatherOpacity;
+   let familyMotherOpacity;
+   let familyUncleOpacity;
+   let familySisterOpacity;
+      let familyDaughterOpacity;
       const firstFamilyOpacityTransform = transform(
         scrollProgress,
         [0, 0.5, 1],
         [1, 0, 1],
         easeInOutCubic
       );
+      const firstFamilyOpacityTransformMobile = transform(
+        scrollProgress,
+        [0, 0.5, 1],
+        [0, 0, 1],
+        easeInOutCubic
+      );
+      familyDaughterOpacity = firstFamilyOpacityTransform;
+      if(isMobileViewport){
+        familyFatherOpacity =  familyMotherOpacity =  familyUncleOpacity =  familySisterOpacity = firstFamilyOpacityTransformMobile;
+      }
+      else{
+        familyFatherOpacity = familyMotherOpacity = familyUncleOpacity = familySisterOpacity = firstFamilyOpacityTransform;
+      }
 
-      const familyFatherOpacity = firstFamilyOpacityTransform;
-      const familyMotherOpacity = firstFamilyOpacityTransform;
-      const familyUncleOpacity = firstFamilyOpacityTransform;
-      const familySisterOpacity = firstFamilyOpacityTransform;
-      const familyDaughterOpacity = firstFamilyOpacityTransform;
-
-      // As scroll reaches the end, pull every family member toward center.
       const centerProgress = transform(
         scrollProgress,
         [0.5, 0.8],
