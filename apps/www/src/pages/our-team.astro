@@ -5,25 +5,13 @@ import Image from "astro/components/image.astro";
 import TileFloor from "@/assets/imgs/tile-floor.png";
 import PaperTexture from "@/assets/imgs/paper-texture-1.png";
 import GreenBackground from "@/assets/imgs/green-background.png";
-import FamilyOne from "@/assets/imgs/family-1.png";
-import FamilyTwo from "@/assets/imgs/family-2.png";
-import FamilyThreeLeft from "@/assets/imgs/family-3-left.png";
-import FamilyThreeRight from "@/assets/imgs/family-3-right.png";
 
-// import EventManagerPiece from "@/assets/svgs/em-piece.svg";
-// import CemPiece from "@/assets/svgs/cem-piece.svg";
-// import BudgetPiece from "@/assets/svgs/budget-piece.svg";
-// import DesignPiece from "@/assets/svgs/design-piece.svg";
-// import CuratorPiece from "@/assets/svgs/curator-piece.svg";
-// import EpPiece from "@/assets/svgs/ep-piece.svg";
-// import OrganizerPiece from "@/assets/svgs/organizer-piece.svg";
-// import SponsorshipPiece from "@/assets/svgs/sponsorship-piece.svg";
-// import VpPiece from "@/assets/svgs/vp-piece.svg";
-// import WebsitePiece from "@/assets/svgs/website-piece.svg";
-// import EmptyPieceTop from "@/assets/svgs/empty-piece-top.svg";
-// import EmptyPieceBottom from "@/assets/svgs/empty-piece-bottom.svg";
-// import EmptyPieceTopRight from "@/assets/svgs/empty-piece-top-right.svg";
+import Father from "@/assets/imgs/father.png";
+import Mother from "@/assets/imgs/mother.png";
+import Sister from "@/assets/imgs/sister.png";
+import Uncle from "@/assets/imgs/uncle.png";
 
+import Daughter from "@/assets/imgs/daughter.png";
 import EventManagerPiece from "@/assets/imgs/em-piece.png";
 import CemPiece from "@/assets/imgs/cem-piece.png";
 import BudgetPiece from "@/assets/imgs/budget-piece.png";
@@ -40,7 +28,6 @@ import EmptyPieceTopRight from "@/assets/imgs/empty-piece-top-right.png";
 import VolunteerChip from "@/assets/imgs/volunteer-chip.png";
 
 import Line from "@/assets/imgs/line-1.png";
-import TeamFrame from "@/assets/imgs/team-frame.png";
 import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 ---
 
@@ -60,12 +47,9 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         />
         <Image src={TileFloor} alt={"Tile Floor"} class="tile-floor" />
         <div class="team-frame-container" id="team-frame-container">
-          <Image
-            src={TeamFrame}
-            id={"team-frame"}
-            class="team-frame"
-            alt={"Team Frame"}
-          />
+        <svg class="team-frame-outline" width="625" height="379" viewBox="0 0 625 379" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="7.07089" y="7.06992" width="610.732" height="364.141" stroke="currentColor" stroke-width="14.1414"/>
+        </svg>
           <Image
             src={TeamFrameBackground}
             id={"team-frame-background"}
@@ -211,28 +195,39 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
           aria-label="Klik untuk melihat keluarga kami"
         >
           <Image
-            src={FamilyOne}
-            class="family"
-            id="family-one"
-            alt="TEDx Universitas Brawijaya family photo, first pose"
+            src={Father}
+            alt="Father"
+            class="family-father"
+            id="family-father"
+            aria-hidden="true"
           />
           <Image
-            src={FamilyTwo}
-            class="family"
-            id="family-two"
-            alt="TEDx Universitas Brawijaya family photo, second pose"
+            src={Mother}
+            alt="Mother"
+            class="family-mother"
+            id="family-mother"
+            aria-hidden="true"
           />
           <Image
-            src={FamilyThreeLeft}
-            class="family"
-            id="family-three-left"
-            alt="Family Three Left"
+            src={Sister}
+            alt="Sister"
+            class="family-sister"
+            id="family-sister"
+            aria-hidden="true"
           />
           <Image
-            src={FamilyThreeRight}
-            class="family"
-            id="family-three-right"
-            alt="Family Three Right"
+            src={Uncle}
+            alt="Uncle"
+            class="family-uncle"
+            id="family-uncle"
+            aria-hidden="true"
+          />
+         <Image
+            src={Daughter}
+            alt="Daughter"
+            class="family-daughter"
+            id="family-daughter"
+            aria-hidden="true"
           />
         </div>
         <div class="section-content">
@@ -318,20 +313,31 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     transform: translateX(-50%);
     object-fit: cover;
     pointer-events: none;
-    z-index: 20;
     will-change: transform;
   }
 
   .team-frame-container {
     position: absolute;
     top: 38%;
-    left: 80%;
-    width: clamp(20rem, 40vw, 40rem);
+    left:85%;
+    width: clamp(40rem, 40vw, 40rem);
     aspect-ratio: 1 / 1;
-    transform: translate(-50%, -50%);
     transform-origin: center;
-    z-index: 110;
     will-change: transform;
+  }
+
+  .team-frame-outline {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--color-red);
+    pointer-events: none;
+    z-index: 95;
+  }
+
+  .team-frame-outline rect {
+    stroke: var(--color-red);
   }
 
   .team-frame-container img {
@@ -524,49 +530,77 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     #website-piece {
     filter: brightness(1.4) drop-shadow(0px 4px 25px rgba(255, 149, 0, 0.5));
   }
+  
+  .family-container{
 
-  .family-container {
-    position: absolute;
-    inset: 0;
-    z-index: 120;
-    overflow: visible;
-  }
+    /* Desktop placeholders: adjust these values freely */
+    --family-father-left: auto;
+    --family-father-right: 10vw;
+    --family-father-top: 50vh;
 
-  .family-container .family {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 110%;
-    height: 100%;
-    transform: translate(-50%, -44%);
-    object-fit: cover;
-    object-position: 50% 100%;
+    --family-mother-left: auto;
+    --family-mother-right: 24vw;
+    --family-mother-top: 65vh;
+
+    --family-sister-left: auto;
+    --family-sister-right: 0vw;
+    --family-sister-top: 60vh;
+
+    --family-uncle-left: auto;
+    --family-uncle-right: -5vw;
+    --family-uncle-top: 50vh;
+
+    --family-daughter-left: 0%;
+    --family-daughter-right: auto;
+    --family-daughter-top: 80vh;
+
+    width: 100%;
+    height:100%;
+    aspect-ratio: 16 / 10;
+    object-fit: contain;
+    opacity: 1;
     transition:
       opacity 0.15s ease,
       transform 0.35s ease;
     will-change: opacity, transform;
   }
 
-  #family-three-left,
-  #family-three-right {
-    top: 65%;
-    width: clamp(34rem, 94vw, 100rem);
-    height: auto;
-    aspect-ratio: 16 / 10;
-    object-fit: contain;
-    object-position: center bottom;
+  .family-father,.family-mother,.family-sister,.family-uncle,.family-daughter{
+    position:absolute;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+  }
+  .family-father {
+    left: var(--family-father-left);
+    right: var(--family-father-right);
+    top: var(--family-father-top);
   }
 
-  #family-three-left {
-    left: 90%;
-    transform: translate(-50%, -50%);
+  .family-mother {
+    left: var(--family-mother-left);
+    right: var(--family-mother-right);
+    top: var(--family-mother-top);
   }
 
-  #family-three-right {
-    left: 10%;
-    transform: translate(-50%, -50%);
+  .family-sister{
+    z-index:2;
+    left: var(--family-sister-left);
+    right: var(--family-sister-right);
+    top: var(--family-sister-top);
+  }
+  .family-uncle {
+    z-index:1;
+    left: var(--family-uncle-left);
+    right: var(--family-uncle-right);
+    top: var(--family-uncle-top);
   }
 
+  .family-daughter {
+    left: var(--family-daughter-left);
+    right: var(--family-daughter-right);
+    top: var(--family-daughter-top);
+  }
   .section-content {
     position: absolute;
     top: 50%;
@@ -846,13 +880,26 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     }
 
     .team-frame-container {
-      left: 68%;
-      width: clamp(18rem, 48vw, 34rem);
+      right: 10%;
+      width: clamp(35rem, 60vw, 100rem);
     }
 
-    .family-container .family {
-      width: 124%;
-      transform: translate(-50%, -40%);
+    .family-container {
+      /* Tablet placeholders */
+      --family-father-right: 10vw;
+      --family-father-top: 50vh;
+
+      --family-mother-right: 30vw;
+      --family-mother-top: 70vh;
+
+      --family-sister-right: -10vw;
+      --family-sister-top: 60vh;
+
+      --family-uncle-right: -10vw;
+      --family-uncle-top: 50vh;
+
+      --family-daughter-left: -10vw;
+      --family-daughter-top: 75vh;
     }
 
     .section-content {
@@ -863,14 +910,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       text-align: center;
       align-items: center;
     }
-
-    #family-three-left {
-      left: 30%;
-    }
-
-    #family-three-right {
-      left: 70%;
-    }
   }
 
   @media (max-width: 768px) {
@@ -879,33 +918,23 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     }
 
     .team-frame-container {
-      top: 64%;
-      left: 50%;
-      width: clamp(15rem, 76vw, 24rem);
+      width: clamp(15rem, 100vw, 40rem);
     }
 
-    .family-container .family {
-      top: 57%;
-      width: 150%;
-      height: auto;
-      aspect-ratio: 4 / 3;
-      transform: translate(-50%, -50%);
-    }
+    .family-container {
+      scale:0.8;
+      
+      --family-father-top: 60vh;
 
-    #family-three-left,
-    #family-three-right {
-      top: 62%;
-      width: 112vw;
-    }
+      --family-mother-top: 70vh;
 
-    #family-three-left {
-      left: 26%;
-    }
+      --family-sister-top: 70vh;
 
-    #family-three-right {
-      left: 74%;
-    }
+      --family-uncle-top: 60vh;
 
+      --family-daughter-left: -10vw;
+      --family-daughter-top: 80vh;
+    }
     .family-modal {
       padding: 1rem;
       gap: 1rem;
@@ -916,12 +945,12 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     }
 
     .family-modal-topbar {
-      margin-top: 4rem;
+      margin-top: 10rem;
       width: 100%;
     }
 
     .section-content {
-      top: 8%;
+      top: 15%;
       left: 50%;
       transform: translate(-50%, 0);
       width: min(90vw, 24rem);
@@ -950,10 +979,11 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   (() => {
     const ourTeamSection = document.getElementById("our-team");
 
-    const familyOne = document.getElementById("family-one");
-    const familyTwo = document.getElementById("family-two");
-    const familyThreeLeft = document.getElementById("family-three-left");
-    const familyThreeRight = document.getElementById("family-three-right");
+    const familyFather = document.getElementById("family-father");
+    const familyMother = document.getElementById("family-mother");
+    const familySister = document.getElementById("family-sister");
+    const familyUncle = document.getElementById("family-uncle");
+    const familyDaughter = document.getElementById("family-daughter");
     const familyContainer = document.getElementById("family-container");
     const teamFrameContainer = document.getElementById("team-frame-container");
     const modal = document.getElementById(
@@ -983,10 +1013,11 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       ".tile-floor"
     ) as HTMLElement | null;
     const requiredElements =
-      familyOne &&
-      familyTwo &&
-      familyThreeLeft &&
-      familyThreeRight &&
+      familyFather &&
+      familyMother &&
+      familySister &&
+      familyUncle &&
+      familyDaughter &&
       ourTeamSection &&
       teamFrameContainer;
 
@@ -994,15 +1025,19 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       return;
     }
 
-    const familyOneEl = familyOne as HTMLElement;
-    const familyTwoEl = familyTwo as HTMLElement;
-    const familyThreeLeftEl = familyThreeLeft as HTMLElement;
-    const familyThreeRightEl = familyThreeRight as HTMLElement;
+    const familyFatherEl = familyFather as HTMLElement;
+    const familyMotherEl = familyMother as HTMLElement;
+    const familySisterEl = familySister as HTMLElement;
+    const familyUncleEl = familyUncle as HTMLElement;
+    const familyDaughterEl = familyDaughter as HTMLElement;
     const ourTeamSectionEl = ourTeamSection as HTMLElement;
     const teamFrameContainerEl = teamFrameContainer as HTMLElement;
     const defaultFamilyModalDescription =
       familyModalDescription?.textContent?.trim() ?? "";
-
+    const isMobileViewport = window.matchMedia("(max-width: 768px)").matches;
+    const isTabletViewport = window.matchMedia("(max-width: 1024px)").matches;
+        const DESIGN_WIDTH = 625;
+    const BASE_FRAME_TRANSLATE = "translate(-50%, -50%)";
     const easeInOutCubic = (t: number): number => {
       return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
     };
@@ -1058,32 +1093,58 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 
       return lastOutput;
     }
-
     const animateFamily = (scrollProgress: number) => {
-      // Family one: visible 0–0.25, fades out by 0.33
-      const familyOneOpacity = transform(
+      // Fade all family members using the existing opacity curve.
+      const firstFamilyOpacityTransform = transform(
         scrollProgress,
-        [0, 0.25, 0.33],
-        [1, 1, 0],
+        [0, 0.5, 1],
+        [1, 0, 1],
         easeInOutCubic
       );
-      familyOneEl.style.opacity = String(familyOneOpacity);
 
-      // Family two: fades in 0.2–0.5, stays visible; fades out when modal opens
-      const familyTwoScrollOpacity = transform(
+      const familyFatherOpacity = firstFamilyOpacityTransform;
+      const familyMotherOpacity = firstFamilyOpacityTransform;
+      const familyUncleOpacity = firstFamilyOpacityTransform;
+      const familySisterOpacity = firstFamilyOpacityTransform;
+      const familyDaughterOpacity = firstFamilyOpacityTransform;
+
+      // As scroll reaches the end, pull every family member toward center.
+      const centerProgress = transform(
         scrollProgress,
-        [0.3, 0.6, 0.8],
-        [0, 1, 1],
+        [0.5, 0.8],
+        [0, 1],
         easeInOutCubic
       );
-      familyTwoEl.style.opacity = String(
-        familyTwoScrollOpacity * (1 - familyTransitionProgress)
-      );
 
-      // Family three left & right: crossfade in when modal opens
-      familyThreeLeftEl.style.opacity = String(familyTransitionProgress);
-      familyThreeRightEl.style.opacity = String(familyTransitionProgress);
+      const centerOffsetByMember = {
+        father: window.innerWidth * (isMobileViewport ? -0.15 : isTabletViewport ? -0.3 : -0.35),
+        mother: window.innerWidth * (isMobileViewport ? -0.3 : isTabletViewport ? -0.4 : -0.35),
+        sister: window.innerWidth * (isMobileViewport ? -0.1  : isTabletViewport ? -0.25 : -0.35),
+        uncle: window.innerWidth * (isMobileViewport ? 0.1 : isTabletViewport ? -0.15 : -0.35),
+        daughter: window.innerWidth * (isMobileViewport ? 0.1 : isTabletViewport ? 0.23 : 0.2),
+      };
+
+      const moveTowardTargetX = (el: HTMLElement, centerOffsetX: number) => {
+        const centeredDeltaX = centerOffsetX * centerProgress;
+        const deltaX = Number(centeredDeltaX.toFixed(2));
+
+        el.style.transform = `translate(${deltaX}px, 0)`;
+      };
+
+      moveTowardTargetX(familyFatherEl, centerOffsetByMember.father);
+      moveTowardTargetX(familyMotherEl, centerOffsetByMember.mother);
+      moveTowardTargetX(familyUncleEl, centerOffsetByMember.uncle);
+      moveTowardTargetX(familySisterEl, centerOffsetByMember.sister);
+      moveTowardTargetX(familyDaughterEl, centerOffsetByMember.daughter);
+
+      familyFatherEl.style.opacity = String(familyFatherOpacity);
+      familyMotherEl.style.opacity = String(familyMotherOpacity);
+      familyUncleEl.style.opacity = String(familyUncleOpacity);
+      familySisterEl.style.opacity = String(familySisterOpacity);
+      familyDaughterEl.style.opacity = String(familyDaughterOpacity);
     };
+
+
     const animateSectionContent = (scrollProgress: number) => {
       if (!sectionContent) {
         return;
@@ -1098,9 +1159,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 
       (sectionContent as HTMLElement).style.opacity = String(contentOpacity);
     };
-    const DESIGN_WIDTH = 625;
-    const isMobileViewport = window.matchMedia("(max-width: 768px)").matches;
-    const BASE_FRAME_TRANSLATE = "translate(-50%, -50%)";
+
 
     const getCenteredTargetX = () => {
       const leftAnchor = Number.parseFloat(
@@ -1116,12 +1175,14 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 
     const animateTeamFrame = (scrollProgress: number, zoom: number) => {
       const targetX = getCenteredTargetX();
-      const translateX = transform(
-        scrollProgress,
-        [0.2, 0.9],
-        [0, targetX],
-        easeInOutCubic
-      );
+      const translateX = isMobileViewport
+        ? transform(
+            scrollProgress,
+            [0, 0.45],
+            [targetX + window.innerWidth * 0.75, targetX],
+            easeInOutCubic
+          )
+        : transform(scrollProgress, [0.2, 0.9], [0, targetX], easeInOutCubic);
 
       const autoScale = teamFrameContainerEl.clientWidth / DESIGN_WIDTH;
       const finalScale = zoom * autoScale;
@@ -1161,8 +1222,95 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         tileFloor.style.transform = `translateX(-50%) translateY(${eased * 120}%)`;
       }
 
-      familyThreeLeftEl.style.transform = `translate(-50%, -50%) translateX(${eased * 100}%)`;
-      familyThreeRightEl.style.transform = `translate(-50%, -50%) translateX(${eased * -100}%)`;
+      const centerProgress = transform(
+        smoothProgress,
+        [0.5, 0.8],
+        [0, 1],
+        easeInOutCubic
+      );
+
+      const centerOffsetByMember = {
+        father: window.innerWidth * (isMobileViewport ? -0.08 : -0.35),
+        mother: window.innerWidth * (isMobileViewport ? -0.04 : -0.35),
+        sister: window.innerWidth * (isMobileViewport ? 0.03 : -0.35),
+        uncle: window.innerWidth * (isMobileViewport ? 0.08 : -0.35),
+        daughter: window.innerWidth * (isMobileViewport ? 0.01 : 0.3),
+      };
+
+      const sideDirectionByMember = {
+        father: -1,
+        mother: -1,
+        sister: 1,
+        uncle: 1,
+        daughter: -1,
+      };
+
+      const FAMILY_TO_SIDE_DURATION = 150;
+      const FAMILY_SIDE_HOLD_DELAY = 950  ;
+      const FAMILY_TO_OUT_DURATION = 800;
+
+      const sidePhaseProgress = Math.max(
+        0,
+        Math.min(1, elapsed / FAMILY_TO_SIDE_DURATION)
+      );
+      const outPhaseProgress = Math.max(
+        0,
+        Math.min(
+          1,
+          (elapsed - FAMILY_TO_SIDE_DURATION - FAMILY_SIDE_HOLD_DELAY) /
+            FAMILY_TO_OUT_DURATION
+        )
+      );
+
+      const sideTravel = window.innerWidth * (isMobileViewport ? 0.24 : 0.32);
+      const outTravel = window.innerWidth * (isMobileViewport ? 1.05 : 1.25);
+      const outTravelY = isTabletViewport
+        ? window.innerHeight * (isMobileViewport ? 1.15 : 1.05)
+        : 0;
+
+      const applyModalFamilyTransform = (
+        el: HTMLElement,
+        centerOffsetX: number,
+        sideDirection: number
+      ) => {
+        const centeredDeltaX = centerOffsetX * centerProgress;
+        const sidePhaseDeltaX = sideTravel * sideDirection * sidePhaseProgress;
+        const outPhaseDeltaX = outTravel * sideDirection * outPhaseProgress;
+        const outPhaseDeltaY = outTravelY * outPhaseProgress;
+        const modalDeltaX =
+          (sidePhaseDeltaX + outPhaseDeltaX) * familyTransitionProgress;
+        const modalDeltaY = outPhaseDeltaY * familyTransitionProgress;
+        const deltaX = Number((centeredDeltaX + modalDeltaX).toFixed(2));
+        const deltaY = Number(modalDeltaY.toFixed(2));
+
+        el.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+      };
+
+      applyModalFamilyTransform(
+        familyFatherEl,
+        centerOffsetByMember.father,
+        sideDirectionByMember.father
+      );
+      applyModalFamilyTransform(
+        familyMotherEl,
+        centerOffsetByMember.mother,
+        sideDirectionByMember.mother
+      );
+      applyModalFamilyTransform(
+        familyDaughterEl,
+        centerOffsetByMember.daughter,
+        sideDirectionByMember.daughter
+      );
+      applyModalFamilyTransform(
+        familySisterEl,
+        centerOffsetByMember.sister,
+        sideDirectionByMember.sister
+      );
+      applyModalFamilyTransform(
+        familyUncleEl,
+        centerOffsetByMember.uncle,
+        sideDirectionByMember.uncle
+      );
 
       if (familyModalHeader) {
         familyModalHeader.style.opacity = String(eased);
@@ -1224,6 +1372,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       teamFrameContainerEl.classList.remove("hitbox-active");
       if (familyContainer) {
         familyContainer.style.pointerEvents = "none";
+        familyContainer.style.opacity = "1";
       }
 
       targetZoom = MODAL_ZOOM;
@@ -1256,6 +1405,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       teamFrameContainerEl.classList.remove("hitbox-active");
       if (familyContainer) {
         familyContainer.style.pointerEvents = "";
+        familyContainer.style.opacity = "1";
       }
 
       targetZoom = 1;
@@ -1264,8 +1414,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         tileFloor.style.transform = "";
       }
 
-      familyThreeLeftEl.style.transform = "";
-      familyThreeRightEl.style.transform = "";
       frameTranslateY = 0;
       if (familyModalHeader) {
         familyModalHeader.style.opacity = "0";
