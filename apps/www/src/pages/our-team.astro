@@ -382,31 +382,14 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     width: var(--hitbox-w, 10%);
     height: var(--hitbox-h, 10%);
     transform: translate(-50%, -50%);
-    background: var(--hitbox-color, rgba(255, 255, 255, 0.25));
-    border: 1px dashed rgba(255, 255, 255, 0.9);
-    border-radius: 0.3rem;
     padding: 0;
     pointer-events: none;
-    cursor: default;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-  }
-
-  .team-frame-container.hitbox-active .piece-hitbox-btn {
     pointer-events: auto;
     cursor: pointer;
-    opacity: 0.38;
+    opacity: 0;
   }
 
-  .piece-hitbox-btn:focus-visible {
-    outline: 2px solid rgba(255, 255, 255, 0.85);
-    outline-offset: 2px;
-  }
 
-  .team-frame-container.hitbox-active .piece-hitbox-btn:hover,
-  .team-frame-container.hitbox-active .piece-hitbox-btn:focus-visible {
-    opacity: 0.68;
-  }
 
   .piece-hitbox-event-manager {
     /* --hitbox-color: rgba(255, 99, 71, 0.5); */
