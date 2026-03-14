@@ -51,7 +51,8 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
           </ol>
           <a
             href="https://bit.ly/FormulirPreEventTerasCeritaTEDx"
-            class="envelope-buy-btn">Buy ticket</a
+            class="envelope-buy-btn"
+            >Buy ticket</a
           >
         </div>
       </div>
@@ -105,13 +106,16 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
               <path
                 d="M417 260.178V608.678H26V20H833C592.998 31.6184 417 58.6777 417 260.178Z"
                 fill="black"
-                fill-opacity="0.2"></path>
+                fill-opacity="0.2"
+              ></path>
               <path
                 d="M391 240.178V588.678H0V0H807C566.998 11.6184 391 38.6777 391 240.178Z"
-                fill="white"></path>
+                fill="white"
+              ></path>
               <path
                 d="M391 240.178V588.678H0V0H807C566.998 11.6184 391 38.6777 391 240.178Z"
-                fill="url(#paperTex)"></path>
+                fill="url(#paperTex)"
+              ></path>
             </svg>
             <Image src={Trees} alt={"trees"} class="trees" />
             <Image
@@ -154,7 +158,8 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
                 loop
                 muted
                 playsinline
-                controls></video>
+                controls
+              ></video>
             </div>
             <Image src={Mailbox} alt={"mailbox"} class="mailbox" />
             <Image src={Bushes3} alt={"Bushes3"} class="bushes-3" />
@@ -169,13 +174,16 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
               <path
                 d="M416 260.178V608.678H807V20H0C240.002 31.6184 416 58.6777 416 260.178Z"
                 fill="black"
-                fill-opacity="0.2"></path>
+                fill-opacity="0.2"
+              ></path>
               <path
                 d="M442 240.178V588.678H1060.5V0H26C266.002 11.6184 442 38.6777 442 240.178Z"
-                fill="white"></path>
+                fill="white"
+              ></path>
               <path
                 d="M442 240.178V588.678H1060.5V0H26C266.002 11.6184 442 38.6777 442 240.178Z"
-                fill="url(#paperTex)"></path>
+                fill="url(#paperTex)"
+              ></path>
             </svg>
             <Image src={PreEvent1} alt={"PreEvent1"} class="pre-event-1" />
             <Image src={PreEvent2} alt={"PreEvent2"} class="pre-event-2" />
@@ -186,7 +194,9 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
               id="floating-envelope"
             />
             <div class="section-2-content">
-              <h3>Catat Tanggal <br /> dan Waktunya</h3>
+              <h3>
+                Catat Tanggal <br> dan Waktunya
+              </h3>
               <div class="details">
                 <p>Hari, Tanggal: Kamis</p>
                 <p>12 Maret 2026</p>
@@ -387,7 +397,7 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
     height: 35vh;
     width: auto;
     bottom: -4vh;
-    aspect-ratio: 507/228;
+    aspect-ratio: 507 / 228;
     right: -25vw;
   }
   .bushes-3 {
@@ -1007,7 +1017,7 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
       x: number,
       input: number[],
       output: number[],
-      easing: (t: number) => number = (t) => t,
+      easing: (t: number) => number = (t) => t
     ) {
       const firstInput = input[0];
       const lastInput = input.at(-1);
@@ -1054,14 +1064,14 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
 
       const scrollProgress = Math.max(
         0,
-        Math.min(1, -sectionRect.top / (sectionHeight - viewportHeight)),
+        Math.min(1, -sectionRect.top / (sectionHeight - viewportHeight))
       );
 
       const translateX = transform(
         scrollProgress,
         [0, 1],
         [0, -100],
-        easeInOutCubic,
+        easeInOutCubic
       );
 
       canvas.style.setProperty("--translate-x", `${translateX}vw`);
@@ -1079,7 +1089,7 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
           scrollRafId = null;
         });
       },
-      { passive: true },
+      { passive: true }
     );
 
     updateScroll();
