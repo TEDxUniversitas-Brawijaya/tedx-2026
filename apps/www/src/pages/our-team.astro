@@ -26,7 +26,6 @@ import EmptyPieceTop from "@/assets/imgs/empty-piece-top.png";
 import EmptyPieceBottom from "@/assets/imgs/empty-piece-bottom.png";
 import EmptyPieceTopRight from "@/assets/imgs/empty-piece-top-right.png";
 import VolunteerChip from "@/assets/imgs/volunteer-chip.png";
-
 import Line from "@/assets/imgs/line-1.png";
 import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 ---
@@ -695,7 +694,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   }
 
   .modal-close-btn:hover,
-  .modal-close-btn:focus-visible {
+  .modal-close-btn:focus-visible {  
     color: rgba(255, 255, 255, 0.85);
   }
 
@@ -707,7 +706,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     justify-content: space-between;
     gap: 1rem;
     pointer-events: auto;
-
   }
 
   .family-header {
@@ -741,7 +739,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     margin: 0 auto;
     line-height: 1.45;
     color: rgba(255, 255, 255, 0.9);
-    text-wrap-style: pretty;
   }
   .family.role-active .family-description {
     font-size: clamp(0.9rem, 2.5vw, 1.8rem);
@@ -754,7 +751,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     transition: opacity 0.2s ease;
   }
 
-  .family-line.visible {
+  .family.role-active .family-line {
     opacity: 1;
   }
 
@@ -789,8 +786,82 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   .piece-panel-body {
     width: 100%;
     margin-inline: auto;
-    max-height: min(52vh, 30rem);
+    max-height: min(100vh, 40rem);
     padding-right: 0.35rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+        scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .piece-panel-section-title {
+    margin: 0 0 0.6rem;
+  }
+
+  .core-team-grid {
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    gap: 0.6rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.35rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .core-team-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .member-card {
+    position: relative;
+    flex: 0 0 12.5rem;
+    width: 12.5rem;
+  }
+
+  .member-card-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .member-card-photo-fallback {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-sans);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .member-card-name {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding-inline: 0.95rem;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    text-align: center;
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   
@@ -951,14 +1022,14 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     }
 
     .core-team-grid {
-      grid-template-columns: 1fr;
+      justify-content: flex-start;
     }
   }
 </style>
 <script>
   (() => {
     const ourTeamSection = document.getElementById("our-team");
-
+    const tileFloor = document.querySelector(".tile-floor") as HTMLElement | null;
     const familyFather = document.getElementById("family-father");
     const familyMother = document.getElementById("family-mother");
     const familySister = document.getElementById("family-sister");
@@ -975,15 +1046,46 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         ?.getAttributeNames()
         .find((name) => name.startsWith("data-astro-cid-")) ?? "";
     const scopeAttr = scopeAttrName ? ` ${scopeAttrName}` : "";
+    const coreTeamCardModules = import.meta.glob(
+      "../assets/imgs/core-team-cards/*.png",
+      {
+        eager: true,
+        import: "default",
+      }
+    ) as Record<string, unknown>;
+    const coreTeamCardSrcByFileName: Record<string, string> = {};
+
+    const resolveAssetSrc = (value: unknown) => {
+      if (typeof value === "string") {
+        return value;
+      }
+
+      if (value && typeof value === "object" && "src" in value) {
+        const src = (value as { src?: unknown }).src;
+        return typeof src === "string" ? src : "";
+      }
+
+      return "";
+    };
+
+    for (const [assetPath, assetSrc] of Object.entries(coreTeamCardModules)) {
+      const fileName = assetPath.split("/").at(-1);
+      const resolvedSrc = resolveAssetSrc(assetSrc);
+
+      if (fileName && resolvedSrc) {
+        coreTeamCardSrcByFileName[fileName] = resolvedSrc;
+      }
+    }
     const modalCloseBtn = document.getElementById("modal-close-btn");
     const familyDescription = document.getElementById(
       "family-description"
     );
-    const familyLine = document.getElementById("family-line");
     const familyHeader = document.querySelector(
       ".family-header"
     ) as HTMLElement | null;
     const sectionContent = document.querySelector(".section-content");
+    const pieceHitboxBtns =
+      document.querySelectorAll<HTMLButtonElement>(".piece-hitbox-btn");
     const requiredElements =
       familyFather &&
       familyMother &&
@@ -1007,8 +1109,20 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     const teamFrameContainerEl = teamFrameContainer as HTMLElement;
     const defaultFamilyDescription =
       familyDescription?.textContent?.trim() ?? "";
-    const isMobileViewport = window.matchMedia("(max-width: 768px)").matches;
-    const isTabletViewport = window.matchMedia("(max-width: 1024px)").matches;
+    const mobileViewportQuery = window.matchMedia("(max-width: 768px)");
+    const tabletViewportQuery = window.matchMedia("(max-width: 1024px)");
+    let isMobileViewport = mobileViewportQuery.matches;
+    let isTabletViewport = tabletViewportQuery.matches;
+
+    const syncViewportFlags = () => {
+      isMobileViewport = mobileViewportQuery.matches;
+      isTabletViewport = tabletViewportQuery.matches;
+    };
+
+    syncViewportFlags();
+    window.addEventListener("resize", syncViewportFlags);
+    mobileViewportQuery.addEventListener("change", syncViewportFlags);
+    tabletViewportQuery.addEventListener("change", syncViewportFlags);
     const DESIGN_WIDTH = 625;
     const HEADER_REVEAL_START = 0.7;
     const SCROLL_MAX_THRESHOLD = 0.99;
@@ -1234,6 +1348,21 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         `scale(${roundedScale})`;
     };
 
+    const animateTileFloor = (scrollProgress: number) => {
+      if (!tileFloor) {
+        return;
+      }
+
+      const floorDropY = transform(
+        scrollProgress,
+        [0.7, 1],
+        [0, window.innerHeight * 1.1],
+        easeInOutCubic
+      );
+
+      tileFloor.style.transform =
+        `translateX(-50%) translateY(${Number(floorDropY.toFixed(2))}px)`;
+    };
     const syncTeamFrameZIndex = (scrollProgress: number) => {
       teamFrameContainerEl.style.zIndex =
         scrollProgress >= SCROLL_MAX_THRESHOLD ? "150" : "";
@@ -1243,12 +1372,24 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       if (!familyHeader) {
         return;
       }
-
-      const isPiecePanelPhase =
-        scrollProgress >= HEADER_REVEAL_START;
+      const headerRevealProgress = transform(
+        scrollProgress,
+        [HEADER_REVEAL_START, 1],
+        [0, 1]
+      );
 
       familyHeader.style.opacity =
-        isPiecePanelPhase ? "1" : "0";
+        String(headerRevealProgress);
+    };
+
+    const setPieceHitboxTabNavigation = (canFocus: boolean) => {
+      for (const btn of Array.from(pieceHitboxBtns)) {
+        btn.disabled = !canFocus;
+
+        if (!canFocus && document.activeElement === btn) {
+          btn.blur();
+        }
+      }
     };
 
     const syncFamilyWithScroll = (scrollProgress: number) => {
@@ -1259,12 +1400,10 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       const shouldShowPiecePanel =
         scrollProgress >= HEADER_REVEAL_START;
 
-      if (!shouldShowPiecePanel) {
-        isModalDismissed = false;
-      }
 
       const canOpenPiecePanel = shouldShowPiecePanel;
       teamFrameContainerEl.classList.toggle("hitbox-active", canOpenPiecePanel);
+      setPieceHitboxTabNavigation(canOpenPiecePanel);
 
       if (canOpenPiecePanel && !family.open) {
         family.show();
@@ -1283,7 +1422,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       }
 
       family.classList.remove("role-active");
-      familyLine?.classList.remove("visible");
       modalCloseBtn?.classList.remove("visible");
       familyContent?.classList.remove("active");
 
@@ -1297,7 +1435,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     let currentZoom = 1;
     let targetZoom = 1;
     let frameTranslateY = 0;
-    let isModalDismissed = false;
     const LERP_FACTOR = 0.08;
 
     const getScrollProgress = () => {
@@ -1320,10 +1457,23 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       syncFamilyWithScroll(targetProgress);
       syncTeamFrameZIndex(targetProgress);
       animateFamilyHeader(targetProgress);
+      animateTileFloor(targetProgress);
       requestAnimationFrame(tick);
     };
 
     requestAnimationFrame(tick);
+
+    const toCardSlug = (value: string) => {
+      return value
+        .toLowerCase()
+        .replaceAll("&", " and ")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    };
+
+    const createCoreTeamCardFileName = (role: string, name: string) => {
+      return `core-team-${toCardSlug(role)}--${toCardSlug(name)}-card.png`;
+    };
 
 
     const teamMembers = [
@@ -1435,7 +1585,15 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       { role: "Website", name: "Exel Boy", team: "Volunteer" },
       { role: "Website", name: "Risqi Achmad", team: "Volunteer" },
       { role: "Website", name: "Muhammad Syauqi", team: "Volunteer" },
-    ];
+    ].map((member) => {
+      return {
+        ...member,
+        cardFileName:
+          member.team === "Volunteer"
+            ? null
+            : createCoreTeamCardFileName(member.role, member.name),
+      };
+    });
 
     const createInitials = (name: string) => {
       const words = name
@@ -1477,7 +1635,15 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         .map((member) => {
           const safeName = sanitize(member.name);
           const initials = sanitize(createInitials(member.name));
-          return `<article${scopeAttr} class="member-card"><div${scopeAttr} class="member-card-photo" aria-hidden="true">${initials}</div><p${scopeAttr} class="member-card-name">${safeName}</p></article>`;
+          const cardSrc = member.cardFileName
+            ? coreTeamCardSrcByFileName[member.cardFileName] ?? ""
+            : "";
+          const safeCardSrc = sanitize(cardSrc);
+          const cardMarkup = safeCardSrc
+            ? `<img${scopeAttr} class="member-card-photo" src="${safeCardSrc}" alt="${safeName}" aria-hidden="true" />`
+            : `<div${scopeAttr} class="member-card-photo member-card-photo-fallback" aria-hidden="true">${initials}</div>`;
+
+          return `<article${scopeAttr} class="member-card">${cardMarkup}<p${scopeAttr} class="member-card-name">${safeName}</p></article>`;
         })
         .join("");
 
@@ -1503,21 +1669,18 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 
       piecePanelBody.innerHTML = html;
       family.classList.add("role-active");
-      familyLine?.classList.add("visible");
       modalCloseBtn?.classList.add("visible");
       familyContent.classList.add("active");
     };
 
     modalCloseBtn?.addEventListener("click", () => {
-      isModalDismissed = true;
       resetFamilyState();
       if (family.open) {
         family.close();
       }
     });
 
-    const pieceHitboxBtns =
-      document.querySelectorAll<HTMLButtonElement>(".piece-hitbox-btn");
+    setPieceHitboxTabNavigation(false);
     for (const btn of Array.from(pieceHitboxBtns)) {
       btn.addEventListener("click", (e: Event) => {
         e.stopPropagation();
