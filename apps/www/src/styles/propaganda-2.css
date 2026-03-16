@@ -368,7 +368,7 @@ p {
 }
 
 .broken-vase {
-  display: absolute;
+  position: absolute;
   width: auto;
 }
 .flower-stalk {
