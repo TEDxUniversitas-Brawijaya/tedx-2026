@@ -147,16 +147,16 @@ import "@/styles/propaganda-2.css";
   }
   requestAnimationFrame(raf);
 
-  const vaseWrapper = document.querySelector(".vase-wrapper") as HTMLElement;
-  const mainContent = document.querySelector("#propa2-main") as HTMLElement;
-  const frame3 = document.querySelector(".frame-3") as HTMLElement;
-  const text3 = document.querySelector(".text-3") as HTMLElement;
-  const frame4 = document.querySelector(".frame-4") as HTMLElement;
-  const text4 = document.querySelector(".text-4") as HTMLElement;
-  const frame5 = document.querySelector(".frame-5") as HTMLElement;
-  const placeholderFrame5 = document.querySelector(
+  const vaseWrapper = document.querySelector<HTMLElement>(".vase-wrapper");
+  const mainContent = document.querySelector<HTMLElement>("#propa2-main");
+  const frame3 = document.querySelector<HTMLElement>(".frame-3");
+  const text3 = document.querySelector<HTMLElement>(".text-3");
+  const frame4 = document.querySelector<HTMLElement>(".frame-4");
+  const text4 = document.querySelector<HTMLElement>(".text-4");
+  const frame5 = document.querySelector<HTMLElement>(".frame-5");
+  const placeholderFrame5 = document.querySelector<HTMLElement>(
     ".placeholder-frame-5"
-  ) as HTMLElement;
+  );
   let hasBrokenVaseTriggered = false;
 
   const updateFrame5State = () => {
