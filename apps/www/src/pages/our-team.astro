@@ -26,8 +26,146 @@ import EmptyPieceTop from "@/assets/imgs/empty-piece-top.png";
 import EmptyPieceBottom from "@/assets/imgs/empty-piece-bottom.png";
 import EmptyPieceTopRight from "@/assets/imgs/empty-piece-top-right.png";
 import VolunteerChip from "@/assets/imgs/volunteer-chip.png";
-import Line from "@/assets/imgs/line-1.png";
 import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
+import Line from "@/assets/imgs/line-1.png";
+
+const createCoreTeamCardFileNames = (role: string, name: string) => {
+  const baseName = `core-team-${toCardSlug(role)}--${toCardSlug(name)}`;
+  return {
+    preferred: `${baseName}-card.png`,
+  };
+};
+const toCardSlug = (value: string) => {
+  return value
+    .toLowerCase()
+    .replaceAll("&", " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+};
+const teamMembers = [
+  { role: "Organizer", name: "Muhammad Harffin", team: null },
+  { role: "Co-Organizer", name: "Aisyah Dyah", team: null },
+
+  { role: "Budget Manager", name: "Haura Sekar", team: null },
+  { role: "Budget Manager", name: "Muhammad Akmal", team: null },
+
+  { role: "Curator", name: "Tsabita Hana", team: "Core Team" },
+  { role: "Curator", name: "Rimalya Valerina", team: "Core Team" },
+  { role: "Curator", name: "Syarifah Nurul", team: "Core Team" },
+  { role: "Curator", name: "Muhammad Abiyyu", team: "Core Team" },
+
+  { role: "Curator", name: "Muchamad Farrel", team: "Volunteer" },
+  { role: "Curator", name: "Nasyabila Rizqita", team: "Volunteer" },
+  { role: "Curator", name: "Attariq Muhammad", team: "Volunteer" },
+  { role: "Curator", name: "Gwen Rose", team: "Volunteer" },
+
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Ghina Salsabila",
+    team: "Core Team",
+  },
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Aulia Siti",
+    team: "Core Team",
+  },
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Rizky Putra",
+    team: "Core Team",
+  },
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Xabi Muhammad",
+    team: "Volunteer",
+  },
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Denaya Danardon",
+    team: "Volunteer",
+  },
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Claudya Isabel",
+    team: "Volunteer",
+  },
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Maheza Mahardika",
+    team: "Volunteer",
+  },
+
+  { role: "Sponsorship", name: "Khalilah Ferline", team: "Core Team" },
+  { role: "Sponsorship", name: "Kamilah Putri", team: "Core Team" },
+  { role: "Sponsorship", name: "Kyara Azzahra", team: "Core Team" },
+  { role: "Sponsorship", name: "Imam Fachriza", team: "Core Team" },
+  { role: "Sponsorship", name: "Nayla Diandra", team: "Volunteer" },
+  { role: "Sponsorship", name: "Andera Early", team: "Volunteer" },
+  { role: "Sponsorship", name: "Bagas Aryadita", team: "Volunteer" },
+  { role: "Sponsorship", name: "Zahra Nadira", team: "Volunteer" },
+
+  { role: "Event Manager", name: "Ajeng Regina", team: "Core Team" },
+  { role: "Event Manager", name: "Fazqeela Nazyyara", team: "Core Team" },
+  { role: "Event Manager", name: "Zeke Ubas", team: "Core Team" },
+  { role: "Event Manager", name: "Katyusha Parikesit", team: "Volunteer" },
+  { role: "Event Manager", name: "Venesya Sitompul", team: "Volunteer" },
+  { role: "Event Manager", name: "Raisha Fahria", team: "Volunteer" },
+  { role: "Event Manager", name: "Bagus Eko", team: "Volunteer" },
+  { role: "Event Manager", name: "Putu Luna", team: "Volunteer" },
+  { role: "Event Manager", name: "Adela Milarosnida", team: "Volunteer" },
+
+  { role: "Executive Producer", name: "Muhammad Hanif", team: "Core Team" },
+  {
+    role: "Executive Producer",
+    name: "Muhammad Haidar",
+    team: "Core Team",
+  },
+  { role: "Executive Producer", name: "Nahida Chanun", team: "Core Team" },
+  { role: "Executive Producer", name: "Muhammad Zidan", team: "Volunteer" },
+  { role: "Executive Producer", name: "Risman Ariel", team: "Volunteer" },
+  {
+    role: "Executive Producer",
+    name: "Syauqi Amrullah",
+    team: "Volunteer",
+  },
+  { role: "Executive Producer", name: "Ayyash Musyari", team: "Volunteer" },
+  { role: "Executive Producer", name: "Dania Zahira", team: "Volunteer" },
+
+  { role: "Design", name: "Dini Septianing", team: "Core Team" },
+  { role: "Design", name: "Azzahro Fatimah", team: "Core Team" },
+  { role: "Design", name: "Karunia Puteri", team: "Core Team" },
+  { role: "Design", name: "Nisrina Jasmine", team: "Core Team" },
+
+  { role: "Design", name: "Zisdane Rachmatullah", team: "Volunteer" },
+  { role: "Design", name: "Khairunnisa Achmad", team: "Volunteer" },
+  { role: "Design", name: "Ashila Tsarianasya", team: "Volunteer" },
+  { role: "Design", name: "Dinara Frida Safina", team: "Volunteer" },
+
+  { role: "Video Production", name: "Sayyid Muhammad", team: "Core Team" },
+  { role: "Video Production", name: "Muhammad Abid", team: "Core Team" },
+  { role: "Video Production", name: "Ignatius Evan", team: "Core Team" },
+  { role: "Video Production", name: "Muhammad Haikal", team: "Core Team" },
+  { role: "Video Production", name: "Pieter Wenesdy", team: "Volunteer" },
+  { role: "Video Production", name: "Khaizuran Rafie", team: "Volunteer" },
+  { role: "Video Production", name: "Alfa Nafi", team: "Volunteer" },
+  { role: "Video Production", name: "Abrar Galant", team: "Volunteer" },
+
+  { role: "Website", name: "Hafiz Rizky", team: "Core Team" },
+  { role: "Website", name: "Nugraha Billy", team: "Core Team" },
+  { role: "Website", name: "Alfredo Radhinal", team: "Core Team" },
+  { role: "Website", name: "Rahmi Arsy", team: "Volunteer" },
+  { role: "Website", name: "Exel Boy", team: "Volunteer" },
+  { role: "Website", name: "Risqi Achmad", team: "Volunteer" },
+  { role: "Website", name: "Muhammad Syauqi", team: "Volunteer" },
+].map((member) => {
+  return {
+    ...member,
+    cardFileNames:
+      member.team === "Volunteer"
+        ? null
+        : createCoreTeamCardFileNames(member.role, member.name),
+  };
+});
 ---
 
 <Layout
@@ -44,11 +182,26 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
           alt={"Green Background"}
           class="green-background"
         />
+
         <Image src={TileFloor} alt={"Tile Floor"} class="tile-floor" />
         <div class="team-frame-container" id="team-frame-container">
-        <svg class="team-frame-outline" width="625" height="378" viewBox="0 0 625 379" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="7.07089" y="7.06992" width="609.732" height="364.141" stroke="currentColor" stroke-width="14.1414"/>
-        </svg>
+          <svg
+            class="team-frame-outline"
+            width="625"
+            height="378"
+            viewBox="0 0 625 379"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="7.07089"
+              y="7.06992"
+              width="609.732"
+              height="364.141"
+              stroke="currentColor"
+              stroke-width="14.1414"
+            />
+          </svg>
           <Image
             src={TeamFrameBackground}
             id={"team-frame-background"}
@@ -120,51 +273,61 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
               class="piece-hitbox-btn piece-hitbox-event-manager"
               aria-label="Event Manager"
               data-role="Event Manager"
+              tabindex="0"
             ></button>
             <button
               class="piece-hitbox-btn piece-hitbox-cem"
               aria-label="Communication, Editorial & Marketing"
               data-role="Communication, Editorial & Marketing"
+              tabindex="0"
             ></button>
             <button
               class="piece-hitbox-btn piece-hitbox-budget"
               aria-label="Budget Manager"
               data-role="Budget Manager"
+              tabindex="0"
             ></button>
             <button
               class="piece-hitbox-btn piece-hitbox-curator"
               aria-label="Curator"
               data-role="Curator"
+              tabindex="0"
             ></button>
             <button
               class="piece-hitbox-btn piece-hitbox-ep"
               aria-label="Executive Producer"
               data-role="Executive Producer"
+              tabindex="0"
             ></button>
             <button
               class="piece-hitbox-btn piece-hitbox-organizer"
               aria-label="Organizer"
               data-role="Organizer,Co-Organizer"
+              tabindex="0"
             ></button>
             <button
               class="piece-hitbox-btn piece-hitbox-design"
               aria-label="Design"
               data-role="Design"
+              tabindex="0"
             ></button>
             <button
               class="piece-hitbox-btn piece-hitbox-sponsorship"
               aria-label="Sponsorship"
               data-role="Sponsorship"
+              tabindex="0"
             ></button>
             <button
               class="piece-hitbox-btn piece-hitbox-vp"
               aria-label="Video Production"
               data-role="Video Production"
+              tabindex="0"
             ></button>
             <button
               class="piece-hitbox-btn piece-hitbox-website"
               aria-label="Website"
               data-role="Website"
+              tabindex="0"
             ></button>
           </div>
           <Image
@@ -189,8 +352,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         <div
           class="family-container"
           id="family-container"
-          role="button"
-          tabindex="0"
           aria-label="Klik untuk melihat keluarga kami"
         >
           <Image
@@ -221,7 +382,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
             id="family-uncle"
             aria-hidden="true"
           />
-         <Image
+          <Image
             src={Daughter}
             alt="Daughter"
             class="family-daughter"
@@ -247,38 +408,39 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
             Setiap divisi memiliki peran penting dalam menghadirkan
             TEDxUniversitasBrawijaya. Klik divisi untuk melihat tim di baliknya.
           </p>
-          <Image
-            src={Line}
-            alt="Line"
-            id="family-line"
-            class="family-line"
-          />
+          <Image src={Line} alt="Line" id="family-line" class="family-line" />
         </div>
-        <button
-          class="modal-close-btn"
-          id="modal-close-btn"
-          aria-label="Tutup modal"
-        >
-          <svg
-            width="50"
-            height="50"
-            viewBox="0 0 50 50"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
+        <div class="modal-close-layout">
+          <button
+            class="modal-close-btn"
+            id="modal-close-btn"
+            type="button"
+            aria-label="Tutup modal"
           >
-            <path
-              d="M20.0003 22.3327L11.8337 30.4993C11.5281 30.8049 11.1392 30.9577 10.667 30.9577C10.1948 30.9577 9.80588 30.8049 9.50032 30.4993C9.19477 30.1938 9.04199 29.8049 9.04199 29.3327C9.04199 28.8605 9.19477 28.4716 9.50032 28.166L17.667 19.9993L9.50032 11.8327C9.19477 11.5271 9.04199 11.1382 9.04199 10.666C9.04199 10.1938 9.19477 9.8049 9.50032 9.49935C9.80588 9.19379 10.1948 9.04102 10.667 9.04102C11.1392 9.04102 11.5281 9.19379 11.8337 9.49935L20.0003 17.666L28.167 9.49935C28.4725 9.19379 28.8614 9.04102 29.3337 9.04102C29.8059 9.04102 30.1948 9.19379 30.5003 9.49935C30.8059 9.8049 30.9587 10.1938 30.9587 10.666C30.9587 11.1382 30.8059 11.5271 30.5003 11.8327L22.3337 19.9993L30.5003 28.166C30.8059 28.4716 30.9587 28.8605 30.9587 29.3327C30.9587 29.8049 30.8059 30.1938 30.5003 30.4993C30.1948 30.8049 29.8059 30.9577 29.3337 30.9577C28.8614 30.9577 28.4725 30.8049 28.167 30.4993L20.0003 22.3327Z"
-              fill="white"
-            />
-          </svg>
-        </button>
+            <svg
+              class="modal-close-icon"
+              width="40"
+              height="40"
+              viewBox="0 0 40 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M20.0003 22.3327L11.8337 30.4993C11.5281 30.8049 11.1392 30.9577 10.667 30.9577C10.1948 30.9577 9.80588 30.8049 9.50032 30.4993C9.19477 30.1938 9.04199 29.8049 9.04199 29.3327C9.04199 28.8605 9.19477 28.4716 9.50032 28.166L17.667 19.9993L9.50032 11.8327C9.19477 11.5271 9.04199 11.1382 9.04199 10.666C9.04199 10.1938 9.19477 9.8049 9.50032 9.49935C9.80588 9.19379 10.1948 9.04102 10.667 9.04102C11.1392 9.04102 11.5281 9.19379 11.8337 9.49935L20.0003 17.666L28.167 9.49935C28.4725 9.19379 28.8614 9.04102 29.3337 9.04102C29.8059 9.04102 30.1948 9.19379 30.5003 9.49935C30.8059 9.8049 30.9587 10.1938 30.9587 10.666C30.9587 11.1382 30.8059 11.5271 30.5003 11.8327L22.3337 19.9993L30.5003 28.166C30.8059 28.4716 30.9587 28.8605 30.9587 29.3327C30.9587 29.8049 30.8059 30.1938 30.5003 30.4993C30.1948 30.8049 29.8059 30.9577 29.3337 30.9577C28.8614 30.9577 28.4725 30.8049 28.167 30.4993L20.0003 22.3327Z"
+                fill="#F8F1DC"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
       <div class="family-content" id="family-content">
         <div class="piece-panel-separator" aria-hidden="true"></div>
         <div
           class="piece-panel-body"
           id="piece-panel-body"
+          data-team-members={JSON.stringify(teamMembers)}
           data-volunteer-chip-src={VolunteerChip.src}
         ></div>
       </div>
@@ -331,7 +493,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   .team-frame-container {
     position: absolute;
     top: 35%;
-    left:85%;
+    left: 85%;
     width: clamp(40rem, 30vw, 45rem);
     aspect-ratio: 1 / 1;
     pointer-events: auto;
@@ -404,8 +566,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   .team-frame-container.hitbox-active .piece-hitbox-btn {
     pointer-events: auto;
   }
-
-
 
   .piece-hitbox-event-manager {
     --hitbox-x: 33%;
@@ -520,8 +680,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     filter: brightness(1.4) drop-shadow(0px 4px 25px rgba(255, 149, 0, 0.5));
   }
 
-  .family-container{
-
+  .family-container {
     /* Desktop placeholders: adjust these values freely */
     --family-father-left: auto;
     --family-father-right: 10vw;
@@ -544,15 +703,19 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     --family-daughter-top: 80vh;
 
     width: 100%;
-    height:100%;
+    height: 100%;
     aspect-ratio: 16 / 10;
     opacity: 1;
     transition: opacity 0.15s ease;
     will-change: opacity;
   }
 
-  .family-father,.family-mother,.family-sister,.family-uncle,.family-daughter{
-    position:absolute;
+  .family-father,
+  .family-mother,
+  .family-sister,
+  .family-uncle,
+  .family-daughter {
+    position: absolute;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     will-change: transform, opacity;
@@ -569,14 +732,14 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     top: var(--family-mother-top);
   }
 
-  .family-sister{
-    z-index:2;
+  .family-sister {
+    z-index: 2;
     left: var(--family-sister-left);
     right: var(--family-sister-right);
     top: var(--family-sister-top);
   }
   .family-uncle {
-    z-index:1;
+    z-index: 1;
     left: var(--family-uncle-left);
     right: var(--family-uncle-right);
     top: var(--family-uncle-top);
@@ -640,7 +803,12 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     pointer-events: none;
     overflow-y: auto;
   }
-
+  .family:focus {
+    outline: none;
+  }
+  .family:focus-visible {
+    outline: none;
+  }
   .family[open] {
     display: flex;
   }
@@ -677,11 +845,14 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
   .modal-close-btn {
     position: absolute;
     right: 0;
+    top: 0;
     display: none;
+    appearance: none;
     border: none;
     background: none;
     padding: 0;
-    color: white;
+    color: var(--color-white);
+    outline: none;
     font-size: 2.5rem;
     cursor: pointer;
     line-height: 1;
@@ -690,13 +861,38 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     transition: color 0.2s ease;
   }
 
+  .modal-close-btn::-moz-focus-inner {
+    border: 0;
+  }
+
+  .modal-close-icon {
+    display: block;
+  }
+
+  .family.role-active .modal-close-btn {
+    display: block;
+  }
+
   .modal-close-btn.visible {
     display: block;
   }
 
-  .modal-close-btn:hover,
-  .modal-close-btn:focus-visible {  
-    color: rgba(255, 255, 255, 0.85);
+  .modal-close-btn:focus-visible {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .modal-close-btn:focus {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .modal-close-btn:active {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+    border-radius: 2px;
   }
 
   .family-topbar {
@@ -718,7 +914,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     gap: 0.75rem;
     opacity: 0;
     pointer-events: none;
-    
   }
 
   .team-frame-container.modal-open ~ .section-content {
@@ -729,7 +924,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     font-family: var(--font-serif);
     font-size: clamp(1.75rem, 4vw, 2.8rem);
     font-weight: 500;
-    color: white;
+    color: var(--color-white);
     margin: 0;
   }
 
@@ -739,14 +934,13 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     max-width: 50rem;
     margin: 0 auto;
     line-height: 1.45;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--color-white);
   }
   .family.role-active .family-description {
     font-size: clamp(0.9rem, 2.5vw, 1.8rem);
-    
   }
   .family-line {
-    width:100%;
+    width: 100%;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
@@ -778,10 +972,13 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     font-family: var(--font-serif);
     font-size: clamp(1.35rem, 2.2vw, 2.2rem);
     font-weight: 500;
-    margin: 0;
+    margin-bottom: 1rem;
     letter-spacing: -0.01em;
-    color: white;
+    color: var(--color-white);
     text-wrap: balance;
+  }
+  .family-content p {
+    margin-bottom: 1rem;
   }
 
   .piece-panel-body {
@@ -791,18 +988,18 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     padding-right: 0.35rem;
     overflow-y: auto;
     overflow-x: hidden;
-        scrollbar-width: none;
+    scrollbar-width: none;
     -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
   }
 
   .piece-panel-section-title {
-    margin: 0 0 0.6rem;
+    margin-bottom: 2rem;
   }
 
   .core-team-grid {
     display: flex;
-    align-items:center;
+    align-items: center;
     justify-content: center;
     gap: 0.6rem;
     overflow-x: auto;
@@ -840,32 +1037,10 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     font-family: var(--font-sans);
     font-size: 1.75rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--color-white);
     border: 1px solid rgba(255, 255, 255, 0.28);
     background: rgba(255, 255, 255, 0.12);
   }
-
-  .member-card-name {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding-inline: 0.95rem;
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    line-height: 1.2;
-    text-align: center;
-    color: #000;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  
 
   .volunteer-chip-wrap {
     display: grid;
@@ -959,15 +1134,15 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     }
 
     .family-container {
-      scale:0.8;
-      
+      scale: 0.8;
+
       --family-father-top: 60vh;
       --family-father-right: 15vw;
       --family-mother-top: 70vh;
       --family-mother-right: 25vw;
-      
+
       --family-sister-top: 70vh;
-      
+
       --family-uncle-top: 60vh;
 
       --family-daughter-left: -10vw;
@@ -981,7 +1156,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     .family-header {
       width: 100%;
     }
-  
+
     .family-topbar {
       margin-top: 10rem;
       width: 100%;
@@ -1032,63 +1207,30 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 <script>
   (() => {
     const ourTeamSection = document.getElementById("our-team");
-    const tileFloor = document.querySelector(".tile-floor") as HTMLElement | null;
+    const tileFloor = document.querySelector(
+      ".tile-floor"
+    ) as HTMLElement | null;
     const familyFather = document.getElementById("family-father");
     const familyMother = document.getElementById("family-mother");
     const familySister = document.getElementById("family-sister");
     const familyUncle = document.getElementById("family-uncle");
     const familyDaughter = document.getElementById("family-daughter");
-    const family = document.getElementById("family") as HTMLDialogElement | null;
-    const teamFrameContainer = document.getElementById("team-frame-container");
     const familyContent = document.getElementById("family-content");
+    const family = document.getElementById(
+      "family"
+    ) as HTMLDialogElement | null;
+
+    const teamFrameContainer = document.getElementById("team-frame-container");
+
     const piecePanelBody = document.getElementById("piece-panel-body");
-    const volunteerChipSrc =
-      piecePanelBody?.getAttribute("data-volunteer-chip-src") ?? "";
-    const scopeAttrName =
-      piecePanelBody
-        ?.getAttributeNames()
-        .find((name) => name.startsWith("data-astro-cid-")) ?? "";
-    const scopeAttr = scopeAttrName ? ` ${scopeAttrName}` : "";
-    const coreTeamCardModules = import.meta.glob(
-      "../assets/imgs/core-team-cards/*.png",
-      {
-        eager: true,
-        import: "default",
-      }
-    ) as Record<string, unknown>;
-    const coreTeamCardSrcByFileName: Record<string, string> = {};
 
-    const resolveAssetSrc = (value: unknown) => {
-      if (typeof value === "string") {
-        return value;
-      }
-
-      if (value && typeof value === "object" && "src" in value) {
-        const src = (value as { src?: unknown }).src;
-        return typeof src === "string" ? src : "";
-      }
-
-      return "";
-    };
-
-    for (const [assetPath, assetSrc] of Object.entries(coreTeamCardModules)) {
-      const fileName = assetPath.split("/").at(-1);
-      const resolvedSrc = resolveAssetSrc(assetSrc);
-
-      if (fileName && resolvedSrc) {
-        coreTeamCardSrcByFileName[fileName] = resolvedSrc;
-      }
-    }
     const modalCloseBtn = document.getElementById("modal-close-btn");
-    const familyDescription = document.getElementById(
-      "family-description"
-    );
+    const familyDescription = document.getElementById("family-description");
     const familyHeader = document.querySelector(
       ".family-header"
     ) as HTMLElement | null;
     const sectionContent = document.querySelector(".section-content");
-    const pieceHitboxBtns =
-      document.querySelectorAll<HTMLButtonElement>(".piece-hitbox-btn");
+
     const requiredElements =
       familyFather &&
       familyMother &&
@@ -1186,9 +1328,16 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       return lastOutput;
     }
     const animateFamily = (scrollProgress: number) => {
-      const mobileEntryProgress = isMobileViewport
-        ? transform(scrollProgress, [0, 0.3], [1, 0], easeInOutCubic)
-        : 0;
+      let mobileEntryProgress = 0;
+
+      if (isMobileViewport) {
+        mobileEntryProgress = transform(
+          scrollProgress,
+          [0, 0.3],
+          [1, 0],
+          easeInOutCubic
+        );
+      }
 
       const centerPhaseProgress = transform(
         scrollProgress,
@@ -1203,22 +1352,46 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         [0, 1],
         easeInOutCubic
       );
+      let centerOffsetFactorByMember: {
+        father: number;
+        mother: number;
+        sister: number;
+        uncle: number;
+        daughter: number;
+      };
+
+      if (isMobileViewport) {
+        centerOffsetFactorByMember = {
+          father: -0.35,
+          mother: -0.45,
+          sister: -0.2,
+          uncle: -0.025,
+          daughter: -0.1,
+        };
+      } else if (isTabletViewport) {
+        centerOffsetFactorByMember = {
+          father: -0.3,
+          mother: -0.4,
+          sister: -0.2,
+          uncle: -0.1,
+          daughter: 0.2,
+        };
+      } else {
+        centerOffsetFactorByMember = {
+          father: -0.35,
+          mother: -0.34,
+          sister: -0.35,
+          uncle: -0.35,
+          daughter: 0.35,
+        };
+      }
+
       const centerOffsetByMember = {
-        father:
-          window.innerWidth *
-          (isMobileViewport ? -0.35: isTabletViewport ? -0.3 : -0.35),
-        mother:
-          window.innerWidth *
-          (isMobileViewport ? -0.45 : isTabletViewport ? -0.4 : -0.34),
-        sister:
-          window.innerWidth *
-          (isMobileViewport ? -0.2 : isTabletViewport ? -0.2 : -0.35),
-        uncle:
-          window.innerWidth *
-          (isMobileViewport ? -0.025 : isTabletViewport ? -0.1 : -0.35),
-        daughter:
-          window.innerWidth *
-          (isMobileViewport ? -0.1 : isTabletViewport ? 0.2 : 0.35),
+        father: window.innerWidth * centerOffsetFactorByMember.father,
+        mother: window.innerWidth * centerOffsetFactorByMember.mother,
+        sister: window.innerWidth * centerOffsetFactorByMember.sister,
+        uncle: window.innerWidth * centerOffsetFactorByMember.uncle,
+        daughter: window.innerWidth * centerOffsetFactorByMember.daughter,
       };
 
       const directionByMember = {
@@ -1229,22 +1402,31 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         daughter: -1,
       };
 
-      const outOfBoundsDistance =
-        window.innerWidth * (isMobileViewport ? 1.2 : isTabletViewport ? 1.35 : 1.5);
+      let outOfBoundsDistanceFactor = 1.5;
+
+      if (isMobileViewport) {
+        outOfBoundsDistanceFactor = 1.2;
+      } else if (isTabletViewport) {
+        outOfBoundsDistanceFactor = 1.35;
+      }
+
+      const outOfBoundsDistance = window.innerWidth * outOfBoundsDistanceFactor;
 
       const moveFamilyMemberToCenter = (
         el: HTMLElement,
         centerOffsetX: number,
         direction: number,
-        enterFromRightOnMobile: boolean = false
+        enterFromRightOnMobile = false
       ) => {
-        const mobileEntryOffsetX =
-          isMobileViewport && enterFromRightOnMobile
-            ? window.innerWidth * 0.9 * mobileEntryProgress
-            : 0;
+        let mobileEntryOffsetX = 0;
+
+        if (isMobileViewport && enterFromRightOnMobile) {
+          mobileEntryOffsetX = window.innerWidth * 0.9 * mobileEntryProgress;
+        }
 
         const centeredDeltaX = centerOffsetX * centerPhaseProgress;
-        const finalOutOfBoundsX = centerOffsetX + outOfBoundsDistance * direction;
+        const finalOutOfBoundsX =
+          centerOffsetX + outOfBoundsDistance * direction;
         const deltaX =
           mobileEntryOffsetX +
           centeredDeltaX +
@@ -1284,7 +1466,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       );
     };
 
-
     const animateSectionContent = (scrollProgress: number) => {
       if (!sectionContent) {
         return;
@@ -1299,7 +1480,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 
       (sectionContent as HTMLElement).style.opacity = String(contentOpacity);
     };
-
 
     const getCenteredTargetX = () => {
       const leftAnchor = Number.parseFloat(
@@ -1330,14 +1510,12 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         [1, isMobileViewport ? 1.5 : 1.5],
         easeInOutCubic
       );
-      const frameDropY =
-        frameTranslateY +
-        transform(
-          scrollProgress,
-          [0.7, 1],
-          [0, isMobileViewport ? 10 : 25],
-          easeInOutCubic
-        );
+      const frameDropY = transform(
+        scrollProgress,
+        [0.7, 1],
+        [0, isMobileViewport ? 10 : 25],
+        easeInOutCubic
+      );
 
       const autoScale = teamFrameContainerEl.clientWidth / DESIGN_WIDTH;
       const finalScale = zoom * autoScale * zoomBoost;
@@ -1363,14 +1541,15 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         easeInOutCubic
       );
 
-      tileFloor.style.transform =
-        `translateX(-50%) translateY(${Number(floorDropY.toFixed(2))}px)`;
+      tileFloor.style.transform = `translateX(-50%) translateY(${Number(floorDropY.toFixed(2))}px)`;
     };
     const syncTeamFrameZIndex = (scrollProgress: number) => {
-      teamFrameContainerEl.style.zIndex =
-        scrollProgress >= SCROLL_MAX_THRESHOLD ? "150" : "";
+      const isAtMaxScroll = scrollProgress >= SCROLL_MAX_THRESHOLD;
+
+      teamFrameContainerEl.style.zIndex = isAtMaxScroll ? "150" : "";
+      teamFrameContainerEl.classList.toggle("at-scroll-max", isAtMaxScroll);
     };
-   
+
     const animateFamilyHeader = (scrollProgress: number) => {
       if (!familyHeader) {
         return;
@@ -1381,18 +1560,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         [0, 1]
       );
 
-      familyHeader.style.opacity =
-        String(headerRevealProgress);
-    };
-
-    const setPieceHitboxTabNavigation = (canFocus: boolean) => {
-      for (const btn of Array.from(pieceHitboxBtns)) {
-        btn.disabled = !canFocus;
-
-        if (!canFocus && document.activeElement === btn) {
-          btn.blur();
-        }
-      }
+      familyHeader.style.opacity = String(headerRevealProgress);
     };
 
     const syncFamilyWithScroll = (scrollProgress: number) => {
@@ -1400,17 +1568,13 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         return;
       }
 
-      const shouldShowPiecePanel =
-        scrollProgress >= HEADER_REVEAL_START;
-
+      const shouldShowPiecePanel = scrollProgress >= HEADER_REVEAL_START;
 
       const canOpenPiecePanel = shouldShowPiecePanel;
       teamFrameContainerEl.classList.toggle("hitbox-active", canOpenPiecePanel);
-      setPieceHitboxTabNavigation(canOpenPiecePanel);
 
       if (canOpenPiecePanel && !family.open) {
         family.show();
-        return;
       }
 
       if (!shouldShowPiecePanel && family.open) {
@@ -1437,7 +1601,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     let targetProgress = 0;
     let currentZoom = 1;
     let targetZoom = 1;
-    let frameTranslateY = 0;
     const LERP_FACTOR = 0.08;
 
     const getScrollProgress = () => {
@@ -1465,148 +1628,56 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     };
 
     requestAnimationFrame(tick);
+  })();
+  const coreTeamCardModules = import.meta.glob(
+    "../assets/imgs/core-team-cards/*.png",
+    {
+      eager: true,
+      import: "default",
+    }
+  ) as Record<string, unknown>;
+  const coreTeamCardSrcByFileName: Record<string, string> = {};
 
-    const toCardSlug = (value: string) => {
-      return value
-        .toLowerCase()
-        .replaceAll("&", " and ")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
-    };
+  const resolveAssetSrc = (value: unknown) => {
+    if (typeof value === "string") {
+      return value;
+    }
 
-    const createCoreTeamCardFileNames = (role: string, name: string) => {
-      const baseName = `core-team-${toCardSlug(role)}--${toCardSlug(name)}`;
-      return {
-        preferred: `${baseName}-card.png`,
-        legacy: `${baseName}.png`,
-      };
-    };
+    if (value && typeof value === "object" && "src" in value) {
+      const src = (value as { src?: unknown }).src;
+      return typeof src === "string" ? src : "";
+    }
 
+    return "";
+  };
+  for (const [assetPath, assetSrc] of Object.entries(coreTeamCardModules)) {
+    const fileName = assetPath.split("/").at(-1);
+    const resolvedSrc = resolveAssetSrc(assetSrc);
 
-    const teamMembers = [
-      { role: "Organizer", name: "Muhammad Harffin", team: null },
-      { role: "Co-Organizer", name: "Aisyah Dyah", team: null },
-
-      { role: "Budget Manager", name: "Haura Sekar", team: null },
-      { role: "Budget Manager", name: "Muhammad Akmal", team: null },
-
-      { role: "Curator", name: "Tsabita Hana", team: "Core Team" },
-      { role: "Curator", name: "Rimalya Valerina", team: "Core Team" },
-      { role: "Curator", name: "Syarifah Nurul", team: "Core Team" },
-      { role: "Curator", name: "Muhammad Abiyyu", team: "Core Team" },
-      { role: "Curator", name: "Muchamad Farrel", team: "Volunteer" },
-      { role: "Curator", name: "Nasyabila Rizqita", team: "Volunteer" },
-      { role: "Curator", name: "Attariq Muhammad", team: "Volunteer" },
-      { role: "Curator", name: "Gwen Rose", team: "Volunteer" },
-
-      {
-        role: "Communication, Editorial & Marketing",
-        name: "Ghina Salsabila",
-        team: "Core Team",
-      },
-      {
-        role: "Communication, Editorial & Marketing",
-        name: "Aulia Siti",
-        team: "Core Team",
-      },
-      {
-        role: "Communication, Editorial & Marketing",
-        name: "Rizky Putra",
-        team: "Core Team",
-      },
-      {
-        role: "Communication, Editorial & Marketing",
-        name: "Xabi Muhammad",
-        team: "Volunteer",
-      },
-      {
-        role: "Communication, Editorial & Marketing",
-        name: "Denaya Danardon",
-        team: "Volunteer",
-      },
-      {
-        role: "Communication, Editorial & Marketing",
-        name: "Claudya Isabel",
-        team: "Volunteer",
-      },
-      {
-        role: "Communication, Editorial & Marketing",
-        name: "Maheza Mahardika",
-        team: "Volunteer",
-      },
-
-      { role: "Sponsorship", name: "Khalilah Ferline", team: "Core Team" },
-      { role: "Sponsorship", name: "Kamilah Putri", team: "Core Team" },
-      { role: "Sponsorship", name: "Kyara Azzahra", team: "Core Team" },
-      { role: "Sponsorship", name: "Imam Fachriza", team: "Core Team" },
-      { role: "Sponsorship", name: "Nayla Diandra", team: "Volunteer" },
-      { role: "Sponsorship", name: "Andera Early", team: "Volunteer" },
-      { role: "Sponsorship", name: "Bagas Aryadita", team: "Volunteer" },
-      { role: "Sponsorship", name: "Zahra Nadira", team: "Volunteer" },
-
-      { role: "Event Manager", name: "Ajeng Regina", team: "Core Team" },
-      { role: "Event Manager", name: "Fazqeela Nazyyara", team: "Core Team" },
-      { role: "Event Manager", name: "Zeke Ubas", team: "Core Team" },
-      { role: "Event Manager", name: "Katyusha Parikesit", team: "Volunteer" },
-      { role: "Event Manager", name: "Venesya Sitompul", team: "Volunteer" },
-      { role: "Event Manager", name: "Raisha Fahria", team: "Volunteer" },
-      { role: "Event Manager", name: "Bagus Eko", team: "Volunteer" },
-      { role: "Event Manager", name: "Putu Luna", team: "Volunteer" },
-      { role: "Event Manager", name: "Adela Milarosnida", team: "Volunteer" },
-
-      { role: "Executive Producer", name: "Muhammad Hanif", team: "Core Team" },
-      {
-        role: "Executive Producer",
-        name: "Muhammad Haidar",
-        team: "Core Team",
-      },
-      { role: "Executive Producer", name: "Nahida Chanun", team: "Core Team" },
-      { role: "Executive Producer", name: "Risman Ariel", team: "Volunteer" },
-      {
-        role: "Executive Producer",
-        name: "Syauqi Amrullah",
-        team: "Volunteer",
-      },
-      { role: "Executive Producer", name: "Muhammad Zidan", team: "Core Team" },
-      { role: "Executive Producer", name: "Ayyash Musyari", team: "Volunteer" },
-      { role: "Executive Producer", name: "Dania Zahira", team: "Volunteer" },
-
-      { role: "Design", name: "Dini Septianing", team: "Core Team" },
-      { role: "Design", name: "Azzahro Fatimah", team: "Core Team" },
-      { role: "Design", name: "Karunia Puteri", team: "Core Team" },
-      { role: "Design", name: "Nisrina Jasmine", team: "Core Team" },
-      
-      { role: "Design", name: "Zisdane Rachmatullah", team: "Volunteer" },
-      { role: "Design", name: "Khairunnisa Achmad", team: "Volunteer" },
-      { role: "Design", name: "Ashila Tsarianasya", team: "Volunteer" },
-      { role: "Design", name: "Dinara Frida Safina", team: "Volunteer" },
-
-      { role: "Video Production", name: "Sayyid Muhammad", team: "Core Team" },
-      { role: "Video Production", name: "Muhammad Abid", team: "Core Team" },
-      { role: "Video Production", name: "Ignatius Evan", team: "Core Team" },
-      { role: "Video Production", name: "Muhammad Haikal", team: "Core Team" },
-      { role: "Video Production", name: "Pieter Wenesdy", team: "Volunteer" },
-      { role: "Video Production", name: "Khaizuran Rafie", team: "Volunteer" },
-      { role: "Video Production", name: "Alfa Nafi", team: "Volunteer" },
-      { role: "Video Production", name: "Abrar Galant", team: "Volunteer" },
-
-      { role: "Website", name: "Hafiz Rizky", team: "Core Team" },
-      { role: "Website", name: "Nugraha Billy", team: "Core Team" },
-      { role: "Website", name: "Alfredo Radhinal", team: "Core Team" },
-      { role: "Website", name: "Rahmi Arsy", team: "Volunteer" },
-      { role: "Website", name: "Exel Boy", team: "Volunteer" },
-      { role: "Website", name: "Risqi Achmad", team: "Volunteer" },
-      { role: "Website", name: "Muhammad Syauqi", team: "Volunteer" },
-    ].map((member) => {
-      return {
-        ...member,
-        cardFileNames:
-          member.team === "Volunteer"
-            ? null
-            : createCoreTeamCardFileNames(member.role, member.name),
-      };
-    });
-
+    if (fileName && resolvedSrc) {
+      coreTeamCardSrcByFileName[fileName] = resolvedSrc;
+    }
+  }
+  (() => {
+    const modalCloseBtn = document.getElementById("modal-close-btn");
+    const teamFrameContainer = document.getElementById("team-frame-container");
+    const pieceHitboxBtns =
+      document.querySelectorAll<HTMLButtonElement>(".piece-hitbox-btn");
+    const piecePanelBody = document.getElementById("piece-panel-body");
+    const scopeAttrName =
+      piecePanelBody
+        ?.getAttributeNames()
+        .find((name) => name.startsWith("data-astro-cid-")) ?? "";
+    const scopeAttr = scopeAttrName ? ` ${scopeAttrName}` : "";
+    const familyContent = document.getElementById("family-content");
+    const familyDescription = document.getElementById("family-description");
+    const defaultFamilyDescription =
+      familyDescription?.textContent?.trim() ?? "";
+    const volunteerChipSrc =
+      piecePanelBody?.getAttribute("data-volunteer-chip-src") ?? "";
+    const family = document.getElementById(
+      "family"
+    ) as HTMLDialogElement | null;
     const createInitials = (name: string) => {
       const words = name
         .trim()
@@ -1618,7 +1689,6 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         .join("");
       return initials || "TM";
     };
-
     const sanitize = (value: string) => {
       return value
         .replaceAll("&", "&amp;")
@@ -1627,52 +1697,70 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#39;");
     };
-
-    const showPiecePanel = (roleAttr: string, displayTitle: string) => {
-      if (!(familyContent && piecePanelBody)) {
-        return;
-      }
-
+    if (!(familyContent && piecePanelBody && family && modalCloseBtn)) {
+      return;
+    }
+    const openModal = (roleAttr: string, displayTitle: string) => {
+      const teamMembers = JSON.parse(
+        piecePanelBody.getAttribute("data-team-members") ?? "[]"
+      ) as {
+        role: string;
+        name: string;
+        team: string;
+        cardFileNames: { preferred: string };
+      }[];
       const normalizedRole = roleAttr.trim();
-      const hasExactRoleMatch = teamMembers.some((member) => {
-        return member.role === normalizedRole;
-      });
+      const hasExactRoleMatch = teamMembers.some(
+        (member: {
+          role: string;
+          name: string;
+          cardFileNames: { preferred: string };
+        }) => {
+          return member.role === normalizedRole;
+        }
+      );
       const roles = hasExactRoleMatch
         ? [normalizedRole]
         : normalizedRole
             .split(",")
             .map((r) => r.trim())
             .filter((r) => r.length > 0);
-      const members = teamMembers.filter((m) => roles.includes(m.role));
+      const members = teamMembers.filter((m: { role: string }) =>
+        roles.includes(m.role)
+      );
+      const coreTeam = members.filter(
+        (m: { team: string }) => m.team !== "Volunteer"
+      );
+      const volunteers = members.filter(
+        (m: { team: string }) => m.team === "Volunteer"
+      );
 
       if (familyDescription) {
         familyDescription.textContent = displayTitle;
       }
 
-      const coreTeam = members.filter((m) => m.team !== "Volunteer");
-      const volunteers = members.filter((m) => m.team === "Volunteer");
-
       const coreCards = coreTeam
-        .map((member) => {
-          const safeName = sanitize(member.name);
-          const initials = sanitize(createInitials(member.name));
-          const cardSrc = member.cardFileNames
-            ? coreTeamCardSrcByFileName[member.cardFileNames.preferred] ??
-              coreTeamCardSrcByFileName[member.cardFileNames.legacy] ??
-              ""
-            : "";
-          const safeCardSrc = sanitize(cardSrc);
-          const cardMarkup = safeCardSrc
-            ? `<img${scopeAttr} class="member-card-photo" src="${safeCardSrc}" alt="${safeName}" aria-hidden="true" />`
-            : `<div${scopeAttr} class="member-card-photo member-card-photo-fallback" aria-hidden="true">${initials}</div>`;
-
-          return `<article${scopeAttr} class="member-card">${cardMarkup}</article>`;
-        })
+        .map(
+          (member: { name: string; cardFileNames: { preferred: string } }) => {
+            const safeName = sanitize(member.name);
+            const initials = sanitize(createInitials(member.name));
+            const cardSrc =
+              coreTeamCardSrcByFileName[member.cardFileNames.preferred] || "";
+            const safeCardSrc = sanitize(cardSrc);
+            let cardMarkup: string;
+            if (safeCardSrc) {
+              cardMarkup = `<img${scopeAttr} class="member-card-photo" src="${safeCardSrc}" alt="${safeName}" aria-hidden="true" />`;
+            } else {
+              cardMarkup = `<div${scopeAttr} class="member-card-photo member-card-photo-fallback" aria-hidden="true">${initials}</div>`;
+            }
+            return `<article${scopeAttr} class="member-card">${cardMarkup}</article>`;
+          }
+        )
         .join("");
 
       const safeChipSrc = sanitize(volunteerChipSrc);
       const volunteerChips = volunteers
-        .map((member) => {
+        .map((member: { name: string }) => {
           const safeName = sanitize(member.name);
           return `<article${scopeAttr} class="volunteer-chip"><img${scopeAttr} class="volunteer-chip-bg" src="${safeChipSrc}" alt="" aria-hidden="true" /><p${scopeAttr} class="volunteer-chip-name">${safeName}</p></article>`;
         })
@@ -1681,7 +1769,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       let html = `<section${scopeAttr}><h2${scopeAttr} class="piece-panel-section-title">Core Team</h2><div${scopeAttr} class="core-team-grid">`;
       html +=
         coreCards ||
-        `<article${scopeAttr} class="member-card"><div${scopeAttr} class="member-card-photo" aria-hidden="true">TM</div><p${scopeAttr} class="member-card-name">Soon</p></article>`;
+        `<article${scopeAttr} class="member-card"><div${scopeAttr} class="member-card-photo" aria-hidden="true">TM</div></article>`;
       html += "</div></section>";
 
       if (volunteerChips) {
@@ -1692,8 +1780,18 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 
       piecePanelBody.innerHTML = html;
       family.classList.add("role-active");
-      modalCloseBtn?.classList.add("visible");
       familyContent.classList.add("active");
+    };
+    const resetFamilyState = () => {
+      if (familyDescription) {
+        familyDescription.textContent = defaultFamilyDescription;
+      }
+      family.classList.remove("role-active");
+      familyContent?.classList.remove("active");
+
+      if (piecePanelBody) {
+        piecePanelBody.innerHTML = "";
+      }
     };
 
     modalCloseBtn?.addEventListener("click", () => {
@@ -1702,23 +1800,154 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         family.close();
       }
     });
+    const closeModal = () => {
+      resetFamilyState();
+      if (family.open) {
+        family.close();
+      }
+    };
+    let activeTeamPiece: HTMLButtonElement | null = null;
 
-    setPieceHitboxTabNavigation(false);
-    for (const btn of Array.from(pieceHitboxBtns)) {
-      btn.addEventListener("click", (e: Event) => {
-        e.stopPropagation();
+    for (const pieceHitbox of Array.from(pieceHitboxBtns)) {
+      const role = pieceHitbox.dataset.role ?? "";
+      const label = pieceHitbox.getAttribute("aria-label") ?? role;
 
-        if (!teamFrameContainerEl.classList.contains("hitbox-active")) {
-          return;
-        }
+      pieceHitbox.addEventListener("click", () => {
+        activeTeamPiece = pieceHitbox;
+        openModal(role, label);
+      });
 
-
-        const role = btn.dataset.role;
-        const label = btn.getAttribute("aria-label") ?? role ?? "";
-        if (role) {
-          showPiecePanel(role, label);
+      pieceHitbox.addEventListener("keydown", (event: KeyboardEvent) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          activeTeamPiece = pieceHitbox;
+          openModal(role, label);
         }
       });
     }
+
+    const getActivePieces = (): HTMLButtonElement[] => {
+      const activePieces: HTMLButtonElement[] = [];
+
+      for (const piece of Array.from(pieceHitboxBtns)) {
+        if (piece.disabled) {
+          continue;
+        }
+
+        if (piece.offsetParent === null) {
+          continue;
+        }
+
+        activePieces.push(piece);
+      }
+
+      return activePieces;
+    };
+
+    const findFocusedPieceIndex = (activePieces: HTMLButtonElement[]) => {
+      const currentFocused = document.activeElement;
+
+      for (let i = 0; i < activePieces.length; i += 1) {
+        if (activePieces[i] === currentFocused) {
+          return i;
+        }
+      }
+
+      return -1;
+    };
+
+    const getNextPieceIndex = (
+      currentIndex: number,
+      totalPieces: number,
+      isReverse: boolean
+    ) => {
+      if (isReverse) {
+        const reverseIndex = currentIndex - 1;
+
+        if (reverseIndex < 0) {
+          return totalPieces - 1;
+        }
+
+        return reverseIndex;
+      }
+
+      const forwardIndex = currentIndex + 1;
+
+      if (forwardIndex >= totalPieces) {
+        return 0;
+      }
+
+      return forwardIndex;
+    };
+
+    const focusPieceAtIndex = (pieces: HTMLButtonElement[], index: number) => {
+      const nextPiece = pieces.at(index);
+
+      if (nextPiece) {
+        nextPiece.focus();
+      }
+    };
+
+    const cycleFocusInActivePieces = (isReverse: boolean) => {
+      const activePieces = getActivePieces();
+
+      if (activePieces.length === 0) {
+        return;
+      }
+
+      const currentIndex = findFocusedPieceIndex(activePieces);
+
+      if (currentIndex === -1) {
+        focusPieceAtIndex(activePieces, 0);
+        return;
+      }
+
+      const nextIndex = getNextPieceIndex(
+        currentIndex,
+        activePieces.length,
+        isReverse
+      );
+
+      focusPieceAtIndex(activePieces, nextIndex);
+    };
+
+    const isTeamFrameAtScrollMax = () => {
+      if (!teamFrameContainer) {
+        return false;
+      }
+
+      return teamFrameContainer.classList.contains("at-scroll-max");
+    };
+
+    const handleGlobalKeydown = (event: KeyboardEvent) => {
+      if (!family?.open) {
+        return;
+      }
+
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeModal();
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      if (family.classList.contains("role-active")) {
+        event.preventDefault();
+        modalCloseBtn.focus();
+        return;
+      }
+
+      if (!isTeamFrameAtScrollMax()) {
+        return;
+      }
+
+      event.preventDefault();
+      cycleFocusInActivePieces(event.shiftKey);
+    };
+
+    document.addEventListener("keydown", handleGlobalKeydown);
   })();
 </script>
