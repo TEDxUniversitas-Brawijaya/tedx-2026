@@ -9,15 +9,20 @@ import lighting from "@/assets/svgs/window-lighting.svg";
 import lamp from "@/assets/imgs/chandelier-1.png";
 import sofaSeat from "@/assets/imgs/sofa-seat.png";
 import carpet from "@/assets/imgs/green-carpet.png";
-import window2 from "@/assets/imgs/window-3.png";
 import diningTable from "@/assets/imgs/dining-seat.png";
 import vase from "@/assets/imgs/flower-vase.png";
 import vaseShine from "@/assets/svgs/flower-vase-shine.svg";
+import Navbar from "@/components/navbar.astro";
+import curtain from "@/assets/imgs/curtain.png";
+import desk from "@/assets/imgs/desk.png";
+import brokenVase from "@/assets/imgs/broken-vase-flower.png";
+import flowerStalk from "@/assets/imgs/flower-stalk.png";
 ---
 
 <link rel="stylesheet" href="/src/styles/propaganda-2.css">
 
 <Layout>
+  <Navbar />
   <main id="propa2-main">
     <!-- frame 1 -->
     <section class="frame-1" style="position: relative;">
@@ -69,7 +74,14 @@ import vaseShine from "@/assets/svgs/flower-vase-shine.svg";
     </section>
     <!-- frame 3 -->
     <section class="frame-3" style="position: relative;">
-      <Image src={window2} class="window-frame-3" alt="Window 2" />
+      <div class="window-container-3">
+        <div class="window-wrapper-3">
+          <Image src={window} class="window-frame-3" alt="Window 2" />
+          <Image src={window} class="window-frame-3" alt="Window 2" />
+          <Image src={curtain} class="curtain" alt="Curtain" />
+          <Image src={curtain} class="curtain2" alt="Curtain" />
+        </div>
+      </div>
       <Image src={backgroundImage} class="background" alt="Propaganda 2" />
       <Image src={diningTable} class="dining-table" alt="Dining Table" />
       <div class="vase-container">
@@ -90,7 +102,129 @@ import vaseShine from "@/assets/svgs/flower-vase-shine.svg";
         </p>
       </div>
     </section>
-
+    <!-- frame 4 -->
+    <section
+      class="frame-4"
+      style="position: relative; background-color: #312E35; min-height: 100vh;"
+    >
+      <Image src={desk} class="desk-frame-4" alt="desk" />
+      <div class="text-4">
+        <p>
+          Di sini, kita membedah bahwa emosi, baik itu kegelapan rasa takut
+          maupun cahaya kebahagiaan memiliki hak yang sama untuk hadir. Mengakui
+          rasa tanpa penyangkalan adalah bentuk penghormatan paling dasar
+          terhadap martabat manusia, karena sebelum kita menjadi makhluk yang
+          berpikir, kita adalah makhluk yang merasa.
+        </p>
+      </div>
+    </section>
+    <!-- frame 5 -->
+    <section class="frame-5" style="position: relative;">
+      <Image src={floor} class="floor-frame-5" alt="Propaganda 2" />
+      <div class="placeholder-frame-5">placeholder</div>
+      <div class="broken-vase-container">
+        <div class="broken-vase-wrapper">
+          <Image
+            src={brokenVase}
+            class="broken-vase"
+            alt="Broken Vase with Flowers"
+          />
+          <Image src={flowerStalk} class="flower-stalk" alt="Flower Stalk" />
+        </div>
+      </div>
+    </section>
     <Image src={texture} class="texture" alt="Paper Grain Texture" />
   </main>
 </Layout>
+
+<script>
+  import Lenis from "lenis";
+
+  const lenis = new Lenis();
+
+  function raf(time: number) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  const vaseWrapper = document.querySelector(".vase-wrapper") as HTMLElement;
+  const mainContent = document.querySelector("#propa2-main") as HTMLElement;
+  const frame3 = document.querySelector(".frame-3") as HTMLElement;
+  const text3 = document.querySelector(".text-3") as HTMLElement;
+  const frame4 = document.querySelector(".frame-4") as HTMLElement;
+  const text4 = document.querySelector(".text-4") as HTMLElement;
+  const frame5 = document.querySelector(".frame-5") as HTMLElement;
+  const placeholderFrame5 = document.querySelector(
+    ".placeholder-frame-5"
+  ) as HTMLElement;
+  let hasBrokenVaseTriggered = false;
+
+  const updateFrame5State = () => {
+    const f5Rect = frame5?.getBoundingClientRect();
+    if (!f5Rect) {
+      return;
+    }
+
+    const frame5Bottom = f5Rect.bottom;
+    const isFrame5BottomInViewport = frame5Bottom <= window.innerHeight + 1;
+    if (!hasBrokenVaseTriggered && isFrame5BottomInViewport) {
+      hasBrokenVaseTriggered = true;
+      mainContent?.classList.add("is-vase-broken");
+    }
+
+    if (!placeholderFrame5) {
+      return;
+    }
+
+    const scrollPastTopFrame5 = window.innerHeight - f5Rect.top;
+    if (scrollPastTopFrame5 > 0) {
+      const textOpacity = Math.min(scrollPastTopFrame5 / 300, 1);
+      placeholderFrame5.style.opacity = textOpacity.toString();
+    } else {
+      placeholderFrame5.style.opacity = "0";
+    }
+  };
+
+  if (vaseWrapper && frame3) {
+    lenis.on("scroll", () => {
+      //frame 3
+      const f3Rect = frame3.getBoundingClientRect();
+      const scrollPastBottomFrame3 = window.innerHeight - f3Rect.bottom;
+
+      if (scrollPastBottomFrame3 > 0) {
+        const textOpacity = Math.max(1 - scrollPastBottomFrame3 / 100, 0);
+        const scale = 1 + (scrollPastBottomFrame3 / 100) * 0.03;
+        const moveY = scrollPastBottomFrame3 * 1.1;
+        const rotate = scrollPastBottomFrame3 * 0.045;
+
+        text3.style.opacity = textOpacity.toString();
+        vaseWrapper.style.transform = `translateY(${moveY}px) rotate(${rotate}deg) scale(${scale})`;
+      }
+
+      // frame 4
+      const f4Rect = frame4.getBoundingClientRect();
+      const viewportCenter = window.innerHeight / 2;
+      const distanceToCenter = f4Rect.top - viewportCenter;
+
+      // Opacity starts increasing when the top of frame4 is at the center of the viewport
+      if (distanceToCenter <= 0) {
+        const textOpacity = Math.min(1, Math.abs(distanceToCenter) / 350);
+        text4.style.opacity = textOpacity.toString();
+        text4.style.zIndex = text4.style.opacity === "1" ? "6" : "1";
+        const scale4 = 1 + (scrollPastBottomFrame3 / 100) * 0.03;
+        const moveY4 = scrollPastBottomFrame3 * 1.1;
+        const rotate4 = scrollPastBottomFrame3 * 0.05;
+        vaseWrapper.style.transform = `translateY(${moveY4}px) rotate(${rotate4}deg) scale(${scale4})`;
+      } else {
+        text4.style.opacity = "0";
+      }
+
+      //frame 5
+      updateFrame5State();
+    });
+
+    updateFrame5State();
+    window.addEventListener("resize", updateFrame5State);
+  }
+</script>
