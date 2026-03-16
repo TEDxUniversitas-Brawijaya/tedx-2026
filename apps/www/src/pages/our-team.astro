@@ -320,6 +320,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     left: 50%;
     bottom: -2%;
     width: min(200rem, 200vw);
+    height: clamp(5rem, 20vh, 40rem);
     aspect-ratio: 16 / 5;
     transform: translateX(-50%);
     object-fit: cover;
@@ -329,7 +330,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 
   .team-frame-container {
     position: absolute;
-    top: 38%;
+    top: 35%;
     left:85%;
     width: clamp(40rem, 30vw, 45rem);
     aspect-ratio: 1 / 1;
@@ -915,6 +916,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
 
     .team-frame-container {
       right: 10%;
+      top: 30%;
       width: clamp(35rem, 60vw, 100rem);
     }
 
@@ -937,7 +939,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     }
 
     .section-content {
-      top: 30%;
+      top: 20%;
       left: 50%;
       transform: translate(-50%, 0);
       width: min(90vw, 32rem);
@@ -952,6 +954,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     }
 
     .team-frame-container {
+      top: 45%;
       width: clamp(15rem, 90vw, 40rem);
     }
 
@@ -961,7 +964,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       --family-father-top: 60vh;
       --family-father-right: 15vw;
       --family-mother-top: 70vh;
-      --family-mother-right: 40vw;
+      --family-mother-right: 25vw;
       
       --family-sister-top: 70vh;
       
@@ -1471,8 +1474,12 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         .replace(/^-+|-+$/g, "");
     };
 
-    const createCoreTeamCardFileName = (role: string, name: string) => {
-      return `core-team-${toCardSlug(role)}--${toCardSlug(name)}-card.png`;
+    const createCoreTeamCardFileNames = (role: string, name: string) => {
+      const baseName = `core-team-${toCardSlug(role)}--${toCardSlug(name)}`;
+      return {
+        preferred: `${baseName}-card.png`,
+        legacy: `${baseName}.png`,
+      };
     };
 
 
@@ -1486,7 +1493,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       { role: "Curator", name: "Tsabita Hana", team: "Core Team" },
       { role: "Curator", name: "Rimalya Valerina", team: "Core Team" },
       { role: "Curator", name: "Syarifah Nurul", team: "Core Team" },
-      { role: "Curator", name: "Muhammad Abiyyu", team: "Volunteer" },
+      { role: "Curator", name: "Muhammad Abiyyu", team: "Core Team" },
       { role: "Curator", name: "Muchamad Farrel", team: "Volunteer" },
       { role: "Curator", name: "Nasyabila Rizqita", team: "Volunteer" },
       { role: "Curator", name: "Attariq Muhammad", team: "Volunteer" },
@@ -1560,7 +1567,7 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         name: "Syauqi Amrullah",
         team: "Volunteer",
       },
-      { role: "Executive Producer", name: "Muhammad Zidan", team: "Volunteer" },
+      { role: "Executive Producer", name: "Muhammad Zidan", team: "Core Team" },
       { role: "Executive Producer", name: "Ayyash Musyari", team: "Volunteer" },
       { role: "Executive Producer", name: "Dania Zahira", team: "Volunteer" },
 
@@ -1568,6 +1575,11 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
       { role: "Design", name: "Azzahro Fatimah", team: "Core Team" },
       { role: "Design", name: "Karunia Puteri", team: "Core Team" },
       { role: "Design", name: "Nisrina Jasmine", team: "Core Team" },
+      
+      { role: "Design", name: "Zisdane Rachmatullah", team: "Volunteer" },
+      { role: "Design", name: "Khairunnisa Achmad", team: "Volunteer" },
+      { role: "Design", name: "Ashila Tsarianasya", team: "Volunteer" },
+      { role: "Design", name: "Dinara Frida Safina", team: "Volunteer" },
 
       { role: "Video Production", name: "Sayyid Muhammad", team: "Core Team" },
       { role: "Video Production", name: "Muhammad Abid", team: "Core Team" },
@@ -1588,10 +1600,10 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
     ].map((member) => {
       return {
         ...member,
-        cardFileName:
+        cardFileNames:
           member.team === "Volunteer"
             ? null
-            : createCoreTeamCardFileName(member.role, member.name),
+            : createCoreTeamCardFileNames(member.role, member.name),
       };
     });
 
@@ -1621,7 +1633,16 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         return;
       }
 
-      const roles = roleAttr.split(",").map((r) => r.trim());
+      const normalizedRole = roleAttr.trim();
+      const hasExactRoleMatch = teamMembers.some((member) => {
+        return member.role === normalizedRole;
+      });
+      const roles = hasExactRoleMatch
+        ? [normalizedRole]
+        : normalizedRole
+            .split(",")
+            .map((r) => r.trim())
+            .filter((r) => r.length > 0);
       const members = teamMembers.filter((m) => roles.includes(m.role));
 
       if (familyDescription) {
@@ -1635,15 +1656,17 @@ import TeamFrameBackground from "@/assets/imgs/team-frame-background.png";
         .map((member) => {
           const safeName = sanitize(member.name);
           const initials = sanitize(createInitials(member.name));
-          const cardSrc = member.cardFileName
-            ? coreTeamCardSrcByFileName[member.cardFileName] ?? ""
+          const cardSrc = member.cardFileNames
+            ? coreTeamCardSrcByFileName[member.cardFileNames.preferred] ??
+              coreTeamCardSrcByFileName[member.cardFileNames.legacy] ??
+              ""
             : "";
           const safeCardSrc = sanitize(cardSrc);
           const cardMarkup = safeCardSrc
             ? `<img${scopeAttr} class="member-card-photo" src="${safeCardSrc}" alt="${safeName}" aria-hidden="true" />`
             : `<div${scopeAttr} class="member-card-photo member-card-photo-fallback" aria-hidden="true">${initials}</div>`;
 
-          return `<article${scopeAttr} class="member-card">${cardMarkup}<p${scopeAttr} class="member-card-name">${safeName}</p></article>`;
+          return `<article${scopeAttr} class="member-card">${cardMarkup}</article>`;
         })
         .join("");
 
