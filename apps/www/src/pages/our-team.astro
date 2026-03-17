@@ -408,7 +408,6 @@ const teamMembers = [
             Setiap divisi memiliki peran penting dalam menghadirkan
             TEDxUniversitasBrawijaya. Klik divisi untuk melihat tim di baliknya.
           </p>
-          <Image src={Line} alt="Line" id="family-line" class="family-line" />
         </div>
         <div class="modal-close-layout">
           <button
@@ -435,6 +434,8 @@ const teamMembers = [
           </button>
         </div>
       </div>
+      <Image src={Line} alt="Line" id="family-line" class="family-line" />
+
       <div class="family-content" id="family-content">
         <div class="piece-panel-separator" aria-hidden="true"></div>
         <div
@@ -841,11 +842,13 @@ const teamMembers = [
     background: transparent;
     pointer-events: none;
   }
-
-  .modal-close-btn {
+  .modal-close-layout {
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     right: 0;
-    top: 0;
+  }
+  .modal-close-btn {
     display: none;
     appearance: none;
     border: none;
@@ -896,11 +899,10 @@ const teamMembers = [
   }
 
   .family-topbar {
+    position: relative;
     width: min(90vw, 100rem);
-    margin-top: 4.5rem;
+    margin-top: 7rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
     gap: 1rem;
     pointer-events: auto;
   }
@@ -911,7 +913,6 @@ const teamMembers = [
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
     opacity: 0;
     pointer-events: none;
   }
@@ -940,7 +941,8 @@ const teamMembers = [
     font-size: clamp(0.9rem, 2.5vw, 1.8rem);
   }
   .family-line {
-    width: 100%;
+    width: min(90vw, 100rem);
+
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
@@ -982,10 +984,9 @@ const teamMembers = [
   }
 
   .piece-panel-body {
-    width: 100%;
+    width: min(90vw, 100rem);
     margin-inline: auto;
     max-height: min(100vh, 40rem);
-    padding-right: 0.35rem;
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: none;
@@ -1066,7 +1067,9 @@ const teamMembers = [
 
   .volunteer-chip-name {
     position: absolute;
-    inset: 0;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1495,25 +1498,33 @@ const teamMembers = [
 
     const animateTeamFrame = (scrollProgress: number, zoom: number) => {
       const targetX = getCenteredTargetX();
-      const translateX = isMobileViewport
-        ? transform(
-            scrollProgress,
-            [0, 0.45],
-            [targetX + window.innerWidth * 0.75, targetX],
-            easeInOutCubic
-          )
-        : transform(scrollProgress, [0.2, 0.9], [0, targetX], easeInOutCubic);
+      let translateX: number;
+      if (isMobileViewport) {
+        translateX = transform(
+          scrollProgress,
+          [0, 0.45],
+          [targetX + window.innerWidth * 0.75, targetX],
+          easeInOutCubic
+        );
+      } else {
+        translateX = transform(
+          scrollProgress,
+          [0.2, 0.9],
+          [0, targetX],
+          easeInOutCubic
+        );
+      }
 
       const zoomBoost = transform(
         scrollProgress,
         [0.7, 1],
-        [1, isMobileViewport ? 1.5 : 1.5],
+        [1, 1.4],
         easeInOutCubic
       );
       const frameDropY = transform(
         scrollProgress,
         [0.7, 1],
-        [0, isMobileViewport ? 10 : 25],
+        [0, isMobileViewport ? 15 : 30],
         easeInOutCubic
       );
 
