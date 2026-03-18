@@ -1,0 +1,2628 @@
+---
+import Layout from "@/components/layout.astro";
+import NavBar from "@/components/navbar.astro";
+import { Image } from "astro:assets";
+import TileFloor from "@/assets/imgs/tile-floor.png";
+import GreenBackground from "@/assets/imgs/green-background.png";
+import Father from "@/assets/imgs/father.png";
+import Mother from "@/assets/imgs/mother.png";
+import Sister from "@/assets/imgs/sister.png";
+import Uncle from "@/assets/imgs/uncle.png";
+import Daughter from "@/assets/imgs/daughter.png";
+
+import Ep from "@/assets/imgs/ep.png";
+import Organizer from "@/assets/imgs/organizer.png";
+import Design from "@/assets/imgs/design.png";
+import Sponsorship from "@/assets/imgs/sponsorship.png";
+import VideoProduction from "@/assets/imgs/video-production.png";
+import Website from "@/assets/imgs/website.png";
+import Budget from "@/assets/imgs/budget.png";
+import Cem from "@/assets/imgs/cem.png";
+import Em from "@/assets/imgs/em.png";
+import Vp from "@/assets/imgs/vp.png";
+import Curator from "@/assets/imgs/curator.png";
+// import VolunteerChip from "@/assets/imgs/volunteer-chip.png";
+import VolunteerChipBackground from "@/assets/imgs/volunteer-chip-background.png";
+import Line from "@/assets/imgs/line-1.png";
+
+const createCoreTeamCardFileNames = (role: string, name: string) => {
+  const baseName = `core-team-${toCardSlug(role)}--${toCardSlug(name)}`;
+  return {
+    preferred: `${baseName}-card.png`,
+  };
+};
+const toCardSlug = (value: string) => {
+  return value
+    .toLowerCase()
+    .replaceAll("&", " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+};
+const teamMembers = [
+  { role: "Organizer", name: "Muhammad Harffin", team: null },
+  { role: "Co-Organizer", name: "Aisyah Dyah", team: null },
+
+  { role: "Budget Manager", name: "Haura Sekar", team: null },
+  { role: "Budget Manager", name: "Muhammad Akmal", team: null },
+
+  { role: "Curator", name: "Tsabita Hana", team: "Core Team" },
+  { role: "Curator", name: "Rimalya Valerina", team: "Core Team" },
+  { role: "Curator", name: "Syarifah Nurul", team: "Core Team" },
+  { role: "Curator", name: "Muhammad Abiyyu", team: "Core Team" },
+
+  { role: "Curator", name: "Muchamad Farrel", team: "Volunteer" },
+  { role: "Curator", name: "Nasyabila Rizqita", team: "Volunteer" },
+  { role: "Curator", name: "Attariq Muhammad", team: "Volunteer" },
+  { role: "Curator", name: "Gwen Rose", team: "Volunteer" },
+
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Ghina Salsabila",
+    team: "Core Team",
+  },
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Aulia Siti",
+    team: "Core Team",
+  },
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Rizky Putra",
+    team: "Core Team",
+  },
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Xabi Muhammad",
+    team: "Volunteer",
+  },
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Denaya Danardon",
+    team: "Volunteer",
+  },
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Claudya Isabel",
+    team: "Volunteer",
+  },
+  {
+    role: "Communication, Editorial & Marketing",
+    name: "Maheza Mahardika",
+    team: "Volunteer",
+  },
+
+  { role: "Sponsorship", name: "Khalilah Ferline", team: "Core Team" },
+  { role: "Sponsorship", name: "Kamilah Putri", team: "Core Team" },
+  { role: "Sponsorship", name: "Kyara Azzahra", team: "Core Team" },
+  { role: "Sponsorship", name: "Imam Fachriza", team: "Core Team" },
+  { role: "Sponsorship", name: "Nayla Diandra", team: "Volunteer" },
+  { role: "Sponsorship", name: "Andera Early", team: "Volunteer" },
+  { role: "Sponsorship", name: "Bagas Aryadita", team: "Volunteer" },
+  { role: "Sponsorship", name: "Zahra Nadira", team: "Volunteer" },
+
+  { role: "Event Manager", name: "Ajeng Regina", team: "Core Team" },
+  { role: "Event Manager", name: "Fazqeela Nazyyara", team: "Core Team" },
+  { role: "Event Manager", name: "Zeke Ubas", team: "Core Team" },
+  { role: "Event Manager", name: "Katyusha Parikesit", team: "Volunteer" },
+  { role: "Event Manager", name: "Venesya Sitompul", team: "Volunteer" },
+  { role: "Event Manager", name: "Raisha Fahria", team: "Volunteer" },
+  { role: "Event Manager", name: "Bagus Eko", team: "Volunteer" },
+  { role: "Event Manager", name: "Putu Luna", team: "Volunteer" },
+  { role: "Event Manager", name: "Adela Milarosnida", team: "Volunteer" },
+
+  { role: "Executive Producer", name: "Muhammad Hanif", team: "Core Team" },
+  {
+    role: "Executive Producer",
+    name: "Muhammad Haidar",
+    team: "Core Team",
+  },
+  { role: "Executive Producer", name: "Nahida Chanun", team: "Core Team" },
+  { role: "Executive Producer", name: "Muhammad Zidan", team: "Volunteer" },
+  { role: "Executive Producer", name: "Risman Ariel", team: "Volunteer" },
+  {
+    role: "Executive Producer",
+    name: "Syauqi Amrullah",
+    team: "Volunteer",
+  },
+  { role: "Executive Producer", name: "Ayyash Musyari", team: "Volunteer" },
+  { role: "Executive Producer", name: "Dania Zahira", team: "Volunteer" },
+
+  { role: "Design", name: "Dini Septianing", team: "Core Team" },
+  { role: "Design", name: "Azzahro Fatimah", team: "Core Team" },
+  { role: "Design", name: "Karunia Puteri", team: "Core Team" },
+  { role: "Design", name: "Nisrina Jasmine", team: "Core Team" },
+
+  { role: "Design", name: "Zisdane Rachmatullah", team: "Volunteer" },
+  { role: "Design", name: "Khairunnisa Achmad", team: "Volunteer" },
+  { role: "Design", name: "Ashila Tsarianasya", team: "Volunteer" },
+  { role: "Design", name: "Dinara Frida Safina", team: "Volunteer" },
+
+  { role: "Video Production", name: "Sayyid Muhammad", team: "Core Team" },
+  { role: "Video Production", name: "Muhammad Abid", team: "Core Team" },
+  { role: "Video Production", name: "Ignatius Evan", team: "Core Team" },
+  { role: "Video Production", name: "Muhammad Haikal", team: "Core Team" },
+  { role: "Video Production", name: "Pieter Wenesdy", team: "Volunteer" },
+  { role: "Video Production", name: "Khaizuran Rafie", team: "Volunteer" },
+  { role: "Video Production", name: "Alfa Nafi", team: "Volunteer" },
+  { role: "Video Production", name: "Abrar Galant", team: "Volunteer" },
+
+  { role: "Website", name: "Hafiz Rizky", team: "Core Team" },
+  { role: "Website", name: "Nugraha Billy", team: "Core Team" },
+  { role: "Website", name: "Alfredo Radhinal", team: "Core Team" },
+  { role: "Website", name: "Rahmi Arsy", team: "Volunteer" },
+  { role: "Website", name: "Exel Boy", team: "Volunteer" },
+  { role: "Website", name: "Risqi Achmad", team: "Volunteer" },
+  { role: "Website", name: "Muhammad Syauqi", team: "Volunteer" },
+].map((member) => {
+  return {
+    ...member,
+    cardFileNames:
+      member.team === "Volunteer"
+        ? null
+        : createCoreTeamCardFileNames(member.role, member.name),
+  };
+});
+---
+
+<Layout
+  title="Meet Our Team | TEDx Universitas Brawijaya"
+  description="Inilah insan-insan di balik TEDxUniversitasBrawijaya 2026. Bukan sekadar tim, melainkan sebuah keluarga yang Bertumbuh Bersama demi membangun rumah bagi setiap ide yang layak diperjuangkan."
+>
+  <NavBar />
+  <main>
+    <section id="our-team">
+      <div class="our-team-wrapper">
+        <Image
+          src={GreenBackground}
+          alt={"Green Background"}
+          class="green-background"
+        />
+
+        <Image src={TileFloor} alt={"Tile Floor"} class="tile-floor" />
+        <div
+          class="team-frame-wrapper"
+          id="team-frame-wrapper"
+          aria-label="Klik untuk melihat tim kami"
+        >
+          <div class="team-frame-container">
+            <div class="team-frame-background-wrapper">
+              <svg
+                width="894.89"
+                height="543"
+                viewBox="0 0 894.89 543"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                role="img"
+                aria-label="Team Frame Background Shadow"
+                id={"team-frame-background"}
+                class="team-frame-background"
+              >
+                <g filter="url(#filter0_i_1634_702)">
+                  <rect width="894.886" height="543" fill="white" />
+                </g>
+                <defs>
+                  <filter
+                    id="filter0_i_1634_702"
+                    x="0"
+                    y="0"
+                    width="894.89"
+                    height="543"
+                    filterUnits="userSpaceOnUse"
+                    color-interpolation-filters="sRGB"
+                  >
+                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feBlend
+                      mode="normal"
+                      in="SourceGraphic"
+                      in2="BackgroundImageFix"
+                      result="shape"
+                    />
+                    <feColorMatrix
+                      in="SourceAlpha"
+                      type="matrix"
+                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                      result="hardAlpha"
+                    />
+                    <feMorphology
+                      radius="7.29167"
+                      operator="erode"
+                      in="SourceAlpha"
+                      result="effect1_innerShadow_1634_702"
+                    />
+                    <feOffset />
+                    <feGaussianBlur stdDeviation="15.1799" />
+                    <feComposite
+                      in2="hardAlpha"
+                      operator="arithmetic"
+                      k2="-1"
+                      k3="1"
+                    />
+                    <feColorMatrix
+                      type="matrix"
+                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                    />
+                    <feBlend
+                      mode="normal"
+                      in2="shape"
+                      result="effect1_innerShadow_1634_702"
+                    />
+                  </filter>
+                </defs>
+              </svg>
+
+              <div class="organizer-piece-layout team-piece-layout">
+                <svg
+                  width="269"
+                  height="398"
+                  viewBox="0 0 269 398"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-label="Organizer Piece"
+                  role="img"
+                  id={"organizer-piece"}
+                  class="team-piece-shape"
+                >
+                  <defs>
+                    <clipPath id="organizer-piece-clip">
+                      <path
+                        d="M268.797 397.756L187.263 93.4659L0 0V397.756H268.797Z"
+                        fill="black"
+                        fill-opacity="0.35"
+                      />
+                    </clipPath>
+                  </defs>
+                  <image
+                    href={Organizer.src}
+                    width="269"
+                    height="398"
+                    preserveAspectRatio="xMidYMid slice"
+                    clip-path="url(#organizer-piece-clip)"
+                  />
+                  <text
+                    class="piece-label"
+                    x="50%"
+                    y="60%"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                  >
+                    Organizer & Co-Organizer
+                  </text>
+                </svg>
+              </div>
+
+              <div class="budget-piece-layout team-piece-layout">
+                <svg
+                  width="430"
+                  height="167"
+                  viewBox="0 0 430 167"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-label="Budget Manager Piece"
+                  role="button"
+                  id={"budget-piece"}
+                  class="team-piece-shape"
+                >
+                  <defs>
+                    <clipPath id="budget-piece-clip">
+                      <path
+                        d="M232.339 0L0 49.053L30.161 165.72L429.545 166.714L232.339 0Z"
+                        fill="black"
+                        fill-opacity="0.35"
+                      />
+                    </clipPath>
+                  </defs>
+                  <image
+                    href={Budget.src}
+                    width="430"
+                    height="167"
+                    preserveAspectRatio="xMidYMid slice"
+                    clip-path="url(#budget-piece-clip)"
+                  />
+                  <text
+                    class="piece-label"
+                    x="50%"
+                    y="50%"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                  >
+                    Budget Manager
+                  </text>
+                </svg>
+              </div>
+
+              <div class="ep-piece-layout team-piece-layout">
+                <svg
+                  width="188"
+                  height="215"
+                  viewBox="0 0 188 215"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-label="Executive Producer Piece"
+                  role="button"
+                  id="ep-piece"
+                  class="team-piece"
+                >
+                  <defs>
+                    <clipPath id="ep-piece-clip">
+                      <path
+                        d="M160.417 118.324L100.095 0H0V121.638L187.263 214.773L160.417 118.324Z"
+                      />
+                    </clipPath>
+                  </defs>
+                  <image
+                    href={Ep.src}
+                    width="188"
+                    height="215"
+                    preserveAspectRatio="xMidYMid slice"
+                    clip-path="url(#ep-piece-clip)"
+                  />
+                  <path
+                    d="M160.417 118.324L100.095 0H0V121.638L187.263 214.773L160.417 118.324Z"
+                    fill="black"
+                    fill-opacity="0.35"
+                  />
+                  <text
+                    class="piece-label"
+                    x="50%"
+                    y="50%"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                  >
+                    Executive Producer
+                  </text>
+                </svg>
+              </div>
+              <div class="team-piece-layout curator-piece-layout">
+                <svg
+                  width="203"
+                  height="282"
+                  viewBox="0 0 203 282"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  role="img"
+                  aria-label="Curator Piece"
+                  id="curator-piece"
+                  class="team-piece"
+                >
+                  <path
+                    d="M83.5227 280.066L202.841 47.7273L0 0L75.5682 281.061L83.5227 280.066Z"
+                    fill="black"
+                    fill-opacity="0.35"
+                  />
+                  <defs>
+                    <g
+                      id="stroke0_1634_714"
+                      data-figma-scatter-ref="stroke0_1634_714_ref"
+                      data-figma-scatter="f0.37_w0_aj180_sj0.11_r0_s8778590128929992976_sw1.326"
+                    ></g>
+                    <path
+                      id="stroke0_1634_714_ref"
+                      d="M202.841 47.7273L83.5227 280.066L75.5682 281.061L0 0L202.841 47.7273Z"
+                    />
+                  </defs>
+                  <image
+                    href={Curator.src}
+                    width="203"
+                    height="282"
+                    preserveAspectRatio="xMidYMid slice"
+                  />
+                  <text
+                    class="piece-label"
+                    x="50%"
+                    y="40%"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                  >
+                    Curator
+                  </text>
+                </svg>
+              </div>
+              <div class="team-piece-layout em-piece-layout">
+                <svg
+                  width="354"
+                  height="170"
+                  viewBox="0 0 354 170"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-label="Event Manager Piece"
+                  role="img"
+                  id="em-piece"
+                  class="team-piece"
+                >
+                  <path
+                    d="M353.314 155.445L328.788 0L0 0.331439L59.3277 117.33L279.403 169.697L353.314 155.445Z"
+                    fill="black"
+                    fill-opacity="0.35"
+                  />
+                  <defs>
+                    <g
+                      id="stroke0_1634_704"
+                      data-figma-scatter-ref="stroke0_1634_704_ref"
+                      data-figma-scatter="f0.37_w0_aj180_sj0.11_r0_s1228881961356295337_sw1.326"
+                    ></g>
+                    <path
+                      id="stroke0_1634_704_ref"
+                      d="M328.788 0L353.314 155.445L279.403 169.697L59.3277 117.33L0 0.331439L328.788 0Z"
+                    />
+                  </defs>
+                  <image
+                    href={Em.src}
+                    width="354"
+                    height="170"
+                    preserveAspectRatio="xMidYMid slice"
+                  />
+                  <text
+                    class="piece-label"
+                    x="50%"
+                    y="50%"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                  >
+                    Event Manager
+                  </text>
+                </svg>
+              </div>
+
+              <div class="team-piece-layout cem-piece-layout">
+                <svg
+                  width="328"
+                  height="231"
+                  viewBox="0 0 328 231"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-label="Communication, Editorial & Marketing Piece"
+                  role="img"
+                  id="cem-piece"
+                  class="team-piece"
+                >
+                  <path
+                    d="M288.352 130.919L327.131 50.7102L118.987 0L0 230.35L221.07 183.617L288.352 130.919Z"
+                    fill="#0E5454"
+                  />
+                  <path
+                    d="M288.352 130.919L327.131 50.7102L118.987 0L0 230.35L221.07 183.617L288.352 130.919Z"
+                    fill="black"
+                    fill-opacity="0.35"
+                  />
+                  <defs>
+                    <g
+                      id="stroke0_1634_717"
+                      data-figma-scatter-ref="stroke0_1634_717_ref"
+                      data-figma-scatter="f0.37_w0_aj180_sj0.11_r0_s9249194085038364149_sw1.326"
+                    ></g>
+                    <path
+                      id="stroke0_1634_717_ref"
+                      d="M327.131 50.7102L288.352 130.919L221.07 183.617L0 230.35L118.987 0L327.131 50.7102Z"
+                    />
+                  </defs>
+                  <image
+                    href={Cem.src}
+                    width="328"
+                    height="231"
+                    preserveAspectRatio="xMidYMid slice"
+                  />
+                  <text
+                    class="piece-label"
+                    x="50%"
+                    y="50%"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                  >
+                    CEM
+                  </text>
+                </svg>
+              </div>
+
+              <div class="vp-piece-layout team-piece-layout">
+                <svg
+                  width="198"
+                  height="246"
+                  viewBox="0 0 198 246"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-label="Video Production Piece"
+                  role="img"
+                  id="vp-piece"
+                  class="team-piece"
+                >
+                  <path
+                    d="M197.538 49.053L107.718 0L65.9564 84.517L0 135.559L129.924 245.597L197.538 49.053Z"
+                    fill="black"
+                    fill-opacity="0.35"
+                  />
+                  <defs>
+                    <g
+                      id="stroke0_1634_730"
+                      data-figma-scatter-ref="stroke0_1634_730_ref"
+                      data-figma-scatter="f0.26_w0_aj180_sj0.31_r0_s7302833999495688564_sw1.326"
+                    ></g>
+                    <path
+                      id="stroke0_1634_730_ref"
+                      d="M107.718 0L197.538 49.053L129.924 245.597L0 135.559L65.9564 84.517L107.718 0Z"
+                    />
+                  </defs>
+                  <image
+                    href={Vp.src}
+                    width="198"
+                    height="246"
+                    preserveAspectRatio="xMidYMid slice"
+                  />
+                  <text
+                    class="piece-label"
+                    x="50%"
+                    y="50%"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                  >
+                    Video Production
+                  </text>
+                </svg>
+              </div>
+
+              <div class="sponsorship-piece-layout team-piece-layout">
+                <svg
+                  width="219"
+                  height="288"
+                  viewBox="0 0 219 288"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-label="Sponsorship Piece"
+                  role="img"
+                  id="sponsorship-piece"
+                  class="team-piece"
+                >
+                  <g filter="url(#filter0_n_1634_721)">
+                    <path
+                      d="M131.913 287.689L0 214.773L107.718 0H158.097L218.75 261.174L131.913 287.689Z"
+                      fill="black"
+                      fill-opacity="0.35"
+                    />
+                  </g>
+                  <defs>
+                    <filter
+                      id="filter0_n_1634_721"
+                      x="0"
+                      y="0"
+                      width="218.75"
+                      height="287.689"
+                      filterUnits="userSpaceOnUse"
+                      color-interpolation-filters="sRGB"
+                    >
+                      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                      <feBlend
+                        mode="normal"
+                        in="SourceGraphic"
+                        in2="BackgroundImageFix"
+                        result="shape"
+                      />
+                      <feTurbulence
+                        type="fractalNoise"
+                        baseFrequency="3.0171430110931396 3.0171430110931396"
+                        stitchTiles="stitch"
+                        numOctaves="3"
+                        result="noise"
+                        seed="1217"
+                      />
+                      <feColorMatrix
+                        in="noise"
+                        type="luminanceToAlpha"
+                        result="alphaNoise"
+                      />
+                      <feComponentTransfer
+                        in="alphaNoise"
+                        result="coloredNoise1"
+                      >
+                        <feFuncA
+                          type="discrete"
+                          tableValues="1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "
+                        />
+                      </feComponentTransfer>
+                      <feComposite
+                        operator="in"
+                        in2="shape"
+                        in="coloredNoise1"
+                        result="noise1Clipped"
+                      />
+                      <feFlood
+                        flood-color="rgba(0, 0, 0, 0.25)"
+                        result="color1Flood"
+                      />
+                      <feComposite
+                        operator="in"
+                        in2="noise1Clipped"
+                        in="color1Flood"
+                        result="color1"
+                      />
+                      <feMerge result="effect1_noise_1634_721">
+                        <feMergeNode in="shape" />
+                        <feMergeNode in="color1" />
+                      </feMerge>
+                    </filter>
+                    <g
+                      id="stroke0_1634_721"
+                      data-figma-scatter-ref="stroke0_1634_721_ref"
+                      data-figma-scatter="f0.26_w0_aj180_sj0.31_r0_s2684807041738506687_sw1.326"
+                    ></g>
+                    <path
+                      id="stroke0_1634_721_ref"
+                      d="M0 214.773L131.913 287.689L218.75 261.174L158.097 0H107.718L0 214.773Z"
+                    />
+                  </defs>
+                  <image
+                    href={Sponsorship.src}
+                    width="219"
+                    height="288"
+                    preserveAspectRatio="xMidYMid slice"
+                  />
+                  <text
+                    class="piece-label"
+                    x="50%"
+                    y="50%"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                  >
+                    Sponsorship
+                  </text>
+                </svg>
+              </div>
+              <div class="empty-piece-top-layout team-piece-layout">
+                <svg
+                  width="256"
+                  height="156"
+                  viewBox="0 0 256 156"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-label="Empty Top Piece"
+                  role="img"
+                  id="empty-piece-top"
+                  class="team-piece"
+                >
+                  <path
+                    d="M193.892 122.301L255.871 0H0L24.5265 155.114L193.892 122.301Z"
+                    fill="#231C1C"
+                  />
+                </svg>
+              </div>
+              <div class="empty-piece-bottom-layout team-piece-layout">
+                <svg
+                  width="239"
+                  height="95"
+                  viewBox="0 0 239 95"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-label="Empty Bottom Piece"
+                  role="img"
+                  id="empty-piece-bottom"
+                  class="team-piece"
+                >
+                  <path
+                    d="M191.572 94.1288L238.968 0L0 46.733L191.572 94.1288Z"
+                    fill="#231C1C"
+                  />
+                </svg>
+              </div>
+              <div class="empty-piece-top-right-layout team-piece-layout">
+                <svg
+                  svg
+                  width="114"
+                  height="260"
+                  viewBox="0 0 114 260"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-label="Empty Top Right Piece"
+                  role="img"
+                  id="empty-piece-top-right"
+                  class="team-piece"
+                >
+                  <path d="M0 0L61.3163 260.18L114 243V0H0Z" fill="#231C1C" />
+                </svg>
+              </div>
+              <div class="design-piece-layout team-piece-layout">
+                <svg
+                  width="236"
+                  height="254"
+                  viewBox="0 0 236 254"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-label="Design Piece"
+                  role="img"
+                  id="design-piece"
+                  class="team-piece"
+                >
+                  <path
+                    d="M98.4375 23.8636L106.392 20.8807L68.2765 0L0 196.544L67.9451 253.883H235.322L98.4375 23.8636Z"
+                    fill="black"
+                    fill-opacity="0.35"
+                  />
+                  <defs>
+                    <g
+                      id="stroke0_1634_724"
+                      data-figma-scatter-ref="stroke0_1634_724_ref"
+                      data-figma-scatter="f0.26_w0_aj180_sj0.31_r0_s9610935130805515557_sw1.326"
+                    ></g>
+                    <path
+                      id="stroke0_1634_724_ref"
+                      d="M106.392 20.8807L98.4375 23.8636L235.322 253.883H67.9451L0 196.544L68.2765 0L106.392 20.8807Z"
+                    />
+                  </defs>
+                  <image
+                    href={Design.src}
+                    width="236"
+                    height="254"
+                    preserveAspectRatio="xMidYMid slice"
+                  />
+                  <text
+                    x="30%"
+                    y="60%"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                    class="piece-label"
+                  >
+                    Design
+                  </text>
+                </svg>
+              </div>
+              <div class="website-piece-layout team-piece-layout">
+                <svg
+                  width="150"
+                  height="286"
+                  viewBox="0 0 150 286"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-label="website Piece"
+                  role="img"
+                  id="website-piece"
+                  class="team-piece"
+                >
+                  <defs>
+                    <clipPath id="website-piece-clip">
+                      <path
+                        d="M183.286 285.369V0L0 56.6761L135.559 285.369H183.286Z"
+                        fill="black"
+                        fill-opacity="0.35"
+                      />
+                    </clipPath>
+                    <g
+                      id="stroke0_1634_727"
+                      data-figma-scatter-ref="stroke0_1634_727_ref"
+                      data-figma-scatter="f0.26_w0_aj180_sj0.31_r0_s12322357743882504782_sw1.326"
+                    ></g>
+                    <path
+                      id="stroke0_1634_727_ref"
+                      d="M183.286 0V285.369H135.559L0 56.6761L183.286 0Z"
+                    />
+                  </defs>
+                  <image
+                    href={Website.src}
+                    width="150"
+                    height="286"
+                    preserveAspectRatio="xMidYMid slice"
+                    clip-path="url(#website-piece-clip)"
+                  />
+                  <text
+                    x="60%"
+                    y="40%"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                    class="piece-label"
+                  >
+                    Website
+                  </text>
+                </svg>
+              </div>
+            </div>
+
+            <div class="piece-hitbox-layer">
+              <button
+                class="piece-hitbox-btn piece-hitbox-em"
+                aria-label="Event Manager"
+                data-role="Event Manager"
+                type="button"
+                tabindex="0"
+              ></button>
+              <button
+                class="piece-hitbox-btn piece-hitbox-cem"
+                aria-label="Communication, Editorial & Marketing"
+                data-role="Communication, Editorial & Marketing"
+                type="button"
+                tabindex="0"
+              ></button>
+              <button
+                class="piece-hitbox-btn piece-hitbox-budget"
+                aria-label="Budget Manager"
+                data-role="Budget Manager"
+                type="button"
+                tabindex="0"
+              ></button>
+              <button
+                class="piece-hitbox-btn piece-hitbox-curator"
+                aria-label="Curator"
+                data-role="Curator"
+                type="button"
+                tabindex="0"
+              ></button>
+              <button
+                class="piece-hitbox-btn piece-hitbox-ep"
+                aria-label="Executive Producer"
+                data-role="Executive Producer"
+                type="button"
+                tabindex="0"
+              ></button>
+              <button
+                class="piece-hitbox-btn piece-hitbox-organizer"
+                aria-label="Organizer"
+                data-role="Organizer,Co-Organizer"
+                type="button"
+                tabindex="0"
+              ></button>
+              <button
+                class="piece-hitbox-btn piece-hitbox-design"
+                aria-label="Design"
+                data-role="Design"
+                type="button"
+                tabindex="0"
+              ></button>
+              <button
+                class="piece-hitbox-btn piece-hitbox-sponsorship"
+                aria-label="Sponsorship"
+                data-role="Sponsorship"
+                type="button"
+                tabindex="0"
+              ></button>
+              <button
+                class="piece-hitbox-btn piece-hitbox-vp"
+                aria-label="Video Production"
+                data-role="Video Production"
+                type="button"
+                tabindex="0"
+              ></button>
+              <button
+                class="piece-hitbox-btn piece-hitbox-website"
+                aria-label="Website"
+                data-role="Website"
+                type="button"
+                tabindex="0"
+              ></button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="family-container"
+          id="family-container"
+          aria-label="Klik untuk melihat keluarga kami"
+        >
+          <Image
+            src={Father}
+            alt="Father"
+            class="family-father"
+            id="family-father"
+            aria-hidden="true"
+          />
+          <Image
+            src={Mother}
+            alt="Mother"
+            class="family-mother"
+            id="family-mother"
+            aria-hidden="true"
+          />
+          <Image
+            src={Sister}
+            alt="Sister"
+            class="family-sister"
+            id="family-sister"
+            aria-hidden="true"
+          />
+          <Image
+            src={Uncle}
+            alt="Uncle"
+            class="family-uncle"
+            id="family-uncle"
+            aria-hidden="true"
+          />
+          <Image
+            src={Daughter}
+            alt="Daughter"
+            class="family-daughter"
+            id="family-daughter"
+            aria-hidden="true"
+          />
+        </div>
+        <div class="section-content">
+          <h2>DIBALIK KELUARGA TEDX Universitas Brawijaya</h2>
+          <p>
+            Inilah insan-insan di balik TEDxUniversitasBrawijaya 2026. Bukan
+            sekadar tim, melainkan sebuah keluarga yang Bertumbuh Bersama demi
+            membangun rumah bagi setiap ide yang layak diperjuangkan.
+          </p>
+        </div>
+      </div>
+    </section>
+    <dialog id="family" class="family">
+      <div class="family-topbar">
+        <div class="family-header">
+          <h2 class="family-heading">Meet the Team</h2>
+          <p class="family-description" id="family-description">
+            Setiap divisi memiliki peran penting dalam menghadirkan
+            TEDxUniversitasBrawijaya. Klik divisi untuk melihat tim di baliknya.
+          </p>
+        </div>
+        <div class="modal-close-layout">
+          <button
+            class="modal-close-btn"
+            id="modal-close-btn"
+            type="button"
+            aria-label="Tutup modal"
+          >
+            <svg
+              class="modal-close-icon"
+              width="40"
+              height="40"
+              viewBox="0 0 40 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M20.0003 22.3327L11.8337 30.4993C11.5281 30.8049 11.1392 30.9577 10.667 30.9577C10.1948 30.9577 9.80588 30.8049 9.50032 30.4993C9.19477 30.1938 9.04199 29.8049 9.04199 29.3327C9.04199 28.8605 9.19477 28.4716 9.50032 28.166L17.667 19.9993L9.50032 11.8327C9.19477 11.5271 9.04199 11.1382 9.04199 10.666C9.04199 10.1938 9.19477 9.8049 9.50032 9.49935C9.80588 9.19379 10.1948 9.04102 10.667 9.04102C11.1392 9.04102 11.5281 9.19379 11.8337 9.49935L20.0003 17.666L28.167 9.49935C28.4725 9.19379 28.8614 9.04102 29.3337 9.04102C29.8059 9.04102 30.1948 9.19379 30.5003 9.49935C30.8059 9.8049 30.9587 10.1938 30.9587 10.666C30.9587 11.1382 30.8059 11.5271 30.5003 11.8327L22.3337 19.9993L30.5003 28.166C30.8059 28.4716 30.9587 28.8605 30.9587 29.3327C30.9587 29.8049 30.8059 30.1938 30.5003 30.4993C30.1948 30.8049 29.8059 30.9577 29.3337 30.9577C28.8614 30.9577 28.4725 30.8049 28.167 30.4993L20.0003 22.3327Z"
+                fill="#F8F1DC"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <Image src={Line} alt="Line" id="family-line" class="family-line" />
+
+      <div class="family-content" id="family-content">
+        <div class="piece-panel-separator" aria-hidden="true"></div>
+        <div
+          class="piece-panel-body"
+          id="piece-panel-body"
+          data-team-members={JSON.stringify(teamMembers)}
+          data-volunteer-chip-src={VolunteerChipBackground.src}
+        ></div>
+      </div>
+    </dialog>
+  </main>
+</Layout>
+<style>
+  #our-team {
+    position: relative;
+    height: 560dvh;
+  }
+
+  .our-team-wrapper {
+    position: sticky;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .green-background,
+  .paper-texture {
+    position: absolute;
+    inset: 0;
+    width: 102%;
+    height: 102%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  .paper-texture {
+    mix-blend-mode: multiply;
+    z-index: 150;
+  }
+
+  .tile-floor {
+    position: absolute;
+    left: 50%;
+    bottom: -2%;
+    width: min(200rem, 200vw);
+    height: clamp(5rem, 20vh, 40rem);
+    aspect-ratio: 16 / 5;
+    transform: translateX(-50%);
+    object-fit: cover;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .team-frame-wrapper {
+    --team-frame-manual-scale: 0.6;
+    position: absolute;
+    top: 35%;
+    left: 85%;
+    width: 54rem;
+    height: auto;
+    aspect-ratio: 1.65 / 1;
+    pointer-events: auto;
+    transform-origin: center center;
+    will-change: transform;
+    outline: 1.6px solid #fff;
+  }
+
+  .team-frame-background-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .team-frame-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  .team-frame-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    outline: 21.2121px solid var(--color-red);
+    outline-offset: 2px;
+  }
+
+  #team-frame-background {
+    z-index: 85;
+  }
+  .piece-label {
+    font-family: var(--font-display);
+    font-size: clamp(0.85rem, 1vw, 1rem);
+    fill: var(--color-white);
+    pointer-events: none;
+  }
+
+  .team-piece-layout {
+    position: absolute;
+    z-index: 90;
+    pointer-events: none;
+  }
+
+  .team-piece-layout > svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .ep-piece-layout {
+    top: 0;
+    left: 0;
+  }
+
+  .organizer-piece-layout {
+    bottom: 0;
+    left: 0;
+  }
+
+  .budget-piece-layout {
+    bottom: 0%;
+    left: 28%;
+  }
+  .curator-piece-layout {
+    top: 23.2%;
+    left: 19.13%;
+  }
+  .em-piece-layout {
+    left: 12%;
+  }
+  .cem-piece-layout {
+    left: 29.2%;
+    top: 32.8%;
+  }
+  .vp-piece-layout {
+    left: 55.3%;
+    top: 41.8%;
+  }
+  .sponsorship-piece-layout {
+    right: 6.55%;
+  }
+  .design-piece-layout {
+    bottom: 0;
+    right: 2%;
+  }
+  .website-piece-layout {
+    bottom: 0;
+    right: 0;
+  }
+  .empty-piece-top-layout {
+    left: 50.5%;
+  }
+  .empty-piece-bottom-layout {
+    left: 45%;
+    top: 23.9%;
+  }
+  .empty-piece-top-right-layout {
+    right: 0;
+  }
+  .team-piece-shape {
+    width: 100%;
+    height: 100%;
+  }
+  .piece-hitbox-layer {
+    position: absolute;
+    inset: 2.5%;
+    pointer-events: none;
+    z-index: 130;
+  }
+
+  .piece-hitbox-btn {
+    position: absolute;
+    top: var(--hitbox-y, 50%);
+    left: var(--hitbox-x, 50%);
+    width: var(--hitbox-w, 10%);
+    height: var(--hitbox-h, 10%);
+    transform: translate(-50%, -50%);
+    padding: 0;
+    pointer-events: none;
+    cursor: pointer;
+    opacity: 0;
+  }
+
+  .team-frame-wrapper.hitbox-active .piece-hitbox-btn {
+    pointer-events: auto;
+  }
+
+  .piece-hitbox-em {
+    --hitbox-x: 33%;
+    --hitbox-y: 13%;
+    --hitbox-w: 28%;
+    --hitbox-h: 20%;
+  }
+
+  .piece-hitbox-cem {
+    --hitbox-x: 50%;
+    --hitbox-y: 55%;
+    --hitbox-w: 23%;
+    --hitbox-h: 23%;
+  }
+
+  .piece-hitbox-budget {
+    --hitbox-x: 46%;
+    --hitbox-y: 90%;
+    --hitbox-w: 35%;
+    --hitbox-h: 20%;
+  }
+
+  .piece-hitbox-curator {
+    --hitbox-x: 28%;
+    --hitbox-y: 45%;
+    --hitbox-w: 10%;
+    --hitbox-h: 30%;
+  }
+
+  .piece-hitbox-ep {
+    --hitbox-x: 8%;
+    --hitbox-y: 15%;
+    --hitbox-w: 10%;
+    --hitbox-h: 18%;
+  }
+
+  .piece-hitbox-organizer {
+    --hitbox-x: 10%;
+    --hitbox-y: 70%;
+    --hitbox-w: 20%;
+    --hitbox-h: 60%;
+  }
+
+  .piece-hitbox-design {
+    --hitbox-x: 82.5%;
+    --hitbox-y: 80.5%;
+    --hitbox-w: 15%;
+    --hitbox-h: 30%;
+  }
+
+  .piece-hitbox-sponsorship {
+    --hitbox-x: 83%;
+    --hitbox-y: 30%;
+    --hitbox-w: 15%;
+    --hitbox-h: 25%;
+  }
+
+  .piece-hitbox-vp {
+    --hitbox-x: 68%;
+    --hitbox-y: 65%;
+    --hitbox-w: 15%;
+    --hitbox-h: 15%;
+  }
+
+  .piece-hitbox-website {
+    --hitbox-x: 95%;
+    --hitbox-y: 70%;
+    --hitbox-w: 10%;
+    --hitbox-h: 30%;
+  }
+
+  .team-frame-wrapper.hitbox-active:has(
+      .piece-hitbox-em:is(:hover, :focus-visible)
+    )
+    #em-piece,
+  .team-frame-wrapper.hitbox-active:has(
+      .piece-hitbox-cem:is(:hover, :focus-visible)
+    )
+    #cem-piece,
+  .team-frame-wrapper.hitbox-active:has(
+      .piece-hitbox-budget:is(:hover, :focus-visible)
+    )
+    #budget-piece,
+  .team-frame-wrapper.hitbox-active:has(
+      .piece-hitbox-curator:is(:hover, :focus-visible)
+    )
+    #curator-piece,
+  .team-frame-wrapper.hitbox-active:has(
+      .piece-hitbox-ep:is(:hover, :focus-visible)
+    )
+    #ep-piece,
+  .team-frame-wrapper.hitbox-active:has(
+      .piece-hitbox-organizer:is(:hover, :focus-visible)
+    )
+    #organizer-piece,
+  .team-frame-wrapper.hitbox-active:has(
+      .piece-hitbox-design:is(:hover, :focus-visible)
+    )
+    #design-piece,
+  .team-frame-wrapper.hitbox-active:has(
+      .piece-hitbox-sponsorship:is(:hover, :focus-visible)
+    )
+    #sponsorship-piece,
+  .team-frame-wrapper.hitbox-active:has(
+      .piece-hitbox-vp:is(:hover, :focus-visible)
+    )
+    #vp-piece,
+  .team-frame-wrapper.hitbox-active:has(
+      .piece-hitbox-website:is(:hover, :focus-visible)
+    )
+    #website-piece {
+    filter: brightness(1.4) drop-shadow(0px 4px 25px rgba(255, 149, 0, 0.5));
+  }
+
+  .family-container {
+    /* Desktop placeholders: adjust these values freely */
+    --family-father-left: auto;
+    --family-father-right: 10vw;
+    --family-father-top: 50vh;
+
+    --family-mother-left: auto;
+    --family-mother-right: 24vw;
+    --family-mother-top: 65vh;
+
+    --family-sister-left: auto;
+    --family-sister-right: 0vw;
+    --family-sister-top: 60vh;
+
+    --family-uncle-left: auto;
+    --family-uncle-right: -5vw;
+    --family-uncle-top: 50vh;
+
+    --family-daughter-left: 0%;
+    --family-daughter-right: auto;
+    --family-daughter-top: 80vh;
+
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 10;
+    opacity: 1;
+    transition: opacity 0.15s ease;
+    will-change: opacity;
+  }
+
+  .family-father,
+  .family-mother,
+  .family-sister,
+  .family-uncle,
+  .family-daughter {
+    position: absolute;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+  }
+  .family-father {
+    left: var(--family-father-left);
+    right: var(--family-father-right);
+    top: var(--family-father-top);
+  }
+
+  .family-mother {
+    left: var(--family-mother-left);
+    right: var(--family-mother-right);
+    top: var(--family-mother-top);
+  }
+
+  .family-sister {
+    z-index: 2;
+    left: var(--family-sister-left);
+    right: var(--family-sister-right);
+    top: var(--family-sister-top);
+  }
+  .family-uncle {
+    z-index: 1;
+    left: var(--family-uncle-left);
+    right: var(--family-uncle-right);
+    top: var(--family-uncle-top);
+  }
+
+  .family-daughter {
+    left: var(--family-daughter-left);
+    right: var(--family-daughter-right);
+    top: var(--family-daughter-top);
+  }
+  .section-content {
+    position: absolute;
+    top: 50%;
+    left: 12%;
+    transform: translate(-10%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(1.2rem, 2vw, 2.5rem);
+    width: clamp(16rem, 28vw, 30rem);
+    z-index: 200;
+    pointer-events: none;
+  }
+
+  .section-content h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.35rem, 2.2vw, 2.2rem);
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: -0.01em;
+    color: var(--color-white);
+    text-wrap: balance;
+  }
+
+  .section-content p {
+    font-family: var(--font-sans);
+    font-size: clamp(0.85rem, 1vw, 1rem);
+    margin: 0;
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--color-white);
+    text-wrap-style: pretty;
+  }
+
+  .family {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: unset;
+    max-height: unset;
+    background: transparent;
+    border: none;
+    padding: 2rem;
+    display: none;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 1000;
+    color: var(--color-white);
+    pointer-events: none;
+    overflow-y: auto;
+  }
+  .family:focus {
+    outline: none;
+  }
+  .family:focus-visible {
+    outline: none;
+  }
+  .family[open] {
+    display: flex;
+  }
+
+  .family::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: rgba(8, 9, 11, 0.32);
+    backdrop-filter: blur(0px);
+    transition:
+      opacity 0.28s ease,
+      backdrop-filter 0.28s ease;
+  }
+
+  .family > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .family.role-active::before {
+    opacity: 1;
+    backdrop-filter: blur(10px);
+  }
+
+  .family::backdrop {
+    background: transparent;
+    pointer-events: none;
+  }
+  .modal-close-layout {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+  }
+  .modal-close-btn {
+    display: none;
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 0;
+    color: var(--color-white);
+    outline: none;
+    font-size: 2.5rem;
+    cursor: pointer;
+    line-height: 1;
+    pointer-events: auto;
+    z-index: 1100;
+    transition: color 0.2s ease;
+  }
+
+  .modal-close-btn::-moz-focus-inner {
+    border: 0;
+  }
+
+  .modal-close-icon {
+    display: block;
+  }
+
+  .family.role-active .modal-close-btn {
+    display: block;
+  }
+
+  .modal-close-btn.visible {
+    display: block;
+  }
+
+  .modal-close-btn:focus-visible {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .modal-close-btn:focus {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .modal-close-btn:active {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .family-topbar {
+    position: relative;
+    width: min(90vw, 100rem);
+    margin-top: 7rem;
+    display: flex;
+    gap: 1rem;
+    pointer-events: auto;
+  }
+
+  .family-header {
+    width: 100%;
+    margin-top: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .team-frame-wrapper.modal-open ~ .section-content {
+    opacity: 0;
+  }
+
+  .family-heading {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 4vw, 2.8rem);
+    font-weight: 500;
+    color: var(--color-white);
+    margin: 0;
+  }
+
+  .family-description {
+    font-family: var(--font-sans);
+    font-size: clamp(0.9rem, 2.2vw, 1.3rem);
+    max-width: 50rem;
+    margin: 0 auto;
+    line-height: 1.45;
+    color: var(--color-white);
+  }
+  .family.role-active .family-description {
+    font-size: clamp(0.9rem, 2.5vw, 1.8rem);
+  }
+  .family-line {
+    width: min(90vw, 100rem);
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .family.role-active .family-line {
+    opacity: 1;
+  }
+
+  .family-content {
+    pointer-events: auto;
+    position: relative;
+    padding: 2rem;
+    width: min(92vw, 100%);
+    max-width: 92vw;
+    max-height: min(78vh, 42rem);
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-inline: auto;
+  }
+
+  .family-content.active {
+    display: flex;
+  }
+  .family-content h2 {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: clamp(1.35rem, 2.2vw, 2.2rem);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+    color: var(--color-white);
+    text-wrap: balance;
+  }
+  .family-content p {
+    margin-bottom: 1rem;
+  }
+
+  .piece-panel-body {
+    width: min(90vw, 100rem);
+    margin-inline: auto;
+    max-height: min(100vh, 40rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .piece-panel-section-title {
+    margin-bottom: 2rem;
+  }
+
+  .core-team-grid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.35rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .core-team-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .member-card {
+    position: relative;
+    flex: 0 0 12.5rem;
+    width: 12.5rem;
+  }
+
+  .member-card-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .member-card-photo-fallback {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-sans);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-white);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .volunteer-chip-wrap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 12.5rem);
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .volunteer-chip {
+    position: relative;
+    width: 12.5rem;
+    min-height: 2.35rem;
+  }
+
+  .volunteer-chip-bg {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+    position: relative;
+    z-index: 0;
+  }
+  .volunteer-chip-white-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(100% - 2rem);
+    height: calc(100% - 1.2rem);
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .volunteer-chip-name {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding-inline: 0.95rem;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    text-align: center;
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 1024px) {
+    #our-team {
+      height: 520dvh;
+    }
+
+    .team-frame-wrapper {
+      --team-frame-manual-scale: 0.4;
+      right: 10%;
+      top: 30%;
+    }
+
+    .family-container {
+      /* Tablet placeholders */
+      --family-father-right: 10vw;
+      --family-father-top: 50vh;
+
+      --family-mother-right: 30vw;
+      --family-mother-top: 70vh;
+
+      --family-sister-right: -10vw;
+      --family-sister-top: 60vh;
+
+      --family-uncle-right: -10vw;
+      --family-uncle-top: 50vh;
+
+      --family-daughter-left: -10vw;
+      --family-daughter-top: 75vh;
+    }
+
+    .section-content {
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, 0);
+      width: min(90vw, 32rem);
+      text-align: center;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    #our-team {
+      height: 420dvh;
+    }
+
+    .team-frame-wrapper {
+      --team-frame-manual-scale: 0.28;
+      top: 45%;
+    }
+
+    .family-container {
+      scale: 0.8;
+
+      --family-father-top: 60vh;
+      --family-father-right: 15vw;
+      --family-mother-top: 70vh;
+      --family-mother-right: 25vw;
+
+      --family-sister-top: 70vh;
+
+      --family-uncle-top: 60vh;
+
+      --family-daughter-left: -10vw;
+      --family-daughter-top: 90vh;
+    }
+    .family {
+      padding: 1rem;
+      gap: 1rem;
+    }
+
+    .family-header {
+      width: 100%;
+    }
+
+    .family-topbar {
+      margin-top: 10rem;
+      width: 100%;
+    }
+
+    .family.role-active .family-header {
+      text-align: left;
+      align-items: flex-start;
+    }
+
+    .family.role-active .family-heading,
+    .family.role-active .family-description {
+      text-align: left;
+      width: 100%;
+    }
+
+    .family.role-active .family-description {
+      margin-inline: 0;
+      max-width: 100%;
+    }
+
+    .section-content {
+      top: 15%;
+      left: 50%;
+      transform: translate(-50%, 0);
+      width: min(90vw, 24rem);
+      padding: 0;
+    }
+
+    .section-content h2 {
+      font-size: clamp(1.5rem, 7vw, 2rem);
+    }
+
+    .section-content p {
+      font-size: clamp(0.88rem, 3.8vw, 1rem);
+    }
+
+    .family-content {
+      max-height: min(78vh, 42rem);
+      padding: 1rem;
+    }
+
+    .core-team-grid {
+      justify-content: flex-start;
+    }
+  }
+</style>
+<script>
+  (() => {
+    const ourTeamSection = document.getElementById("our-team");
+    const tileFloor = document.querySelector(
+      ".tile-floor"
+    ) as HTMLElement | null;
+    const familyFather = document.getElementById("family-father");
+    const familyMother = document.getElementById("family-mother");
+    const familySister = document.getElementById("family-sister");
+    const familyUncle = document.getElementById("family-uncle");
+    const familyDaughter = document.getElementById("family-daughter");
+    const familyContent = document.getElementById("family-content");
+    const family = document.getElementById(
+      "family"
+    ) as HTMLDialogElement | null;
+
+    const teamFrameWrapper = document.getElementById("team-frame-wrapper");
+
+    const piecePanelBody = document.getElementById("piece-panel-body");
+
+    const modalCloseBtn = document.getElementById("modal-close-btn");
+    const familyDescription = document.getElementById("family-description");
+    const familyHeader = document.querySelector(
+      ".family-header"
+    ) as HTMLElement | null;
+    const sectionContent = document.querySelector(".section-content");
+
+    const requiredElements =
+      familyFather &&
+      familyMother &&
+      familySister &&
+      familyUncle &&
+      familyDaughter &&
+      family &&
+      ourTeamSection &&
+      teamFrameWrapper;
+
+    if (!requiredElements) {
+      return;
+    }
+
+    const familyFatherEl = familyFather as HTMLElement;
+    const familyMotherEl = familyMother as HTMLElement;
+    const familySisterEl = familySister as HTMLElement;
+    const familyUncleEl = familyUncle as HTMLElement;
+    const familyDaughterEl = familyDaughter as HTMLElement;
+    const ourTeamSectionEl = ourTeamSection as HTMLElement;
+    const teamFrameWrapperEl = teamFrameWrapper as HTMLElement;
+    const defaultFamilyDescription =
+      familyDescription?.textContent?.trim() ?? "";
+    const mobileViewportQuery = window.matchMedia("(max-width: 768px)");
+    const tabletViewportQuery = window.matchMedia("(max-width: 1024px)");
+    let isMobileViewport = mobileViewportQuery.matches;
+    let isTabletViewport = tabletViewportQuery.matches;
+
+    const syncViewportFlags = () => {
+      isMobileViewport = mobileViewportQuery.matches;
+      isTabletViewport = tabletViewportQuery.matches;
+    };
+
+    syncViewportFlags();
+    window.addEventListener("resize", syncViewportFlags);
+    mobileViewportQuery.addEventListener("change", syncViewportFlags);
+    tabletViewportQuery.addEventListener("change", syncViewportFlags);
+    const DESIGN_WIDTH = 625;
+    const MIN_FRAME_SCALE = 0.25;
+    const MAX_FRAME_SCALE = 3;
+    const HEADER_REVEAL_START = 0.7;
+    const SCROLL_MAX_THRESHOLD = 0.99;
+    const BASE_FRAME_TRANSLATE = "translate(-50%, -50%)";
+    const easeInOutCubic = (t: number): number => {
+      return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+    };
+
+    function transform(
+      x: number,
+      input: number[],
+      output: number[],
+      easing: (t: number) => number = (t) => t
+    ) {
+      const firstInput = input[0];
+      const lastInput = input.at(-1);
+      const lastOutput = output.at(-1);
+
+      if (
+        !(
+          firstInput !== undefined &&
+          lastInput !== undefined &&
+          lastOutput !== undefined
+        )
+      ) {
+        return 0;
+      }
+
+      const clampedX = Math.max(firstInput, Math.min(lastInput, x));
+
+      for (let i = 0; i < input.length - 1; i++) {
+        const currentInput = input[i];
+        const nextInput = input[i + 1];
+
+        const currentOutput = output[i];
+        const nextOutput = output[i + 1];
+
+        if (
+          !(
+            currentInput !== undefined &&
+            nextInput !== undefined &&
+            currentOutput !== undefined &&
+            nextOutput !== undefined
+          )
+        ) {
+          continue;
+        }
+
+        if (clampedX >= currentInput && clampedX <= nextInput) {
+          const localProgress =
+            (clampedX - currentInput) / (nextInput - currentInput);
+          const easedProgress = easing(localProgress);
+
+          return currentOutput + easedProgress * (nextOutput - currentOutput);
+        }
+      }
+
+      return lastOutput;
+    }
+    const animateFamily = (scrollProgress: number) => {
+      let mobileEntryProgress = 0;
+
+      if (isMobileViewport) {
+        mobileEntryProgress = transform(
+          scrollProgress,
+          [0, 0.3],
+          [1, 0],
+          easeInOutCubic
+        );
+      }
+
+      const centerPhaseProgress = transform(
+        scrollProgress,
+        [0.3, 0.68],
+        [0, 1],
+        easeInOutCubic
+      );
+
+      const exitPhaseProgress = transform(
+        scrollProgress,
+        [0.68, 1],
+        [0, 1],
+        easeInOutCubic
+      );
+      let centerOffsetFactorByMember: {
+        father: number;
+        mother: number;
+        sister: number;
+        uncle: number;
+        daughter: number;
+      };
+
+      if (isMobileViewport) {
+        centerOffsetFactorByMember = {
+          father: -0.35,
+          mother: -0.45,
+          sister: -0.2,
+          uncle: -0.025,
+          daughter: -0.1,
+        };
+      } else if (isTabletViewport) {
+        centerOffsetFactorByMember = {
+          father: -0.3,
+          mother: -0.4,
+          sister: -0.2,
+          uncle: -0.1,
+          daughter: 0.2,
+        };
+      } else {
+        centerOffsetFactorByMember = {
+          father: -0.35,
+          mother: -0.34,
+          sister: -0.35,
+          uncle: -0.35,
+          daughter: 0.35,
+        };
+      }
+
+      const centerOffsetByMember = {
+        father: window.innerWidth * centerOffsetFactorByMember.father,
+        mother: window.innerWidth * centerOffsetFactorByMember.mother,
+        sister: window.innerWidth * centerOffsetFactorByMember.sister,
+        uncle: window.innerWidth * centerOffsetFactorByMember.uncle,
+        daughter: window.innerWidth * centerOffsetFactorByMember.daughter,
+      };
+
+      const directionByMember = {
+        father: -1,
+        mother: -1,
+        sister: 1,
+        uncle: 1,
+        daughter: -1,
+      };
+
+      let outOfBoundsDistanceFactor = 1.5;
+
+      if (isMobileViewport) {
+        outOfBoundsDistanceFactor = 1.2;
+      } else if (isTabletViewport) {
+        outOfBoundsDistanceFactor = 1.35;
+      }
+
+      const outOfBoundsDistance = window.innerWidth * outOfBoundsDistanceFactor;
+
+      const moveFamilyMemberToCenter = (
+        el: HTMLElement,
+        centerOffsetX: number,
+        direction: number,
+        enterFromRightOnMobile = false
+      ) => {
+        let mobileEntryOffsetX = 0;
+
+        if (isMobileViewport && enterFromRightOnMobile) {
+          mobileEntryOffsetX = window.innerWidth * 0.9 * mobileEntryProgress;
+        }
+
+        const centeredDeltaX = centerOffsetX * centerPhaseProgress;
+        const finalOutOfBoundsX =
+          centerOffsetX + outOfBoundsDistance * direction;
+        const deltaX =
+          mobileEntryOffsetX +
+          centeredDeltaX +
+          (finalOutOfBoundsX - centerOffsetX) * exitPhaseProgress;
+
+        el.style.transform = `translate(${Number(deltaX.toFixed(2))}px, 0)`;
+      };
+
+      moveFamilyMemberToCenter(
+        familyFatherEl,
+        centerOffsetByMember.father,
+        directionByMember.father,
+        true
+      );
+      moveFamilyMemberToCenter(
+        familyMotherEl,
+        centerOffsetByMember.mother,
+        directionByMember.mother,
+        true
+      );
+      moveFamilyMemberToCenter(
+        familyUncleEl,
+        centerOffsetByMember.uncle,
+        directionByMember.uncle,
+        true
+      );
+      moveFamilyMemberToCenter(
+        familySisterEl,
+        centerOffsetByMember.sister,
+        directionByMember.sister,
+        true
+      );
+      moveFamilyMemberToCenter(
+        familyDaughterEl,
+        centerOffsetByMember.daughter,
+        directionByMember.daughter
+      );
+    };
+
+    const animateSectionContent = (scrollProgress: number) => {
+      if (!sectionContent) {
+        return;
+      }
+
+      const contentOpacity = transform(
+        scrollProgress,
+        [0, 0.1, 0.5],
+        [1, 1, 0],
+        easeInOutCubic
+      );
+
+      (sectionContent as HTMLElement).style.opacity = String(contentOpacity);
+    };
+
+    const getFrameAnchorX = () => {
+      const offsetParent =
+        teamFrameWrapperEl.offsetParent as HTMLElement | null;
+      const parentLeft = offsetParent?.getBoundingClientRect().left ?? 0;
+
+      return parentLeft + teamFrameWrapperEl.offsetLeft;
+    };
+
+    const getCenteredTargetX = () => {
+      return window.innerWidth * 0.5 - getFrameAnchorX();
+    };
+
+    const getManualFrameScale = () => {
+      const rawManualScale = Number.parseFloat(
+        window
+          .getComputedStyle(teamFrameWrapperEl)
+          .getPropertyValue("--team-frame-manual-scale")
+      );
+
+      if (!Number.isFinite(rawManualScale)) {
+        return 1;
+      }
+
+      return Math.min(
+        MAX_FRAME_SCALE,
+        Math.max(MIN_FRAME_SCALE, rawManualScale)
+      );
+    };
+
+    const animateTeamFrame = (scrollProgress: number, zoom: number) => {
+      let mobileOffsetX: number;
+      if (isMobileViewport) {
+        mobileOffsetX = -10;
+      } else {
+        mobileOffsetX = 0;
+      }
+      const targetX = getCenteredTargetX() + mobileOffsetX;
+      let translateX: number;
+      if (isMobileViewport) {
+        translateX = transform(
+          scrollProgress,
+          [0, 0.45],
+          [targetX + window.innerWidth * 0.75, targetX],
+          easeInOutCubic
+        );
+      } else {
+        translateX = transform(
+          scrollProgress,
+          [0.2, 0.9],
+          [0, targetX],
+          easeInOutCubic
+        );
+      }
+      let zoomBoost: number;
+      if (isTabletViewport) {
+        zoomBoost = transform(
+          scrollProgress,
+          [0.7, 1],
+          [1, 1.4],
+          easeInOutCubic
+        );
+      } else {
+        zoomBoost = transform(
+          scrollProgress,
+          [0.7, 1],
+          [1, 1.2],
+          easeInOutCubic
+        );
+      }
+
+      let frameDropTargetY: number;
+      if (isMobileViewport) {
+        frameDropTargetY = 15;
+      } else {
+        frameDropTargetY = 30;
+      }
+      const frameDropY = transform(
+        scrollProgress,
+        [0.7, 1],
+        [0, frameDropTargetY],
+        easeInOutCubic
+      );
+
+      const manualScale = getManualFrameScale();
+      const autoScale = teamFrameWrapperEl.clientWidth / DESIGN_WIDTH;
+      const rawScale = manualScale * zoom * autoScale * zoomBoost;
+      const finalScale = Number.isFinite(rawScale)
+        ? Math.min(MAX_FRAME_SCALE, Math.max(MIN_FRAME_SCALE, rawScale))
+        : 1;
+
+      const roundedTranslateX = Number(translateX.toFixed(2));
+      const roundedFrameTranslateY = Number(frameDropY.toFixed(2));
+      const roundedScale = Number(finalScale.toFixed(4));
+
+      teamFrameWrapperEl.style.transform =
+        `${BASE_FRAME_TRANSLATE} translateX(${roundedTranslateX}px) translateY(${roundedFrameTranslateY}vh) ` +
+        `scale(${roundedScale})`;
+    };
+
+    const animateTileFloor = (scrollProgress: number) => {
+      if (!tileFloor) {
+        return;
+      }
+
+      const floorDropY = transform(
+        scrollProgress,
+        [0.7, 1],
+        [0, window.innerHeight * 1.1],
+        easeInOutCubic
+      );
+
+      tileFloor.style.transform = `translateX(-50%) translateY(${Number(floorDropY.toFixed(2))}px)`;
+    };
+    const syncTeamFrameZIndex = (scrollProgress: number) => {
+      const isAtMaxScroll = scrollProgress >= SCROLL_MAX_THRESHOLD;
+
+      teamFrameWrapperEl.style.zIndex = isAtMaxScroll ? "150" : "";
+      teamFrameWrapperEl.classList.toggle("at-scroll-max", isAtMaxScroll);
+    };
+
+    const animateFamilyHeader = (scrollProgress: number) => {
+      if (!familyHeader) {
+        return;
+      }
+      const headerRevealProgress = transform(
+        scrollProgress,
+        [HEADER_REVEAL_START, 1],
+        [0, 1]
+      );
+
+      familyHeader.style.opacity = String(headerRevealProgress);
+    };
+
+    const syncFamilyWithScroll = (scrollProgress: number) => {
+      if (!family) {
+        return;
+      }
+
+      const shouldShowPiecePanel = scrollProgress >= HEADER_REVEAL_START;
+
+      const canOpenPiecePanel = shouldShowPiecePanel;
+      teamFrameWrapperEl.classList.toggle("hitbox-active", canOpenPiecePanel);
+
+      if (canOpenPiecePanel && !family.open) {
+        family.show();
+      }
+
+      if (!shouldShowPiecePanel && family.open) {
+        resetFamilyState();
+        family.close();
+      }
+    };
+
+    const resetFamilyState = () => {
+      if (familyDescription) {
+        familyDescription.textContent = defaultFamilyDescription;
+      }
+
+      family.classList.remove("role-active");
+      modalCloseBtn?.classList.remove("visible");
+      familyContent?.classList.remove("active");
+
+      if (piecePanelBody) {
+        piecePanelBody.innerHTML = "";
+      }
+    };
+
+    let smoothProgress = 0;
+    let targetProgress = 0;
+    let currentZoom = 1;
+    let targetZoom = 1;
+    const LERP_FACTOR = 0.08;
+
+    const getScrollProgress = () => {
+      const sectionRect = ourTeamSectionEl.getBoundingClientRect();
+      const sectionHeight = ourTeamSectionEl.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      return Math.max(
+        0,
+        Math.min(1, -sectionRect.top / (sectionHeight - viewportHeight))
+      );
+    };
+
+    const tick = () => {
+      targetProgress = getScrollProgress();
+      smoothProgress += (targetProgress - smoothProgress) * LERP_FACTOR;
+      currentZoom += (targetZoom - currentZoom) * LERP_FACTOR;
+      animateTeamFrame(smoothProgress, currentZoom);
+      animateFamily(smoothProgress);
+      animateSectionContent(smoothProgress);
+      syncFamilyWithScroll(targetProgress);
+      syncTeamFrameZIndex(targetProgress);
+      animateFamilyHeader(targetProgress);
+      animateTileFloor(targetProgress);
+      requestAnimationFrame(tick);
+    };
+
+    requestAnimationFrame(tick);
+  })();
+  const coreTeamCardModules = import.meta.glob(
+    "../assets/imgs/core-team-cards/*.png",
+    {
+      eager: true,
+      import: "default",
+    }
+  ) as Record<string, unknown>;
+  const coreTeamCardSrcByFileName: Record<string, string> = {};
+
+  const resolveAssetSrc = (value: unknown) => {
+    if (typeof value === "string") {
+      return value;
+    }
+
+    if (value && typeof value === "object" && "src" in value) {
+      const src = (value as { src?: unknown }).src;
+      return typeof src === "string" ? src : "";
+    }
+
+    return "";
+  };
+  for (const [assetPath, assetSrc] of Object.entries(coreTeamCardModules)) {
+    const fileName = assetPath.split("/").at(-1);
+    const resolvedSrc = resolveAssetSrc(assetSrc);
+
+    if (fileName && resolvedSrc) {
+      coreTeamCardSrcByFileName[fileName] = resolvedSrc;
+    }
+  }
+  (() => {
+    const modalCloseBtn = document.getElementById("modal-close-btn");
+    const teamFrameWrapper = document.getElementById("team-frame-wrapper");
+    const pieceHitboxBtns =
+      document.querySelectorAll<HTMLButtonElement>(".piece-hitbox-btn");
+    const piecePanelBody = document.getElementById("piece-panel-body");
+    const scopeAttrName =
+      piecePanelBody
+        ?.getAttributeNames()
+        .find((name) => name.startsWith("data-astro-cid-")) ?? "";
+    const scopeAttr = scopeAttrName ? ` ${scopeAttrName}` : "";
+    const familyContent = document.getElementById("family-content");
+    const familyDescription = document.getElementById("family-description");
+    const defaultFamilyDescription =
+      familyDescription?.textContent?.trim() ?? "";
+    const volunteerChipSrc =
+      piecePanelBody?.getAttribute("data-volunteer-chip-src") ?? "";
+    const family = document.getElementById(
+      "family"
+    ) as HTMLDialogElement | null;
+    const createInitials = (name: string) => {
+      const words = name
+        .trim()
+        .split(" ")
+        .filter((word) => word.length > 0);
+      const initials = words
+        .slice(0, 2)
+        .map((word) => word.charAt(0).toUpperCase())
+        .join("");
+      return initials || "TM";
+    };
+    const sanitize = (value: string) => {
+      return value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    };
+    if (!(familyContent && piecePanelBody && family && modalCloseBtn)) {
+      return;
+    }
+    const openModal = (roleAttr: string, displayTitle: string) => {
+      const teamMembers = JSON.parse(
+        piecePanelBody.getAttribute("data-team-members") ?? "[]"
+      ) as {
+        role: string;
+        name: string;
+        team: string;
+        cardFileNames: { preferred: string };
+      }[];
+      const normalizedRole = roleAttr.trim();
+      const hasExactRoleMatch = teamMembers.some(
+        (member: {
+          role: string;
+          name: string;
+          cardFileNames: { preferred: string };
+        }) => {
+          return member.role === normalizedRole;
+        }
+      );
+      const roles = hasExactRoleMatch
+        ? [normalizedRole]
+        : normalizedRole
+            .split(",")
+            .map((r) => r.trim())
+            .filter((r) => r.length > 0);
+      const members = teamMembers.filter((m: { role: string }) =>
+        roles.includes(m.role)
+      );
+      const coreTeam = members.filter(
+        (m: { team: string }) => m.team !== "Volunteer"
+      );
+      const volunteers = members.filter(
+        (m: { team: string }) => m.team === "Volunteer"
+      );
+
+      if (familyDescription) {
+        familyDescription.textContent = displayTitle;
+      }
+
+      const coreCards = coreTeam
+        .map(
+          (member: { name: string; cardFileNames: { preferred: string } }) => {
+            const safeName = sanitize(member.name);
+            const initials = sanitize(createInitials(member.name));
+            const cardSrc =
+              coreTeamCardSrcByFileName[member.cardFileNames.preferred] || "";
+            const safeCardSrc = sanitize(cardSrc);
+            let cardMarkup: string;
+            if (safeCardSrc) {
+              cardMarkup = `<img${scopeAttr} class="member-card-photo" src="${safeCardSrc}" alt="${safeName}" aria-hidden="true" />`;
+            } else {
+              cardMarkup = `<div${scopeAttr} class="member-card-photo member-card-photo-fallback" aria-hidden="true">${initials}</div>`;
+            }
+            return `<article${scopeAttr} class="member-card">${cardMarkup}</article>`;
+          }
+        )
+        .join("");
+
+      const safeChipSrc = sanitize(volunteerChipSrc);
+      const volunteerChips = volunteers
+        .map((member: { name: string }) => {
+          const safeName = sanitize(member.name);
+          return `
+          <article${scopeAttr} class="volunteer-chip">
+            <img${scopeAttr} class="volunteer-chip-bg" src="${safeChipSrc}" alt="" aria-hidden="true" />
+            <div${scopeAttr} class="volunteer-chip-white-bg" ></div>
+            <p${scopeAttr} class="volunteer-chip-name">${safeName}</p>
+          </article>
+              `;
+        })
+        .join("");
+
+      let html = `<section${scopeAttr}><h2${scopeAttr} class="piece-panel-section-title">Core Team</h2><div${scopeAttr} class="core-team-grid">`;
+      html +=
+        coreCards ||
+        `<article${scopeAttr} class="member-card"><div${scopeAttr} class="member-card-photo" aria-hidden="true">TM</div></article>`;
+      html += "</div></section>";
+
+      if (volunteerChips) {
+        html += `<section${scopeAttr}>
+          <h2${scopeAttr} class="piece-panel-section-title">Volunteer</h2><div${scopeAttr} class="volunteer-chip-wrap">`;
+        html += volunteerChips;
+        html += "</div></section>";
+      }
+
+      piecePanelBody.innerHTML = html;
+      family.classList.add("role-active");
+      familyContent.classList.add("active");
+    };
+    const resetFamilyState = () => {
+      if (familyDescription) {
+        familyDescription.textContent = defaultFamilyDescription;
+      }
+      family.classList.remove("role-active");
+      familyContent?.classList.remove("active");
+
+      if (piecePanelBody) {
+        piecePanelBody.innerHTML = "";
+      }
+    };
+
+    modalCloseBtn?.addEventListener("click", () => {
+      resetFamilyState();
+      if (family.open) {
+        family.close();
+      }
+    });
+    const closeModal = () => {
+      resetFamilyState();
+      if (family.open) {
+        family.close();
+      }
+    };
+    let activeTeamPiece: HTMLButtonElement | null = null;
+
+    for (const pieceHitbox of Array.from(pieceHitboxBtns)) {
+      const role = pieceHitbox.dataset.role ?? "";
+      const label = pieceHitbox.getAttribute("aria-label") ?? role;
+
+      pieceHitbox.addEventListener("click", () => {
+        activeTeamPiece = pieceHitbox;
+        openModal(role, label);
+      });
+
+      pieceHitbox.addEventListener("keydown", (event: KeyboardEvent) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          activeTeamPiece = pieceHitbox;
+          openModal(role, label);
+        }
+      });
+    }
+
+    const getActivePieces = (): HTMLButtonElement[] => {
+      const activePieces: HTMLButtonElement[] = [];
+
+      for (const piece of Array.from(pieceHitboxBtns)) {
+        if (piece.disabled) {
+          continue;
+        }
+
+        if (piece.offsetParent === null) {
+          continue;
+        }
+
+        activePieces.push(piece);
+      }
+
+      return activePieces;
+    };
+
+    const findFocusedPieceIndex = (activePieces: HTMLButtonElement[]) => {
+      const currentFocused = document.activeElement;
+
+      for (let i = 0; i < activePieces.length; i += 1) {
+        if (activePieces[i] === currentFocused) {
+          return i;
+        }
+      }
+
+      return -1;
+    };
+
+    const getNextPieceIndex = (
+      currentIndex: number,
+      totalPieces: number,
+      isReverse: boolean
+    ) => {
+      if (isReverse) {
+        const reverseIndex = currentIndex - 1;
+
+        if (reverseIndex < 0) {
+          return totalPieces - 1;
+        }
+
+        return reverseIndex;
+      }
+
+      const forwardIndex = currentIndex + 1;
+
+      if (forwardIndex >= totalPieces) {
+        return 0;
+      }
+
+      return forwardIndex;
+    };
+
+    const focusPieceAtIndex = (pieces: HTMLButtonElement[], index: number) => {
+      const nextPiece = pieces.at(index);
+
+      if (nextPiece) {
+        nextPiece.focus();
+      }
+    };
+
+    const cycleFocusInActivePieces = (isReverse: boolean) => {
+      const activePieces = getActivePieces();
+
+      if (activePieces.length === 0) {
+        return;
+      }
+
+      const currentIndex = findFocusedPieceIndex(activePieces);
+
+      if (currentIndex === -1) {
+        focusPieceAtIndex(activePieces, 0);
+        return;
+      }
+
+      const nextIndex = getNextPieceIndex(
+        currentIndex,
+        activePieces.length,
+        isReverse
+      );
+
+      focusPieceAtIndex(activePieces, nextIndex);
+    };
+
+    const isTeamFrameAtScrollMax = () => {
+      if (!teamFrameWrapper) {
+        return false;
+      }
+
+      return teamFrameWrapper.classList.contains("at-scroll-max");
+    };
+
+    const handleGlobalKeydown = (event: KeyboardEvent) => {
+      if (!family?.open) {
+        return;
+      }
+
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeModal();
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      if (family.classList.contains("role-active")) {
+        event.preventDefault();
+        modalCloseBtn.focus();
+        return;
+      }
+
+      if (!isTeamFrameAtScrollMax()) {
+        return;
+      }
+
+      event.preventDefault();
+      cycleFocusInActivePieces(event.shiftKey);
+    };
+
+    document.addEventListener("keydown", handleGlobalKeydown);
+  })();
+</script>
