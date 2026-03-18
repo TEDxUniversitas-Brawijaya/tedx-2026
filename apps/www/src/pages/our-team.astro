@@ -280,12 +280,13 @@ const teamMembers = [
                   />
                   <text
                     class="piece-label"
-                    x="50%"
+                    x="47%"
                     y="60%"
                     text-anchor="middle"
                     dominant-baseline="middle"
                   >
-                    Organizer & Co-Organizer
+                    <tspan>Organizer</tspan>
+                    <tspan dx="-50" dy="35">& Co-Organizer</tspan>
                   </text>
                 </svg>
               </div>
@@ -320,8 +321,8 @@ const teamMembers = [
                   />
                   <text
                     class="piece-label"
-                    x="50%"
-                    y="50%"
+                    x="40%"
+                    y="55%"
                     text-anchor="middle"
                     dominant-baseline="middle"
                   >
@@ -363,12 +364,13 @@ const teamMembers = [
                   />
                   <text
                     class="piece-label"
-                    x="50%"
-                    y="50%"
+                    x="30%"
+                    y="30%"
                     text-anchor="middle"
                     dominant-baseline="middle"
                   >
-                    Executive Producer
+                    <tspan dx="20">Executive</tspan>
+                    <tspan dx="-59" dy="28">Producer</tspan>
                   </text>
                 </svg>
               </div>
@@ -558,7 +560,8 @@ const teamMembers = [
                     text-anchor="middle"
                     dominant-baseline="middle"
                   >
-                    Video Production
+                    <tspan>Video </tspan>
+                    <tspan dx="-50" dy="23">Production</tspan>
                   </text>
                 </svg>
               </div>
@@ -758,7 +761,7 @@ const teamMembers = [
                     preserveAspectRatio="xMidYMid slice"
                   />
                   <text
-                    x="30%"
+                    x="40%"
                     y="60%"
                     text-anchor="middle"
                     dominant-baseline="middle"
@@ -1071,7 +1074,7 @@ const teamMembers = [
   }
   .piece-label {
     font-family: var(--font-display);
-    font-size: clamp(0.85rem, 1vw, 1rem);
+    font-size: clamp(1.3rem, 1.3vw, 1.5rem);
     fill: var(--color-white);
     pointer-events: none;
   }
