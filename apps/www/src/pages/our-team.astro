@@ -14,14 +14,12 @@ import Ep from "@/assets/imgs/ep.png";
 import Organizer from "@/assets/imgs/organizer.png";
 import Design from "@/assets/imgs/design.png";
 import Sponsorship from "@/assets/imgs/sponsorship.png";
-import VideoProduction from "@/assets/imgs/video-production.png";
 import Website from "@/assets/imgs/website.png";
 import Budget from "@/assets/imgs/budget.png";
 import Cem from "@/assets/imgs/cem.png";
 import Em from "@/assets/imgs/em.png";
 import Vp from "@/assets/imgs/vp.png";
 import Curator from "@/assets/imgs/curator.png";
-// import VolunteerChip from "@/assets/imgs/volunteer-chip.png";
 import VolunteerChipBackground from "@/assets/imgs/volunteer-chip-background.png";
 import Line from "@/assets/imgs/line-1.png";
 
@@ -560,7 +558,7 @@ const teamMembers = [
                     text-anchor="middle"
                     dominant-baseline="middle"
                   >
-                    <tspan>Video </tspan>
+                    <tspan>Video</tspan>
                     <tspan dx="-50" dy="23">Production</tspan>
                   </text>
                 </svg>
@@ -1882,10 +1880,19 @@ const teamMembers = [
       isTabletViewport = tabletViewportQuery.matches;
     };
 
+    const notifyViewportFlagChange = () => {
+      document.dispatchEvent(new CustomEvent("tedx:viewport-flags-change"));
+    };
+
+    const handleViewportQueryChange = () => {
+      syncViewportFlags();
+      notifyViewportFlagChange();
+    };
+
     syncViewportFlags();
     window.addEventListener("resize", syncViewportFlags);
-    mobileViewportQuery.addEventListener("change", syncViewportFlags);
-    tabletViewportQuery.addEventListener("change", syncViewportFlags);
+    mobileViewportQuery.addEventListener("change", handleViewportQueryChange);
+    tabletViewportQuery.addEventListener("change", handleViewportQueryChange);
     const DESIGN_WIDTH = 625;
     const MIN_FRAME_SCALE = 0.25;
     const MAX_FRAME_SCALE = 3;
@@ -2368,6 +2375,27 @@ const teamMembers = [
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#39;");
     };
+
+    let previousBodyOverflow: string | null = null;
+
+    const lockBodyScroll = () => {
+      if (previousBodyOverflow !== null) {
+        return;
+      }
+
+      previousBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+    };
+
+    const unlockBodyScroll = () => {
+      if (previousBodyOverflow === null) {
+        return;
+      }
+
+      document.body.style.overflow = previousBodyOverflow;
+      previousBodyOverflow = null;
+    };
+
     if (!(familyContent && piecePanelBody && family && modalCloseBtn)) {
       return;
     }
@@ -2459,6 +2487,7 @@ const teamMembers = [
       piecePanelBody.innerHTML = html;
       family.classList.add("role-active");
       familyContent.classList.add("active");
+      lockBodyScroll();
     };
     const resetFamilyState = () => {
       if (familyDescription) {
@@ -2466,6 +2495,7 @@ const teamMembers = [
       }
       family.classList.remove("role-active");
       familyContent?.classList.remove("active");
+      unlockBodyScroll();
 
       if (piecePanelBody) {
         piecePanelBody.innerHTML = "";
@@ -2626,6 +2656,19 @@ const teamMembers = [
       cycleFocusInActivePieces(event.shiftKey);
     };
 
+    const handleViewportFlagChange = () => {
+      unlockBodyScroll();
+
+      if (family.open && family.classList.contains("role-active")) {
+        lockBodyScroll();
+      }
+    };
+
     document.addEventListener("keydown", handleGlobalKeydown);
+    document.addEventListener(
+      "tedx:viewport-flags-change",
+      handleViewportFlagChange
+    );
+    window.addEventListener("pagehide", unlockBodyScroll);
   })();
 </script>
