@@ -1353,8 +1353,7 @@ const teamMembers = [
     position: fixed;
     inset: 0;
     width: 100%;
-    max-width: unset;
-    max-height: unset;
+    height: 100dvh;
     background: transparent;
     border: none;
     padding: 2rem;
@@ -1366,7 +1365,6 @@ const teamMembers = [
     z-index: 1000;
     color: var(--color-white);
     pointer-events: none;
-    overflow-y: auto;
   }
   .family:focus {
     outline: none;
@@ -1521,9 +1519,8 @@ const teamMembers = [
     position: relative;
     padding: 2rem;
     width: min(92vw, 100%);
-    max-width: 92vw;
-    max-height: min(78vh, 42rem);
-    overflow-x: hidden;
+    height: 100dvh;
+    overflow: hidden;
     display: none;
     flex-direction: column;
     gap: 1.25rem;
@@ -1550,9 +1547,6 @@ const teamMembers = [
   .piece-panel-body {
     width: min(90vw, 100rem);
     margin-inline: auto;
-    max-height: min(100vh, 40rem);
-    overflow-y: auto;
-    overflow-x: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
@@ -1611,7 +1605,15 @@ const teamMembers = [
     display: grid;
     grid-template-columns: repeat(auto-fit, 12.5rem);
     justify-content: center;
+    align-content: start;
+    justify-items: center;
     gap: 0.5rem;
+    max-height: min(22dvh, 10rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 0.35rem;
+    scrollbar-gutter: stable;
+    -webkit-overflow-scrolling: touch;
   }
 
   .volunteer-chip {
@@ -1653,7 +1655,7 @@ const teamMembers = [
     margin: 0;
     padding-inline: 0.95rem;
     font-family: var(--font-sans);
-    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
     font-weight: 600;
     letter-spacing: 0.02em;
     line-height: 1.2;
@@ -1720,6 +1722,8 @@ const teamMembers = [
     }
     .volunteer-chip-wrap {
       grid-template-columns: repeat(auto-fit, 10.5rem);
+      justify-items: center;
+      max-height: min(28dvh, 11rem);
     }
 
     .volunteer-chip {
