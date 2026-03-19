@@ -159,6 +159,8 @@ import "@/styles/propaganda-2.css";
   ) as HTMLElement;
   let hasBrokenVaseTriggered = false;
 
+  const isMobile = () => window.innerWidth <= 768;
+
   const updateFrame5State = () => {
     const f5Rect = frame5?.getBoundingClientRect();
     if (!f5Rect) {
@@ -176,9 +178,10 @@ import "@/styles/propaganda-2.css";
       return;
     }
 
+    const fadeDistance = isMobile() ? 180 : 300;
     const scrollPastTopFrame5 = window.innerHeight - f5Rect.top;
     if (scrollPastTopFrame5 > 0) {
-      const textOpacity = Math.min(scrollPastTopFrame5 / 300, 1);
+      const textOpacity = Math.min(scrollPastTopFrame5 / fadeDistance, 1);
       placeholderFrame5.style.opacity = textOpacity.toString();
     } else {
       placeholderFrame5.style.opacity = "0";
@@ -186,44 +189,77 @@ import "@/styles/propaganda-2.css";
   };
 
   if (vaseWrapper && frame3) {
-    lenis.on("scroll", () => {
-      //frame 3
+    const handleFrame3Scroll = (mobile: boolean) => {
       const f3Rect = frame3.getBoundingClientRect();
       const scrollPastBottomFrame3 = window.innerHeight - f3Rect.bottom;
 
       if (scrollPastBottomFrame3 > 0) {
-        const textOpacity = Math.max(1 - scrollPastBottomFrame3 / 100, 0);
-        const scale = 1 + (scrollPastBottomFrame3 / 100) * 0.03;
-        const moveY = scrollPastBottomFrame3 * 1.1;
-        const rotate = scrollPastBottomFrame3 * 0.045;
+        const fadeDivisor = mobile ? 160 : 100;
+        const textOpacity = mobile
+          ? 1
+          : Math.max(1 - scrollPastBottomFrame3 / fadeDivisor, 0);
 
-        text3.style.opacity = textOpacity.toString();
+        const moveMultiplier = mobile ? 0.5 : 1.1;
+        const rotateMultiplier = mobile ? 0.02 : 0.045;
+        const scale =
+          1 + (scrollPastBottomFrame3 / (mobile ? 200 : 100)) * 0.03;
+        const moveY = scrollPastBottomFrame3 * moveMultiplier;
+        const rotate = scrollPastBottomFrame3 * rotateMultiplier;
+
+        if (!mobile) {
+          text3.style.opacity = textOpacity.toString();
+        }
         vaseWrapper.style.transform = `translateY(${moveY}px) rotate(${rotate}deg) scale(${scale})`;
       }
+    };
 
-      // frame 4
+    const handleFrame4Scroll = (mobile: boolean) => {
       const f4Rect = frame4.getBoundingClientRect();
       const viewportCenter = window.innerHeight / 2;
       const distanceToCenter = f4Rect.top - viewportCenter;
 
-      // Opacity starts increasing when the top of frame4 is at the center of the viewport
       if (distanceToCenter <= 0) {
-        const textOpacity = Math.min(1, Math.abs(distanceToCenter) / 350);
+        const opacityRamp = mobile ? 200 : 350;
+        const textOpacity = Math.min(
+          1,
+          Math.abs(distanceToCenter) / opacityRamp
+        );
         text4.style.opacity = textOpacity.toString();
-        text4.style.zIndex = text4.style.opacity === "1" ? "6" : "1";
-        const scale4 = 1 + (scrollPastBottomFrame3 / 100) * 0.03;
-        const moveY4 = scrollPastBottomFrame3 * 1.1;
-        const rotate4 = scrollPastBottomFrame3 * 0.05;
-        vaseWrapper.style.transform = `translateY(${moveY4}px) rotate(${rotate4}deg) scale(${scale4})`;
+        text4.style.zIndex = textOpacity >= 1 ? "6" : "1";
+
+        const f3RectNow = frame3.getBoundingClientRect();
+        const scrollPastBottom = window.innerHeight - f3RectNow.bottom;
+        if (scrollPastBottom > 0) {
+          const moveMultiplier = mobile ? 0.5 : 1.1;
+          const rotateMultiplier = mobile ? 0.02 : 0.05;
+          const scale4 = 1 + (scrollPastBottom / (mobile ? 200 : 100)) * 0.03;
+          const moveY4 = scrollPastBottom * moveMultiplier;
+          const rotate4 = scrollPastBottom * rotateMultiplier;
+          vaseWrapper.style.transform = `translateY(${moveY4}px) rotate(${rotate4}deg) scale(${scale4})`;
+        }
       } else {
         text4.style.opacity = "0";
       }
+    };
 
-      //frame 5
+    lenis.on("scroll", () => {
+      const mobile = isMobile();
+      handleFrame3Scroll(mobile);
+      handleFrame4Scroll(mobile);
       updateFrame5State();
     });
 
     updateFrame5State();
-    window.addEventListener("resize", updateFrame5State);
+
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        updateFrame5State();
+        if (isMobile()) {
+          text3.style.opacity = "1";
+        }
+      }, 150);
+    });
   }
 </script>

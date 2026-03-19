@@ -7,9 +7,10 @@ p {
 }
 #propa2-main {
   margin-top: calc(var(--navbar-height, 64px) - 2px);
-  width: 100dvw;
+  width: 100%;
+  max-width: 100%;
   height: max-content;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .frame-1 {
@@ -34,16 +35,18 @@ p {
 .background {
   width: 100%;
   height: 100%;
-  object-fit: fill;
+  object-fit: cover;
   object-position: center;
   background-repeat: repeat;
 }
 .floor {
   position: absolute;
   bottom: -55%;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   scale: 1.2;
-  width: 100%;
+  width: 100vw;
+  min-width: 1000px;
   height: auto;
   object-fit: cover;
   object-position: center;
@@ -55,7 +58,7 @@ p {
   right: 6%;
 }
 .window-1 {
-  width: 241px;
+  width: clamp(250px, 15vw, 441px);
   height: auto;
 }
 .lighting {
@@ -85,6 +88,7 @@ p {
   top: 0;
   right: 15%;
   transform: translateX(-15%);
+  width: clamp(250px, 12vw, 180px);
   height: auto;
   animation: lampSwing 4s ease-in-out infinite;
   transform-origin: top center;
@@ -94,6 +98,7 @@ p {
   bottom: 3%;
   left: 50%;
   transform: translate(-50%, -3%) scale(1.2);
+  width: clamp(800px, 100vw, 1000px);
   height: auto;
 }
 
@@ -105,7 +110,7 @@ p {
   text-align: center;
   top: 15%;
   left: 10%;
-  width: 43rem;
+  max-width: 43rem;
   color: white;
   z-index: 6;
 }
@@ -138,8 +143,9 @@ p {
   display: grid;
   place-items: center;
   z-index: 1;
-  width: 700px;
-  height: 418px;
+  width: clamp(320px, 55vw, 700px);
+  aspect-ratio: 16 / 9;
+  height: auto;
   background-color: white;
 }
 .text-2-content {
@@ -161,7 +167,7 @@ p {
   top: 10%;
   left: 50%;
   transform: translateX(-50%);
-  height: clamp(200px, 300px, 350px);
+  height: clamp(200px, 40vh, 350px);
 }
 
 .window-wrapper-3 {
@@ -244,7 +250,8 @@ p {
 .vase {
   display: block;
   width: auto;
-  height: clamp(300px, 400px, 450px);
+  /* Use viewport-relative middle value so vase scales with the section */
+  height: clamp(300px, 45vh, 450px);
 }
 .vase-shine {
   position: absolute;
@@ -323,7 +330,8 @@ p {
   left: 50%;
   transform: translate(-50%, -50%);
   aspect-ratio: 16 / 9;
-  width: 700px;
+  /* clamp + vw for consistent sizing across browsers */
+  width: clamp(320px, 55vw, 700px);
   height: auto;
   background-color: white;
 }
@@ -377,4 +385,286 @@ p {
   transform: rotate(-106deg);
   width: auto;
   height: clamp(300px, 424px, 500px);
+}
+
+/* Tablet: max 1024px */
+@media (max-width: 1024px) {
+  .text {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 12%;
+  }
+
+  .hanging-lamp {
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  .sofa-seat {
+    bottom: 0;
+    transform: translate(-50%, 0);
+  }
+
+  .floor {
+    bottom: -30%;
+  }
+
+  /* frame 2 tablet */
+  .frame-2 {
+    height: auto;
+    min-height: 60vh;
+  }
+
+  .frame-2-content {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 1rem;
+    width: 100%;
+  }
+
+  .placeholder {
+    width: min(90vw, 560px);
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .text-2-content {
+    width: min(90%, 32rem);
+  }
+
+  /* frame 3 tablet */
+  .text-3 {
+    width: 85%;
+    gap: 2rem;
+  }
+
+  .vase {
+    height: clamp(220px, 300px, 380px);
+  }
+
+  /* frame 4 tablet */
+  .text-4 {
+    width: 80%;
+  }
+
+  /* frame 5 tablet */
+  .placeholder-frame-5 {
+    width: min(80vw, 560px);
+  }
+}
+
+/* Mobile: max 768px */
+@media (max-width: 768px) {
+  /* frame 1 mobile */
+
+  .texture {
+    filter: brightness(0.2);
+  }
+
+  .frame-1 {
+    height: 100svh;
+  }
+
+  .hanging-lamp {
+    right: 50%;
+    transform: translateX(50%);
+    top: -5%;
+  }
+
+  .window-1-container {
+    top: 10%;
+    bottom: auto;
+    right: -40%;
+  }
+
+  .lighting {
+    transform: scale(2.5) scaleY(1.3);
+  }
+
+  .floor {
+    right: 25%;
+    bottom: -15%;
+    transform: translate(-15%, 25%);
+    height: 50vh;
+  }
+
+  .sofa-seat {
+    min-width: 1000px;
+    bottom: 5%;
+    transform: translate(-75%, 0) scale(1);
+  }
+
+  .text {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 2rem !important;
+    width: 80% !important;
+  }
+
+  .text h3 {
+    font-size: 1.4rem !important;
+    margin: 0;
+    transform: scale(1.2);
+  }
+
+  .text p {
+    font-size: 1rem;
+  }
+
+  /* frame 2 mobile */
+  .frame-2 {
+    height: 80vh;
+  }
+
+  .frame-2-content {
+    flex-direction: column-reverse;
+    gap: 5rem;
+    width: 100%;
+    align-items: center;
+  }
+
+  .placeholder {
+    width: min(80vw, 420px) !important;
+    height: 370px;
+    aspect-ratio: 3 / 4;
+  }
+
+  .text-2-content {
+    width: min(86%, 28rem);
+  }
+
+  .carpet {
+    bottom: 15%;
+    left: 0;
+    transform: scale(5);
+  }
+
+  /* frame 3 mobile */
+  .frame-3 {
+    height: 100svh;
+    min-height: 600px;
+  }
+
+  .window-container-3 {
+    height: clamp(130px, 20vw, 220px);
+    top: 5%;
+  }
+
+  .text-3 {
+    position: absolute;
+    bottom: auto;
+    top: 8%;
+    width: 88%;
+    gap: 1.2rem;
+    transform: translateX(-50%);
+  }
+
+  .text-3 h3 {
+    font-size: 1.3rem !important;
+  }
+
+  .text-3 p {
+    font-size: 0.9rem;
+  }
+
+  .vase-container {
+    bottom: 10%;
+    transform: translate(-50%, 0);
+  }
+
+  .vase {
+    height: clamp(180px, 38vw, 280px);
+  }
+
+  /* frame 4 mobile */
+  .frame-4 {
+    min-height: 100svh;
+  }
+
+  .text-4 {
+    width: 88%;
+    margin-top: 8%;
+  }
+
+  .text-4 p {
+    font-size: 0.9rem;
+  }
+
+  .desk-frame-4 {
+    width: 130%;
+    bottom: -5%;
+    transform: translate(-50%, 5%);
+  }
+
+  /* frame 5 mobile */
+  .frame-5 {
+    height: 55vh;
+    min-height: 300px;
+  }
+
+  .placeholder-frame-5 {
+    width: min(88vw, 420px);
+    top: -40%;
+    transform: translate(-50%, -40%);
+  }
+
+  .broken-vase-container {
+    bottom: auto;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+  }
+
+  .broken-vase {
+    height: clamp(120px, 35vw, 200px);
+  }
+
+  .flower-stalk {
+    height: clamp(160px, 40vw, 250px);
+    bottom: -80%;
+    right: -20%;
+  }
+}
+
+/* Small Mobile: max 480px */
+@media (max-width: 480px) {
+  .text {
+    top: 13%;
+    width: 90%;
+    gap: 1rem;
+  }
+
+  .text h3 {
+    font-size: 1.3rem !important;
+  }
+
+  .vase {
+    height: clamp(150px, 40vw, 220px);
+  }
+
+  .text-3 {
+    width: 92%;
+    top: 6%;
+  }
+
+  .text-3 h3 {
+    font-size: 1.15rem !important;
+  }
+
+  .text-4 {
+    width: 92%;
+  }
+
+  .placeholder {
+    width: 92vw;
+  }
+
+  .placeholder-frame-5 {
+    width: 92vw;
+  }
+
+  .frame-2-content {
+    padding: 1.5rem 0.8rem;
+  }
 }
