@@ -1041,7 +1041,7 @@ const teamMembers = [
   .ep-piece-layout {
     top: 0;
     left: 0;
-    width: 22%;
+    width: 21.7%;
   }
 
   .organizer-piece-layout {
@@ -1052,38 +1052,38 @@ const teamMembers = [
 
   .budget-piece-layout {
     bottom: 0%;
-    left: 28.3%;
-    width: 49.5%;
+    left: 28.1%;
+    width: 49.8%;
   }
   .curator-piece-layout {
     top: 23.2%;
-    left: 19.3%;
-    width: 23%;
+    left: 19.25%;
+    width: 23.3%;
   }
   .em-piece-layout {
     top: 0;
-    left: 12%;
-    width: 40.2%;
+    left: 12.1%;
+    width: 40.4%;
   }
   .cem-piece-layout {
-    left: 29.2%;
+    left: 29.4%;
     top: 32.8%;
     width: 37.5%;
   }
   .vp-piece-layout {
-    left: 55.3%;
-    top: 42%;
+    left: 55.5%;
+    top: 42.3%;
     width: 22.5%;
   }
   .sponsorship-piece-layout {
     top: 0;
-    right: 6.8%;
-    width: 25.2%;
+    right: 6.7%;
+    width: 25.6%;
   }
   .design-piece-layout {
     bottom: 0;
-    right: 2%;
-    width: 27.5%;
+    right: 2.3%;
+    width: 27.1%;
   }
   .website-piece-layout {
     bottom: 0;
@@ -1092,18 +1092,18 @@ const teamMembers = [
   }
   .empty-piece-top-layout {
     top: 0;
-    left: 50.2%;
+    left: 50.4%;
     width: 29.3%;
   }
   .empty-piece-bottom-layout {
-    left: 45%;
-    top: 23.9%;
-    width: 27.5%;
+    left: 45.2%;
+    top: 23.7%;
+    width: 27%;
   }
   .empty-piece-top-right-layout {
     top: 0;
     right: 0;
-    width: 13.3%;
+    width: 13.35%;
   }
   .team-piece-shape {
     width: 100%;
@@ -1519,7 +1519,6 @@ const teamMembers = [
     position: relative;
     padding: 2rem;
     width: min(92vw, 100%);
-    height: 100dvh;
     overflow: hidden;
     display: none;
     flex-direction: column;
@@ -1603,17 +1602,20 @@ const teamMembers = [
 
   .volunteer-chip-wrap {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 12.5rem);
+    grid-template-columns: repeat(auto-fit, minmax(0, 12.5rem));
     justify-content: center;
     align-content: start;
     justify-items: center;
     gap: 0.5rem;
-    max-height: min(22dvh, 10rem);
+    height: min(22dvh, 9rem);
     overflow-y: auto;
     overflow-x: hidden;
     padding-right: 0.35rem;
-    scrollbar-gutter: stable;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
   .volunteer-chip {
@@ -1702,6 +1704,9 @@ const teamMembers = [
       text-align: center;
       align-items: center;
     }
+    .piece-panel-body {
+      overflow-y: auto;
+    }
   }
 
   @media (max-width: 768px) {
@@ -1721,9 +1726,10 @@ const teamMembers = [
       width: 10rem;
     }
     .volunteer-chip-wrap {
-      grid-template-columns: repeat(auto-fit, 10.5rem);
+      grid-template-columns: repeat(auto-fit, minmax(0, 10.5rem));
       justify-items: center;
-      max-height: min(28dvh, 11rem);
+      height: min(10dvh, 6rem);
+      overflow-y: auto;
     }
 
     .volunteer-chip {
