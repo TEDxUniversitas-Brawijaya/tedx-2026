@@ -376,6 +376,10 @@ p {
   .broken-vase-container {
     transition: none;
   }
+  #propa2-main * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 .broken-vase-wrapper {
