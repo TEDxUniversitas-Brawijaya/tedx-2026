@@ -133,6 +133,15 @@ p {
   height: auto;
 }
 
+.floor-frame-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
 .frame-2-content {
   display: flex;
   justify-content: center;
@@ -478,6 +487,7 @@ p {
   }
 
   .lighting {
+    z-index: 7;
     transform: scale(2.5) scaleY(1.3);
   }
 
@@ -512,32 +522,64 @@ p {
     font-size: 1rem;
   }
 
-  /* frame 2 mobile */
   .frame-2 {
-    height: 80vh;
+    width: 100%;
+    height: 400vh;
+  }
+
+  .frame-2-sticky-wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 6;
+  }
+
+  /* darken non-text elements so texture effect is simulated;
+     text-2-content is intentionally excluded */
+  .frame-2 .carpet,
+  .frame-2 .floor-frame-2,
+  .frame-2 .placeholder {
+    filter: brightness(0.6);
   }
 
   .frame-2-content {
-    flex-direction: column-reverse;
-    gap: 5rem;
-    width: 100%;
-    align-items: center;
-  }
-
-  .placeholder {
-    width: min(80vw, 420px) !important;
+    position: relative;
+    width: min(82%, 28rem);
     height: 370px;
-    aspect-ratio: 3 / 4;
+    display: block;
   }
 
   .text-2-content {
-    width: min(86%, 28rem);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    opacity: 1;
+    transition: opacity 0.6s ease;
+  }
+
+  .placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100%;
+    aspect-ratio: unset;
+    opacity: 0; /* starts hidden */
+    transition: opacity 0.6s ease;
   }
 
   .carpet {
     bottom: 15%;
     left: 0;
-    transform: scale(5);
+    transform: scale(5) translate(0, -15%);
   }
 
   /* frame 3 mobile */

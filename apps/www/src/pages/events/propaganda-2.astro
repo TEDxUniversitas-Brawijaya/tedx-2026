@@ -51,24 +51,27 @@ import "@/styles/propaganda-2.css";
     </section>
     <!-- frame 2 -->
     <section class="frame-2" style="position: relative;">
-      <Image src={carpet} class="carpet" alt="Green Carpet" />
-      <div class="frame-2-content">
-        <div class="placeholder">placeholder</div>
-        <p
-          class="text-2-content"
-          style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem' }}
-        >
-          Dalam perspektif yang lebih luas, topik ini mengajak kita melihat
-          bagaimana elemen modern seperti teknologi dan hiburan mempengaruhi
-          cara kita mengelola perasaan. Teknologi saat ini berperan bear dalam
-          membantu atau justru menghambat cara kita mengekspresikan diri,
-          sementara hiburan sering menjadi tempat kita melepas beban batin dan
-          mencari makna hidup. Tantangan besarnya adalah bagaimana kita dapat
-          merancang pola komunikasi dan interaksi sosial yang lebih terbuka.
-          Tujuannya agar tercipta rang dialog yang jujur, aman, dan merangkul
-          semua orang, baik di dalam lingkup kecil keluarga maupun di tengah
-          masyarakat luas.
-        </p>
+      <div class="frame-2-sticky-wrapper">
+        <Image src={carpet} class="carpet" alt="Green Carpet" />
+        <Image src={floor} class="floor-frame-2" alt="Wood Floor" />
+        <div class="frame-2-content">
+          <div class="placeholder">placeholder</div>
+          <p
+            class="text-2-content"
+            style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem' }}
+          >
+            Dalam perspektif yang lebih luas, topik ini mengajak kita melihat
+            bagaimana elemen modern seperti teknologi dan hiburan mempengaruhi
+            cara kita mengelola perasaan. Teknologi saat ini berperan bear dalam
+            membantu atau justru menghambat cara kita mengekspresikan diri,
+            sementara hiburan sering menjadi tempat kita melepas beban batin dan
+            mencari makna hidup. Tantangan besarnya adalah bagaimana kita dapat
+            merancang pola komunikasi dan interaksi sosial yang lebih terbuka.
+            Tujuannya agar tercipta rang dialog yang jujur, aman, dan merangkul
+            semua orang, baik di dalam lingkup kecil keluarga maupun di tengah
+            masyarakat luas.
+          </p>
+        </div>
       </div>
     </section>
     <!-- frame 3 -->
@@ -157,9 +160,51 @@ import "@/styles/propaganda-2.css";
   const placeholderFrame5 = document.querySelector(
     ".placeholder-frame-5"
   ) as HTMLElement;
-  let hasBrokenVaseTriggered = false;
+
+  // Frame 2 dissolve animation elements
+  const frame2Section = document.querySelector(".frame-2") as HTMLElement;
+  const text2Content = document.querySelector(".text-2-content") as HTMLElement;
+  const placeholder2 = document.querySelector(
+    ".frame-2 .placeholder"
+  ) as HTMLElement;
+
 
   const isMobile = () => window.innerWidth <= 768;
+
+  const handleFrame2Dissolve = () => {
+    if (!(isMobile() && frame2Section && text2Content && placeholder2)) {
+      return;
+    }
+
+    const rect = frame2Section.getBoundingClientRect();
+    const scrolled = -rect.top;
+    const maxScroll = frame2Section.offsetHeight - window.innerHeight;
+
+    if (maxScroll <= 0) {
+      return;
+    }
+
+    const progress = Math.min(Math.max(scrolled / maxScroll, 0), 1);
+
+    const textOut = Math.min(Math.max(progress / 0.4, 0), 1);
+    const placeholderIn = Math.min(Math.max((progress - 0.4) / 0.5, 0), 1);
+
+    text2Content.style.opacity = (1 - textOut).toString();
+    placeholder2.style.opacity = placeholderIn.toString();
+  };
+
+  const initFrame2Mobile = () => {
+    if (isMobile() && text2Content && placeholder2) {
+      text2Content.style.zIndex = "6";
+      text2Content.style.opacity = "1";
+      placeholder2.style.opacity = "0";
+    } else if (text2Content && placeholder2) {
+      text2Content.style.opacity = "";
+      placeholder2.style.opacity = "";
+    }
+  };
+
+  initFrame2Mobile();
 
   const updateFrame5State = () => {
     const f5Rect = frame5?.getBoundingClientRect();
@@ -169,9 +214,10 @@ import "@/styles/propaganda-2.css";
 
     const frame5Bottom = f5Rect.bottom;
     const isFrame5BottomInViewport = frame5Bottom <= window.innerHeight + 1;
-    if (!hasBrokenVaseTriggered && isFrame5BottomInViewport) {
-      hasBrokenVaseTriggered = true;
+    if (isFrame5BottomInViewport) {
       mainContent?.classList.add("is-vase-broken");
+    } else {
+      mainContent?.classList.remove("is-vase-broken");
     }
 
     if (!placeholderFrame5) {
@@ -244,6 +290,7 @@ import "@/styles/propaganda-2.css";
 
     lenis.on("scroll", () => {
       const mobile = isMobile();
+      handleFrame2Dissolve();
       handleFrame3Scroll(mobile);
       handleFrame4Scroll(mobile);
       updateFrame5State();
@@ -255,6 +302,7 @@ import "@/styles/propaganda-2.css";
     window.addEventListener("resize", () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
+        initFrame2Mobile();
         updateFrame5State();
         if (isMobile()) {
           text3.style.opacity = "1";
