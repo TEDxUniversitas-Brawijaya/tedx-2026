@@ -7,7 +7,9 @@ import texture from "@/assets/imgs/paper-grain-texture-1.png";
 import window from "@/assets/imgs/window-2.png";
 import lighting from "@/assets/svgs/window-lighting.svg";
 import lamp from "@/assets/imgs/chandelier-1.png";
-import sofaSeat from "@/assets/imgs/sofa-seat.png";
+import sofa from "@/assets/imgs/sofa-1-clean.png";
+import table from "@/assets/imgs/table-2.png";
+import chair from "@/assets/imgs/side-chair.png";
 import carpet from "@/assets/imgs/green-carpet.png";
 import diningTable from "@/assets/imgs/dining-seat.png";
 import vase from "@/assets/imgs/flower-vase.png";
@@ -32,7 +34,10 @@ import "@/styles/propaganda-2.css";
         <Image src={lighting} class="lighting" alt="Window Lighting" />
       </div>
       <Image src={lamp} class="hanging-lamp" alt="Hanging Lamp" />
-      <Image src={sofaSeat} class="sofa-seat" alt="Sofa Seat" />
+      <Image src={sofa} class="sofa" alt="Sofa" />
+      <Image src={table} class="table" alt="table" />
+      <Image src={chair} class="chair" alt="chair" />
+      <Image src={chair} class="mirror-chair" alt="chair2" />
       <div class="text">
         <h3 style="font-size: 1.5rem;">ANTOLOGI RASA</h3>
         <p>
@@ -244,8 +249,8 @@ import "@/styles/propaganda-2.css";
           ? 1
           : Math.max(1 - scrollPastBottomFrame3 / fadeDivisor, 0);
 
-        const moveMultiplier = mobile ? 0.5 : 1.1;
-        const rotateMultiplier = mobile ? 0.02 : 0.045;
+        const moveMultiplier = mobile ? 1.05 : 1.1;
+        const rotateMultiplier = mobile ? 0.045 : 0.045;
         const scale =
           1 + (scrollPastBottomFrame3 / (mobile ? 200 : 100)) * 0.03;
         const moveY = scrollPastBottomFrame3 * moveMultiplier;
@@ -275,8 +280,8 @@ import "@/styles/propaganda-2.css";
         const f3RectNow = frame3.getBoundingClientRect();
         const scrollPastBottom = window.innerHeight - f3RectNow.bottom;
         if (scrollPastBottom > 0) {
-          const moveMultiplier = mobile ? 0.5 : 1.1;
-          const rotateMultiplier = mobile ? 0.02 : 0.05;
+          const moveMultiplier = mobile ? 1.05 : 1.1;
+          const rotateMultiplier = mobile ? 0.045 : 0.05;
           const scale4 = 1 + (scrollPastBottom / (mobile ? 200 : 100)) * 0.03;
           const moveY4 = scrollPastBottom * moveMultiplier;
           const rotate4 = scrollPastBottom * rotateMultiplier;

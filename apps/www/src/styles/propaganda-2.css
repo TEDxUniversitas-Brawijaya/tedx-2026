@@ -1,9 +1,10 @@
 h3 {
   font-family: var(--font-serif);
+  font-size: clamp(0.8rem, 1.15vw, 1.5rem);
 }
 p {
   font-family: var(--font-sans);
-  font-size: 1rem;
+  font-size: clamp(0.6rem, 1.5vw, 1rem);
 }
 #propa2-main {
   margin-top: calc(var(--navbar-height, 64px) - 2px);
@@ -93,12 +94,39 @@ p {
   animation: lampSwing 4s ease-in-out infinite;
   transform-origin: top center;
 }
-.sofa-seat {
+.sofa {
   position: absolute;
-  bottom: 3%;
+  bottom: 10%;
   left: 50%;
-  transform: translate(-50%, -3%) scale(1.2);
-  width: clamp(800px, 100vw, 1000px);
+  transform: translate(-50%, -10%) scale(1.2);
+  width: clamp(400px, 50vw, 500px);
+  height: auto;
+}
+
+.table {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translate(-50%, -5%);
+  width: clamp(350px, 45vw, 450px);
+  height: auto;
+}
+
+.chair {
+  position: absolute;
+  bottom: 5%;
+  left: 15%;
+  transform: translate(-15%, -5%);
+  width: clamp(150px, 25vw, 250px);
+  height: auto;
+}
+
+.mirror-chair {
+  position: absolute;
+  bottom: 5%;
+  right: 15%;
+  transform: translate(15%, -5%) scaleX(-1);
+  width: clamp(250px, 25vw, 250px);
   height: auto;
 }
 
@@ -175,7 +203,7 @@ p {
   position: absolute;
   top: 10%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, 0);
   height: clamp(200px, 40vh, 350px);
 }
 
@@ -241,9 +269,9 @@ p {
 
 .vase-container {
   position: absolute;
-  bottom: 18%;
+  bottom: 17%;
   left: 50%;
-  transform: translate(-50%, -18%);
+  transform: translate(-50%, -17%);
   z-index: 2;
   opacity: 1;
   filter: blur(0);
@@ -297,7 +325,9 @@ p {
 }
 
 .text-4 {
-  margin-top: 5%;
+  position: absolute;
+  top: 10%;
+  transform: translate(0, -10%);
   width: 65%;
   z-index: 6;
   color: white;
@@ -389,37 +419,69 @@ p {
 
 .broken-vase {
   display: block;
-  width: auto;
+  width: clamp(300px, 30vw, 500px);
+  height: auto;
 }
 .flower-stalk {
   position: absolute;
-  bottom: -120%;
+  bottom: -110%;
   right: -30%;
   transform: rotate(-106deg);
   width: auto;
-  height: clamp(300px, 424px, 500px);
+  height: clamp(250px, 28vw, 428px);
 }
 
 /* Tablet: max 1024px */
 @media (max-width: 1024px) {
+  /* frame 1 tablet - keep text on the left like desktop */
   .text {
-    left: 50%;
-    transform: translateX(-50%);
-    top: 12%;
+    left: 6%;
+    top: 15%;
+    transform: none;
+  }
+
+  .window-1-container {
+    top: 8%;
+    right: 2%;
+  }
+
+  .window-1 {
+    width: clamp(220px, 22vw, 380px);
   }
 
   .hanging-lamp {
-    right: 50%;
-    transform: translateX(50%);
+    right: 18%;
+    transform: translateX(18%);
+    width: clamp(180px, 14vw, 220px);
   }
 
-  .sofa-seat {
+  .sofa {
+    bottom: 10%;
+    transform: translate(-50%, 10%);
+    width: clamp(380px, 52vw, 560px);
+  }
+
+  .table {
     bottom: 0;
-    transform: translate(-50%, 0);
+    width: clamp(350px, 42vw, 480px);
+  }
+
+  .chair {
+    bottom: 10%;
+    left: 3%;
+    transform: translate(-3%, 10%);
+    width: clamp(220px, 25vw, 300px);
+  }
+
+  .mirror-chair {
+    bottom: 10%;
+    right: 3%;
+    transform: translate(3%, 10%) scaleX(-1);
+    width: clamp(220px, 25vw, 300px);
   }
 
   .floor {
-    bottom: -30%;
+    bottom: -40%;
   }
 
   /* frame 2 tablet */
@@ -429,7 +491,7 @@ p {
   }
 
   .frame-2-content {
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 2rem;
     padding: 2rem 1rem;
     width: 100%;
@@ -447,22 +509,31 @@ p {
 
   /* frame 3 tablet */
   .text-3 {
-    width: 85%;
-    gap: 2rem;
+    width: 65%;
+    gap: 1rem;
+  }
+
+  .text-3 h3 {
+    font-size: 1.3rem !important;
   }
 
   .vase {
-    height: clamp(220px, 300px, 380px);
+    height: clamp(220px, 250px, 380px);
   }
 
   /* frame 4 tablet */
   .text-4 {
     width: 80%;
+    font-size: 1.2rem !important;
   }
 
   /* frame 5 tablet */
   .placeholder-frame-5 {
     width: min(80vw, 560px);
+  }
+
+  .flower-stalk {
+    bottom: -100%;
   }
 }
 
@@ -502,10 +573,27 @@ p {
     height: 50vh;
   }
 
-  .sofa-seat {
-    min-width: 1000px;
+  .sofa {
+    min-width: 500px;
+    bottom: 10%;
+    left: -30%;
+    transform: translate(-30%, -10%);
+  }
+
+  .table {
     bottom: 5%;
-    transform: translate(-75%, 0) scale(1);
+    left: -10%;
+    transform: translate(-40%, -5%);
+  }
+
+  .chair {
+    display: none;
+  }
+
+  .mirror-chair {
+    right: -15%;
+    bottom: 5%;
+    transform: translate(15%, -5%) scaleX(-1);
   }
 
   .text {
@@ -593,14 +681,19 @@ p {
   }
 
   .window-container-3 {
-    height: clamp(130px, 20vw, 220px);
-    top: 5%;
+    left: -45%;
+    transform: translateX(35%);
+  }
+
+  .dining-table {
+    left: 50%;
+    bottom: 15%;
+    transform: translate(-50%, -15%) scale(3.5);
   }
 
   .text-3 {
     position: absolute;
-    bottom: auto;
-    top: 8%;
+    bottom: 8%;
     width: 88%;
     gap: 1.2rem;
     transform: translateX(-50%);
@@ -616,11 +709,18 @@ p {
 
   .vase-container {
     bottom: 10%;
+    filter: brightness(1.2);
     transform: translate(-50%, 0);
   }
 
   .vase {
-    height: clamp(180px, 38vw, 280px);
+    height: clamp(380px, 78vw, 480px);
+  }
+
+  .vase-container {
+    bottom: 15%;
+    left: 50%;
+    transform: translate(-50%, -15%);
   }
 
   /* frame 4 mobile */
@@ -640,7 +740,7 @@ p {
   .desk-frame-4 {
     width: 130%;
     bottom: -5%;
-    transform: translate(-50%, 5%);
+    transform: translate(-50%, 5%) scale(3.5);
   }
 
   /* frame 5 mobile */
@@ -657,19 +757,28 @@ p {
 
   .broken-vase-container {
     bottom: auto;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -40%);
+    filter: brightness(1.2);
+    top: 60%;
+    left: 30%;
+    transform: translate(-70%, -60%) scale(1.5);
   }
 
   .broken-vase {
-    height: clamp(120px, 35vw, 200px);
+    height: auto;
+    width: clamp(300px, 35vw, 400px);
   }
 
   .flower-stalk {
-    height: clamp(160px, 40vw, 250px);
+    height: clamp(200px, 40vw, 250px);
     bottom: -80%;
-    right: -20%;
+    right: -30%;
+  }
+  .placeholder-frame-5 {
+    max-height: 370px;
+    top: -40%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    aspect-ratio: 3 / 4;
   }
 }
 
@@ -679,23 +788,6 @@ p {
     top: 13%;
     width: 90%;
     gap: 1rem;
-  }
-
-  .text h3 {
-    font-size: 1.3rem !important;
-  }
-
-  .vase {
-    height: clamp(150px, 40vw, 220px);
-  }
-
-  .text-3 {
-    width: 92%;
-    top: 6%;
-  }
-
-  .text-3 h3 {
-    font-size: 1.15rem !important;
   }
 
   .text-4 {
