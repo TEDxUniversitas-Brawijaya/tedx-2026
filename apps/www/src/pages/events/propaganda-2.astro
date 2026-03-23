@@ -147,13 +147,11 @@ import "@/styles/propaganda-2.css";
 <script>
   import Lenis from "lenis";
 
-  const lenis = new Lenis();
+  const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
+  const easeInOutCubic = (t: number) =>
+    t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
 
-  function raf(time: number) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
+  new Lenis({ autoRaf: true });
 
   const vaseWrapper = document.querySelector(".vase-wrapper") as HTMLElement;
   const mainContent = document.querySelector("#propa2-main") as HTMLElement;
@@ -173,6 +171,25 @@ import "@/styles/propaganda-2.css";
     ".frame-2 .placeholder"
   ) as HTMLElement;
 
+  if (vaseWrapper) {
+    vaseWrapper.style.willChange = "transform";
+  }
+  if (text3) {
+    text3.style.willChange = "opacity";
+  }
+  if (text4) {
+    text4.style.willChange = "opacity";
+  }
+  if (placeholderFrame5) {
+    placeholderFrame5.style.willChange = "opacity";
+  }
+  if (text2Content) {
+    text2Content.style.willChange = "opacity";
+  }
+  if (placeholder2) {
+    placeholder2.style.willChange = "opacity";
+  }
+
   const isMobile = () => window.innerWidth <= 768;
 
   const handleFrame2Dissolve = () => {
@@ -188,10 +205,16 @@ import "@/styles/propaganda-2.css";
       return;
     }
 
-    const progress = Math.min(Math.max(scrolled / maxScroll, 0), 1);
+    const rawProgress = Math.min(Math.max(scrolled / maxScroll, 0), 1);
 
-    const textOut = Math.min(Math.max(progress / 0.4, 0), 1);
-    const placeholderIn = Math.min(Math.max((progress - 0.4) / 0.5, 0), 1);
+    const rawTextOut = Math.min(Math.max(rawProgress / 0.4, 0), 1);
+    const textOut = easeInOutCubic(rawTextOut);
+
+    const rawPlaceholderIn = Math.min(
+      Math.max((rawProgress - 0.4) / 0.5, 0),
+      1
+    );
+    const placeholderIn = easeOutCubic(rawPlaceholderIn);
 
     text2Content.style.opacity = (1 - textOut).toString();
     placeholder2.style.opacity = placeholderIn.toString();
@@ -231,8 +254,8 @@ import "@/styles/propaganda-2.css";
     const fadeDistance = isMobile() ? 180 : 300;
     const scrollPastTopFrame5 = window.innerHeight - f5Rect.top;
     if (scrollPastTopFrame5 > 0) {
-      const textOpacity = Math.min(scrollPastTopFrame5 / fadeDistance, 1);
-      placeholderFrame5.style.opacity = textOpacity.toString();
+      const rawOpacity = Math.min(scrollPastTopFrame5 / fadeDistance, 1);
+      placeholderFrame5.style.opacity = easeOutCubic(rawOpacity).toString();
     } else {
       placeholderFrame5.style.opacity = "0";
     }
@@ -245,9 +268,8 @@ import "@/styles/propaganda-2.css";
 
       if (scrollPastBottomFrame3 > 0) {
         const fadeDivisor = mobile ? 160 : 100;
-        const textOpacity = mobile
-          ? 1
-          : Math.max(1 - scrollPastBottomFrame3 / fadeDivisor, 0);
+        const rawFade = Math.min(scrollPastBottomFrame3 / fadeDivisor, 1);
+        const textOpacity = mobile ? 1 : Math.max(1 - easeOutCubic(rawFade), 0);
 
         const moveMultiplier = mobile ? 1.05 : 1.1;
         const rotateMultiplier = mobile ? 0.045 : 0.045;
@@ -270,17 +292,18 @@ import "@/styles/propaganda-2.css";
 
       if (distanceToCenter <= 0) {
         const opacityRamp = mobile ? 200 : 350;
-        const textOpacity = Math.min(
+        const rawOpacity = Math.min(
           1,
           Math.abs(distanceToCenter) / opacityRamp
         );
+        const textOpacity = easeOutCubic(rawOpacity);
         text4.style.opacity = textOpacity.toString();
         text4.style.zIndex = textOpacity >= 1 ? "6" : "1";
 
         const f3RectNow = frame3.getBoundingClientRect();
         const scrollPastBottom = window.innerHeight - f3RectNow.bottom;
         if (scrollPastBottom > 0) {
-          const moveMultiplier = mobile ? 1.05 : 1.1;
+          const moveMultiplier = 1.05;
           const rotateMultiplier = mobile ? 0.045 : 0.05;
           const scale4 = 1 + (scrollPastBottom / (mobile ? 200 : 100)) * 0.03;
           const moveY4 = scrollPastBottom * moveMultiplier;
@@ -292,13 +315,24 @@ import "@/styles/propaganda-2.css";
       }
     };
 
-    lenis.on("scroll", () => {
-      const mobile = isMobile();
-      handleFrame2Dissolve();
-      handleFrame3Scroll(mobile);
-      handleFrame4Scroll(mobile);
-      updateFrame5State();
-    });
+    let scrollRafId: number | null = null;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (scrollRafId !== null) {
+          return;
+        }
+        scrollRafId = requestAnimationFrame(() => {
+          const mobile = isMobile();
+          handleFrame2Dissolve();
+          handleFrame3Scroll(mobile);
+          handleFrame4Scroll(mobile);
+          updateFrame5State();
+          scrollRafId = null;
+        });
+      },
+      { passive: true }
+    );
 
     updateFrame5State();
 
