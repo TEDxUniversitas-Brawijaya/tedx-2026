@@ -63,7 +63,7 @@ import "@/styles/propaganda-2.css";
         <Image src={carpet} class="carpet" alt="Green Carpet" />
         <Image src={floor} class="floor-frame-2" alt="Wood Floor" />
         <div class="frame-2-content">
-          <div class="placeholder">placeholder</div>
+          <!-- <div class="placeholder">placeholder</div> -->
           <p
             class="text-2-content"
             style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem' }}
@@ -131,7 +131,7 @@ import "@/styles/propaganda-2.css";
     <!-- frame 5 -->
     <section class="frame-5" style="position: relative;">
       <Image src={floor} class="floor-frame-5" alt="Propaganda 2" />
-      <div class="placeholder-frame-5">placeholder</div>
+      <!-- <div class="placeholder-frame-5">placeholder</div> -->
       <div class="broken-vase-container">
         <div class="broken-vase-wrapper">
           <Image
@@ -163,16 +163,16 @@ import "@/styles/propaganda-2.css";
   const frame4 = document.querySelector(".frame-4") as HTMLElement;
   const text4 = document.querySelector(".text-4") as HTMLElement;
   const frame5 = document.querySelector(".frame-5") as HTMLElement;
-  const placeholderFrame5 = document.querySelector(
-    ".placeholder-frame-5"
-  ) as HTMLElement;
+  // const placeholderFrame5 = document.querySelector(
+  //   ".placeholder-frame-5"
+  // ) as HTMLElement;
 
-  // Frame 2 dissolve animation elements
+  // Frame 2 animation elements (placeholder hidden)
   const frame2Section = document.querySelector(".frame-2") as HTMLElement;
   const text2Content = document.querySelector(".text-2-content") as HTMLElement;
-  const placeholder2 = document.querySelector(
-    ".frame-2 .placeholder"
-  ) as HTMLElement;
+  // const placeholder2 = document.querySelector(
+  //   ".frame-2 .placeholder"
+  // ) as HTMLElement;
 
   if (vaseWrapper) {
     vaseWrapper.style.willChange = "transform";
@@ -183,20 +183,20 @@ import "@/styles/propaganda-2.css";
   if (text4) {
     text4.style.willChange = "opacity";
   }
-  if (placeholderFrame5) {
-    placeholderFrame5.style.willChange = "opacity";
-  }
+  // if (placeholderFrame5) {
+  //   placeholderFrame5.style.willChange = "opacity";
+  // }
   if (text2Content) {
     text2Content.style.willChange = "opacity";
   }
-  if (placeholder2) {
-    placeholder2.style.willChange = "opacity";
-  }
+  // if (placeholder2) {
+  //   placeholder2.style.willChange = "opacity";
+  // }
 
   const isMobile = () => window.innerWidth <= 768;
 
-  const handleFrame2Dissolve = () => {
-    if (!(isMobile() && frame2Section && text2Content && placeholder2)) {
+  const handleFrame2TextFade = () => {
+    if (!(frame2Section && text2Content)) {
       return;
     }
 
@@ -209,28 +209,16 @@ import "@/styles/propaganda-2.css";
     }
 
     const rawProgress = Math.min(Math.max(scrolled / maxScroll, 0), 1);
-
-    const rawTextOut = Math.min(Math.max(rawProgress / 0.4, 0), 1);
-    const textOut = easeInOutCubic(rawTextOut);
-
-    const rawPlaceholderIn = Math.min(
-      Math.max((rawProgress - 0.4) / 0.5, 0),
-      1
-    );
-    const placeholderIn = easeOutCubic(rawPlaceholderIn);
-
-    text2Content.style.opacity = (1 - textOut).toString();
-    placeholder2.style.opacity = placeholderIn.toString();
+    // Teks fade-out di 60% pertama scroll frame-2
+    const rawTextOut = Math.min(Math.max(rawProgress / 0.6, 0), 1);
+    const textOpacity = 0 + easeInOutCubic(rawTextOut);
+    text2Content.style.opacity = textOpacity.toString();
   };
 
   const initFrame2Mobile = () => {
-    if (isMobile() && text2Content && placeholder2) {
+    if (text2Content) {
       text2Content.style.zIndex = "6";
       text2Content.style.opacity = "1";
-      placeholder2.style.opacity = "0";
-    } else if (text2Content && placeholder2) {
-      text2Content.style.opacity = "";
-      placeholder2.style.opacity = "";
     }
   };
 
@@ -250,18 +238,15 @@ import "@/styles/propaganda-2.css";
       mainContent?.classList.remove("is-vase-broken");
     }
 
-    if (!placeholderFrame5) {
-      return;
-    }
-
-    const fadeDistance = isMobile() ? 180 : 300;
-    const scrollPastTopFrame5 = window.innerHeight - f5Rect.top;
-    if (scrollPastTopFrame5 > 0) {
-      const rawOpacity = Math.min(scrollPastTopFrame5 / fadeDistance, 1);
-      placeholderFrame5.style.opacity = easeOutCubic(rawOpacity).toString();
-    } else {
-      placeholderFrame5.style.opacity = "0";
-    }
+    // placeholder-frame-5 hidden — animasi opacity dinonaktifkan
+    // const fadeDistance = isMobile() ? 180 : 300;
+    // const scrollPastTopFrame5 = window.innerHeight - f5Rect.top;
+    // if (scrollPastTopFrame5 > 0) {
+    //   const rawOpacity = Math.min(scrollPastTopFrame5 / fadeDistance, 1);
+    //   placeholderFrame5.style.opacity = easeOutCubic(rawOpacity).toString();
+    // } else {
+    //   placeholderFrame5.style.opacity = "0";
+    // }
   };
 
   if (vaseWrapper && frame3) {
@@ -327,7 +312,7 @@ import "@/styles/propaganda-2.css";
         }
         scrollRafId = requestAnimationFrame(() => {
           const mobile = isMobile();
-          handleFrame2Dissolve();
+          handleFrame2TextFade();
           handleFrame3Scroll(mobile);
           handleFrame4Scroll(mobile);
           updateFrame5State();
