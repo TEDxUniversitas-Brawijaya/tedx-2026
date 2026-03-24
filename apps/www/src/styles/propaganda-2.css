@@ -1,0 +1,818 @@
+h3 {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 1.15vw, 1.5rem);
+}
+p {
+  font-family: var(--font-sans);
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+#propa2-main {
+  margin-top: calc(var(--navbar-height, 64px) - 2px);
+  width: 100%;
+  max-width: 100%;
+  height: max-content;
+  overflow-x: clip;
+}
+
+.frame-1 {
+  height: 100vh;
+}
+
+.texture {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.6;
+  filter: brightness(0.6);
+  z-index: 5;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.background {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background-repeat: repeat;
+}
+.floor {
+  position: absolute;
+  bottom: -55%;
+  left: 50%;
+  transform: translateX(-50%);
+  scale: 1.2;
+  width: 100vw;
+  min-width: 1000px;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
+.window-1-container {
+  position: absolute;
+  top: 10%;
+  right: 6%;
+}
+.window-1 {
+  width: clamp(250px, 15vw, 441px);
+  height: auto;
+}
+.lighting {
+  position: absolute;
+  top: 88%;
+  right: 15%;
+  transform: scale(2.6) scaleY(1.3);
+  width: 100%;
+  height: auto;
+  opacity: 0;
+  filter: blur(8px);
+  z-index: 6;
+  animation: lightingAnimation 3s ease-in-out 1s infinite;
+  will-change: opacity;
+}
+@keyframes lightingAnimation {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.hanging-lamp {
+  position: absolute;
+  top: 0;
+  right: 15%;
+  transform: translateX(-15%);
+  width: clamp(250px, 12vw, 180px);
+  height: auto;
+  animation: lampSwing 4s ease-in-out infinite;
+  transform-origin: top center;
+  will-change: transform;
+}
+.sofa {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translate(-50%, -10%) scale(1.2);
+  width: clamp(400px, 50vw, 500px);
+  height: auto;
+}
+
+.table {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translate(-50%, -5%);
+  width: clamp(350px, 45vw, 450px);
+  height: auto;
+}
+
+.chair {
+  position: absolute;
+  bottom: 5%;
+  left: 15%;
+  transform: translate(-15%, -5%);
+  width: clamp(150px, 25vw, 250px);
+  height: auto;
+}
+
+.mirror-chair {
+  position: absolute;
+  bottom: 5%;
+  right: 15%;
+  transform: translate(15%, -5%) scaleX(-1);
+  width: clamp(250px, 25vw, 250px);
+  height: auto;
+}
+
+.text {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  text-align: center;
+  top: 15%;
+  left: 10%;
+  max-width: 43rem;
+  color: white;
+  z-index: 6;
+}
+
+/* frame 2 */
+.frame-2 {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 80vh;
+}
+.carpet {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scale(1.3);
+  width: 100%;
+  clip-path: inset(0% 0% 0% 0%);
+  height: auto;
+}
+
+.floor-frame-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+.frame-2-content {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+}
+.placeholder {
+  display: grid;
+  place-items: center;
+  z-index: 1;
+  width: clamp(320px, 55vw, 700px);
+  aspect-ratio: 16 / 9;
+  height: auto;
+  background-color: white;
+}
+.text-2-content {
+  text-align: center;
+  color: white;
+  width: 60%;
+  z-index: 6;
+  height: auto;
+}
+
+/* frame 3 */
+.frame-3 {
+  width: 100%;
+  height: 100vh;
+}
+
+.window-container-3 {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: max-content;
+  height: clamp(200px, 40vh, 350px);
+}
+
+.window-wrapper-3 {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.window-frame-3 {
+  width: auto;
+  height: 100%;
+}
+
+.curtain {
+  position: absolute;
+  top: 0;
+  left: 0%;
+  width: auto;
+  z-index: 5;
+  transform-origin: top left;
+  transform-style: preserve-3d;
+  filter: brightness(1.3);
+  animation: curtainSwing 4s ease-in-out infinite;
+  will-change: transform;
+}
+.curtain2 {
+  position: absolute;
+  top: 0;
+  right: -30%;
+  width: auto;
+  transform-origin: top left;
+  transform-style: preserve-3d;
+  filter: brightness(1.3);
+  z-index: 5;
+  animation: curtainSwing2 4s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes curtainSwing {
+  0%,
+  100% {
+    transform: translateX(35%) scaleX(-1) rotate(0deg);
+  }
+  50% {
+    transform: translateX(35%) scaleX(-1) rotate(5deg);
+  }
+}
+@keyframes curtainSwing2 {
+  0%,
+  100% {
+    transform: translateX(25%) rotate(0deg);
+  }
+  50% {
+    transform: translateX(25%) rotate(5deg);
+  }
+}
+.dining-table {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: auto;
+}
+
+.vase-container {
+  position: absolute;
+  bottom: 17%;
+  left: 50%;
+  transform: translate(-50%, -17%);
+  z-index: 2;
+  opacity: 1;
+  filter: blur(0);
+  will-change: opacity, filter;
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.vase-wrapper {
+  position: relative;
+  display: inline-block;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+.vase {
+  display: block;
+  width: auto;
+  height: clamp(300px, 45vh, 450px);
+}
+.vase-shine {
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: auto;
+  z-index: 2;
+  filter: blur(100px) brightness(2);
+  pointer-events: none;
+}
+
+.text-3 {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  text-align: center;
+  bottom: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  z-index: 6;
+  color: white;
+}
+
+/* frame-4 */
+
+.frame-4 {
+  display: grid;
+  place-items: start center;
+  text-align: center;
+}
+
+.text-4 {
+  position: absolute;
+  top: 10%;
+  transform: translate(0, -10%);
+  width: 65%;
+  z-index: 6;
+  color: white;
+}
+
+.desk-frame-4 {
+  position: absolute;
+  bottom: -7%;
+  left: 50%;
+  transform: translate(-50%, 7%);
+  width: 90%;
+  height: auto;
+}
+
+/* frame 5 */
+
+.frame-5 {
+  position: relative;
+  width: 100%;
+  height: 40vh;
+}
+
+.floor-frame-5 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.placeholder-frame-5 {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  z-index: 1;
+  top: -50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  aspect-ratio: 16 / 9;
+  width: clamp(320px, 55vw, 700px);
+  height: auto;
+  background-color: white;
+}
+
+.broken-vase-container {
+  position: absolute;
+  bottom: 20%;
+  left: 40%;
+  transform: translate(-40%, -20%);
+  opacity: 0;
+  filter: blur(8px);
+  pointer-events: none;
+  will-change: opacity, filter;
+  transition:
+    opacity 2000ms cubic-bezier(0.22, 1, 0.36, 1) 200ms,
+    filter 2000ms cubic-bezier(0.22, 1, 0.36, 1) 200ms;
+}
+
+#propa2-main.is-vase-broken .vase-container {
+  opacity: 0;
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+#propa2-main.is-vase-broken .broken-vase-container {
+  opacity: 1;
+  filter: blur(0) brightness(1.2);
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vase-container,
+  .broken-vase-container {
+    transition: none;
+  }
+  #propa2-main * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.broken-vase-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.broken-vase {
+  display: block;
+  width: clamp(260px, 27vw, 500px);
+  height: auto;
+}
+.flower-stalk {
+  position: absolute;
+  bottom: -110%;
+  right: -30%;
+  transform: rotate(-106deg);
+  width: auto;
+  height: clamp(210px, 25vw, 428px);
+}
+
+@media (max-width: 1024px) {
+  .text {
+    left: 6%;
+    top: 15%;
+    transform: none;
+    max-width: 30rem;
+  }
+
+  .window-1-container {
+    top: 8%;
+    right: 2%;
+  }
+
+  .window-1 {
+    width: clamp(220px, 20vw, 380px);
+  }
+
+  .hanging-lamp {
+    right: 18%;
+    transform: translateX(18%);
+    width: clamp(180px, 14vw, 220px);
+  }
+
+  .sofa {
+    bottom: 10%;
+    transform: translate(-50%, -10%);
+    width: clamp(600px, 52vw, 660px);
+  }
+
+  .table {
+    bottom: 5%;
+    transform: translate(-50%, -5%);
+    width: clamp(450px, 42vw, 480px);
+  }
+
+  .chair {
+    bottom: 10%;
+    left: -30%;
+    transform: translate(30%, 10%);
+    width: clamp(300px, 25vw, 400px);
+  }
+
+  .mirror-chair {
+    bottom: 10%;
+    right: -15%;
+    transform: translate(15%, 10%) scaleX(-1);
+    width: clamp(300px, 25vw, 400px);
+  }
+
+  .floor {
+    bottom: calc(100vw * -0.25);
+  }
+
+  .frame-2 {
+    height: auto;
+    min-height: 60vh;
+  }
+
+  .frame-2-content {
+    flex-direction: column-reverse;
+    gap: 2rem;
+    padding: 2rem 1rem;
+    width: 100%;
+  }
+
+  .placeholder {
+    width: min(90vw, 560px);
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .text-2-content {
+    width: min(90%, 32rem);
+  }
+
+  .text-3 {
+    width: 85%;
+    gap: 1rem;
+    bottom: 2%;
+  }
+
+  .dining-table {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scale(1.3);
+    width: 100%;
+    height: auto;
+  }
+
+  .text-3 h3 {
+    font-size: 1.3rem !important;
+  }
+
+  .vase-container {
+    bottom: 5%;
+  }
+
+  .vase {
+    height: clamp(280px, 250px, 380px);
+  }
+
+  .text-4 {
+    width: 80%;
+  }
+
+  .text-4 p {
+    font-size: 1rem !important;
+  }
+
+  .placeholder-frame-5 {
+    width: min(80vw, 560px);
+  }
+
+  .broken-vase-container {
+    bottom: 10%;
+    left: 40%;
+    transform: translate(-40%, -10%);
+  }
+
+  .broken-vase {
+    width: clamp(300px, 30vw, 500px);
+  }
+  .flower-stalk {
+    bottom: -80%;
+  }
+}
+
+@media (max-width: 768px) {
+  .texture {
+    filter: brightness(0.2);
+  }
+
+  .frame-1 {
+    height: 100svh;
+  }
+
+  .hanging-lamp {
+    right: 50%;
+    transform: translateX(50%);
+    top: -5%;
+  }
+
+  .window-1-container {
+    top: 10%;
+    bottom: auto;
+    right: calc(100vw * -0.25);
+  }
+
+  .lighting {
+    z-index: 7;
+    transform: scale(2.5) scaleY(1.3);
+  }
+
+  .floor {
+    right: 20%;
+    bottom: -15%;
+    transform: translate(-35%, 20%);
+    height: 50vh;
+    width: 100vw;
+  }
+
+  .sofa {
+    min-width: 500px;
+    bottom: 10%;
+    left: calc(100vw * -0.2);
+    transform: translate(calc(100vw * -0.2), -10%);
+  }
+
+  .table {
+    bottom: 5%;
+    left: -10%;
+    transform: translate(-40%, -5%);
+  }
+
+  .chair {
+    display: none;
+  }
+
+  .mirror-chair {
+    right: -15%;
+    bottom: 5%;
+    transform: translate(15%, -5%) scaleX(-1);
+    width: clamp(250px, 25vw, 400px);
+  }
+
+  .text {
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    gap: 2rem !important;
+    width: 80% !important;
+  }
+
+  .text h3 {
+    font-size: 1.4rem !important;
+    margin: 0;
+    transform: scale(1.2);
+  }
+
+  .text p {
+    font-size: 1rem;
+  }
+
+  .frame-2 {
+    width: 100%;
+    height: 300vh;
+  }
+
+  .frame-2-sticky-wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 6;
+    will-change: transform;
+  }
+
+  .frame-2 .carpet,
+  .frame-2 .floor-frame-2,
+  .frame-2 .placeholder {
+    filter: brightness(0.6);
+  }
+
+  .frame-2-content {
+    position: relative;
+    width: min(82%, 28rem);
+    height: 370px;
+    display: block;
+  }
+
+  .text-2-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    opacity: 1;
+    transition: opacity 0.6s ease;
+  }
+
+  .placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100%;
+    aspect-ratio: unset;
+    opacity: 0; /* starts hidden */
+    transition: opacity 0.6s ease;
+  }
+
+  .carpet {
+    bottom: 15%;
+    left: 0;
+    transform: scale(5) translate(0, -15%);
+  }
+
+  /* frame 3 mobile */
+  .frame-3 {
+    height: 100svh;
+    min-height: 600px;
+  }
+
+  .dining-table {
+    left: 50%;
+    bottom: 15%;
+    transform: translate(-50%, -15%) scale(3.5);
+  }
+
+  .text-3 {
+    position: absolute;
+    bottom: 8%;
+    width: 88%;
+    gap: 1.2rem;
+    transform: translateX(-50%);
+  }
+
+  .text-3 h3 {
+    font-size: 1.3rem !important;
+  }
+
+  .text-3 p {
+    font-size: 0.9rem;
+  }
+
+  .vase-container {
+    bottom: 10%;
+    filter: brightness(1.2);
+    transform: translate(-50%, 0);
+  }
+
+  .vase {
+    height: clamp(380px, 78vw, 480px);
+  }
+
+  .vase-container {
+    bottom: 15%;
+    left: 50%;
+    transform: translate(-50%, -15%);
+  }
+
+  .frame-4 {
+    min-height: 100svh;
+  }
+
+  .text-4 {
+    width: 88%;
+    margin-top: 8%;
+  }
+
+  .text-4 p {
+    font-size: 0.9rem;
+  }
+
+  .desk-frame-4 {
+    width: 130%;
+    bottom: -5%;
+    transform: translate(-50%, 5%) scale(3.5);
+  }
+
+  .frame-5 {
+    height: 55vh;
+    min-height: 300px;
+  }
+
+  .broken-vase-container {
+    bottom: auto;
+    top: 60%;
+    left: 30%;
+    transform: translate(-70%, -60%) scale(1.5);
+  }
+
+  .broken-vase {
+    height: auto;
+    width: clamp(300px, 35vw, 400px);
+  }
+
+  .flower-stalk {
+    height: clamp(200px, 40vw, 250px);
+    bottom: -80%;
+    right: -30%;
+  }
+  .placeholder-frame-5 {
+    max-height: 370px;
+    top: -35%;
+    left: 50%;
+    transform: translate(-50%, -35%);
+    aspect-ratio: 3 / 4;
+  }
+}
+
+@media (max-width: 480px) {
+  .text {
+    top: 13%;
+    width: 90%;
+    gap: 1rem;
+  }
+
+  .text-4 {
+    width: 92%;
+  }
+
+  .placeholder {
+    width: 92vw;
+  }
+
+  .placeholder-frame-5 {
+    width: 92vw;
+  }
+
+  .frame-2-content {
+    padding: 1.5rem 0.8rem;
+  }
+}
