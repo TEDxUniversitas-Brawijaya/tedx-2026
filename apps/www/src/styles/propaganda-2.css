@@ -375,7 +375,6 @@ p {
   left: 50%;
   transform: translate(-50%, -50%);
   aspect-ratio: 16 / 9;
-  /* clamp + vw for consistent sizing across browsers */
   width: clamp(320px, 55vw, 700px);
   height: auto;
   background-color: white;
@@ -425,7 +424,7 @@ p {
 
 .broken-vase {
   display: block;
-  width: clamp(260px, 30vw, 500px);
+  width: clamp(260px, 27vw, 500px);
   height: auto;
 }
 .flower-stalk {
@@ -434,7 +433,7 @@ p {
   right: -30%;
   transform: rotate(-106deg);
   width: auto;
-  height: clamp(210px, 28vw, 428px);
+  height: clamp(210px, 25vw, 428px);
 }
 
 @media (max-width: 1024px) {
@@ -451,7 +450,7 @@ p {
   }
 
   .window-1 {
-    width: clamp(220px, 22vw, 380px);
+    width: clamp(220px, 20vw, 380px);
   }
 
   .hanging-lamp {
@@ -487,7 +486,7 @@ p {
   }
 
   .floor {
-    bottom: -20%;
+    bottom: calc(100vw * -0.25);
   }
 
   .frame-2 {
@@ -582,7 +581,7 @@ p {
   .window-1-container {
     top: 10%;
     bottom: auto;
-    right: -40%;
+    right: calc(100vw * -0.25);
   }
 
   .lighting {
@@ -591,17 +590,18 @@ p {
   }
 
   .floor {
-    right: 25%;
+    right: 20%;
     bottom: -15%;
-    transform: translate(-15%, 25%);
+    transform: translate(-35%, 20%);
     height: 50vh;
+    width: 100vw;
   }
 
   .sofa {
     min-width: 500px;
     bottom: 10%;
-    left: -30%;
-    transform: translate(-30%, -10%);
+    left: calc(100vw * -0.2);
+    transform: translate(calc(100vw * -0.2), -10%);
   }
 
   .table {
@@ -622,9 +622,9 @@ p {
   }
 
   .text {
-    top: 0;
+    top: 10%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -10%);
     gap: 2rem !important;
     width: 80% !important;
   }
@@ -766,12 +766,6 @@ p {
     min-height: 300px;
   }
 
-  .placeholder-frame-5 {
-    width: min(88vw, 420px);
-    top: -40%;
-    transform: translate(-50%, -40%);
-  }
-
   .broken-vase-container {
     bottom: auto;
     top: 60%;
@@ -791,9 +785,9 @@ p {
   }
   .placeholder-frame-5 {
     max-height: 370px;
-    top: -40%;
+    top: -35%;
     left: 50%;
-    transform: translate(-50%, -40%);
+    transform: translate(-50%, -35%);
     aspect-ratio: 3 / 4;
   }
 }
