@@ -4,7 +4,7 @@
 
 **Context:** We need multiple apps (marketing site, store, admin panel, API) with shared code. Clear separation of concerns is needed while sharing types, validators, and business logic.
 
-**Decision:** Monorepo with pnpm workspaces.
+**Decision:** Monorepo with bun workspaces.
 
 ```
 apps/
