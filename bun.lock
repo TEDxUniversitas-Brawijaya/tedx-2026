@@ -138,6 +138,13 @@
         "typescript": "catalog:",
       },
     },
+    "packages/auth": {
+      "name": "@tedx-2026/auth",
+      "devDependencies": {
+        "@tedx-2026/tsconfig": "workspace:*",
+        "typescript": "catalog:",
+      },
+    },
     "packages/core": {
       "name": "@tedx-2026/core",
       "dependencies": {
@@ -978,6 +985,8 @@
     "@tanstack/virtual-file-routes": ["@tanstack/virtual-file-routes@1.161.7", "", { "bin": { "intent": "bin/intent.js" } }, "sha512-olW33+Cn+bsCsZKPwEGhlkqS6w3M2slFv11JIobdnCFKMLG97oAI2kWKdx5/zsywTL8flpnoIgaZZPlQTFYhdQ=="],
 
     "@tedx-2026/api": ["@tedx-2026/api@workspace:packages/api"],
+
+    "@tedx-2026/auth": ["@tedx-2026/auth@workspace:packages/auth"],
 
     "@tedx-2026/core": ["@tedx-2026/core@workspace:packages/core"],
 
