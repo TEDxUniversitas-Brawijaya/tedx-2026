@@ -67,7 +67,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh pr comment ${{ github.event.pull_request.number }} --body "### Preview Deployment
+          gh pr comment ${{ github.event.pull_request.number }} --body "### Preview WWW Deployment
 
           **Commit:** \`${{ github.sha }}\`
           **Version ID:** \`${{ steps.deploy.outputs.version_id }}\`
