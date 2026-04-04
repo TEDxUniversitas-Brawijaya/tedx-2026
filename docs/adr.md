@@ -10,7 +10,7 @@
 apps/
   www/          — Astro, marketing site (existing). Has its own alchemy IaC.
   store/        — React SPA (TanStack Router), ticketing + merch storefront. Has its own alchemy IaC.
-  admin/        — React SPA (TanStack Router), admin panel. Has its own alchemy IaC.
+  dashboard/        — React SPA (TanStack Router), admin panel. Has its own alchemy IaC.
   api/          — Hono on CF Workers, tRPC server. Has its own alchemy IaC.
 
 packages/
@@ -23,13 +23,16 @@ packages/
   logger/       — Structured logging utilities
   queue/        — CF Queue producers and consumers
   storage/      — R2 helpers (upload, signed URLs for both cdn and storage buckets)
+  tsconfig/     — Shared TypeScript configuration
+  types/        — Shared TypeScript types
+  ui/           — Shared React components (shadcn-ui)
   utils/        — Shared utilities
 ```
 **Consequences:*** Clear ownership per package, easier code review
 
 - `packages/core` depends on `packages/db`, `packages/kv`, `packages/email`, `packages/queue`, `packages/logger`; business logic lives here, apps only call core
 - `apps/api` mounts the tRPC router on Hono, which delegates to `packages/core`
-- `apps/store` and `apps/admin` are both React SPAs with TanStack Router, deployed as CF Workers
+- `apps/store` and `apps/dashboard` are both React SPAs with TanStack Router, deployed as CF Workers
 - End-to-end type safety via tRPC between frontend and backend
 - Each app owns its own infrastructure definition via Alchemy (IaC), keeping deploy concerns co-located with the app
 - No centralized `packages/infra` — infra is per-app

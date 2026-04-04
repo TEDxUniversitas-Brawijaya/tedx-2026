@@ -2,6 +2,7 @@
   "name": "tedx-2026",
   "devDependencies": {
     "@biomejs/biome": "2.3.11",
+    "alchemy": "catalog:",
     "lefthook": "^2.0.15",
     "ultracite": "7.0.11",
     "typescript": "catalog:"
@@ -10,8 +11,13 @@
   "private": true,
   "scripts": {
     "prepare": "lefthook install",
-    "lint": "ultracite check",
-    "lint:fix": "ultracite fix"
+    "check": "bunx ultracite check",
+    "fix": "bunx ultracite fix",
+    "typecheck": "bun --filter \"*\" typecheck",
+    "test": "bun --filter \"*\" test",
+    "dev:dash": "bun --filter dashboard --filter api dev",
+    "dev:store": "bun --filter store --filter api dev",
+    "db:generate": "bun --filter \"@tedx-2026/db\" db:generate"
   },
   "type": "module",
   "workspaces": {
@@ -20,7 +26,18 @@
       "packages/*"
     ],
     "catalog": {
-      "typescript": "^5.9.3"
+      "@tailwindcss/vite": "^4.1.18",
+      "@trpc/client": "^11.16.0",
+      "@trpc/server": "^11.16.0",
+      "tailwindcss": "^4.1.18",
+      "@types/react": "^19.2.14",
+      "@types/react-dom": "^19.2.3",
+      "alchemy": "^0.90.1",
+      "hono": "^4.10.6",
+      "react": "^19.2.4",
+      "react-dom": "^19.2.4",
+      "typescript": "^5.9.3",
+      "zod": "^4.3.6"
     }
   }
 }

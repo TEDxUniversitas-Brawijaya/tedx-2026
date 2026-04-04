@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "dev": "alchemy dev --app tedx-2026-api"
+  },
+  "dependencies": {
+    "@hono/trpc-server": "^0.4.2",
+    "@tedx-2026/api": "workspace:*",
+    "@tedx-2026/db": "workspace:*",
+    "@tedx-2026/kv": "workspace:*",
+    "@tedx-2026/logger": "workspace:*",
+    "@tedx-2026/utils": "workspace:*",
+    "alchemy": "catalog:",
+    "hono": "^4.7.9"
+  },
+  "devDependencies": {
+    "@tedx-2026/tsconfig": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
