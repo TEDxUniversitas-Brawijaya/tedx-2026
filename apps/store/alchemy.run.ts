@@ -21,6 +21,8 @@ const worker = await Vite("store", {
   },
   domains:
     app.stage === "prod" ? ["store.tedxuniversitasbrawijaya.com"] : undefined,
+  // https://github.com/alchemy-run/alchemy/pull/1274
+  assets: "./dist/client",
 });
 
 if (process.env.PULL_REQUEST) {
