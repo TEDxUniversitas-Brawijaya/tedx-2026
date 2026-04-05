@@ -1,20 +1,12 @@
-import { authClient } from "@/shared/lib/auth";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
-  component: RouteComponent,
-  beforeLoad: async () => {
-    const session = await authClient.getSession();
-    if (!session.data) {
+  loader: ({ location }) => {
+    if (location.pathname === "/") {
       redirect({
-        to: "/auth/login",
+        to: "/dashboard",
         throw: true,
       });
     }
-    return { session };
   },
 });
-
-function RouteComponent() {
-  return <div>Hello "/"!</div>;
-}

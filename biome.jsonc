@@ -49,6 +49,16 @@
           }
         }
       }
+    },
+    {
+      "includes": ["apps/dashboard/**", "apps/store/**"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "noImgElement": "off"
+          }
+        }
+      }
     }
   ]
 }
