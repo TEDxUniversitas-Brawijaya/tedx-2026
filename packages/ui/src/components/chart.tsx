@@ -194,7 +194,7 @@ function ChartTooltipContent({
   return (
     <div
       className={cn(
-        "grid min-w-32 items-start gap-1.5 rounded-none border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl",
+        "grid min-w-32 items-start gap-1.5 rounded-xl bg-popover px-2.5 py-1.5 text-popover-foreground text-xs shadow-lg ring-1 ring-foreground/5 dark:ring-foreground/10",
         className
       )}
     >
@@ -336,7 +336,7 @@ function getPayloadConfigFromPayload(
   key: string
 ) {
   if (typeof payload !== "object" || payload === null) {
-    return;
+    return undefined;
   }
 
   const payloadPayload =
