@@ -80,7 +80,7 @@ export const verificationTable = sqliteTable(
   (t) => ({
     id: t.text().primaryKey(),
     identifier: t.text().notNull(),
-    token: t.text().notNull().unique(),
+    value: t.text().notNull().unique(),
     expiresAt: t.integer({ mode: "timestamp_ms" }).notNull(),
     createdAt: t
       .integer({ mode: "timestamp_ms" })
@@ -100,14 +100,14 @@ export const userRelations = relations(userTable, ({ many }) => ({
 }));
 
 export const sessionRelations = relations(sessionTable, ({ one }) => ({
-  user: one(userTable, {
+  users: one(userTable, {
     fields: [sessionTable.userId],
     references: [userTable.id],
   }),
 }));
 
 export const accountRelations = relations(accountTable, ({ one }) => ({
-  user: one(userTable, {
+  users: one(userTable, {
     fields: [accountTable.userId],
     references: [userTable.id],
   }),

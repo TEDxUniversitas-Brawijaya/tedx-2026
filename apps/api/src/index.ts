@@ -17,6 +17,7 @@ const app = new Hono<{
     AUTH_SECRET: string;
     GOOGLE_CLIENT_ID: string;
     GOOGLE_CLIENT_SECRET: string;
+    SUPERADMIN_EMAILS: string; // Comma-separated list of superadmin emails
   };
 }>();
 
@@ -72,6 +73,7 @@ app.on(["POST", "GET"], "/auth/*", (c) => {
     googleClientId: c.env.GOOGLE_CLIENT_ID,
     googleClientSecret: c.env.GOOGLE_CLIENT_SECRET,
     waitUntil: c.executionCtx.waitUntil,
+    superadminEmails: c.env.SUPERADMIN_EMAILS.split(","),
   });
 
   return auth.handler(c.req.raw);
@@ -96,6 +98,7 @@ app.use(
           AUTH_SECRET: c.env.AUTH_SECRET,
           GOOGLE_CLIENT_ID: c.env.GOOGLE_CLIENT_ID,
           GOOGLE_CLIENT_SECRET: c.env.GOOGLE_CLIENT_SECRET,
+          SUPERADMIN_EMAILS: c.env.SUPERADMIN_EMAILS.split(","),
         },
         fetchCreateContextFnOptions: opts,
         logger: customLogger,

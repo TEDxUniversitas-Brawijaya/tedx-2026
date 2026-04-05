@@ -20,6 +20,7 @@ type CreateContextOptions = {
     AUTH_SECRET: string;
     GOOGLE_CLIENT_ID: string;
     GOOGLE_CLIENT_SECRET: string;
+    SUPERADMIN_EMAILS: string[];
   };
   fetchCreateContextFnOptions: FetchCreateContextFnOptions;
   logger: LoggerType;
@@ -56,6 +57,7 @@ export const createContext = async ({
     googleClientId: env.GOOGLE_CLIENT_ID,
     googleClientSecret: env.GOOGLE_CLIENT_SECRET,
     waitUntil,
+    superadminEmails: env.SUPERADMIN_EMAILS,
   });
 
   const session = await auth.api.getSession(fetchCreateContextFnOptions.req);

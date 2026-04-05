@@ -1,3 +1,10 @@
+import { authClient } from "@/shared/lib/auth";
+import { IconInfoCircle } from "@tabler/icons-react";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@tedx-2026/ui/components/alert";
 import { Button } from "@tedx-2026/ui/components/button";
 import {
   Card,
@@ -19,6 +26,8 @@ import { useLoginForm } from "../hooks/use-login-form";
 export function LoginForm() {
   const { form } = useLoginForm();
 
+  const enableLoginWithEmailAndPassword = false;
+
   return (
     <div className="flex flex-col gap-4">
       <Card>
@@ -28,7 +37,14 @@ export function LoginForm() {
             Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-col gap-4">
+          <Alert>
+            <IconInfoCircle />
+            <AlertTitle>Info</AlertTitle>
+            <AlertDescription>
+              For now, only login with Google is available.
+            </AlertDescription>
+          </Alert>
           <form
             id="login-form"
             onSubmit={(e) => {
@@ -47,6 +63,7 @@ export function LoginForm() {
                       <FieldLabel htmlFor={field.name}>Email</FieldLabel>
                       <Input
                         aria-invalid={isInvalid}
+                        disabled={!enableLoginWithEmailAndPassword}
                         id={field.name}
                         name={field.name}
                         onBlur={field.handleBlur}
@@ -70,6 +87,7 @@ export function LoginForm() {
                       <FieldLabel htmlFor={field.name}>Password</FieldLabel>
                       <Input
                         aria-invalid={isInvalid}
+                        disabled={!enableLoginWithEmailAndPassword}
                         id={field.name}
                         name={field.name}
                         onBlur={field.handleBlur}
@@ -93,7 +111,9 @@ export function LoginForm() {
             <form.Subscribe>
               {(field) => (
                 <Button
-                  disabled={field.isSubmitting}
+                  disabled={
+                    field.isSubmitting || !enableLoginWithEmailAndPassword
+                  }
                   form="login-form"
                   type="submit"
                 >
@@ -101,7 +121,17 @@ export function LoginForm() {
                 </Button>
               )}
             </form.Subscribe>
-            <Button type="button" variant="outline">
+            <Button
+              onClick={async () =>
+                await authClient.signIn.social({
+                  provider: "google",
+                  callbackURL: window.location.origin,
+                  errorCallbackURL: `${window.location.origin}/auth/login`,
+                })
+              }
+              type="button"
+              variant="outline"
+            >
               Login with Google
             </Button>
           </Field>

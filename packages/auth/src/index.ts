@@ -2,6 +2,7 @@ import { schema, type DB } from "@tedx-2026/db";
 import { createUUIDv7 } from "@tedx-2026/utils";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { APIError } from "better-auth/api";
 
 type CreateAuthOptions = {
   secret: string;
@@ -9,6 +10,8 @@ type CreateAuthOptions = {
   googleClientId: string;
   googleClientSecret: string;
   waitUntil: (promise: Promise<unknown>) => void;
+
+  superadminEmails: string[];
 };
 
 export const createAuth = (
@@ -19,6 +22,8 @@ export const createAuth = (
     googleClientId,
     googleClientSecret,
     waitUntil,
+
+    superadminEmails,
   }: CreateAuthOptions
 ) => {
   return betterAuth({
@@ -33,6 +38,29 @@ export const createAuth = (
       },
       usePlural: true,
     }),
+    databaseHooks: {
+      user: {
+        create: {
+          // biome-ignore lint/suspicious/useAwait: false positive
+          before: async (user) => {
+            const isSuperadmin = superadminEmails.includes(user.email);
+
+            if (!isSuperadmin) {
+              throw new APIError("FORBIDDEN", {
+                message: "not-whitelisted",
+              });
+            }
+
+            return {
+              data: {
+                ...user,
+                role: isSuperadmin ? "superadmin" : "admin",
+              },
+            };
+          },
+        },
+      },
+    },
     trustedOrigins: [
       "http://localhost:3000",
       "https://*.tedxuniversitasbrawijaya.com",
@@ -74,7 +102,15 @@ export const createAuth = (
     advanced: {
       defaultCookieAttributes: {
         secure: true,
-        sameSite: "lax",
+        sameSite: "none",
+        httpOnly: true,
+      },
+      crossSubDomainCookies: {
+        enabled: true,
+        domain:
+          process.env.NODE_ENV === "production"
+            ? "tedxuniversitasbrawijaya.com"
+            : undefined,
       },
       database: {
         generateId: () => createUUIDv7(),
