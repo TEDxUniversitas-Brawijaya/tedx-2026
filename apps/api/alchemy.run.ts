@@ -31,6 +31,10 @@ export const worker = await Worker("api", {
   bindings: {
     DB: db,
     KV: kv,
+    APP_URL: Worker.DevUrl,
+    AUTH_SECRET: alchemy.secret(process.env.AUTH_SECRET),
+    GOOGLE_CLIENT_ID: alchemy.secret(process.env.GOOGLE_CLIENT_ID),
+    GOOGLE_CLIENT_SECRET: alchemy.secret(process.env.GOOGLE_CLIENT_SECRET),
   },
   bundle: {
     external: ["bun:sqlite", "@libsql/client"],

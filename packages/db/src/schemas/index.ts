@@ -1,3 +1,19 @@
-// import { todoTable } from "./todo";
+import {
+  accountRelations,
+  accountTable,
+  sessionRelations,
+  sessionTable,
+  userRelations,
+  userTable,
+  verificationTable,
+} from "./auth";
 
-export const schema = {};
+export const schema = {
+  userTable,
+  sessionTable,
+  accountTable,
+  verificationTable,
+  userRelations,
+  accountRelations,
+  sessionRelations,
+};

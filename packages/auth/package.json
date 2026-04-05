@@ -17,5 +17,10 @@
   "devDependencies": {
     "@tedx-2026/tsconfig": "workspace:*",
     "typescript": "catalog:"
+  },
+  "dependencies": {
+    "@tedx-2026/db": "workspace:*",
+    "@tedx-2026/utils": "workspace:*",
+    "better-auth": "catalog:"
   }
 }

@@ -19,6 +19,7 @@
     "@trpc/client": "catalog:",
     "@trpc/tanstack-react-query": "^11.16.0",
     "alchemy": "catalog:",
+    "better-auth": "catalog:",
     "lucide-react": "^1.7.0",
     "react": "catalog:",
     "react-dom": "catalog:",

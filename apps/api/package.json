@@ -9,6 +9,7 @@
   "dependencies": {
     "@hono/trpc-server": "^0.4.2",
     "@tedx-2026/api": "workspace:*",
+    "@tedx-2026/auth": "workspace:*",
     "@tedx-2026/db": "workspace:*",
     "@tedx-2026/kv": "workspace:*",
     "@tedx-2026/logger": "workspace:*",

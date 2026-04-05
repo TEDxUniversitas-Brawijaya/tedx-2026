@@ -15,7 +15,8 @@
     "@tedx-2026/db": "workspace:*",
     "@tedx-2026/kv": "workspace:*",
     "@tedx-2026/logger": "workspace:*",
-    "@tedx-2026/utils": "workspace:*"
+    "@tedx-2026/utils": "workspace:*",
+    "@tedx-2026/types": "workspace:*"
   },
   "devDependencies": {
     "@tedx-2026/tsconfig": "workspace:*",

@@ -16,6 +16,7 @@
     "typescript": "catalog:"
   },
   "dependencies": {
+    "@tedx-2026/auth": "workspace:*",
     "@tedx-2026/core": "workspace:*",
     "@tedx-2026/db": "workspace:*",
     "@tedx-2026/kv": "workspace:*",

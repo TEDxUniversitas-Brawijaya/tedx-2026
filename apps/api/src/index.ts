@@ -1,6 +1,7 @@
 import { trpcServer } from "@hono/trpc-server";
 import { createContext, trpcRouter } from "@tedx-2026/api";
-import type { D1Database } from "@tedx-2026/db";
+import { createAuth } from "@tedx-2026/auth";
+import { createDB, type D1Database } from "@tedx-2026/db";
 import type { KVNamespaceType } from "@tedx-2026/kv";
 import { createLogger } from "@tedx-2026/logger";
 import { createNanoId } from "@tedx-2026/utils";
@@ -12,6 +13,10 @@ const app = new Hono<{
   Bindings: {
     DB: D1Database;
     KV: KVNamespaceType;
+    APP_URL: string;
+    AUTH_SECRET: string;
+    GOOGLE_CLIENT_ID: string;
+    GOOGLE_CLIENT_SECRET: string;
   };
 }>();
 
@@ -58,6 +63,20 @@ app.use(
   })
 );
 
+app.on(["POST", "GET"], "/auth/*", (c) => {
+  const db = createDB(c.env.DB);
+
+  const auth = createAuth(db, {
+    secret: c.env.AUTH_SECRET,
+    baseURL: c.env.APP_URL,
+    googleClientId: c.env.GOOGLE_CLIENT_ID,
+    googleClientSecret: c.env.GOOGLE_CLIENT_SECRET,
+    waitUntil: c.executionCtx.waitUntil,
+  });
+
+  return auth.handler(c.req.raw);
+});
+
 app.get("/", (c) => c.text("Hello World"));
 app.get("/health", (c) => c.json({ status: "ok" }));
 
@@ -73,6 +92,10 @@ app.use(
         env: {
           db: c.env.DB,
           kv: c.env.KV,
+          APP_URL: c.env.APP_URL,
+          AUTH_SECRET: c.env.AUTH_SECRET,
+          GOOGLE_CLIENT_ID: c.env.GOOGLE_CLIENT_ID,
+          GOOGLE_CLIENT_SECRET: c.env.GOOGLE_CLIENT_SECRET,
         },
         fetchCreateContextFnOptions: opts,
         logger: customLogger,
