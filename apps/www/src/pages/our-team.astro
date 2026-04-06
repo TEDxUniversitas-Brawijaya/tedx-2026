@@ -22,6 +22,7 @@ import Vp from "@/assets/imgs/vp-team-piece.png";
 import Curator from "@/assets/imgs/curator-team-piece.png";
 import VolunteerChipBackground from "@/assets/imgs/volunteer-chip-background.png";
 import Line from "@/assets/imgs/line-1.png";
+import Footer from "@/components/footer.astro";
 
 const createCoreTeamCardFileNames = (role: string, name: string) => {
   const baseName = `core-team-${toCardSlug(role)}--${toCardSlug(name)}`;
@@ -934,6 +935,7 @@ const teamMembers = [
       </div>
     </dialog>
   </main>
+  <Footer />
 </Layout>
 <style>
   #our-team {
