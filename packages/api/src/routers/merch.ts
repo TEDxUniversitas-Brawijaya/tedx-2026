@@ -1,13 +1,17 @@
 import { TRPCError } from "@trpc/server";
 import {
   createMerchOrderInputSchema,
+  createMerchOrderOutputSchema,
   getMerchOrderStatusInputSchema,
+  getMerchOrderStatusOutputSchema,
   listMerchProductsInputSchema,
+  listMerchProductsOutputSchema,
 } from "../schemas/merch";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 const listProducts = publicProcedure
   .input(listMerchProductsInputSchema)
+  .output(listMerchProductsOutputSchema)
   .query(() => {
     // TODO: Implement merch.listProducts
     throw new TRPCError({
@@ -18,6 +22,7 @@ const listProducts = publicProcedure
 
 const createOrder = publicProcedure
   .input(createMerchOrderInputSchema)
+  .output(createMerchOrderOutputSchema)
   .mutation(() => {
     // TODO: Implement merch.createOrder
     // - Validate CAPTCHA
@@ -36,6 +41,7 @@ const createOrder = publicProcedure
 
 const getOrderStatus = publicProcedure
   .input(getMerchOrderStatusInputSchema)
+  .output(getMerchOrderStatusOutputSchema)
   .query(() => {
     // TODO: Implement merch.getOrderStatus
     throw new TRPCError({

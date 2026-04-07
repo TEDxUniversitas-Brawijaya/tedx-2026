@@ -1,35 +1,44 @@
 import { TRPCError } from "@trpc/server";
 import {
   getOrderByIdInputSchema,
+  getOrderByIdOutputSchema,
   listOrdersInputSchema,
+  listOrdersOutputSchema,
   processRefundInputSchema,
   verifyPaymentInputSchema,
 } from "../../schemas/order";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
 
-const list = protectedProcedure.input(listOrdersInputSchema).query(() => {
-  // TODO: Implement admin.order.list
-  // - Apply filters: type, status, search
-  // - Apply sorting: sortBy, sortOrder
-  // - Apply pagination: page, limit
-  // - Return orders with pagination info
-  throw new TRPCError({
-    code: "NOT_IMPLEMENTED",
-    message: "admin.order.list is not implemented yet",
+const list = protectedProcedure
+  .input(listOrdersInputSchema)
+  .output(listOrdersOutputSchema)
+  .query(() => {
+    // TODO: Implement admin.order.list
+    // - Apply filters: type, status, search
+    // - Apply sorting: sortBy, sortOrder
+    // - Apply pagination: page, limit
+    // - Return orders with pagination info
+    throw new TRPCError({
+      code: "NOT_IMPLEMENTED",
+      message: "admin.order.list is not implemented yet",
+    });
   });
-});
 
-const getById = protectedProcedure.input(getOrderByIdInputSchema).query(() => {
-  // TODO: Implement admin.order.getById
-  // - Fetch full order details including items, tickets, payment, and refund info
-  throw new TRPCError({
-    code: "NOT_IMPLEMENTED",
-    message: "admin.order.getById is not implemented yet",
+const getById = protectedProcedure
+  .input(getOrderByIdInputSchema)
+  .output(getOrderByIdOutputSchema)
+  .query(() => {
+    // TODO: Implement admin.order.getById
+    // - Fetch full order details including items, tickets, payment, and refund info
+    throw new TRPCError({
+      code: "NOT_IMPLEMENTED",
+      message: "admin.order.getById is not implemented yet",
+    });
   });
-});
 
 const verifyPayment = protectedProcedure
   .input(verifyPaymentInputSchema)
+  .output(getOrderByIdOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.order.verifyPayment
     // - Validate order exists and status is pending_verification
@@ -44,6 +53,7 @@ const verifyPayment = protectedProcedure
 
 const processRefund = protectedProcedure
   .input(processRefundInputSchema)
+  .output(getOrderByIdOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.order.processRefund
     // - Validate order exists and has refund request

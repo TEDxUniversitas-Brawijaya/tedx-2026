@@ -1,9 +1,13 @@
 import { TRPCError } from "@trpc/server";
-import { getDashboardAnalyticsInputSchema } from "../../schemas/analytics";
+import {
+  getDashboardAnalyticsInputSchema,
+  getDashboardAnalyticsOutputSchema,
+} from "../../schemas/analytics";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
 
 const dashboard = protectedProcedure
   .input(getDashboardAnalyticsInputSchema)
+  .output(getDashboardAnalyticsOutputSchema)
   .query(() => {
     // TODO: Implement admin.analytics.dashboard
     // - Calculate totalRevenue (sum of paid orders)

@@ -1,13 +1,17 @@
 import { TRPCError } from "@trpc/server";
 import {
   createTicketOrderInputSchema,
+  createTicketOrderOutputSchema,
   getTicketOrderStatusInputSchema,
+  getTicketOrderStatusOutputSchema,
   listTicketProductsInputSchema,
+  listTicketProductsOutputSchema,
 } from "../schemas/ticket";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 const listProducts = publicProcedure
   .input(listTicketProductsInputSchema)
+  .output(listTicketProductsOutputSchema)
   .query(() => {
     // TODO: Implement ticket.listProducts
     throw new TRPCError({
@@ -18,6 +22,7 @@ const listProducts = publicProcedure
 
 const createOrder = publicProcedure
   .input(createTicketOrderInputSchema)
+  .output(createTicketOrderOutputSchema)
   .mutation(() => {
     // TODO: Implement ticket.createOrder
     // - Validate CAPTCHA
@@ -37,6 +42,7 @@ const createOrder = publicProcedure
 
 const getOrderStatus = publicProcedure
   .input(getTicketOrderStatusInputSchema)
+  .output(getTicketOrderStatusOutputSchema)
   .query(() => {
     // TODO: Implement ticket.getOrderStatus
     throw new TRPCError({

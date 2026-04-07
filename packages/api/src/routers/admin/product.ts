@@ -1,26 +1,32 @@
 import { TRPCError } from "@trpc/server";
 import {
   createProductInputSchema,
+  createProductOutputSchema,
   createVariantInputSchema,
   deleteProductInputSchema,
   listProductsInputSchema,
+  listProductsOutputSchema,
   updateProductInputSchema,
   updateVariantInputSchema,
 } from "../../schemas/product";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
 
-const list = protectedProcedure.input(listProductsInputSchema).query(() => {
-  // TODO: Implement admin.product.list
-  // - Apply type filter if provided
-  // - Return all products with full details
-  throw new TRPCError({
-    code: "NOT_IMPLEMENTED",
-    message: "admin.product.list is not implemented yet",
+const list = protectedProcedure
+  .input(listProductsInputSchema)
+  .output(listProductsOutputSchema)
+  .query(() => {
+    // TODO: Implement admin.product.list
+    // - Apply type filter if provided
+    // - Return all products with full details
+    throw new TRPCError({
+      code: "NOT_IMPLEMENTED",
+      message: "admin.product.list is not implemented yet",
+    });
   });
-});
 
 const create = protectedProcedure
   .input(createProductInputSchema)
+  .output(createProductOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.product.create
     // - Generate product ID with prod_ prefix
@@ -34,6 +40,7 @@ const create = protectedProcedure
 
 const update = protectedProcedure
   .input(updateProductInputSchema)
+  .output(createProductOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.product.update
     // - Validate product exists
@@ -47,6 +54,7 @@ const update = protectedProcedure
 
 const deleteProduct = protectedProcedure
   .input(deleteProductInputSchema)
+  .output(createProductOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.product.delete
     // - Soft delete: set isActive = false
@@ -59,6 +67,7 @@ const deleteProduct = protectedProcedure
 
 const createVariant = protectedProcedure
   .input(createVariantInputSchema)
+  .output(createProductOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.product.createVariant
     // - Validate product exists
@@ -72,6 +81,7 @@ const createVariant = protectedProcedure
 
 const updateVariant = protectedProcedure
   .input(updateVariantInputSchema)
+  .output(createProductOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.product.updateVariant
     // - Validate product and variant exist

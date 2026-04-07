@@ -1,12 +1,15 @@
 import { TRPCError } from "@trpc/server";
 import {
   getRefundOrderInfoInputSchema,
+  getRefundOrderInfoOutputSchema,
   submitRefundRequestInputSchema,
+  submitRefundRequestOutputSchema,
 } from "../schemas/refund";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 const getOrderInfo = publicProcedure
   .input(getRefundOrderInfoInputSchema)
+  .output(getRefundOrderInfoOutputSchema)
   .query(() => {
     // TODO: Implement refund.getOrderInfo
     // - Validate token exists
@@ -22,6 +25,7 @@ const getOrderInfo = publicProcedure
 
 const submitRequest = publicProcedure
   .input(submitRefundRequestInputSchema)
+  .output(submitRefundRequestOutputSchema)
   .mutation(() => {
     // TODO: Implement refund.submitRequest
     // - Validate refund token

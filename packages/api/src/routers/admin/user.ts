@@ -1,23 +1,29 @@
 import { TRPCError } from "@trpc/server";
 import {
   createUserInputSchema,
+  createUserOutputSchema,
   deleteUserInputSchema,
   listUsersInputSchema,
+  listUsersOutputSchema,
   updateUserRoleInputSchema,
 } from "../../schemas/user";
 import { createTRPCRouter, superadminOnlyProcedure } from "../../trpc";
 
-const list = superadminOnlyProcedure.input(listUsersInputSchema).query(() => {
-  // TODO: Implement admin.user.list
-  // - Return all admin users with details
-  throw new TRPCError({
-    code: "NOT_IMPLEMENTED",
-    message: "admin.user.list is not implemented yet",
+const list = superadminOnlyProcedure
+  .input(listUsersInputSchema)
+  .output(listUsersOutputSchema)
+  .query(() => {
+    // TODO: Implement admin.user.list
+    // - Return all admin users with details
+    throw new TRPCError({
+      code: "NOT_IMPLEMENTED",
+      message: "admin.user.list is not implemented yet",
+    });
   });
-});
 
 const create = superadminOnlyProcedure
   .input(createUserInputSchema)
+  .output(createUserOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.user.create
     // - Create admin user with provided credentials
@@ -31,6 +37,7 @@ const create = superadminOnlyProcedure
 
 const updateRole = superadminOnlyProcedure
   .input(updateUserRoleInputSchema)
+  .output(createUserOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.user.updateRole
     // - Validate user exists
@@ -44,6 +51,7 @@ const updateRole = superadminOnlyProcedure
 
 const deleteUser = superadminOnlyProcedure
   .input(deleteUserInputSchema)
+  .output(createUserOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.user.delete
     // - Validate user exists
