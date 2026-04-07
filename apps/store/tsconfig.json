@@ -1,0 +1,11 @@
+{
+  "extends": "@tedx-2026/tsconfig/react.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["vite/client"]
+  }
+}

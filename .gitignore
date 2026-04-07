@@ -46,3 +46,12 @@ temp
 # nix
 .direnv
 .envrc
+
+# Alchemy
+*.alchemy
+
+# Tanstack
+*.tanstack
+
+# Wrangler
+*.wrangler

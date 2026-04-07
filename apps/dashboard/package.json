@@ -1,0 +1,43 @@
+{
+  "name": "dashboard",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "alchemy dev --app tedx-2026-dashboard",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tabler/icons-react": "^3.41.1",
+    "@tailwindcss/vite": "catalog:",
+    "@tanstack/react-form": "^1.28.6",
+    "@tanstack/react-query": "^5.96.1",
+    "@tanstack/react-query-devtools": "^5.96.2",
+    "@tanstack/react-router": "^1.168.10",
+    "@tanstack/react-router-devtools": "^1.166.11",
+    "@tedx-2026/api": "workspace:*",
+    "@tedx-2026/ui": "workspace:*",
+    "@tedx-2026/utils": "workspace:*",
+    "@trpc/client": "catalog:",
+    "@trpc/tanstack-react-query": "^11.16.0",
+    "alchemy": "catalog:",
+    "better-auth": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "^2.0.7",
+    "superjson": "^2.2.6",
+    "tailwindcss": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.31.0",
+    "@tanstack/devtools-vite": "^0.6.0",
+    "@tanstack/router-plugin": "^1.167.12",
+    "@tedx-2026/tsconfig": "workspace:*",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "^6.0.1",
+    "typescript": "catalog:",
+    "vite": "^8.0.3",
+    "vite-tsconfig-paths": "^6.1.1"
+  }
+}

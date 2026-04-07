@@ -28,5 +28,37 @@
         "organizeImports": "off"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["apps/api/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["packages/**"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "noBarrelFile": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["apps/dashboard/**", "apps/store/**"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "noImgElement": "off"
+          }
+        }
+      }
+    }
+  ]
 }
