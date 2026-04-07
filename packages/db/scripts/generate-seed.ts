@@ -2,6 +2,7 @@ import type { SQLiteTable } from "drizzle-orm/sqlite-core";
 import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { createDB, type D1Database, type DB } from "../src/db";
+import { userTable, type InsertUser } from "../src/schemas/auth";
 import { configTable, type InsertConfig } from "../src/schemas/config";
 import {
   orderItemsTable,
@@ -17,6 +18,14 @@ import {
 import { ticketsTable, type InsertTicket } from "../src/schemas/tickets";
 
 const now = "2026-06-01T00:00:00Z";
+
+const userData: InsertUser[] = [
+  {
+    id: "admin_001",
+    name: "Admin User",
+    email: "admin@tedxub2026.com",
+  },
+];
 
 const configData: InsertConfig[] = [
   {
@@ -750,9 +759,6 @@ function generateInsert<T extends Record<string, unknown>>(
     .onConflictDoNothing()
     .toSQL();
 
-  console.log("Generated SQL:", sql);
-  console.log("With parameters:", params);
-
   // Drizzle's toSQL generates parameterized queries, but for seed generation we want the actual values inlined.
   // This is a simple and naive implementation that works for our controlled seed data, but may not cover all edge cases.
   let inlinedSQL = sql;
@@ -791,6 +797,10 @@ async function generateSeedSQL(): Promise<void> {
 
   sections.push("-- TEDx 2026 Seed Data");
   sections.push(`-- Generated on ${new Date().toISOString()}`);
+  sections.push("");
+
+  sections.push("-- Users");
+  sections.push(generateInsert(db, userTable, userData));
   sections.push("");
 
   sections.push("-- Config");
