@@ -36,6 +36,7 @@ Input:
 - `selectedBundleItemId` — required if the product has selectable bundle items (e.g. pick topi/sticker/socks)
 - `captchaToken` — Turnstile token
 - `idempotencyKey` — client-generated unique key to prevent duplicate orders
+- `paymentProof` — required if `payment_mode` is `manual`, a file upload for QRIS payment proof
 
 Validations:
 - Quantity in range 1-5
@@ -45,6 +46,8 @@ Validations:
 - Idempotency check (reject if key already used)
 - Stock available (KV atomic decrement)
 - `selectedBundleItemId` required if product has selectable bundle items
+- Payment proof required if `payment_mode` is `manual`
+- Payment proof file must be an image and below 5 MB
 
 Returns:
 - `orderId` — human-readable order ID (e.g. "TDX-260801-A1B2C")
@@ -66,16 +69,6 @@ Returns: orderId, status, type, totalPrice, items (with snapshot name/quantity/u
 
 ---
 
-## **Public — File Upload (Hono route, not tRPC)**
-
-`POST /orders/{orderId}/payment/upload`
-
-Upload manual QRIS payment proof. Only available when `payment_mode` is `manual`. Multipart form data, image file (jpg/png, max 5MB). Stored in R2 private bucket at `storage.tedxuniversitasbrawijaya.com`.
-
-Returns: orderId, status ("pending\_verification").
-
----
-
 ## **Public — Merchandise**
 
 ### `merch.listProducts` **(query)**
@@ -93,6 +86,7 @@ Input:
 - `items` — array of { productId, quantity, variantIds }
 - `captchaToken` — Turnstile token
 - `idempotencyKey` — client-generated unique key
+- `paymentProof` — required if `payment_mode` is `manual`, a file upload for QRIS payment proof
 
 Validations:
 - All products exist and are active
@@ -101,6 +95,8 @@ Validations:
 - CAPTCHA verification
 - Idempotency check
 - No stock check (pre-order)
+- Payment proof required if `payment_mode` is `manual`
+- Payment proof file must be an image and below 5 MB
 
 Returns: same structure as ticket.createOrder.
 
