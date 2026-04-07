@@ -1,12 +1,12 @@
 import { TRPCError } from "@trpc/server";
 import z from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, superadminOnlyProcedure } from "../trpc";
 
-const getAllFiles = publicProcedure.query(async (c) => {
+const getAllFiles = superadminOnlyProcedure.query(async (c) => {
   return await c.ctx.services.file.getAllFiles();
 });
 
-const uploadFile = publicProcedure
+const uploadFile = superadminOnlyProcedure
   .input(z.instanceof(FormData))
   .mutation(async (c) => {
     const formData = c.input;
@@ -22,7 +22,7 @@ const uploadFile = publicProcedure
     return c.ctx.services.file.uploadFile(file.name, arrayBuffer, "temp");
   });
 
-const deleteFile = publicProcedure
+const deleteFile = superadminOnlyProcedure
   .input(z.array(z.string()))
   .mutation(async (c) => {
     const keys = c.input;
