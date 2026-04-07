@@ -1,6 +1,7 @@
 import AppLogo from "@/shared/components/app-logo";
 import UserMenu from "@/shared/components/user-menu";
 import { authClient } from "@/shared/lib/auth";
+import { canAccess, RESOURCES } from "@/shared/lib/permissions";
 import { IconDatabase, IconHome, IconLogout } from "@tabler/icons-react";
 import {
   createFileRoute,
@@ -38,13 +39,12 @@ export const Route = createFileRoute("/dashboard")({
   beforeLoad: async () => {
     const session = await authClient.getSession();
     if (!session.data) {
-      redirect({
+      throw redirect({
         to: "/auth/login",
-        throw: true,
       });
     }
 
-    return { session };
+    return { user: session.data.user };
   },
   loader: ({ location }) => {
     if (
@@ -71,6 +71,7 @@ function RouteComponent() {
   } = useRouterState();
   const navigate = useNavigate();
   const { setTheme, theme } = useTheme();
+  const { user } = Route.useRouteContext();
 
   return (
     <SidebarProvider>
@@ -93,21 +94,28 @@ function RouteComponent() {
                   label: "Storage",
                   to: "/dashboard/storage",
                   icon: IconDatabase,
+                  requiredResource: RESOURCES.STORAGE,
                 },
-              ].map((item) => {
-                const Icon = item.icon;
-                return (
-                  <SidebarMenuItem key={item.to}>
-                    <SidebarMenuButton
-                      isActive={pathname.startsWith(item.to)}
-                      render={<Link preload="render" to={item.to} />}
-                      size="default"
-                    >
-                      <Icon /> {item.label}
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
+              ]
+                .filter((item) =>
+                  item.requiredResource
+                    ? canAccess(user.role, item.requiredResource)
+                    : true
+                )
+                .map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <SidebarMenuItem key={item.to}>
+                      <SidebarMenuButton
+                        isActive={pathname.startsWith(item.to)}
+                        render={<Link preload="render" to={item.to} />}
+                        size="default"
+                      >
+                        <Icon /> {item.label}
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>

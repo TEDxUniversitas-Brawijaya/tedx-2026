@@ -1,9 +1,20 @@
 import { StorageUploadButton } from "@/features/storage/components/storage-upload-button";
 import { StorageTableContainer } from "@/features/storage/containers/storage-table-container";
-import { createFileRoute } from "@tanstack/react-router";
+import { canAccess, RESOURCES } from "@/shared/lib/permissions";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard/storage")({
   component: RouteComponent,
+  beforeLoad: ({ context }) => {
+    const { user } = context;
+
+    if (!canAccess(user.role, RESOURCES.STORAGE)) {
+      redirect({
+        to: "/dashboard/home",
+        throw: true,
+      });
+    }
+  },
 });
 
 function RouteComponent() {
