@@ -5,11 +5,9 @@ import { fileRouter } from "./file";
 import { merchRouter } from "./merch";
 import { refundRouter } from "./refund";
 import { ticketRouter } from "./ticket";
-import { userRouter } from "./user";
 
 export const trpcRouter = createTRPCRouter({
-  userRouter,
-  fileRouter,
+  file: fileRouter,
   ticket: ticketRouter,
   merch: merchRouter,
   refund: refundRouter,

@@ -44,7 +44,7 @@ type StorageTableProps = {
 export function StorageTable({ files }: StorageTableProps) {
   const [copiedText, copyToClipboard] = useCopyToClipboard();
   const deleteFileMutation = useMutation(
-    trpc.fileRouter.deleteFile.mutationOptions()
+    trpc.file.deleteFile.mutationOptions()
   );
 
   const handleDownload = async (url: string, filename: string) => {
@@ -132,7 +132,7 @@ export function StorageTable({ files }: StorageTableProps) {
                     deleteFileMutation.mutate([file.key], {
                       onSuccess: () => {
                         queryClient.invalidateQueries({
-                          queryKey: trpc.fileRouter.getAllFiles.queryKey(),
+                          queryKey: trpc.file.getAllFiles.queryKey(),
                         });
                       },
                     });

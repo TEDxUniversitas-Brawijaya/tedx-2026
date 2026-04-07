@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 export function StorageUploadButton() {
   const uploadFileMutation = useMutation(
-    trpc.fileRouter.uploadFile.mutationOptions()
+    trpc.file.uploadFile.mutationOptions()
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -24,7 +24,7 @@ export function StorageUploadButton() {
     uploadFileMutation.mutate(formData, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: trpc.fileRouter.getAllFiles.queryKey(),
+          queryKey: trpc.file.getAllFiles.queryKey(),
         });
       },
       onError: (error) => {

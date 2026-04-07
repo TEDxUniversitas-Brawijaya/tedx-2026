@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { StorageTable } from "../components/storage-table";
 
 export function StorageTableContainer() {
-  const filesQuery = useQuery(trpc.fileRouter.getAllFiles.queryOptions());
+  const filesQuery = useQuery(trpc.file.getAllFiles.queryOptions());
 
   if (filesQuery.isLoading) {
     return <div>Loading...</div>;
