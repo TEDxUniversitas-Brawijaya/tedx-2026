@@ -1,7 +1,7 @@
 import AppLogo from "@/shared/components/app-logo";
 import UserMenu from "@/shared/components/user-menu";
 import { authClient } from "@/shared/lib/auth";
-import { IconHome, IconLogout } from "@tabler/icons-react";
+import { IconDatabase, IconHome, IconLogout } from "@tabler/icons-react";
 import {
   createFileRoute,
   Link,
@@ -10,6 +10,13 @@ import {
   useNavigate,
   useRouterState,
 } from "@tanstack/react-router";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@tedx-2026/ui/components/select";
 import { Separator } from "@tedx-2026/ui/components/separator";
 import {
   Sidebar,
@@ -24,6 +31,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@tedx-2026/ui/components/sidebar";
+import { useTheme } from "@tedx-2026/ui/components/theme-provider";
 
 export const Route = createFileRoute("/dashboard")({
   component: RouteComponent,
@@ -51,11 +59,18 @@ export const Route = createFileRoute("/dashboard")({
   },
 });
 
+const selectThemeItems = [
+  { label: "System", value: "system" },
+  { label: "Light", value: "light" },
+  { label: "Dark", value: "dark" },
+] as const;
+
 function RouteComponent() {
   const {
     location: { pathname },
   } = useRouterState();
   const navigate = useNavigate();
+  const { setTheme, theme } = useTheme();
 
   return (
     <SidebarProvider>
@@ -73,6 +88,11 @@ function RouteComponent() {
                   label: "Home",
                   to: "/dashboard/home",
                   icon: IconHome,
+                },
+                {
+                  label: "Storage",
+                  to: "/dashboard/storage",
+                  icon: IconDatabase,
                 },
               ].map((item) => {
                 const Icon = item.icon;
@@ -123,7 +143,36 @@ function RouteComponent() {
               orientation="vertical"
             />
           </div>
-          <UserMenu />
+          <div className="flex flex-row items-center gap-8">
+            <div className="flex flex-row items-center gap-2">
+              <span className="font-medium text-muted-foreground text-sm">
+                Theme
+              </span>
+              <Select
+                items={selectThemeItems}
+                onValueChange={(value) => {
+                  if (value === null) {
+                    return;
+                  }
+
+                  setTheme(value);
+                }}
+                value={theme}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {selectThemeItems.map((item) => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <UserMenu />
+          </div>
         </header>
         <Outlet />
       </SidebarInset>
