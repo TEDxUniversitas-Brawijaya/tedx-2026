@@ -13,7 +13,8 @@
   },
   "scripts": {
     "db:generate": "drizzle-kit generate",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed": "bun run scripts/generate-seed.ts"
   },
   "devDependencies": {
     "@tedx-2026/tsconfig": "workspace:*",

@@ -17,6 +17,9 @@ const app = await alchemy("tedx-2026-api", {
 const db = await D1Database("db", {
   name: `tedx-2026-db-${app.stage}`,
   migrationsDir: "./node_modules/@tedx-2026/db/migrations",
+  dev: {
+    remote: true,
+  },
 });
 
 const kv = await KVNamespace("kv", {

@@ -21,6 +21,7 @@ export const ordersTable = sqliteTable(
           "expired",
           "refund_requested",
           "refunded",
+          "rejected",
         ],
       })
       .notNull(),
