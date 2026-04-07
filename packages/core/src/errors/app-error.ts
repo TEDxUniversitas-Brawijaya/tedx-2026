@@ -5,6 +5,7 @@ export const ErrorCode = {
   CONFLICT: "CONFLICT",
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
   PAYLOAD_TOO_LARGE: "PAYLOAD_TOO_LARGE",
+  BAD_REQUEST: "BAD_REQUEST",
 } as const;
 
 export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode];
