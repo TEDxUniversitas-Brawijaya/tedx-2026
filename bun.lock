@@ -22,6 +22,7 @@
         "@tedx-2026/db": "workspace:*",
         "@tedx-2026/kv": "workspace:*",
         "@tedx-2026/logger": "workspace:*",
+        "@tedx-2026/storage": "workspace:*",
         "@tedx-2026/utils": "workspace:*",
         "alchemy": "catalog:",
         "hono": "^4.7.9",
@@ -130,6 +131,7 @@
         "@tedx-2026/db": "workspace:*",
         "@tedx-2026/kv": "workspace:*",
         "@tedx-2026/logger": "workspace:*",
+        "@tedx-2026/storage": "workspace:*",
         "@tedx-2026/utils": "workspace:*",
         "@trpc/server": "catalog:",
         "hono": "catalog:",
@@ -159,6 +161,7 @@
         "@tedx-2026/db": "workspace:*",
         "@tedx-2026/kv": "workspace:*",
         "@tedx-2026/logger": "workspace:*",
+        "@tedx-2026/storage": "workspace:*",
         "@tedx-2026/types": "workspace:*",
         "@tedx-2026/utils": "workspace:*",
       },
@@ -212,6 +215,7 @@
     "packages/storage": {
       "name": "@tedx-2026/storage",
       "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260403.1",
         "@tedx-2026/tsconfig": "workspace:*",
         "typescript": "catalog:",
       },
