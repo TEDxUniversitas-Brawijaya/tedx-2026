@@ -1,0 +1,139 @@
+import { z } from "zod";
+import {
+  isoDateStringSchema,
+  orderIdSchema,
+  orderStatusSchema,
+  orderTypeSchema,
+  paginationSchema,
+  paymentMethodSchema,
+  refundStatusSchema,
+  snapshotVariantSchema,
+  sortOrderSchema,
+  ticketIdSchema,
+  userIdSchema,
+} from "./common";
+
+// admin.order.list
+export const listOrdersInputSchema = paginationSchema.extend({
+  type: orderTypeSchema.optional(),
+  status: orderStatusSchema.optional(),
+  search: z.string().optional(),
+  sortBy: z.enum(["createdAt", "totalPrice", "status"]).default("createdAt"),
+  sortOrder: sortOrderSchema.default("desc"),
+});
+
+export const listOrdersOutputSchema = z.object({
+  orders: z.array(
+    z.object({
+      id: orderIdSchema,
+      type: orderTypeSchema,
+      status: orderStatusSchema,
+      buyerName: z.string(),
+      buyerEmail: z.email(),
+      totalPrice: z.number().int(),
+      createdAt: isoDateStringSchema,
+      paidAt: isoDateStringSchema.nullable(),
+    })
+  ),
+  pagination: z.object({
+    page: z.number().int(),
+    limit: z.number().int(),
+    total: z.number().int(),
+    totalPages: z.number().int(),
+  }),
+});
+
+// admin.order.getById
+export const getOrderByIdInputSchema = z.object({
+  orderId: orderIdSchema,
+});
+
+export const getOrderByIdOutputSchema = z.object({
+  id: orderIdSchema,
+  type: orderTypeSchema,
+  status: orderStatusSchema,
+  buyerName: z.string(),
+  buyerEmail: z.email(),
+  buyerPhone: z.string(),
+  buyerCollege: z.string(),
+  totalPrice: z.number().int(),
+  idempotencyKey: z.string().nullable(),
+  expiresAt: isoDateStringSchema.nullable(),
+  paidAt: isoDateStringSchema.nullable(),
+  createdAt: isoDateStringSchema,
+  updatedAt: isoDateStringSchema,
+  paymentMethod: paymentMethodSchema.nullable(),
+  midtransOrderId: z.string().nullable(),
+  proofImageUrl: z.string().url().nullable(),
+  verifiedBy: userIdSchema.nullable(),
+  verifiedAt: isoDateStringSchema.nullable(),
+  rejectionReason: z.string().nullable(),
+  refundToken: z.string().nullable(),
+  pickedUpAt: isoDateStringSchema.nullable(),
+  pickedUpBy: userIdSchema.nullable(),
+  items: z.array(
+    z.object({
+      id: z.string(),
+      productId: z.string(),
+      quantity: z.number().int(),
+      snapshotName: z.string(),
+      snapshotPrice: z.number().int(),
+      snapshotType: z.string(),
+      snapshotVariants: z.array(snapshotVariantSchema).nullable(),
+    })
+  ),
+  tickets: z
+    .array(
+      z.object({
+        id: ticketIdSchema,
+        qrCode: z.string(),
+        eventDay: z.string(),
+        attendanceStatus: z.string(),
+        checkedInAt: isoDateStringSchema.nullable(),
+        checkedInBy: userIdSchema.nullable(),
+      })
+    )
+    .optional(),
+  refund: z
+    .object({
+      id: z.string(),
+      status: refundStatusSchema,
+      reason: z.string(),
+      paymentMethod: z.string(),
+      paymentProofUrl: z.url().nullable(),
+      bankAccountNumber: z.string(),
+      bankName: z.string(),
+      bankAccountHolder: z.string(),
+      processedBy: userIdSchema.nullable(),
+      processedAt: isoDateStringSchema.nullable(),
+      rejectionReason: z.string().nullable(),
+      createdAt: isoDateStringSchema,
+    })
+    .nullable(),
+});
+
+// admin.order.verifyPayment
+export const verifyPaymentInputSchema = z.object({
+  orderId: orderIdSchema,
+  action: z.enum(["approve", "reject"]),
+  reason: z.string().min(1).max(1000).optional(),
+});
+
+export const verifyPaymentOutputSchema = z.object({
+  orderId: orderIdSchema,
+  status: orderStatusSchema,
+  message: z.string(),
+});
+
+// admin.order.processRefund
+export const processRefundInputSchema = z.object({
+  orderId: orderIdSchema,
+  action: z.enum(["approve", "reject"]),
+  reason: z.string().min(1).max(1000).optional(),
+});
+
+export const processRefundOutputSchema = z.object({
+  orderId: orderIdSchema,
+  refundStatus: refundStatusSchema,
+  message: z.string(),
+});
