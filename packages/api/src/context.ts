@@ -1,14 +1,11 @@
 import { createAuth, type Session } from "@tedx-2026/auth";
 import {
   createFileService,
-  type FileServices,
-} from "@tedx-2026/core/services/file";
-import {
   createUserService,
+  type FileServices,
   type UserServices,
-} from "@tedx-2026/core/services/user";
-import { createDB, type D1Database } from "@tedx-2026/db";
-import { createUserQueries } from "@tedx-2026/db/queries/user";
+} from "@tedx-2026/core";
+import { createDB, createUserQueries, type D1Database } from "@tedx-2026/db";
 import type {
   // createKV,
   KVNamespaceType,
