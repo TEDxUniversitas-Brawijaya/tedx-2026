@@ -100,6 +100,10 @@ Validations:
 
 Returns: same structure as ticket.createOrder.
 
+## `merch.getOrderStatus` **(query)**
+
+Same as `ticket.getOrderStatus`, but for merch orders.
+
 ---
 
 ## **Public — Refund**
