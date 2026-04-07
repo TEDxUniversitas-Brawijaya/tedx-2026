@@ -17,7 +17,5 @@ export function StorageTableContainer() {
     return <div>No files found.</div>;
   }
 
-  filesQuery.data;
-
   return <StorageTable files={filesQuery.data} />;
 }
