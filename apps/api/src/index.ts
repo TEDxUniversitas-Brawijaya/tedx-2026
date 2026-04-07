@@ -1,3 +1,7 @@
+import type {
+  ExecutionContext,
+  ScheduledController,
+} from "@cloudflare/workers-types";
 import { trpcServer } from "@hono/trpc-server";
 import { createContext, trpcRouter } from "@tedx-2026/api";
 import { createAuth } from "@tedx-2026/auth";
@@ -10,18 +14,20 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
+type Bindings = {
+  DB: D1Database;
+  KV: KVNamespaceType;
+  CDN: R2BucketType;
+  CDN_DOMAIN: string;
+  APP_URL: string;
+  AUTH_SECRET: string;
+  GOOGLE_CLIENT_ID: string;
+  GOOGLE_CLIENT_SECRET: string;
+  SUPERADMIN_EMAILS: string; // Comma-separated list of superadmin emails
+};
+
 const app = new Hono<{
-  Bindings: {
-    DB: D1Database;
-    KV: KVNamespaceType;
-    CDN: R2BucketType;
-    CDN_DOMAIN: string;
-    APP_URL: string;
-    AUTH_SECRET: string;
-    GOOGLE_CLIENT_ID: string;
-    GOOGLE_CLIENT_SECRET: string;
-    SUPERADMIN_EMAILS: string; // Comma-separated list of superadmin emails
-  };
+  Bindings: Bindings;
 }>();
 
 app.use(logger());
@@ -117,4 +123,19 @@ app.use(
 
 export default {
   fetch: app.fetch,
+  scheduled(
+    controller: ScheduledController,
+    _env: Bindings,
+    _ctx: ExecutionContext
+  ) {
+    switch (controller.cron) {
+      case "0 0 * * *": // Every day at midnight
+        console.log("Running daily scheduled task");
+        break;
+
+      default:
+        break;
+    }
+    console.log("Running scheduled task");
+  },
 };
