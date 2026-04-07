@@ -4,6 +4,7 @@ import { createAuth } from "@tedx-2026/auth";
 import { createDB, type D1Database } from "@tedx-2026/db";
 import type { KVNamespaceType } from "@tedx-2026/kv";
 import { createLogger } from "@tedx-2026/logger";
+import type { R2BucketType } from "@tedx-2026/storage";
 import { createNanoId } from "@tedx-2026/utils";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
@@ -13,6 +14,8 @@ const app = new Hono<{
   Bindings: {
     DB: D1Database;
     KV: KVNamespaceType;
+    CDN: R2BucketType;
+    CDN_DOMAIN: string;
     APP_URL: string;
     AUTH_SECRET: string;
     GOOGLE_CLIENT_ID: string;
@@ -94,7 +97,10 @@ app.use(
         env: {
           db: c.env.DB,
           kv: c.env.KV,
+          cdn: c.env.CDN,
+
           APP_URL: c.env.APP_URL,
+          CDN_DOMAIN: c.env.CDN_DOMAIN,
           AUTH_SECRET: c.env.AUTH_SECRET,
           GOOGLE_CLIENT_ID: c.env.GOOGLE_CLIENT_ID,
           GOOGLE_CLIENT_SECRET: c.env.GOOGLE_CLIENT_SECRET,

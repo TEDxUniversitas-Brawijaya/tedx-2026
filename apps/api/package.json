@@ -13,6 +13,7 @@
     "@tedx-2026/db": "workspace:*",
     "@tedx-2026/kv": "workspace:*",
     "@tedx-2026/logger": "workspace:*",
+    "@tedx-2026/storage": "workspace:*",
     "@tedx-2026/utils": "workspace:*",
     "alchemy": "catalog:",
     "hono": "^4.7.9"

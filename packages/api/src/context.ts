@@ -1,5 +1,9 @@
 import { createAuth, type Session } from "@tedx-2026/auth";
 import {
+  createFileService,
+  type FileServices,
+} from "@tedx-2026/core/services/file";
+import {
   createUserService,
   type UserServices,
 } from "@tedx-2026/core/services/user";
@@ -10,12 +14,15 @@ import type {
   KVNamespaceType,
 } from "@tedx-2026/kv";
 import type { LoggerType } from "@tedx-2026/logger";
+import { createR2, type R2BucketType } from "@tedx-2026/storage";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 
 type CreateContextOptions = {
   env: {
     db: D1Database;
     kv: KVNamespaceType;
+    cdn: R2BucketType;
+    CDN_DOMAIN: string;
     APP_URL: string;
     AUTH_SECRET: string;
     GOOGLE_CLIENT_ID: string;
@@ -42,6 +49,7 @@ export const createContext = async ({
 
   const db = createDB(env.db);
   // const kv = createKV(env.kv);
+  const cdn = createR2(env.cdn);
 
   const userQueries = createUserQueries(db);
 
@@ -49,6 +57,13 @@ export const createContext = async ({
     ...baseContext,
     logger: logger.child({ service: "user" }),
     userQueries,
+  });
+
+  const fileService = createFileService({
+    ...baseContext,
+    logger: logger.child({ service: "file" }),
+    r2: cdn,
+    CDN_DOMAIN: env.CDN_DOMAIN,
   });
 
   const auth = createAuth(db, {
@@ -69,6 +84,7 @@ export const createContext = async ({
     session,
     services: {
       user: userService,
+      file: fileService,
     },
   };
 };
@@ -78,6 +94,7 @@ export type Context = {
   logger: LoggerType;
   services: {
     user: UserServices;
+    file: FileServices;
   };
   // operations: {};
   waitUntil: (promise: Promise<unknown>) => void;

@@ -1,5 +1,5 @@
 import alchemy from "alchemy";
-import { D1Database, KVNamespace, Worker } from "alchemy/cloudflare";
+import { D1Database, KVNamespace, R2Bucket, Worker } from "alchemy/cloudflare";
 import { GitHubComment } from "alchemy/github";
 import { CloudflareStateStore } from "alchemy/state";
 
@@ -23,6 +23,32 @@ const kv = await KVNamespace("kv", {
   title: `tedx-2026-kv-${app.stage}`,
 });
 
+const cdn = await R2Bucket("cdn", {
+  name: app.stage === "prod" ? "tedx-cdn" : `tedx-2026-cdn-${app.stage}`,
+  domains:
+    app.stage === "prod" ? ["cdn.tedxuniversitasbrawijaya.com"] : undefined,
+  adopt: true,
+  devDomain: true,
+  dev: {
+    remote: true,
+  },
+  cors: [
+    {
+      allowed: {
+        origins: [
+          "https://*.tedxuniversitasbrawijaya.com",
+          "https://*.ahargunyllib.workers.dev",
+          "http://localhost:5173",
+        ],
+        methods: ["GET"],
+        headers: ["*"],
+      },
+    },
+  ],
+});
+
+console.log("CDN URL:", cdn.devDomain);
+
 export const worker = await Worker("api", {
   name: `tedx-2026-api-${app.stage}`,
   entrypoint: "./src/index.ts",
@@ -31,6 +57,8 @@ export const worker = await Worker("api", {
   bindings: {
     DB: db,
     KV: kv,
+    CDN: cdn,
+    CDN_DOMAIN: cdn.devDomain ?? "cdn.tedxuniversitasbrawijaya.com",
     APP_URL: Worker.DevUrl,
     AUTH_SECRET: alchemy.secret(process.env.AUTH_SECRET),
     GOOGLE_CLIENT_ID: alchemy.secret(process.env.GOOGLE_CLIENT_ID),
