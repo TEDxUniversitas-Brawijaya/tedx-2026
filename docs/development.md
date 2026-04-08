@@ -4,6 +4,7 @@
 
 - **Bun** v1.3.6 or higher ([install guide](https://bun.sh))
 - **Git** for version control
+- **Cloudflare account** (free tier) for API development
 
 ## Initial Setup
 
@@ -24,73 +25,95 @@
    bunx ultracite doctor
    ```
 
+4. **Set up API resources** (if working on backend)
+   ```bash
+   cd apps/api
+   cp .env.example .env
+   # Edit .env with your credentials
+   ```
+
 ## Development Commands
 
-All commands are run from the **project root**:
+All commands from the **project root**:
+
+### Run Apps
+
+```bash
+# Store + API
+bun run dev:store
+
+# Dashboard + API
+bun run dev:dash
+
+# Marketing site (www)
+cd apps/www && bun run dev
+```
 
 ### Code Quality
 
 ```bash
 # Check code for issues
-bun run lint
+bun run check
 
-# Automatically fix formatting and linting issues
-bun run lint:fix
+# Auto-fix formatting and linting
+bun run fix
+
+# Type check all packages
+bun run typecheck
 ```
 
-### Working with Apps
+### Database
 
-See each app's README in `apps/` for specific development commands.
+```bash
+# Generate migration after schema changes
+bun run db:generate
+```
 
-## Code Quality Workflow
+## Code Quality
 
-This project uses **Ultracite** for strict code quality enforcement:
+This project uses **Ultracite** for code quality enforcement:
 
-### Automatic Formatting
+- **Pre-commit hook**: Auto-runs `ultracite fix` on staged files
+- **Manual**: Run `bun run fix` anytime
 
-- **Pre-commit hook**: Automatically runs `ultracite fix` on staged files before each commit
-- **Manual formatting**: Run `bun run lint:fix` anytime
-
-### What Gets Checked
-
-- TypeScript/JavaScript syntax and best practices
-- Code complexity and maintainability
-- React/JSX patterns (when applicable)
-- Accessibility standards
-- Performance anti-patterns
-- Security issues
-
-See `.claude/CLAUDE.md` for detailed code standards.
+Code standards are defined in `.claude/CLAUDE.md`.
 
 ## Common Tasks
 
-### Adding a New Dependency
+### Add Dependencies
 
 ```bash
-# Add to a specific workspace
-cd apps/www
-bun add <package-name>
+# To specific app/package
+cd apps/store
+bun add zustand
 
-# Add to root (for development tools)
-bun add -D <package-name>
+# To root (dev tools only)
+bun add -D vitest
 ```
 
-### TypeScript Type Checking
+### Manage API Resources
 
 ```bash
-# Check types across all workspaces
-bun x tsc --noEmit
+cd apps/api
+
+# Deploy resources
+bunx alchemy deploy
+
+# Destroy resources (local dev)
+bunx alchemy destroy
+
+# Check status
+bunx alchemy status
 ```
 
 ### Git Workflow
 
-1. Create a new branch:
-   ```bash
-   git pull origin main # update local main
-   git switch -c feat/your-feature-name # or fix/your-bugfix-name
-   ```
-2. Make your changes
-3. Stage files
-4. Commit, make sure to write clear commit messages.
-5. Push
-6. Open a Pull Request on GitHub, targeting `main`, make sure follow contribution guidelines.
+1. Update main: `git pull origin main`
+2. Create branch: `git switch -c feat/your-feature`
+3. Make changes
+4. Check quality: `bun run fix && bun run typecheck`
+5. Commit: `git commit -m "feat: add feature"`
+6. Push: `git push -u origin feat/your-feature`
+7. Open PR on GitHub
+
+See [Workflow Guide](./workflow.md) for detailed conventions.

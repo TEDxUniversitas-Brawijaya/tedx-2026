@@ -1,0 +1,31 @@
+{
+  "name": "@tedx-2026/core",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "types": "./src/*.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "dependencies": {
+    "@tedx-2026/db": "workspace:*",
+    "@tedx-2026/kv": "workspace:*",
+    "@tedx-2026/logger": "workspace:*",
+    "@tedx-2026/utils": "workspace:*",
+    "@tedx-2026/storage": "workspace:*",
+    "@tedx-2026/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@tedx-2026/tsconfig": "workspace:*",
+    "@tedx-2026/types": "workspace:*",
+    "typescript": "catalog:"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No tests yet\""
+  }
+}

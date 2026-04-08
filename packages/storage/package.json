@@ -1,0 +1,21 @@
+{
+  "name": "@tedx-2026/storage",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "types": "./src/*.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@tedx-2026/tsconfig": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

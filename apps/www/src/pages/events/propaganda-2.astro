@@ -1,8 +1,339 @@
 ---
-import ComingSoon from "@/components/coming-soon.astro";
 import Layout from "@/components/layout.astro";
+import { Image } from "astro:assets";
+import backgroundImage from "@/assets/imgs/green-room-background-3.png";
+import floor from "@/assets/imgs/wood-floor.png";
+import texture from "@/assets/imgs/paper-grain-texture-1.png";
+import window from "@/assets/imgs/window-2.png";
+import lighting from "@/assets/svgs/window-lighting.svg";
+import lamp from "@/assets/imgs/chandelier-1.png";
+import sofa from "@/assets/imgs/sofa-1.png";
+import table from "@/assets/imgs/table-2.png";
+import chair from "@/assets/imgs/side-chair.png";
+import carpet from "@/assets/imgs/green-carpet.png";
+import diningTable from "@/assets/imgs/dining-seat.png";
+import vase from "@/assets/imgs/flower-vase.png";
+import vaseShine from "@/assets/svgs/flower-vase-shine.svg";
+import Navbar from "@/components/navbar.astro";
+import curtain from "@/assets/imgs/curtain.png";
+import desk from "@/assets/imgs/desk.png";
+import brokenVase from "@/assets/imgs/broken-vase-flower.png";
+import flowerStalk from "@/assets/imgs/flower-stalk.png";
+import "@/styles/propaganda-2.css";
 ---
 
-<Layout>
-  <ComingSoon />
+<Layout
+  title="Antologi Rasa | TEDx Universitas Brawijaya"
+  description="Jauh sebelum kita mengenal kata-kata, perasaan adalah cara pertama manusia berkomunikasi dengan dunia. Di dalam lingkungan keluarga, emosi berperan sebagai jembatan utama bagi kita untuk memahami diri sendiri sekaligus orang-orang di sekitar. Keluarga yang harmonis bukan berarti keluarga yang selalu tenang tanpa perselisihan, melainkan keluarga yang berani memberi ruang bagi setiap anggotanya untuk merasa bahagia, sedih, hingga kecewa tanpa perlu merasa dihakimi. Dengan menghargai setiap rasa yang muncul, kita belajar bahwa memiliki emosi bukanlah sebuah kelemahan, melainkan bukti nyata bahwa kita adalah manusia yang utuh."
+>
+  <Navbar />
+  <main id="propa2-main">
+    <!-- frame 1 -->
+    <section class="frame-1" style="position: relative;">
+      <Image src={backgroundImage} class="background" alt="Propaganda 2" />
+      <Image src={floor} class="floor" alt="Wood Floor" />
+      <div class="window-1-container">
+        <Image src={window} class="window-1" alt="Window-1" />
+        <Image src={lighting} class="lighting" alt="Window Lighting" />
+      </div>
+      <Image src={lamp} class="hanging-lamp" alt="Hanging Lamp" />
+      <Image src={sofa} class="sofa" alt="Sofa" />
+      <Image src={table} class="table" alt="table" />
+      <Image src={chair} class="chair" alt="chair" />
+      <Image src={chair} class="mirror-chair" alt="chair2" />
+      <div class="text">
+        <h3 style="font-size: 1.5rem;">ANTOLOGI RASA</h3>
+        <p>
+          Jauh sebelum kita mengenal kata-kata, perasaan adalah cara pertama
+          manusia berkomunikasi dengan dunia. Di dalam lingkungan keluarga,
+          emosi berperan sebagai jembatan utama bagi kita untuk memahami diri
+          sendiri sekaligus orang-orang di sekitar. Keluarga yang harmonis bukan
+          berarti keluarga yang selalu tenang tanpa perselisihan, melainkan
+          keluarga yang berani memberi ruang bagi setiap anggotanya untuk merasa
+          bahagia, sedih, hingga kecewa tanpa perlu merasa dihakimi. Dengan
+          menghargai setiap rasa yang muncul, kita belajar bahwa memiliki emosi
+          bukanlah sebuah kelemahan, melainkan bukti nyata bahwa kita adalah
+          manusia yang utuh.
+        </p>
+      </div>
+    </section>
+    <!-- frame 2 -->
+    <section class="frame-2" style="position: relative;">
+      <div class="frame-2-sticky-wrapper">
+        <Image src={carpet} class="carpet" alt="Green Carpet" />
+        <Image src={floor} class="floor-frame-2" alt="Wood Floor" />
+        <div class="frame-2-content">
+          <!-- <div class="placeholder">placeholder</div> -->
+          <p
+            class="text-2-content"
+            style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem' }}
+          >
+            Dalam perspektif yang lebih luas, topik ini mengajak kita melihat
+            bagaimana elemen modern seperti teknologi dan hiburan mempengaruhi
+            cara kita mengelola perasaan. Teknologi saat ini berperan besar
+            dalam membantu atau justru menghambat cara kita mengekspresikan
+            diri, sementara hiburan sering menjadi tempat kita melepas beban
+            batin dan mencari makna hidup. Tantangan besarnya adalah bagaimana
+            kita dapat merancang pola komunikasi dan interaksi sosial yang lebih
+            terbuka. Tujuannya agar tercipta ruang dialog yang jujur, aman, dan
+            merangkul semua orang, baik di dalam lingkup kecil keluarga maupun
+            di tengah masyarakat luas.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- frame 3 -->
+    <section class="frame-3" style="position: relative;">
+      <div class="window-container-3">
+        <div class="window-wrapper-3">
+          <Image src={window} class="window-frame-3" alt="Window 2" />
+          <Image src={window} class="window-frame-3" alt="Window 2" />
+          <Image src={curtain} class="curtain" alt="Curtain" />
+          <Image src={curtain} class="curtain2" alt="Curtain" />
+        </div>
+      </div>
+      <Image src={backgroundImage} class="background" alt="Propaganda 2" />
+      <Image src={diningTable} class="dining-table" alt="Dining Table" />
+      <div class="vase-container">
+        <div class="vase-wrapper">
+          <Image src={vase} class="vase" alt="Flower Vase" />
+          <Image src={vaseShine} class="vase-shine" alt="Vase Shine" />
+        </div>
+      </div>
+      <div class="text-3">
+        <h3 style="font-size: 1.5rem;">PRASASTI TANPA AKSARA</h3>
+        <p>
+          Sebelum lidah mampu mengeja kata dan logika mulai menyusun alasan,
+          manusia telah lebih dulu "berbicara" melalui getaran perasaan. Bagian
+          ini menjelaskan bahwa rasa adalah medium komunikasi yang paling jujur.
+          Dalam lingkup keluarga, rasa bukan sekadar reaksi, melainkan kompas
+          pertama bagi seorang individu untuk mengenali siapa dirinya dan siapa
+          orang di sekitarnya.
+        </p>
+      </div>
+    </section>
+    <!-- frame 4 -->
+    <section
+      class="frame-4"
+      style="position: relative; background-color: #312E35; min-height: 100vh;"
+    >
+      <Image src={desk} class="desk-frame-4" alt="desk" />
+      <div class="text-4">
+        <p>
+          Di sini, kita membedah bahwa emosi, baik itu kegelapan rasa takut
+          maupun cahaya kebahagiaan memiliki hak yang sama untuk hadir. Mengakui
+          rasa tanpa penyangkalan adalah bentuk penghormatan paling dasar
+          terhadap martabat manusia, karena sebelum kita menjadi makhluk yang
+          berpikir, kita adalah makhluk yang merasa.
+        </p>
+      </div>
+    </section>
+    <!-- frame 5 -->
+    <section class="frame-5" style="position: relative;">
+      <Image src={floor} class="floor-frame-5" alt="Propaganda 2" />
+      <!-- <div class="placeholder-frame-5">placeholder</div> -->
+      <div class="broken-vase-container">
+        <div class="broken-vase-wrapper">
+          <Image
+            src={brokenVase}
+            class="broken-vase"
+            alt="Broken Vase with Flowers"
+          />
+          <Image src={flowerStalk} class="flower-stalk" alt="Flower Stalk" />
+        </div>
+      </div>
+    </section>
+    <Image src={texture} class="texture" alt="Paper Grain Texture" />
+  </main>
 </Layout>
+
+<script>
+  import Lenis from "lenis";
+
+  const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
+  const easeInOutCubic = (t: number) =>
+    t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+
+  new Lenis({ autoRaf: true });
+
+  const vaseWrapper = document.querySelector(".vase-wrapper") as HTMLElement;
+  const mainContent = document.querySelector("#propa2-main") as HTMLElement;
+  const frame3 = document.querySelector(".frame-3") as HTMLElement;
+  const text3 = document.querySelector(".text-3") as HTMLElement;
+  const frame4 = document.querySelector(".frame-4") as HTMLElement;
+  const text4 = document.querySelector(".text-4") as HTMLElement;
+  const frame5 = document.querySelector(".frame-5") as HTMLElement;
+  // const placeholderFrame5 = document.querySelector(
+  //   ".placeholder-frame-5"
+  // ) as HTMLElement;
+
+  // Frame 2 animation elements (placeholder hidden)
+  const frame2Section = document.querySelector(".frame-2") as HTMLElement;
+  const text2Content = document.querySelector(".text-2-content") as HTMLElement;
+  // const placeholder2 = document.querySelector(
+  //   ".frame-2 .placeholder"
+  // ) as HTMLElement;
+
+  if (vaseWrapper) {
+    vaseWrapper.style.willChange = "transform";
+  }
+  if (text3) {
+    text3.style.willChange = "opacity";
+  }
+  if (text4) {
+    text4.style.willChange = "opacity";
+  }
+  // if (placeholderFrame5) {
+  //   placeholderFrame5.style.willChange = "opacity";
+  // }
+  if (text2Content) {
+    text2Content.style.willChange = "opacity";
+  }
+  // if (placeholder2) {
+  //   placeholder2.style.willChange = "opacity";
+  // }
+
+  const isMobile = () => window.innerWidth <= 768;
+
+  const handleFrame2TextFade = () => {
+    if (!(frame2Section && text2Content)) {
+      return;
+    }
+
+    const rect = frame2Section.getBoundingClientRect();
+    const scrolled = -rect.top;
+    const maxScroll = frame2Section.offsetHeight - window.innerHeight;
+
+    if (maxScroll <= 0) {
+      return;
+    }
+
+    const rawProgress = Math.min(Math.max(scrolled / maxScroll, 0), 1);
+    // Teks fade-out di 60% pertama scroll frame-2
+    const rawTextOut = Math.min(Math.max(rawProgress / 0.6, 0), 1);
+    const textOpacity = 0 + easeInOutCubic(rawTextOut);
+    text2Content.style.opacity = textOpacity.toString();
+  };
+
+  const initFrame2Mobile = () => {
+    if (text2Content) {
+      text2Content.style.zIndex = "6";
+      text2Content.style.opacity = "1";
+    }
+  };
+
+  initFrame2Mobile();
+
+  const updateFrame5State = () => {
+    const f5Rect = frame5?.getBoundingClientRect();
+    if (!f5Rect) {
+      return;
+    }
+
+    const frame5Bottom = f5Rect.bottom;
+    const isFrame5BottomInViewport = frame5Bottom <= window.innerHeight + 80;
+    if (isFrame5BottomInViewport) {
+      mainContent?.classList.add("is-vase-broken");
+    } else {
+      mainContent?.classList.remove("is-vase-broken");
+    }
+
+    // placeholder-frame-5 hidden — animasi opacity dinonaktifkan
+    // const fadeDistance = isMobile() ? 180 : 300;
+    // const scrollPastTopFrame5 = window.innerHeight - f5Rect.top;
+    // if (scrollPastTopFrame5 > 0) {
+    //   const rawOpacity = Math.min(scrollPastTopFrame5 / fadeDistance, 1);
+    //   placeholderFrame5.style.opacity = easeOutCubic(rawOpacity).toString();
+    // } else {
+    //   placeholderFrame5.style.opacity = "0";
+    // }
+  };
+
+  if (vaseWrapper && frame3) {
+    const handleFrame3Scroll = (mobile: boolean) => {
+      const f3Rect = frame3.getBoundingClientRect();
+      const scrollPastBottomFrame3 = window.innerHeight - f3Rect.bottom;
+
+      if (scrollPastBottomFrame3 > 0) {
+        const fadeDivisor = mobile ? 160 : 100;
+        const rawFade = Math.min(scrollPastBottomFrame3 / fadeDivisor, 1);
+        const textOpacity = mobile ? 1 : Math.max(1 - easeOutCubic(rawFade), 0);
+
+        const moveMultiplier = mobile ? 1.05 : 1.1;
+        const rotateMultiplier = mobile ? 0.045 : 0.045;
+        const scale =
+          1 + (scrollPastBottomFrame3 / (mobile ? 200 : 100)) * 0.03;
+        const moveY = scrollPastBottomFrame3 * moveMultiplier;
+        const rotate = scrollPastBottomFrame3 * rotateMultiplier;
+
+        if (!mobile) {
+          text3.style.opacity = textOpacity.toString();
+        }
+        vaseWrapper.style.transform = `translateY(${moveY}px) rotate(${rotate}deg) scale(${scale})`;
+      }
+    };
+
+    const handleFrame4Scroll = (mobile: boolean) => {
+      const f4Rect = frame4.getBoundingClientRect();
+      const viewportCenter = window.innerHeight / 2;
+      const distanceToCenter = f4Rect.top - viewportCenter;
+
+      if (distanceToCenter <= 0) {
+        const opacityRamp = mobile ? 200 : 350;
+        const rawOpacity = Math.min(
+          1,
+          Math.abs(distanceToCenter) / opacityRamp
+        );
+        const textOpacity = easeOutCubic(rawOpacity);
+        text4.style.opacity = textOpacity.toString();
+        text4.style.zIndex = textOpacity >= 1 ? "6" : "1";
+
+        const f3RectNow = frame3.getBoundingClientRect();
+        const scrollPastBottom = window.innerHeight - f3RectNow.bottom;
+        if (scrollPastBottom > 0) {
+          const moveMultiplier = 1.05;
+          const rotateMultiplier = mobile ? 0.045 : 0.05;
+          const scale4 = 1 + (scrollPastBottom / (mobile ? 200 : 100)) * 0.03;
+          const moveY4 = scrollPastBottom * moveMultiplier;
+          const rotate4 = scrollPastBottom * rotateMultiplier;
+          vaseWrapper.style.transform = `translateY(${moveY4}px) rotate(${rotate4}deg) scale(${scale4})`;
+        }
+      } else {
+        text4.style.opacity = "0";
+      }
+    };
+
+    let scrollRafId: number | null = null;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (scrollRafId !== null) {
+          return;
+        }
+        scrollRafId = requestAnimationFrame(() => {
+          const mobile = isMobile();
+          handleFrame2TextFade();
+          handleFrame3Scroll(mobile);
+          handleFrame4Scroll(mobile);
+          updateFrame5State();
+          scrollRafId = null;
+        });
+      },
+      { passive: true }
+    );
+
+    updateFrame5State();
+
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        initFrame2Mobile();
+        updateFrame5State();
+        if (isMobile()) {
+          text3.style.opacity = "1";
+        }
+      }, 150);
+    });
+  }
+</script>

@@ -11,7 +11,6 @@ const menu = [
       { name: "About TED", href: "/about-ted" },
       { name: "Grand Theme", href: "/about-ted#grand-theme" },
       { name: "Our Team", href: "/our-team" },
-      { name: "Volunteer Recruitment", href: "/recruitment" },
     ],
   },
   {
@@ -27,6 +26,7 @@ const menu = [
   {
     name: "Order",
     children: [
+      // TODO: Update these links when the web are ready. Should be redirect to store.tedxuniversitasbrawijaya.com/{merchandise,tickets}
       { name: "Merch TEDx", href: "/orders/merchandise" },
       { name: "Ticket", href: "/orders/tickets" },
     ],
@@ -78,8 +78,7 @@ const menu = [
               <span>TEDX UNIVERSITAS BRAWIJAYA</span>
             </div>
             <ul>
-              {
-                menu.map((item) => (
+              {menu.map((item) => (
                   <li>
                     {item.children ? (
                       <>
@@ -96,8 +95,7 @@ const menu = [
                       <a href={item.href}>{item.name}</a>
                     )}
                   </li>
-                ))
-              }
+                ))}
             </ul>
           </div>
         </div>
@@ -410,22 +408,13 @@ const menu = [
     font-size: var(--text-s);
     color: black;
   }
-
-  @media (min-width: 425px) {
+  @media (min-width: 768px) {
     .modal-content {
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -40%) scale(0.97);
-      width: 100%;
       max-width: 90dvw;
-    }
-
-    .modal.active .modal-content {
-      transform: translate(-50%, -50%) scale(1);
     }
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .modal-content {
       top: 50%;
       left: 50%;
@@ -456,6 +445,19 @@ const menu = [
 
     .menu-container ul li ul li {
       font-size: var(--text-m);
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .modal-content {
+      width: 80%;
+      max-width: 60dvw;
+    }
+  }
+  @media (min-width: 1920px) {
+    .modal-content {
+      width: 80%;
+      max-width: 50dvw;
     }
   }
 </style>
