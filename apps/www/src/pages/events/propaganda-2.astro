@@ -19,6 +19,13 @@ import curtain from "@/assets/imgs/curtain.png";
 import desk from "@/assets/imgs/desk.png";
 import brokenVase from "@/assets/imgs/broken-vase-flower.png";
 import flowerStalk from "@/assets/imgs/flower-stalk.png";
+import bookShelf from "@/assets/imgs/book-shelf.png";
+import photoFrame from "@/assets/imgs/photo-frame.png";
+import photoFrame2 from "@/assets/imgs/photo-frame-2.png";
+import photoFrame3 from "@/assets/imgs/photo-frame-3.png";
+import silPerson from "@/assets/svgs/silhouette-of-person.svg";
+import standLamp from "@/assets/imgs/stand-lamp.png";
+import headSofa from "@/assets/imgs/head-sofa.png";
 import "@/styles/propaganda-2.css";
 ---
 
@@ -117,7 +124,6 @@ import "@/styles/propaganda-2.css";
       class="frame-4"
       style="position: relative; background-color: #312E35; min-height: 100vh;"
     >
-      <Image src={desk} class="desk-frame-4" alt="desk" />
       <div class="text-4">
         <p>
           Di sini, kita membedah bahwa emosi, baik itu kegelapan rasa takut
@@ -128,21 +134,163 @@ import "@/styles/propaganda-2.css";
         </p>
       </div>
     </section>
-    <!-- frame 5 -->
-    <section class="frame-5" style="position: relative;">
-      <Image src={floor} class="floor-frame-5" alt="Propaganda 2" />
-      <!-- <div class="placeholder-frame-5">placeholder</div> -->
-      <div class="broken-vase-container">
-        <div class="broken-vase-wrapper">
-          <Image
-            src={brokenVase}
-            class="broken-vase"
-            alt="Broken Vase with Flowers"
-          />
-          <Image src={flowerStalk} class="flower-stalk" alt="Flower Stalk" />
+    <!-- frame 5 wrapper -->
+    <div class="frame-5-wrapper">
+      <!-- frame 5 -->
+      <section class="frame-5">
+        <Image src={desk} class="desk-frame-4" alt="desk" />
+        <Image src={floor} class="floor-frame-5" alt="Propaganda 2" />
+        <!-- <div class="placeholder-frame-5">placeholder</div> -->
+        <div class="broken-vase-container">
+          <div class="broken-vase-wrapper">
+            <Image
+              src={brokenVase}
+              class="broken-vase"
+              alt="Broken Vase with Flowers"
+            />
+            <Image src={flowerStalk} class="flower-stalk" alt="Flower Stalk" />
+          </div>
+        </div>
+      </section>
+    </div>
+    <div style="display: grid; width: 100%;">
+      <!-- frame 6 wrapper -->
+      <div class="frame-6-wrapper" style="grid-area: 1 / 1;">
+        <!-- frame 6 -->
+        <section class="frame-6">
+          <Image src={backgroundImage} class="background" alt="Propaganda 2" />
+          <Image src={bookShelf} class="book-shelf" alt="Book Shelf" />
+          <Image src={bookShelf} class="book-shelf-2" alt="Book Shelf" />
+          <Image src={floor} class="floor-frame-6" alt="Propaganda 2" />
+          <Image src={photoFrame} class="photo-frame" alt="Photo Frame" />
+          <Image src={desk} class="desk-frame-6" alt="desk" />
+          <div class="broken-vase-container-frame-6">
+            <div class="broken-vase-wrapper-frame-6">
+              <Image
+                src={brokenVase}
+                class="broken-vase-frame-6"
+                alt="Broken Vase with Flowers"
+              />
+              <Image
+                src={flowerStalk}
+                class="flower-stalk-frame-6"
+                alt="Flower Stalk"
+              />
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- text wrapper overlay -->
+      <div
+        class="text-frame-6-wrapper"
+        style="grid-area: 1 / 1; width: 100%; height: 350vh; pointer-events: none; z-index: 6;"
+      >
+        <div style="position: sticky; top: 0; width: 100%; height: 100vh;">
+          <div
+            class="text-frame-6"
+            style="display:grid; gap:1.5rem; pointer-events: auto;"
+          >
+            <h3>RUANG TEDUH</h3>
+            <span style="display:grid; gap:1rem">
+              <p>
+                Menggugat pemahaman umum bahwa keluarga yang ideal adalah
+                keluarga yang sunyi dari pertikaian. Secara rincinya, menekankan
+                bahwa kesehatan sebuah keluarga justru diuji dalam konflik.
+                Keharmonisan sejati tidak dibangun di atas keheningan yang
+                dipaksakan, melainkan di atas kemampuan sebuah sistem (keluarga)
+                untuk menjadi "wadah" yang cukup besar bagi emosi-emosi yang
+                meledak.
+              </p>
+              <p>
+                Empati dan kesadaran bertindak sebagai jangkar agar badai emosi
+                tersebut tidak menghancurkan, melainkan mempererat ikatan.
+                Menghargai rasa berarti memahami bahwa emosi bukan tanda
+                kerapuhan atau kelemahan, melainkan "alarm" kemanusiaan yang
+                menandakan bahwa ada sesuatu yang sedang beresonansi di dalam
+                batin kita.
+              </p>
+            </span>
+          </div>
         </div>
       </div>
+    </div>
+
+    <!-- frame 7 & 8 dissolve wrapper -->
+    <div class="frame-7-8-wrapper">
+      <!-- frame 7 track -->
+      <div class="frame-7-track">
+        <section class="frame-7">
+          <Image src={floor} class="floor-frame-7" alt="Wood Floor" />
+          <div class="placeholder-frame-7">placeholder</div>
+          <Image
+            src={silPerson}
+            class="sil-person"
+            alt="Silhouette of Person"
+          />
+        </section>
+      </div>
+
+      <!-- frame 8 track -->
+      <div class="frame-8-scroll">
+        <section class="frame-8">
+          <Image
+            src={backgroundImage}
+            class="background-frame-8"
+            alt="Propaganda 2 Frame 8 Background"
+          />
+          <Image src={photoFrame3} class="photo-frame-3" alt="Photo Frame" />
+          <Image src={photoFrame2} class="photo-frame-2" alt="Photo Frame" />
+        </section>
+      </div>
+
+      <!-- text wrapper overlay -->
+      <div
+        class="text-frame-8-wrapper"
+        style="grid-area: 1 / 1; width: 100%; height: 250vh; pointer-events: none; z-index: 6;"
+      >
+        <div style="position: sticky; top: 0; width: 100%; height: 100vh;">
+          <div
+            class="text-frame-8"
+            style="display:grid; gap:2rem; pointer-events: auto;"
+          >
+            <h3>JEMBATAN RASA</h3>
+            <span style="display:grid; gap:1rem">
+              <p>
+                Kita merefleksikan bagaimana emosi manusia berinteraksi dengan
+                dunia modern. Bagian ini membahas peran media (teknologi,
+                hiburan, dan desain) dalam memfasilitasi dialog perasaan. Di
+                tengah dunia yang semakin digital, tantangannya adalah bagaimana
+                menciptakan desain komunikasi yang tidak dingin, melainkan mampu
+                memediasi kejujuran emosional.
+              </p>
+              <p>
+                Hiburan berperan sebagai ruang katarsis, tempat kita melepas
+                beban perasaan, sementara desain interaksi harus bertujuan
+                menciptakan ruang yang aman dan inklusif. Tujuannya adalah agar
+                teknologi dan seni tidak menjauhkan kita dari hakikat rasa,
+                melainkan menjadi jembatan yang memungkinkan setiap individu di
+                dalam keluarga maupun masyarakat luas untuk saling terhubung
+                dalam frekuensi emosi yang jujur dan aman.
+              </p>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- frame 9 -->
+    <section class="frame-9">
+      <Image
+        src={backgroundImage}
+        class="background-frame-9"
+        alt="Propaganda 2 Frame 9 Background"
+      />
+      <div class="placeholder-frame-9">placeholder</div>
+      <Image src={standLamp} class="stand-lamp" alt="Stand Lamp" />
+      <Image src={headSofa} class="head-sofa" alt="Head Sofa" />
     </section>
+
     <Image src={texture} class="texture" alt="Paper Grain Texture" />
   </main>
 </Layout>
@@ -162,7 +310,20 @@ import "@/styles/propaganda-2.css";
   const text3 = document.querySelector(".text-3") as HTMLElement;
   const frame4 = document.querySelector(".frame-4") as HTMLElement;
   const text4 = document.querySelector(".text-4") as HTMLElement;
+  const frame5Wrapper = document.querySelector(
+    ".frame-5-wrapper"
+  ) as HTMLElement;
   const frame5 = document.querySelector(".frame-5") as HTMLElement;
+  const frame6Wrapper = document.querySelector(
+    ".frame-6-wrapper"
+  ) as HTMLElement;
+  const frame6 = document.querySelector(".frame-6") as HTMLElement;
+  const textFrame6 = document.querySelector(".text-frame-6") as HTMLElement;
+
+  const frame8Scroll = document.querySelector(".frame-8-scroll") as HTMLElement;
+  const frame8 = document.querySelector(".frame-8") as HTMLElement;
+  const textFrame8 = document.querySelector(".text-frame-8") as HTMLElement;
+
   // const placeholderFrame5 = document.querySelector(
   //   ".placeholder-frame-5"
   // ) as HTMLElement;
@@ -188,6 +349,21 @@ import "@/styles/propaganda-2.css";
   // }
   if (text2Content) {
     text2Content.style.willChange = "opacity";
+  }
+  if (frame6Wrapper) {
+    frame6Wrapper.style.willChange = "filter";
+    frame6Wrapper.style.filter = "brightness(0)";
+  }
+  if (frame6) {
+    frame6.style.willChange = "transform";
+  }
+  if (textFrame6) {
+    textFrame6.style.willChange = "opacity";
+    textFrame6.style.opacity = "0";
+  }
+  if (textFrame8) {
+    textFrame8.style.willChange = "opacity";
+    textFrame8.style.opacity = "0";
   }
   // if (placeholder2) {
   //   placeholder2.style.willChange = "opacity";
@@ -238,15 +414,70 @@ import "@/styles/propaganda-2.css";
       mainContent?.classList.remove("is-vase-broken");
     }
 
-    // placeholder-frame-5 hidden — animasi opacity dinonaktifkan
-    // const fadeDistance = isMobile() ? 180 : 300;
-    // const scrollPastTopFrame5 = window.innerHeight - f5Rect.top;
-    // if (scrollPastTopFrame5 > 0) {
-    //   const rawOpacity = Math.min(scrollPastTopFrame5 / fadeDistance, 1);
-    //   placeholderFrame5.style.opacity = easeOutCubic(rawOpacity).toString();
-    // } else {
-    //   placeholderFrame5.style.opacity = "0";
-    // }
+    if (frame5Wrapper) {
+      const wrapperRect = frame5Wrapper.getBoundingClientRect();
+      const maxScroll = wrapperRect.height - f5Rect.height;
+      const stickyStartPoint = window.innerHeight - f5Rect.height;
+      let scrolledPastSticky = stickyStartPoint - wrapperRect.top;
+
+      if (scrolledPastSticky < 0) {
+        scrolledPastSticky = 0;
+      }
+      if (scrolledPastSticky > maxScroll) {
+        scrolledPastSticky = maxScroll;
+      }
+
+      const rawProgress = maxScroll > 0 ? scrolledPastSticky / maxScroll : 0;
+      const brightness = 1 - easeInOutCubic(rawProgress);
+      frame5Wrapper.style.filter = `brightness(${brightness})`;
+    }
+  };
+
+  const handleFrame6Scroll = () => {
+    if (!(frame6Wrapper && frame6)) {
+      return;
+    }
+    const f6WrapperRect = frame6Wrapper.getBoundingClientRect();
+    const distancePastTop = -f6WrapperRect.top;
+
+    if (distancePastTop <= 0) {
+      frame6Wrapper.style.filter = "brightness(0)";
+      frame6.style.transform = "scale(1)";
+      if (textFrame6) {
+        textFrame6.style.opacity = "0";
+      }
+    } else {
+      const vh = window.innerHeight;
+
+      const brightnessProgress = Math.min(distancePastTop / vh, 1);
+      const brightness = easeInOutCubic(brightnessProgress);
+      frame6Wrapper.style.filter = `brightness(${brightness})`;
+
+      let scale = 1;
+      let textOpacity = 0;
+      if (brightness >= 0.01) {
+        scale = 2.2;
+        if (distancePastTop > vh) {
+          const scaleDistance = distancePastTop - vh;
+          const maxScaleDistance = vh * 1.5;
+          const rawScaleProgress = Math.min(
+            scaleDistance / maxScaleDistance,
+            1
+          );
+          const scaleProgress = easeOutCubic(rawScaleProgress);
+          scale = 2.2 - 1.2 * scaleProgress;
+
+          if (scale <= 1.2) {
+            textOpacity = (1.2 - scale) / 0.2;
+            textOpacity = Math.max(0, Math.min(1, textOpacity));
+          }
+        }
+      }
+      frame6.style.transform = `scale(${scale})`;
+      if (textFrame6) {
+        textFrame6.style.opacity = textOpacity.toString();
+      }
+    }
   };
 
   if (vaseWrapper && frame3) {
@@ -303,6 +534,25 @@ import "@/styles/propaganda-2.css";
       }
     };
 
+    const handleFrame7Scroll = () => {
+      if (!(frame8Scroll && frame8 && textFrame8)) {
+        return;
+      }
+      const rect = frame8Scroll.getBoundingClientRect();
+      const distancePastTop = -rect.top;
+
+      if (distancePastTop <= 0) {
+        frame8.style.opacity = "0";
+        textFrame8.style.opacity = "0";
+      } else {
+        const maxScroll = window.innerHeight * 1.5;
+        const rawProgress = Math.min(distancePastTop / maxScroll, 1);
+        const opacityProgress = easeInOutCubic(rawProgress);
+        frame8.style.opacity = opacityProgress.toString();
+        textFrame8.style.opacity = opacityProgress.toString();
+      }
+    };
+
     let scrollRafId: number | null = null;
     window.addEventListener(
       "scroll",
@@ -316,6 +566,8 @@ import "@/styles/propaganda-2.css";
           handleFrame3Scroll(mobile);
           handleFrame4Scroll(mobile);
           updateFrame5State();
+          handleFrame6Scroll();
+          handleFrame7Scroll();
           scrollRafId = null;
         });
       },

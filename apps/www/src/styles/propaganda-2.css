@@ -1,3 +1,7 @@
+body {
+  overflow: hidden;
+}
+
 h3 {
   font-family: var(--font-serif);
   font-size: clamp(1rem, 1.15vw, 1.5rem);
@@ -74,15 +78,6 @@ p {
   z-index: 6;
   animation: lightingAnimation 3s ease-in-out 1s infinite;
   will-change: opacity;
-}
-@keyframes lightingAnimation {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.4;
-  }
 }
 
 .hanging-lamp {
@@ -342,19 +337,29 @@ p {
 
 .desk-frame-4 {
   position: absolute;
-  bottom: -7%;
+  top: 7vh;
   left: 50%;
-  transform: translate(-50%, 7%);
+  transform: translate(-50%, calc(-100% + 7%));
   width: 90%;
   height: auto;
 }
 
 /* frame 5 */
 
-.frame-5 {
+.frame-5-wrapper {
+  --f5-height: 40vh;
   position: relative;
   width: 100%;
-  height: 40vh;
+  height: calc(var(--f5-height) + 150vh);
+  background-color: #312e35;
+}
+
+.frame-5 {
+  position: sticky;
+  top: calc(100vh - var(--f5-height));
+  width: 100%;
+  height: var(--f5-height);
+  will-change: filter;
 }
 
 .floor-frame-5 {
@@ -758,13 +763,16 @@ p {
 
   .desk-frame-4 {
     width: 130%;
-    bottom: -5%;
-    transform: translate(-50%, 5%) scale(3.5);
+    top: 5vh;
+    transform: translate(-50%, calc(-100% + 5%)) scale(3.5);
+  }
+
+  .frame-5-wrapper {
+    --f5-height: max(55vh, 300px);
   }
 
   .frame-5 {
-    height: 55vh;
-    min-height: 300px;
+    height: var(--f5-height);
   }
 
   .broken-vase-container {
@@ -814,5 +822,344 @@ p {
 
   .frame-2-content {
     padding: 1.5rem 0.8rem;
+  }
+}
+
+.frame-6-wrapper {
+  position: relative;
+  width: 100%;
+  height: 350vh;
+}
+
+.frame-6 {
+  transform: scale(1);
+  transform-origin: center bottom;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.book-shelf {
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: -7%;
+  transform: translate(-7%, 0);
+  width: clamp(200px, 30vw, 445px);
+  height: auto;
+}
+.book-shelf-2 {
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  right: -7%;
+  transform: translate(7%, 0) scaleX(-1);
+  width: clamp(200px, 30vw, 445px);
+  height: auto;
+}
+
+.floor-frame-6 {
+  position: absolute;
+  bottom: -55%;
+  left: 50%;
+  transform: translateX(-50%);
+  scale: 1.2;
+  width: 100vw;
+  min-width: 1000px;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
+.photo-frame {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -20%) rotate(-14deg);
+  width: clamp(200px, 15vw, 400px);
+  height: auto;
+}
+
+.desk-frame-6 {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translate(-50%, -15%);
+  width: clamp(200px, 40vw, 625px);
+  height: auto;
+}
+
+/* frame-6 broken vase */
+.broken-vase-container-frame-6 {
+  position: absolute;
+  bottom: 8%;
+  left: 48%;
+  transform: translate(-48%, -8%);
+}
+
+.broken-vase-wrapper-frame-6 {
+  position: relative;
+  display: inline-block;
+}
+
+.broken-vase-frame-6 {
+  display: block;
+  width: clamp(160px, 13vw, 260px);
+  height: auto;
+}
+
+.flower-stalk-frame-6 {
+  position: absolute;
+  bottom: -140%;
+  right: -40%;
+  transform: rotate(-106deg);
+  width: auto;
+  height: clamp(160px, 15vw, 260px);
+}
+
+@media (max-width: 1024px) {
+  .broken-vase-container-frame-6 {
+    bottom: 10%;
+    left: 40%;
+    transform: translate(-40%, -10%);
+  }
+
+  .broken-vase-frame-6 {
+    width: clamp(300px, 30vw, 500px);
+  }
+
+  .flower-stalk-frame-6 {
+    bottom: -80%;
+  }
+}
+
+@media (max-width: 768px) {
+  .broken-vase-container-frame-6 {
+    bottom: auto;
+    top: 60%;
+    left: 30%;
+    transform: translate(-70%, -60%) scale(1.5);
+  }
+
+  .broken-vase-frame-6 {
+    height: auto;
+    width: clamp(300px, 35vw, 400px);
+  }
+
+  .flower-stalk-frame-6 {
+    height: clamp(200px, 40vw, 250px);
+    bottom: -80%;
+    right: -30%;
+  }
+}
+
+.text-frame-6 {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  width: 70%;
+  color: white;
+  text-align: center;
+  z-index: 6;
+}
+
+.text-frame-6 h3 {
+  font-size: 1.4rem;
+}
+
+/* frame 7 & 8 dissolve wrapper */
+.frame-7-8-wrapper {
+  display: grid;
+  width: 100%;
+}
+
+.frame-7-track {
+  grid-area: 1 / 1;
+  width: 100%;
+  z-index: 1;
+}
+
+.frame-7 {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.floor-frame-7 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder-frame-7 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-content: center;
+  z-index: 1;
+  background-color: white;
+  aspect-ratio: 16 / 9;
+  height: clamp(200px, 30vw, 800px);
+  color: black;
+}
+
+.sil-person {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: auto;
+  height: clamp(200px, 110vh, 1600px);
+  mix-blend-mode: soft-light;
+  filter: blur(8px);
+}
+
+/* frame 8 */
+.frame-8-scroll {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 250vh;
+  z-index: 2;
+}
+
+.frame-8 {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  will-change: opacity;
+}
+
+.background-frame-8 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.photo-frame-3 {
+  position: absolute;
+  bottom: 50%;
+  left: -20%;
+  transform: translate(20%, 50%);
+  width: auto;
+  height: clamp(600px, 80vh, 1200px);
+}
+.photo-frame-2 {
+  position: absolute;
+  bottom: -20%;
+  right: -20%;
+  transform: translate(20%, 20%);
+  width: auto;
+  height: clamp(200px, 70vh, 500px);
+  z-index: 2;
+}
+
+.text-frame-8 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 55%;
+  color: white;
+  text-align: center;
+  z-index: 6;
+}
+
+.text-frame-8 h3 {
+  font-size: 1.4rem;
+}
+
+/* frame 9 */
+.frame-9 {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.placeholder-frame-9 {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -25%);
+  display: grid;
+  place-content: center;
+  z-index: 1;
+  background-color: white;
+  aspect-ratio: 16 / 9;
+  height: clamp(200px, 25vw, 600px);
+  color: black;
+}
+
+.background-frame-9 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.stand-lamp {
+  position: absolute;
+  bottom: -10%;
+  right: 0;
+  transform: translate(0, 10%);
+  width: auto;
+  height: clamp(200px, 110vh, 980px);
+  z-index: 2;
+}
+
+.head-sofa {
+  position: absolute;
+  bottom: -5%;
+  left: 50%;
+  transform: translate(-50%, 5%);
+  width: 80%;
+  min-width: 800px;
+  height: auto;
+  z-index: 2;
+}
+
+@keyframes lightingAnimation {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+@keyframes silPersonAnimation {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.9;
   }
 }
