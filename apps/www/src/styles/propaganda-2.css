@@ -46,7 +46,7 @@ p {
 }
 .floor {
   position: absolute;
-  bottom: calc(100dvh * -0.6);
+  bottom: calc(100vw * -0.3);
   left: 50%;
   transform: translateX(-50%);
   scale: 1.2;
@@ -862,7 +862,7 @@ p {
 
 .floor-frame-6 {
   position: absolute;
-  bottom: calc(100dvh * -0.5);
+  bottom: calc(100vw * -0.25);
   left: 50%;
   transform: translateX(-50%);
   scale: 1.2;
