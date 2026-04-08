@@ -968,7 +968,7 @@ p {
 
   .photo-frame {
     top: 30%;
-    width: clamp(300px, 30vw, 450px);
+    width: clamp(200px, 25vw, 450px);
   }
 
   .text-frame-6 {
