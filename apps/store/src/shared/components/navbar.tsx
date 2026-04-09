@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Menu } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Logo from "@/assets/imgs/logo.png";
 import MenuBook from "@/assets/imgs/menu-book.png";
 
@@ -68,6 +68,55 @@ const menu: readonly MenuItem[] = [
   },
 ];
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+const getFocusableElements = (container: HTMLElement): HTMLElement[] =>
+  Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
+
+const handleTabFocusTrap = (
+  event: KeyboardEvent,
+  dialogElement: HTMLElement
+) => {
+  if (event.key !== "Tab") {
+    return;
+  }
+
+  const focusableElements = getFocusableElements(dialogElement);
+  if (focusableElements.length === 0) {
+    event.preventDefault();
+    dialogElement.focus();
+    return;
+  }
+
+  const firstFocusable = focusableElements[0];
+  const lastFocusable = focusableElements.at(-1);
+  if (!(firstFocusable && lastFocusable)) {
+    return;
+  }
+
+  const activeElement =
+    document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+
+  if (event.shiftKey) {
+    if (
+      activeElement === firstFocusable ||
+      !dialogElement.contains(activeElement)
+    ) {
+      event.preventDefault();
+      lastFocusable.focus();
+    }
+    return;
+  }
+
+  if (activeElement === lastFocusable) {
+    event.preventDefault();
+    firstFocusable.focus();
+  }
+};
+
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [page, setPage] = useState<"left" | "right">("left");
@@ -75,6 +124,54 @@ export const Navbar = () => {
   const touchStartXRef = useRef<number | null>(null);
   const touchStartYRef = useRef<number | null>(null);
   const isTouchInMenuRef = useRef<boolean>(false);
+
+  const menuButtonRef = useRef<HTMLButtonElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+
+  const closeMenu = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const openMenu = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    previouslyFocusedRef.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+
+    const dialogElement = dialogRef.current;
+    if (!dialogElement) {
+      return;
+    }
+
+    const focusableOnOpen = getFocusableElements(dialogElement);
+    (focusableOnOpen[0] ?? dialogElement).focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeMenu();
+        return;
+      }
+
+      handleTabFocusTrap(event, dialogElement);
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previouslyFocusedRef.current?.focus();
+    };
+  }, [isOpen, closeMenu]);
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
@@ -116,8 +213,6 @@ export const Navbar = () => {
       return;
     }
 
-    event.preventDefault();
-
     const tolerance = 50;
     if (Math.abs(diffX) <= tolerance) {
       return;
@@ -147,10 +242,7 @@ export const Navbar = () => {
     }
   }, [isOpen]);
 
-  const menuPageTransform =
-    page === "left"
-      ? "translate(-25%, -50%) scale(1)"
-      : "translate(-75%, -50%) scale(1)";
+  const menuPageTransform = "translate(-50%, -50%) scale(1)";
 
   const modalClassName = isOpen ? "pointer-events-auto" : "pointer-events-none";
   const backdropClassName = isOpen ? "opacity-100" : "opacity-0";
@@ -187,12 +279,13 @@ export const Navbar = () => {
         </Link>
 
         <button
+          aria-controls="modal-content"
+          aria-expanded={isOpen}
           aria-label="Menu"
           className="flex cursor-pointer items-center gap-2 border-0 bg-transparent px-4 py-2 text-[#fff] focus-visible:rounded-lg focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 md:px-8 md:py-4"
           id="navbar-menu-button"
-          onClick={() => {
-            setIsOpen(true);
-          }}
+          onClick={openMenu}
+          ref={menuButtonRef}
           type="button"
         >
           <span>Menu</span>
@@ -200,151 +293,161 @@ export const Navbar = () => {
         </button>
       </header>
 
-      <div
-        className={`fixed top-0 left-0 z-10000 h-full w-full ${modalClassName}`}
-        id="modal"
-      >
-        <button
-          aria-label="Close menu"
-          className={`absolute top-0 left-0 h-full w-full border-0 bg-black/50 transition-opacity duration-300 ease-in-out ${backdropClassName}`}
-          id="modal-backdrop"
-          onClick={() => {
-            setIsOpen(false);
-          }}
-          type="button"
-        />
-
+      {isOpen && (
         <div
-          className={`absolute top-1/2 left-1/2 aspect-[1.39/1] h-auto w-[150%] overflow-visible transition-[opacity,transform,filter] duration-300 ease-in-out md:max-w-[90dvw] lg:w-[90%] lg:max-w-[60dvw] min-[1440px]:w-[80%] min-[1920px]:w-[80%] min-[1440px]:max-w-[60dvw] min-[1920px]:max-w-[50dvw] ${contentClassName}`}
-          id="modal-content"
-          onTouchEnd={handleTouchEnd}
-          onTouchMove={handleTouchMove}
-          onTouchStart={handleTouchStart}
-          style={{
-            transform: menuPageTransform,
-          }}
+          aria-modal="true"
+          className={`fixed top-0 left-0 z-10000 h-full w-full ${modalClassName}`}
+          id="modal"
+          role="dialog"
         >
+          <button
+            aria-label="Close menu"
+            className={`absolute top-0 left-0 h-full w-full border-0 bg-black/50 transition-opacity duration-300 ease-in-out ${backdropClassName}`}
+            id="modal-backdrop"
+            onClick={closeMenu}
+            type="button"
+          />
+
           <div
-            className="absolute top-1/2 left-1/2 h-auto w-full -translate-x-1/2 -translate-y-1/2"
-            id="menu-book-container-wrapper"
+            aria-labelledby="menu-dialog-title"
+            aria-modal="true"
+            className={`absolute top-1/2 left-[90%] aspect-[1.39/1] h-auto w-[150%] touch-pan-y overflow-visible transition-[opacity,transform,filter] duration-300 ease-in-out md:left-1/2 md:max-w-[90dvw] lg:w-[90%] lg:max-w-[60dvw] min-[1440px]:w-[80%] min-[1920px]:w-[80%] min-[1440px]:max-w-[60dvw] min-[1920px]:max-w-[50dvw] ${contentClassName}`}
+            id="modal-content"
+            onTouchEnd={handleTouchEnd}
+            onTouchMove={handleTouchMove}
+            onTouchStart={handleTouchStart}
+            ref={dialogRef}
+            role="dialog"
+            style={{
+              transform: menuPageTransform,
+            }}
+            tabIndex={-1}
           >
             <div
-              className="relative aspect-[1.39/1] h-auto w-full"
-              id="menu-book-container"
+              className="absolute top-1/2 left-1/2 h-auto w-full -translate-x-1/2 -translate-y-1/2"
+              id="menu-book-container-wrapper"
             >
-              <img
-                alt="Menu Book"
-                className="aspect-[1.39/1] h-full w-auto object-cover object-center"
-                height={763}
-                id="menu-book"
-                src={MenuBook}
-                width={1061}
-              />
               <div
-                className="absolute top-1/2 left-[6%] h-[90%] w-[44%] -translate-y-1/2 px-8 py-2 lg:px-10 lg:py-6"
-                id="menu-container-wrapper"
+                className="relative aspect-[1.39/1] h-auto w-full"
+                id="menu-book-container"
               >
+                <img
+                  alt="Menu Book"
+                  className="aspect-[1.39/1] h-full w-auto object-cover object-center"
+                  height={763}
+                  id="menu-book"
+                  src={MenuBook}
+                  width={1061}
+                />
                 <div
-                  className="relative flex h-full w-full flex-col gap-4 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-                  id="menu-container"
-                  ref={menuContainerRef}
+                  className="absolute top-1/2 left-[6%] h-[90%] w-[44%] -translate-y-1/2 px-8 py-2 lg:px-10 lg:py-6"
+                  id="menu-container-wrapper"
                 >
                   <div
-                    className="flex flex-col items-center gap-2 text-center"
-                    id="heading"
+                    className="relative flex h-full w-full flex-col gap-4 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                    id="menu-container"
+                    ref={menuContainerRef}
                   >
-                    <h2 className="font-serif-2 text-black text-m lg:text-l">
-                      TABLE OF CONTENT
-                    </h2>
-                    <span className="font-sans text-black text-s lg:text-m">
-                      TEDX UNIVERSITAS BRAWIJAYA
-                    </span>
-                  </div>
+                    <div
+                      className="flex flex-col items-center gap-2 text-center"
+                      id="heading"
+                    >
+                      <h2
+                        className="font-serif-2 text-black text-m lg:text-l"
+                        id="menu-dialog-title"
+                      >
+                        TABLE OF CONTENT
+                      </h2>
+                      <span className="font-sans text-black text-s lg:text-m">
+                        TEDX UNIVERSITAS BRAWIJAYA
+                      </span>
+                    </div>
 
-                  <ul className="m-0 flex list-none flex-col gap-2 p-0">
-                    {menu.map((item) => {
-                      if (item.children) {
+                    <ul className="m-0 flex list-none flex-col gap-2 p-0">
+                      {menu.map((item) => {
+                        if (item.children) {
+                          return (
+                            <li
+                              className="font-serif-2 text-black text-m lg:text-l"
+                              key={item.name}
+                            >
+                              <span className={menuHeadingClassName}>
+                                {item.name}
+                              </span>
+                              <ul className="mt-1 flex list-none flex-col gap-1 pl-4">
+                                {item.children.map((child) => {
+                                  const isExternal =
+                                    child.href.startsWith("http");
+
+                                  return (
+                                    <li
+                                      className="font-serif-2 text-black text-s lg:text-m"
+                                      key={child.name}
+                                    >
+                                      {isExternal ? (
+                                        <Link
+                                          className={submenuLinkClassName}
+                                          onClick={closeMenu}
+                                          to={child.href as never}
+                                        >
+                                          {child.name}
+                                        </Link>
+                                      ) : (
+                                        <Link
+                                          className={submenuLinkClassName}
+                                          onClick={closeMenu}
+                                          to={child.href}
+                                        >
+                                          {child.name}
+                                        </Link>
+                                      )}
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </li>
+                          );
+                        }
+
+                        if (!item.href) {
+                          return null;
+                        }
+
+                        const isExternal = item.href.startsWith("http");
+
                         return (
                           <li
                             className="font-serif-2 text-black text-m lg:text-l"
                             key={item.name}
                           >
-                            <span className={menuHeadingClassName}>
-                              {item.name}
-                            </span>
-                            <ul className="mt-1 flex list-none flex-col gap-1 pl-4">
-                              {item.children.map((child) => {
-                                const isExternal =
-                                  child.href.startsWith("http");
-
-                                return (
-                                  <li
-                                    className="font-serif-2 text-black text-s lg:text-m"
-                                    key={child.name}
-                                  >
-                                    {isExternal ? (
-                                      <Link
-                                        className={submenuLinkClassName}
-                                        onClick={() => setIsOpen(false)}
-                                        to={child.href as never}
-                                      >
-                                        {child.name}
-                                      </Link>
-                                    ) : (
-                                      <Link
-                                        className={submenuLinkClassName}
-                                        onClick={() => setIsOpen(false)}
-                                        to={child.href}
-                                      >
-                                        {child.name}
-                                      </Link>
-                                    )}
-                                  </li>
-                                );
-                              })}
-                            </ul>
+                            {isExternal ? (
+                              <Link
+                                className={menuLinkClassName}
+                                onClick={closeMenu}
+                                to={item.href as never}
+                              >
+                                {item.name}
+                              </Link>
+                            ) : (
+                              <Link
+                                className={menuLinkClassName}
+                                onClick={closeMenu}
+                                to={item.href}
+                              >
+                                {item.name}
+                              </Link>
+                            )}
                           </li>
                         );
-                      }
-
-                      if (!item.href) {
-                        return null;
-                      }
-
-                      const isExternal = item.href.startsWith("http");
-
-                      return (
-                        <li
-                          className="font-serif-2 text-black text-m lg:text-l"
-                          key={item.name}
-                        >
-                          {isExternal ? (
-                            <Link
-                              className={menuLinkClassName}
-                              onClick={() => setIsOpen(false)}
-                              to={item.href as never}
-                            >
-                              {item.name}
-                            </Link>
-                          ) : (
-                            <Link
-                              className={menuLinkClassName}
-                              onClick={() => setIsOpen(false)}
-                              to={item.href}
-                            >
-                              {item.name}
-                            </Link>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ul>
+                      })}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
