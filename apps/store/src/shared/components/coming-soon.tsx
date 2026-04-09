@@ -23,7 +23,7 @@ export const ComingSoon = () => {
         <img
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute top-0 left-0 aspect-1.78/1 h-dvh w-dvw object-cover mix-blend-multiply"
+          className="pointer-events-none absolute top-0 left-0 aspect-[1.78/1] h-dvh w-dvw object-cover mix-blend-multiply"
           height={713}
           id="paper-texture-1"
           src={PaperTexture1}
@@ -43,7 +43,7 @@ export const ComingSoon = () => {
             >
               <img
                 alt="Yellow Window"
-                className="pointer-events-none absolute top-0 left-1/2 z-1 aspect-1.13/1 h-[60dvh] w-auto -translate-x-1/2 object-cover object-top"
+                className="pointer-events-none absolute top-0 left-1/2 z-1 aspect-[1.13/1] h-[60dvh] w-auto -translate-x-1/2 object-cover object-top"
                 height={735}
                 id="yellow-window"
                 src={YellowWindow}
@@ -51,7 +51,7 @@ export const ComingSoon = () => {
               />
               <img
                 alt="Small Mirror 1"
-                className="pointer-events-none absolute top-1/2 left-1/2 aspect-0.79/1 h-[20dvh] w-auto translate-x-[20%] -translate-y-[30%] object-cover"
+                className="pointer-events-none absolute top-1/2 left-1/2 aspect-[0.79/1] h-[20dvh] w-auto translate-x-[20%] -translate-y-[30%] object-cover"
                 height={226}
                 id="small-mirror-1"
                 src={SmallMirror1}
@@ -59,7 +59,7 @@ export const ComingSoon = () => {
               />
               <img
                 alt="Small Mirror 2"
-                className="pointer-events-none absolute top-1/2 left-1/2 aspect-0.79/1 h-[20dvh] w-auto -translate-x-[120%] -translate-y-[70%] object-contain"
+                className="pointer-events-none absolute top-1/2 left-1/2 aspect-[0.79/1] h-[20dvh] w-auto -translate-x-[120%] -translate-y-[70%] object-contain"
                 height={265}
                 id="small-mirror-2"
                 src={SmallMirror2}
