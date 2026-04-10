@@ -1366,6 +1366,8 @@ const teamMembers = [
     position: absolute;
     inset: 0;
     margin: 0;
+    width: 100%;
+    height: 100dvh;
     max-width: unset;
     max-height: unset;
     background: transparent;
@@ -1378,6 +1380,7 @@ const teamMembers = [
     gap: 1.5rem;
     z-index: 1000;
     opacity: 1;
+    color: var(--color-white);
     pointer-events: none;
   }
   .family:focus {
@@ -2252,9 +2255,6 @@ const teamMembers = [
     };
 
     const syncFamilyWithScroll = (scrollProgress: number) => {
-      /**
-       *
-       */
       if (!family) {
         return;
       }
