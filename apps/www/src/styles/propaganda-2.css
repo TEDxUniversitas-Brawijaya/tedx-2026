@@ -657,6 +657,7 @@ p {
     justify-content: center;
     z-index: 6;
     will-change: transform;
+    overflow: hidden;
   }
 
   .frame-2 .carpet,
@@ -802,6 +803,11 @@ p {
     top: 13%;
     width: 90%;
     gap: 1rem;
+  }
+
+  .carpet {
+    bottom: 5%;
+    z-index: 0;
   }
 
   .text-4 {
@@ -995,7 +1001,7 @@ p {
   }
 
   .floor-frame-6 {
-    bottom: -20%;
+    bottom: -25%;
   }
 
   .desk-frame-6 {
@@ -1011,10 +1017,10 @@ p {
 
   .photo-frame {
     position: absolute;
-    top: 40%;
+    top: 20%;
     left: 50%;
-    transform: translate(-50%, -40%) rotate(-14deg);
-    width: clamp(300px, 35vw, 700px);
+    transform: translate(-50%, -20%) rotate(-14deg);
+    width: clamp(250px, 35vw, 700px);
     height: auto;
   }
 }
