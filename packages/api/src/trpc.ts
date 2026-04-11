@@ -57,8 +57,34 @@ export const createTRPCRouter = t.router;
 
 /**
  * Public procedure that does not require authentication.
+ * Rate limited to 100 requests per minute per IP address.
  */
-export const publicProcedure = baseProcedure;
+export const publicProcedure = baseProcedure.use(async (opts) => {
+  const { ctx } = opts;
+
+  // Extract IP address from request headers
+  const ip =
+    ctx.fetchCreateContextFnOptions.req.headers.get("CF-Connecting-IP") ||
+    ctx.fetchCreateContextFnOptions.req.headers.get("X-Forwarded-For") ||
+    "unknown";
+
+  const result = await ctx.operations.rateLimit.checkRateLimitByIp(ip, {
+    maxRequests: 100,
+    windowMinutes: 1,
+  });
+
+  if (!result.allowed) {
+    throw new TRPCError({
+      code: "TOO_MANY_REQUESTS",
+      message: "Rate limit exceeded. Please try again later.",
+      cause: {
+        retryAfterSeconds: result.retryAfterSeconds,
+      },
+    });
+  }
+
+  return opts.next();
+});
 
 /**
  * Protected procedure that requires authentication. If the user is not authenticated, it will throw an UNAUTHORIZED error.
