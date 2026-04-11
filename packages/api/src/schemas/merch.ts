@@ -24,7 +24,7 @@ export const listMerchProductsOutputSchema = z.array(
     type: productTypeSchema,
     name: z.string(),
     price: z.number().int(),
-    imageUrl: z.string().optional(),
+    imageUrl: z.string().nullable().optional(),
     category: productCategorySchema.optional(),
     variants: z.array(productVariantSchema).optional(),
     bundleItems: z.array(bundleItemSchema).optional(),

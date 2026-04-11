@@ -87,7 +87,7 @@ export const bundleItemSchema = z.union([
         id: z.string(),
         name: z.string(),
         imageUrl: z.string().nullable(),
-        variants: z.array(productVariantSchema),
+        variants: z.array(productVariantSchema).optional(),
       })
     ),
   }),
@@ -106,7 +106,7 @@ export const bundleItemSchema = z.union([
               id: z.string(),
               name: z.string(),
               imageUrl: z.string().nullable(),
-              variants: z.array(productVariantSchema),
+              variants: z.array(productVariantSchema).optional(),
             })
           ),
         }),
