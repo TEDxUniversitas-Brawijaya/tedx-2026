@@ -1,11 +1,14 @@
 import { createAuth, type Session } from "@tedx-2026/auth";
 import {
+  createEmailService,
   createFileService,
   createUserService,
+  type EmailService,
   type FileServices,
   type UserServices,
 } from "@tedx-2026/core";
 import { createDB, createUserQueries, type D1Database } from "@tedx-2026/db";
+import { createBrevo } from "@tedx-2026/email";
 import type {
   // createKV,
   KVNamespaceType,
@@ -24,6 +27,9 @@ type CreateContextOptions = {
     AUTH_SECRET: string;
     GOOGLE_CLIENT_ID: string;
     GOOGLE_CLIENT_SECRET: string;
+    BREVO_API_KEY: string;
+    SENDER_NAME: string;
+    SENDER_EMAIL: string;
     SUPERADMIN_EMAILS: string[];
   };
   fetchCreateContextFnOptions: FetchCreateContextFnOptions;
@@ -47,6 +53,9 @@ export const createContext = async ({
   const db = createDB(env.db);
   // const kv = createKV(env.kv);
   const cdn = createR2(env.cdn);
+  const email = createBrevo(env.BREVO_API_KEY, {
+    // sandbox: process.env.NODE_ENV !== "production",
+  });
 
   const userQueries = createUserQueries(db);
 
@@ -56,11 +65,24 @@ export const createContext = async ({
     userQueries,
   });
 
+  const emailService = createEmailService(
+    {
+      ...baseContext,
+      logger: logger.child({ service: "email" }),
+      email,
+    },
+    {
+      senderName: env.SENDER_NAME,
+      senderEmail: env.SENDER_EMAIL,
+    }
+  );
+
   const fileService = createFileService({
     ...baseContext,
     logger: logger.child({ service: "file" }),
     r2: cdn,
     CDN_DOMAIN: env.CDN_DOMAIN,
+    email: emailService,
   });
 
   const auth = createAuth(db, {
@@ -82,6 +104,7 @@ export const createContext = async ({
     services: {
       user: userService,
       file: fileService,
+      email: emailService,
     },
   };
 };
@@ -92,6 +115,7 @@ export type Context = {
   services: {
     user: UserServices;
     file: FileServices;
+    email: EmailService;
   };
   // operations: {};
   waitUntil: (promise: Promise<unknown>) => void;
