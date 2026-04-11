@@ -1,4 +1,9 @@
 import { trpc } from "@/shared/lib/trpc";
+import type {
+  getOrderByIdOutputSchema,
+  listOrdersOutputSchema,
+} from "@tedx-2026/api/schemas/order";
+import type { infer as zInfer } from "zod";
 import {
   IconChevronLeft,
   IconChevronRight,
@@ -32,51 +37,12 @@ import {
 } from "@tedx-2026/ui/components/table";
 import { useMemo, useState } from "react";
 
-type OrderType = "ticket" | "merch";
-type OrderStatus =
-  | "pending_payment"
-  | "pending_verification"
-  | "paid"
-  | "expired"
-  | "refund_requested"
-  | "refunded";
-
-type ListOrder = {
-  id: string;
-  type: OrderType;
-  status: OrderStatus;
-  buyerName: string;
-  buyerEmail: string;
-  totalPrice: number;
-  createdAt: string;
-  paidAt: string | null;
-};
-
-type OrderDetail = {
-  id: string;
-  type: OrderType;
-  status: OrderStatus;
-  buyerName: string;
-  buyerEmail: string;
-  buyerPhone: string;
-  buyerCollege: string;
-  totalPrice: number;
-  createdAt: string;
-  paidAt: string | null;
-  expiresAt: string | null;
-  paymentMethod: "midtrans" | "manual" | null;
-  midtransOrderId: string | null;
-  proofImageUrl: string | null;
-  items: {
-    id: string;
-    productId: string;
-    quantity: number;
-    snapshotName: string;
-    snapshotPrice: number;
-    snapshotType: string;
-    snapshotVariants: { label: string; type: string }[] | null;
-  }[];
-};
+type ListOrdersOutput = zInfer<typeof listOrdersOutputSchema>;
+type GetOrderByIdOutput = zInfer<typeof getOrderByIdOutputSchema>;
+type ListOrder = ListOrdersOutput["orders"][number];
+type OrderDetail = GetOrderByIdOutput;
+type OrderType = ListOrder["type"];
+type OrderStatus = ListOrder["status"];
 
 const statusVariant = (status: string) => {
   if (status === "paid") {
@@ -109,6 +75,8 @@ const formatDate = (value: string | null) => {
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "UTC",
+    timeZoneName: "short",
   }).format(new Date(value));
 };
 
@@ -134,15 +102,55 @@ const isWithinDateRange = (
     return false;
   }
 
+  const parseUtcBoundary = (yyyyMmDd: string, boundary: "start" | "end") => {
+    const parts = yyyyMmDd.split("-");
+    if (parts.length !== 3) {
+      return null;
+    }
+
+    const [yearString, monthString, dayString] = parts as [
+      string,
+      string,
+      string,
+    ];
+
+    const year = Number(yearString);
+    const month = Number(monthString);
+    const day = Number(dayString);
+
+    if (
+      Number.isNaN(year) ||
+      Number.isNaN(month) ||
+      Number.isNaN(day) ||
+      yearString.length !== 4 ||
+      monthString.length !== 2 ||
+      dayString.length !== 2
+    ) {
+      return null;
+    }
+
+    return boundary === "start"
+      ? new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0))
+      : new Date(Date.UTC(year, month - 1, day, 23, 59, 59, 999));
+  };
+
   if (startDate) {
-    const start = new Date(`${startDate}T00:00:00.000Z`);
+    const start = parseUtcBoundary(startDate, "start");
+    if (!start) {
+      return false;
+    }
+
     if (date < start) {
       return false;
     }
   }
 
   if (endDate) {
-    const end = new Date(`${endDate}T23:59:59.999Z`);
+    const end = parseUtcBoundary(endDate, "end");
+    if (!end) {
+      return false;
+    }
+
     if (date > end) {
       return false;
     }
@@ -185,7 +193,7 @@ export function OrderManagement() {
   });
 
   const filteredOrders = useMemo(() => {
-    const rows = (listQuery.data?.orders ?? []) as ListOrder[];
+    const rows = listQuery.data?.orders ?? [];
 
     return rows.filter((order) =>
       isWithinDateRange(order.createdAt, startDate, endDate)
@@ -307,7 +315,7 @@ export function OrderManagement() {
                 className="font-medium text-muted-foreground text-xs"
                 htmlFor="order-management-date-start"
               >
-                Start Date
+                Start Date (UTC)
               </label>
               <Input
                 id="order-management-date-start"
@@ -324,7 +332,7 @@ export function OrderManagement() {
                 className="font-medium text-muted-foreground text-xs"
                 htmlFor="order-management-date-end"
               >
-                End Date
+                End Date (UTC)
               </label>
               <Input
                 id="order-management-date-end"
@@ -458,13 +466,15 @@ export function OrderManagement() {
               </TableRow>
             )}
 
-            {!listQuery.isLoading && filteredOrders.length === 0 && (
-              <TableRow>
-                <TableCell className="h-16 text-center" colSpan={8}>
-                  No orders found.
-                </TableCell>
-              </TableRow>
-            )}
+            {!listQuery.isLoading &&
+              listQuery.error &&
+              filteredOrders.length === 0 && (
+                <TableRow>
+                  <TableCell className="h-16 text-center" colSpan={8}>
+                    No orders found.
+                  </TableCell>
+                </TableRow>
+              )}
 
             {filteredOrders.map((order) => (
               <TableRow key={order.id}>
@@ -520,22 +530,32 @@ export function OrderManagement() {
           className="flex items-center gap-2"
           id="order-management-pagination-actions"
         >
-          <Button
-            disabled={page <= 1}
-            onClick={() => setPage((prev) => Math.max(1, prev - 1))}
-            size="icon-sm"
-            variant="outline"
-          >
-            <IconChevronLeft />
-          </Button>
-          <Button
-            disabled={page >= totalPages}
-            onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
-            size="icon-sm"
-            variant="outline"
-          >
-            <IconChevronRight />
-          </Button>
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              aria-label="Previous page"
+              disabled={page <= 1}
+              onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+              size="icon-sm"
+              title="Previous page"
+              variant="outline"
+            >
+              <IconChevronLeft />
+            </Button>
+            <span className="text-muted-foreground text-xs">Prev</span>
+          </div>
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              aria-label="Next page"
+              disabled={page >= totalPages}
+              onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+              size="icon-sm"
+              title="Next page"
+              variant="outline"
+            >
+              <IconChevronRight />
+            </Button>
+            <span className="text-muted-foreground text-xs">Next</span>
+          </div>
         </div>
       </div>
 
@@ -564,9 +584,7 @@ export function OrderManagement() {
             </div>
           )}
 
-          {detailQuery.data && (
-            <OrderDetailContent order={detailQuery.data as OrderDetail} />
-          )}
+          {detailQuery.data && <OrderDetailContent order={detailQuery.data} />}
         </DialogContent>
       </Dialog>
     </div>

@@ -583,25 +583,55 @@ const seededOrderDetails = [
   },
 ] as const;
 
-const seededDetails = seededOrderDetails.map((item) =>
-  getOrderByIdOutputSchema.parse(item)
-);
-
-const seededListOrders = seededDetails.map((order) => ({
-  id: order.id,
-  type: order.type,
-  status: order.status,
-  buyerName: order.buyerName,
-  buyerEmail: order.buyerEmail,
-  totalPrice: order.totalPrice,
-  createdAt: order.createdAt,
-  paidAt: order.paidAt,
+const parsedSeededDetails = seededOrderDetails.map((item, index) => ({
+  index,
+  parsed: getOrderByIdOutputSchema.safeParse(item),
 }));
+
+const getSeededDetailsOrThrow = () => {
+  const invalidFixture = parsedSeededDetails.find(
+    (entry) => !entry.parsed.success
+  );
+
+  if (invalidFixture && !invalidFixture.parsed.success) {
+    const firstIssue = invalidFixture.parsed.error.issues[0];
+
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: `Invalid seeded order fixture at index ${invalidFixture.index}${firstIssue ? `: ${firstIssue.message}` : ""}`,
+    });
+  }
+
+  return parsedSeededDetails
+    .filter(
+      (
+        entry
+      ): entry is {
+        index: number;
+        parsed: {
+          success: true;
+          data: (typeof getOrderByIdOutputSchema)["_output"];
+        };
+      } => entry.parsed.success
+    )
+    .map((entry) => entry.parsed.data);
+};
 
 const list = protectedProcedure
   .input(listOrdersInputSchema)
   .output(listOrdersOutputSchema)
   .query(({ input }) => {
+    const seededListOrders = getSeededDetailsOrThrow().map((order) => ({
+      id: order.id,
+      type: order.type,
+      status: order.status,
+      buyerName: order.buyerName,
+      buyerEmail: order.buyerEmail,
+      totalPrice: order.totalPrice,
+      createdAt: order.createdAt,
+      paidAt: order.paidAt,
+    }));
+
     const searchKeyword = input.search?.trim().toLowerCase();
 
     const filtered = seededListOrders.filter((order) => {
@@ -663,6 +693,7 @@ const getById = protectedProcedure
   .input(getOrderByIdInputSchema)
   .output(getOrderByIdOutputSchema)
   .query(({ input }) => {
+    const seededDetails = getSeededDetailsOrThrow();
     const order = seededDetails.find((item) => item.id === input.orderId);
 
     if (!order) {
