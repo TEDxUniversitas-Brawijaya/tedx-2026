@@ -1,6 +1,7 @@
+export { createKV, type KV, type KVNamespaceType } from "./kv";
 export {
-  createKV,
-  type KV,
-  type KVNamespaceType,
-} from "./kv";
-// export { createTodoOperations, type TodoOperations } from "./operations";
+  createRateLimitOperations,
+  type RateLimitOperations,
+  type RateLimitConfig,
+  type RateLimitResult,
+} from "./operations";
