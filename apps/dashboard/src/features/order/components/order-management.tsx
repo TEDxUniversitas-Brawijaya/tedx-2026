@@ -195,154 +195,247 @@ export function OrderManagement() {
   const totalPages = listQuery.data?.pagination.totalPages ?? 1;
 
   return (
-    <div className="space-y-4">
-      <div className="rounded-xl border bg-card p-4">
-        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-          <div className="relative">
-            <IconSearch className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              className="pl-9"
-              onChange={(event) => {
-                setPage(1);
-                setSearch(event.target.value);
-              }}
-              placeholder="Search by name, email, order ID"
-              value={search}
-            />
+    <div className="space-y-4" id="order-management">
+      <div
+        className="rounded-xl border bg-card p-4"
+        id="order-management-filters"
+      >
+        <div
+          className="grid gap-3 md:grid-cols-2 lg:grid-cols-4"
+          id="order-management-filter-grid"
+        >
+          <div className="space-y-1.5" id="order-management-search-container">
+            <label
+              className="font-medium text-muted-foreground text-xs"
+              htmlFor="order-management-search"
+            >
+              Search
+            </label>
+            <div className="relative">
+              <IconSearch className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                className="pl-9"
+                id="order-management-search"
+                onChange={(event) => {
+                  setPage(1);
+                  setSearch(event.target.value);
+                }}
+                placeholder="Search by name, email, order ID"
+                value={search}
+              />
+            </div>
           </div>
 
-          <Select
-            onValueChange={(value) => {
-              if (value === null) {
-                return;
-              }
+          <div className="space-y-1.5">
+            <label
+              className="font-medium text-muted-foreground text-xs"
+              htmlFor="order-management-filter-type"
+            >
+              Type
+            </label>
+            <Select
+              onValueChange={(value) => {
+                if (value === null) {
+                  return;
+                }
 
-              setPage(1);
-              setType(value as "all" | OrderType);
-            }}
-            value={type}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Filter by type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="ticket">ticket</SelectItem>
-              <SelectItem value="merch">merch</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select
-            onValueChange={(value) => {
-              if (value === null) {
-                return;
-              }
-
-              setPage(1);
-              setStatus(value as "all" | OrderStatus);
-            }}
-            value={status}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Filter by status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
-              <SelectItem value="pending_payment">pending_payment</SelectItem>
-              <SelectItem value="pending_verification">
-                pending_verification
-              </SelectItem>
-              <SelectItem value="paid">paid</SelectItem>
-              <SelectItem value="expired">expired</SelectItem>
-              <SelectItem value="refund_requested">refund_requested</SelectItem>
-              <SelectItem value="refunded">refunded</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <div className="grid grid-cols-2 gap-2">
-            <Input
-              onChange={(event) => {
                 setPage(1);
-                setStartDate(event.target.value);
+                setType(value as "all" | OrderType);
               }}
-              type="date"
-              value={startDate}
-            />
-            <Input
-              onChange={(event) => {
+              value={type}
+            >
+              <SelectTrigger
+                className="w-full"
+                id="order-management-filter-type"
+              >
+                <SelectValue placeholder="Filter by type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="ticket">ticket</SelectItem>
+                <SelectItem value="merch">merch</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-1.5">
+            <label
+              className="font-medium text-muted-foreground text-xs"
+              htmlFor="order-management-filter-status"
+            >
+              Status
+            </label>
+            <Select
+              onValueChange={(value) => {
+                if (value === null) {
+                  return;
+                }
+
                 setPage(1);
-                setEndDate(event.target.value);
+                setStatus(value as "all" | OrderStatus);
               }}
-              type="date"
-              value={endDate}
-            />
+              value={status}
+            >
+              <SelectTrigger
+                className="w-full"
+                id="order-management-filter-status"
+              >
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="pending_payment">pending_payment</SelectItem>
+                <SelectItem value="pending_verification">
+                  pending_verification
+                </SelectItem>
+                <SelectItem value="paid">paid</SelectItem>
+                <SelectItem value="expired">expired</SelectItem>
+                <SelectItem value="refund_requested">
+                  refund_requested
+                </SelectItem>
+                <SelectItem value="refunded">refunded</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div
+            className="grid grid-cols-2 gap-2"
+            id="order-management-date-range"
+          >
+            <div className="space-y-1.5">
+              <label
+                className="font-medium text-muted-foreground text-xs"
+                htmlFor="order-management-date-start"
+              >
+                Start Date
+              </label>
+              <Input
+                id="order-management-date-start"
+                onChange={(event) => {
+                  setPage(1);
+                  setStartDate(event.target.value);
+                }}
+                type="date"
+                value={startDate}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label
+                className="font-medium text-muted-foreground text-xs"
+                htmlFor="order-management-date-end"
+              >
+                End Date
+              </label>
+              <Input
+                id="order-management-date-end"
+                onChange={(event) => {
+                  setPage(1);
+                  setEndDate(event.target.value);
+                }}
+                type="date"
+                value={endDate}
+              />
+            </div>
           </div>
         </div>
 
-        <div className="mt-3 grid gap-3 md:grid-cols-3">
-          <Select
-            onValueChange={(value) => {
-              if (value === null) {
-                return;
-              }
+        <div
+          className="mt-3 grid items-end gap-3 md:grid-cols-2 lg:grid-cols-3"
+          id="order-management-sort-grid"
+        >
+          <div className="space-y-1.5">
+            <label
+              className="font-medium text-muted-foreground text-xs"
+              htmlFor="order-management-sort-by"
+            >
+              Sort By
+            </label>
+            <Select
+              onValueChange={(value) => {
+                if (value === null) {
+                  return;
+                }
 
-              setSortBy(value as "createdAt" | "totalPrice" | "status");
-            }}
-            value={sortBy}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="createdAt">createdAt</SelectItem>
-              <SelectItem value="totalPrice">totalPrice</SelectItem>
-              <SelectItem value="status">status</SelectItem>
-            </SelectContent>
-          </Select>
+                setSortBy(value as "createdAt" | "totalPrice" | "status");
+              }}
+              value={sortBy}
+            >
+              <SelectTrigger className="w-full" id="order-management-sort-by">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="createdAt">createdAt</SelectItem>
+                <SelectItem value="totalPrice">totalPrice</SelectItem>
+                <SelectItem value="status">status</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-          <Select
-            onValueChange={(value) => {
-              if (value === null) {
-                return;
-              }
+          <div className="space-y-1.5">
+            <label
+              className="font-medium text-muted-foreground text-xs"
+              htmlFor="order-management-sort-order"
+            >
+              Sort Order
+            </label>
+            <Select
+              onValueChange={(value) => {
+                if (value === null) {
+                  return;
+                }
 
-              setSortOrder(value as "asc" | "desc");
-            }}
-            value={sortOrder}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Sort order" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="asc">asc</SelectItem>
-              <SelectItem value="desc">desc</SelectItem>
-            </SelectContent>
-          </Select>
+                setSortOrder(value as "asc" | "desc");
+              }}
+              value={sortOrder}
+            >
+              <SelectTrigger
+                className="w-full"
+                id="order-management-sort-order"
+              >
+                <SelectValue placeholder="Sort order" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="asc">asc</SelectItem>
+                <SelectItem value="desc">desc</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-          <Select
-            onValueChange={(value) => {
-              if (value === null) {
-                return;
-              }
+          <div className="space-y-1.5">
+            <label
+              className="font-medium text-muted-foreground text-xs"
+              htmlFor="order-management-rows-per-page"
+            >
+              Rows Per Page
+            </label>
+            <Select
+              onValueChange={(value) => {
+                if (value === null) {
+                  return;
+                }
 
-              setPage(1);
-              setLimit(Number(value));
-            }}
-            value={String(limit)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Rows per page" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="5">5 rows</SelectItem>
-              <SelectItem value="10">10 rows</SelectItem>
-              <SelectItem value="20">20 rows</SelectItem>
-            </SelectContent>
-          </Select>
+                setPage(1);
+                setLimit(Number(value));
+              }}
+              value={String(limit)}
+            >
+              <SelectTrigger
+                className="w-full"
+                id="order-management-rows-per-page"
+              >
+                <SelectValue placeholder="Rows per page" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="5">5 rows</SelectItem>
+                <SelectItem value="10">10 rows</SelectItem>
+                <SelectItem value="20">20 rows</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
-      <div className="rounded-xl border">
+      <div className="rounded-xl border" id="order-management-table-wrapper">
         <Table>
           <TableHeader>
             <TableRow>
@@ -377,8 +470,13 @@ export function OrderManagement() {
               <TableRow key={order.id}>
                 <TableCell className="font-medium">{order.id}</TableCell>
                 <TableCell>
-                  <div>{order.buyerName}</div>
-                  <div className="text-muted-foreground text-xs">
+                  <div id={`order-${order.id}-buyer-name`}>
+                    {order.buyerName}
+                  </div>
+                  <div
+                    className="text-muted-foreground text-xs"
+                    id={`order-${order.id}-buyer-email`}
+                  >
                     {order.buyerEmail}
                   </div>
                 </TableCell>
@@ -408,11 +506,20 @@ export function OrderManagement() {
         </Table>
       </div>
 
-      <div className="flex items-center justify-between">
-        <p className="text-muted-foreground text-sm">
+      <div
+        className="flex items-center justify-between"
+        id="order-management-pagination"
+      >
+        <p
+          className="text-muted-foreground text-sm"
+          id="order-management-pagination-text"
+        >
           Page {listQuery.data?.pagination.page ?? page} of {totalPages}
         </p>
-        <div className="flex items-center gap-2">
+        <div
+          className="flex items-center gap-2"
+          id="order-management-pagination-actions"
+        >
           <Button
             disabled={page <= 1}
             onClick={() => setPage((prev) => Math.max(1, prev - 1))}
@@ -448,9 +555,13 @@ export function OrderManagement() {
             </DialogDescription>
           </DialogHeader>
 
-          {detailQuery.isLoading && <div>Loading detail...</div>}
+          {detailQuery.isLoading && (
+            <div id="order-detail-loading">Loading detail...</div>
+          )}
           {detailQuery.error && (
-            <div className="text-destructive">{detailQuery.error.message}</div>
+            <div className="text-destructive" id="order-detail-error">
+              {detailQuery.error.message}
+            </div>
           )}
 
           {detailQuery.data && (
@@ -468,23 +579,38 @@ type OrderDetailContentProps = {
 
 function OrderDetailContent({ order }: OrderDetailContentProps) {
   return (
-    <div className="space-y-4">
-      <div className="grid gap-2 rounded-lg border p-4 md:grid-cols-2">
-        <p>
-          <span className="font-medium">Nama:</span> {order.buyerName}
+    <div className="space-y-4" id="order-detail-content">
+      <div
+        className="grid gap-2 rounded-lg border p-4 md:grid-cols-2"
+        id="order-detail-buyer-info"
+      >
+        <p id="order-detail-buyer-name">
+          <span className="font-medium" id="order-detail-buyer-name-label">
+            Nama:
+          </span>{" "}
+          {order.buyerName}
         </p>
-        <p>
-          <span className="font-medium">Email:</span> {order.buyerEmail}
+        <p id="order-detail-buyer-email">
+          <span className="font-medium" id="order-detail-buyer-email-label">
+            Email:
+          </span>{" "}
+          {order.buyerEmail}
         </p>
-        <p>
-          <span className="font-medium">Phone:</span> {order.buyerPhone}
+        <p id="order-detail-buyer-phone">
+          <span className="font-medium" id="order-detail-buyer-phone-label">
+            Phone:
+          </span>{" "}
+          {order.buyerPhone}
         </p>
-        <p>
-          <span className="font-medium">Instansi:</span> {order.buyerCollege}
+        <p id="order-detail-buyer-college">
+          <span className="font-medium" id="order-detail-buyer-college-label">
+            Instansi:
+          </span>{" "}
+          {order.buyerCollege}
         </p>
       </div>
 
-      <div className="rounded-lg border">
+      <div className="rounded-lg border" id="order-detail-items">
         <Table>
           <TableHeader>
             <TableRow>
@@ -498,16 +624,26 @@ function OrderDetailContent({ order }: OrderDetailContentProps) {
           <TableBody>
             {order.items.map((item) => (
               <TableRow key={item.id}>
-                <TableCell>{item.snapshotName}</TableCell>
-                <TableCell>{item.snapshotType}</TableCell>
-                <TableCell>{item.quantity}</TableCell>
-                <TableCell>{formatCurrency(item.snapshotPrice)}</TableCell>
+                <TableCell id={`order-detail-item-${item.id}-name`}>
+                  {item.snapshotName}
+                </TableCell>
+                <TableCell id={`order-detail-item-${item.id}-type`}>
+                  {item.snapshotType}
+                </TableCell>
+                <TableCell id={`order-detail-item-${item.id}-quantity`}>
+                  {item.quantity}
+                </TableCell>
+                <TableCell id={`order-detail-item-${item.id}-price`}>
+                  {formatCurrency(item.snapshotPrice)}
+                </TableCell>
                 <TableCell>
-                  {item.snapshotVariants?.length
-                    ? item.snapshotVariants
-                        .map((variant) => `${variant.type}: ${variant.label}`)
-                        .join(", ")
-                    : "-"}
+                  <span id={`order-detail-item-${item.id}-variants`}>
+                    {item.snapshotVariants?.length
+                      ? item.snapshotVariants
+                          .map((variant) => `${variant.type}: ${variant.label}`)
+                          .join(", ")
+                      : "-"}
+                  </span>
                 </TableCell>
               </TableRow>
             ))}
@@ -515,28 +651,48 @@ function OrderDetailContent({ order }: OrderDetailContentProps) {
         </Table>
       </div>
 
-      <div className="grid gap-2 rounded-lg border p-4 md:grid-cols-2">
-        <p>
-          <span className="font-medium">Payment Method:</span>{" "}
+      <div
+        className="grid gap-2 rounded-lg border p-4 md:grid-cols-2"
+        id="order-detail-payment-info"
+      >
+        <p id="order-detail-payment-method">
+          <span className="font-medium" id="order-detail-payment-method-label">
+            Payment Method:
+          </span>{" "}
           {order.paymentMethod ?? "-"}
         </p>
-        <p>
-          <span className="font-medium">Midtrans Order ID:</span>{" "}
+        <p id="order-detail-midtrans-order-id">
+          <span
+            className="font-medium"
+            id="order-detail-midtrans-order-id-label"
+          >
+            Midtrans Order ID:
+          </span>{" "}
           {order.midtransOrderId ?? "-"}
         </p>
-        <p>
-          <span className="font-medium">Created:</span>{" "}
+        <p id="order-detail-created-at">
+          <span className="font-medium" id="order-detail-created-at-label">
+            Created:
+          </span>{" "}
           {formatDate(order.createdAt)}
         </p>
-        <p>
-          <span className="font-medium">Paid:</span> {formatDate(order.paidAt)}
+        <p id="order-detail-paid-at">
+          <span className="font-medium" id="order-detail-paid-at-label">
+            Paid:
+          </span>{" "}
+          {formatDate(order.paidAt)}
         </p>
-        <p>
-          <span className="font-medium">Expires:</span>{" "}
+        <p id="order-detail-expires-at">
+          <span className="font-medium" id="order-detail-expires-at-label">
+            Expires:
+          </span>{" "}
           {formatDate(order.expiresAt)}
         </p>
-        <p>
-          <span className="font-medium">Status:</span> {order.status}
+        <p id="order-detail-status">
+          <span className="font-medium" id="order-detail-status-label">
+            Status:
+          </span>{" "}
+          {order.status}
         </p>
       </div>
     </div>
