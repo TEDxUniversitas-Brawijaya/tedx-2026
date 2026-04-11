@@ -9,12 +9,7 @@ import {
 } from "@tedx-2026/core";
 import { createDB, createUserQueries, type D1Database } from "@tedx-2026/db";
 import { createBrevo } from "@tedx-2026/email";
-import {
-  createKV,
-  createRateLimitOperations,
-  type KVNamespaceType,
-  type RateLimitOperations,
-} from "@tedx-2026/kv";
+import type { KVNamespaceType } from "@tedx-2026/kv";
 import type { LoggerType } from "@tedx-2026/logger";
 import { createR2, type R2BucketType } from "@tedx-2026/storage";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
@@ -53,9 +48,7 @@ export const createContext = async ({
   };
 
   const db = createDB(env.db);
-  const kv = createKV(env.kv);
   const cdn = createR2(env.cdn);
-  const rateLimitOps = createRateLimitOperations({ kv });
   const email = createBrevo(env.BREVO_API_KEY, {
     // sandbox: process.env.NODE_ENV !== "production",
   });
@@ -104,10 +97,6 @@ export const createContext = async ({
     logger,
     waitUntil,
     session,
-    fetchCreateContextFnOptions,
-    operations: {
-      rateLimit: rateLimitOps,
-    },
     services: {
       user: userService,
       file: fileService,
@@ -124,10 +113,6 @@ export type Context = {
     file: FileServices;
     email: EmailService;
   };
-  operations: {
-    rateLimit: RateLimitOperations;
-  };
-  fetchCreateContextFnOptions: FetchCreateContextFnOptions;
   waitUntil: (promise: Promise<unknown>) => void;
   session: Session | null;
 };
