@@ -6,6 +6,7 @@ import { TooltipProvider } from "@tedx-2026/ui/components/tooltip";
 import ReactDOM from "react-dom/client";
 import { routeTree } from "./routeTree.gen";
 import { queryClient } from "./shared/lib/query-client";
+import { NotFoundPage } from "./shared/components/not-found";
 
 const router = createRouter({
   routeTree,
@@ -15,8 +16,7 @@ const router = createRouter({
     return <div>Loading...</div>;
   },
   defaultNotFoundComponent: () => {
-    // TODO: Replace with proper 404 page
-    return <div>Not Found</div>;
+    return <NotFoundPage />;
   },
   Wrap({ children }: { children: React.ReactNode }) {
     return (
