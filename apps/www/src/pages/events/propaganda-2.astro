@@ -71,7 +71,16 @@ import Footer from "@/components/footer.astro";
         <Image src={carpet} class="carpet" alt="Green Carpet" />
         <Image src={floor} class="floor-frame-2" alt="Wood Floor" />
         <div class="frame-2-content">
-          <!-- <div class="placeholder">placeholder</div> -->
+          <div class="placeholder">
+            <video
+              src="https://cdn.tedxuniversitasbrawijaya.com/teasers/propaganda-2a-teaser.mp4"
+              autoplay
+              loop
+              muted
+              playsinline
+              controls
+            ></video>
+          </div>
           <p
             class="text-2-content"
             style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem' }}
@@ -223,7 +232,7 @@ import Footer from "@/components/footer.astro";
       <div class="frame-7-track">
         <section class="frame-7">
           <Image src={floor} class="floor-frame-7" alt="Wood Floor" />
-          <div class="placeholder-frame-7">placeholder</div>
+          <!-- <div class="placeholder-frame-7">placeholder</div> -->
           <Image
             src={silPerson}
             class="sil-person"
@@ -287,7 +296,7 @@ import Footer from "@/components/footer.astro";
         class="background-frame-9"
         alt="Propaganda 2 Frame 9 Background"
       />
-      <div class="placeholder-frame-9">placeholder</div>
+      <!-- <div class="placeholder-frame-9">placeholder</div> -->
       <Image src={standLamp} class="stand-lamp" alt="Stand Lamp" />
       <Image src={headSofa} class="head-sofa" alt="Head Sofa" />
     </section>
@@ -333,9 +342,9 @@ import Footer from "@/components/footer.astro";
   // Frame 2 animation elements (placeholder hidden)
   const frame2Section = document.querySelector(".frame-2") as HTMLElement;
   const text2Content = document.querySelector(".text-2-content") as HTMLElement;
-  // const placeholder2 = document.querySelector(
-  //   ".frame-2 .placeholder"
-  // ) as HTMLElement;
+  const placeholder2 = document.querySelector(
+    ".frame-2 .placeholder"
+  ) as HTMLElement;
 
   if (vaseWrapper) {
     vaseWrapper.style.willChange = "transform";
@@ -367,9 +376,9 @@ import Footer from "@/components/footer.astro";
     textFrame8.style.willChange = "opacity";
     textFrame8.style.opacity = "0";
   }
-  // if (placeholder2) {
-  //   placeholder2.style.willChange = "opacity";
-  // }
+  if (placeholder2) {
+    placeholder2.style.willChange = "opacity";
+  }
 
   const isMobile = () => window.innerWidth <= 768;
 
@@ -383,20 +392,38 @@ import Footer from "@/components/footer.astro";
     const maxScroll = frame2Section.offsetHeight - window.innerHeight;
 
     if (maxScroll <= 0) {
+      text2Content.style.opacity = "1";
+      text2Content.style.pointerEvents = "auto";
+      if (placeholder2) {
+        placeholder2.style.opacity = "1";
+        placeholder2.style.pointerEvents = "auto";
+      }
       return;
     }
 
     const rawProgress = Math.min(Math.max(scrolled / maxScroll, 0), 1);
-    // Teks fade-out di 60% pertama scroll frame-2
+    // Teks fade-out di 60% pertama scroll frame-2, diganti dengan pudarnya video (fade-in)
     const rawTextOut = Math.min(Math.max(rawProgress / 0.6, 0), 1);
-    const textOpacity = 0 + easeInOutCubic(rawTextOut);
-    text2Content.style.opacity = textOpacity.toString();
+    const progress = easeInOutCubic(rawTextOut);
+    
+    const currentTextOpacity = 1 - progress;
+    text2Content.style.opacity = currentTextOpacity.toString();
+    text2Content.style.pointerEvents = currentTextOpacity < 0.1 ? "none" : "auto";
+    
+    if (placeholder2) {
+      placeholder2.style.opacity = progress.toString();
+      placeholder2.style.pointerEvents = progress > 0.9 ? "auto" : "none";
+    }
   };
 
   const initFrame2Mobile = () => {
     if (text2Content) {
       text2Content.style.zIndex = "6";
       text2Content.style.opacity = "1";
+      text2Content.style.pointerEvents = "auto";
+    }
+    if (placeholder2) {
+      placeholder2.style.zIndex = "1";
     }
   };
 
