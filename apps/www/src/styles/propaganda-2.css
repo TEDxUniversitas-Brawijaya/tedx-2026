@@ -26,11 +26,10 @@ p {
   height: 100dvh;
   object-fit: cover;
   object-position: center;
-  opacity: 0.6;
-  filter: brightness(0.6);
   z-index: 5;
   mix-blend-mode: multiply;
   pointer-events: none;
+  aspect-ratio: 1.78 / 1;
 }
 
 .background {
