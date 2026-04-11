@@ -26,22 +26,16 @@ type CreateEmailServiceCtx = {
   email: Brevo;
 } & BaseContext;
 
-const DEFAULT_SENDER_NAME = "TEDxUB 2026";
-const DEFAULT_SENDER_EMAIL = "noreply@tedxuniversitasbrawijaya.com";
-
 type EmailServiceConfig = {
-  senderName?: string;
-  senderEmail?: string;
+  senderName: string;
+  senderEmail: string;
 };
 
 export const createEmailService = (
   ctx: CreateEmailServiceCtx,
-  config?: EmailServiceConfig
+  config: EmailServiceConfig
 ): EmailService => {
-  const {
-    senderName = DEFAULT_SENDER_NAME,
-    senderEmail = DEFAULT_SENDER_EMAIL,
-  } = config || {};
+  const { senderName, senderEmail } = config;
 
   return {
     sendEmail: async (to, subject, templateKey, params) => {
