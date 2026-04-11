@@ -37,7 +37,7 @@ export const CategorySlide = ({
                 type="button"
               >
                 <div className="w-full border border-white/20 bg-[#3C3C3C]/30 px-4 py-3 backdrop-blur-xl transition-all duration-300 group-hover/title:bg-[#DC2625]/50 md:px-8 md:py-4">
-                  <h4 className="font-extrabold font-sans-2 text-3xl text-[#ffffff] transition-colors duration-300 md:text-8xl lg:text-8xl">
+                  <h4 className="whitespace-nowrap font-extrabold font-sans-2 text-3xl text-[#ffffff] transition-colors duration-300 md:text-8xl lg:text-8xl">
                     {category.title}
                   </h4>
                 </div>

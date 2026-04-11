@@ -127,7 +127,7 @@
   --color-black: oklch(0.26 0 0);
   --color-brown: oklch(0.576 0.137 58.326);
   --color-yellow: oklch(0.785 0.137 90.869);
-  --color-white: oklch(0.958 0.029 91.642);
+  --color-white-2: oklch(0.958 0.029 91.642);
 
   /* Typography */
   --font-sans-2: "Hanken Grotesk", sans-serif;

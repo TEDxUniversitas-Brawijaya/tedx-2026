@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
 export const CATEGORIES = [
-  { id: "t-shirt", title: "T-SHIRT", prev: "BUNDLING", next: "WORKSHIRT" },
+  {
+    id: "t-shirt",
+    title: "T-SHIRT",
+    prev: "BUNDLING",
+    next: "WORKSHIRT",
+  },
   { id: "workshirt", title: "WORKSHIRT", prev: "T-SHIRT", next: "HAT" },
   { id: "hat", title: "HAT", prev: "WORKSHIRT", next: "SOCKS" },
   { id: "socks", title: "SOCKS", prev: "HAT", next: "STICKERS" },
