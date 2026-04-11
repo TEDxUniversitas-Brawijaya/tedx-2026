@@ -22,6 +22,7 @@ import Vp from "@/assets/imgs/vp-team-piece.png";
 import Curator from "@/assets/imgs/curator-team-piece.png";
 import VolunteerChipBackground from "@/assets/imgs/volunteer-chip-background.png";
 import Line from "@/assets/imgs/line-1.png";
+import Footer from "@/components/footer.astro";
 
 const createCoreTeamCardFileNames = (role: string, name: string) => {
   const baseName = `core-team-${toCardSlug(role)}--${toCardSlug(name)}`;
@@ -885,60 +886,72 @@ const teamMembers = [
             membangun rumah bagi setiap ide yang layak diperjuangkan.
           </p>
         </div>
+        <dialog id="family" class="family">
+          <div class="family-shell">
+            <div class="family-fade-layer" id="family-fade-layer">
+              <div class="family-topbar">
+                <div class="family-header">
+                  <h2 class="family-heading">Meet the Team</h2>
+                  <p class="family-description" id="family-description">
+                    Setiap divisi memiliki peran penting dalam menghadirkan
+                    TEDxUniversitasBrawijaya. Klik divisi untuk melihat tim di
+                    baliknya.
+                  </p>
+                </div>
+                <div class="modal-close-layout">
+                  <button
+                    class="modal-close-btn"
+                    id="modal-close-btn"
+                    type="button"
+                    aria-label="Tutup modal"
+                  >
+                    <svg
+                      class="modal-close-icon"
+                      width="40"
+                      height="40"
+                      viewBox="0 0 40 40"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path
+                        d="M20.0003 22.3327L11.8337 30.4993C11.5281 30.8049 11.1392 30.9577 10.667 30.9577C10.1948 30.9577 9.80588 30.8049 9.50032 30.4993C9.19477 30.1938 9.04199 29.8049 9.04199 29.3327C9.04199 28.8605 9.19477 28.4716 9.50032 28.166L17.667 19.9993L9.50032 11.8327C9.19477 11.5271 9.04199 11.1382 9.04199 10.666C9.04199 10.1938 9.19477 9.8049 9.50032 9.49935C9.80588 9.19379 10.1948 9.04102 10.667 9.04102C11.1392 9.04102 11.5281 9.19379 11.8337 9.49935L20.0003 17.666L28.167 9.49935C28.4725 9.19379 28.8614 9.04102 29.3337 9.04102C29.8059 9.04102 30.1948 9.19379 30.5003 9.49935C30.8059 9.8049 30.9587 10.1938 30.9587 10.666C30.9587 11.1382 30.8059 11.5271 30.5003 11.8327L22.3337 19.9993L30.5003 28.166C30.8059 28.4716 30.9587 28.8605 30.9587 29.3327C30.9587 29.8049 30.8059 30.1938 30.5003 30.4993C30.1948 30.8049 29.8059 30.9577 29.3337 30.9577C28.8614 30.9577 28.4725 30.8049 28.167 30.4993L20.0003 22.3327Z"
+                        fill="#F8F1DC"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <Image
+                src={Line}
+                alt="Line"
+                id="family-line"
+                class="family-line"
+              />
+
+              <div class="family-content" id="family-content">
+                <div class="piece-panel-separator" aria-hidden="true"></div>
+                <div
+                  class="piece-panel-body"
+                  id="piece-panel-body"
+                  data-team-members={JSON.stringify(teamMembers)}
+                  data-volunteer-chip-src={VolunteerChipBackground.src}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </dialog>
       </div>
     </section>
-    <dialog id="family" class="family">
-      <div class="family-topbar">
-        <div class="family-header">
-          <h2 class="family-heading">Meet the Team</h2>
-          <p class="family-description" id="family-description">
-            Setiap divisi memiliki peran penting dalam menghadirkan
-            TEDxUniversitasBrawijaya. Klik divisi untuk melihat tim di baliknya.
-          </p>
-        </div>
-        <div class="modal-close-layout">
-          <button
-            class="modal-close-btn"
-            id="modal-close-btn"
-            type="button"
-            aria-label="Tutup modal"
-          >
-            <svg
-              class="modal-close-icon"
-              width="40"
-              height="40"
-              viewBox="0 0 40 40"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path
-                d="M20.0003 22.3327L11.8337 30.4993C11.5281 30.8049 11.1392 30.9577 10.667 30.9577C10.1948 30.9577 9.80588 30.8049 9.50032 30.4993C9.19477 30.1938 9.04199 29.8049 9.04199 29.3327C9.04199 28.8605 9.19477 28.4716 9.50032 28.166L17.667 19.9993L9.50032 11.8327C9.19477 11.5271 9.04199 11.1382 9.04199 10.666C9.04199 10.1938 9.19477 9.8049 9.50032 9.49935C9.80588 9.19379 10.1948 9.04102 10.667 9.04102C11.1392 9.04102 11.5281 9.19379 11.8337 9.49935L20.0003 17.666L28.167 9.49935C28.4725 9.19379 28.8614 9.04102 29.3337 9.04102C29.8059 9.04102 30.1948 9.19379 30.5003 9.49935C30.8059 9.8049 30.9587 10.1938 30.9587 10.666C30.9587 11.1382 30.8059 11.5271 30.5003 11.8327L22.3337 19.9993L30.5003 28.166C30.8059 28.4716 30.9587 28.8605 30.9587 29.3327C30.9587 29.8049 30.8059 30.1938 30.5003 30.4993C30.1948 30.8049 29.8059 30.9577 29.3337 30.9577C28.8614 30.9577 28.4725 30.8049 28.167 30.4993L20.0003 22.3327Z"
-                fill="#F8F1DC"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <Image src={Line} alt="Line" id="family-line" class="family-line" />
-
-      <div class="family-content" id="family-content">
-        <div class="piece-panel-separator" aria-hidden="true"></div>
-        <div
-          class="piece-panel-body"
-          id="piece-panel-body"
-          data-team-members={JSON.stringify(teamMembers)}
-          data-volunteer-chip-src={VolunteerChipBackground.src}
-        ></div>
-      </div>
-    </dialog>
   </main>
+  <Footer />
 </Layout>
 <style>
   #our-team {
     position: relative;
     height: 560dvh;
+    background-color: var(--color-green);
   }
 
   .our-team-wrapper {
@@ -1350,10 +1363,13 @@ const teamMembers = [
   }
 
   .family {
-    position: fixed;
+    position: absolute;
     inset: 0;
+    margin: 0;
     width: 100%;
     height: 100dvh;
+    max-width: unset;
+    max-height: unset;
     background: transparent;
     border: none;
     padding: 2rem;
@@ -1363,6 +1379,7 @@ const teamMembers = [
     flex-direction: column;
     gap: 1.5rem;
     z-index: 1000;
+    opacity: 1;
     color: var(--color-white);
     pointer-events: none;
   }
@@ -1374,6 +1391,30 @@ const teamMembers = [
   }
   .family[open] {
     display: flex;
+  }
+
+  .family-shell {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .family-fade-layer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 1.5rem;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.12s linear;
+    will-change: opacity;
   }
 
   .family::before {
@@ -2207,10 +2248,9 @@ const teamMembers = [
       }
       const headerRevealProgress = transform(
         scrollProgress,
-        [HEADER_REVEAL_START, 1],
+        [HEADER_REVEAL_START, SCROLL_MAX_THRESHOLD],
         [0, 1]
       );
-
       familyHeader.style.opacity = String(headerRevealProgress);
     };
 
@@ -2221,7 +2261,7 @@ const teamMembers = [
 
       const shouldShowPiecePanel = scrollProgress >= HEADER_REVEAL_START;
 
-      const canOpenPiecePanel = shouldShowPiecePanel;
+      const canOpenPiecePanel = shouldShowPiecePanel && scrollProgress < 1;
       teamFrameWrapperEl.classList.toggle("hitbox-active", canOpenPiecePanel);
 
       if (canOpenPiecePanel && !family.open) {
