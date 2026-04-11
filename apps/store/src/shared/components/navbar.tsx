@@ -389,13 +389,15 @@ export const Navbar = () => {
                                       key={child.name}
                                     >
                                       {isExternal ? (
-                                        <Link
+                                        <a
                                           className="grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-1.25 after:border-black after:border-b after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
+                                          href={child.href}
                                           onClick={closeMenu}
-                                          to={child.href as never}
+                                          rel="noopener noreferrer"
+                                          target="_blank"
                                         >
                                           {child.name}
-                                        </Link>
+                                        </a>
                                       ) : (
                                         <Link
                                           className="grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-1.25 after:border-black after:border-b after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
@@ -417,30 +419,19 @@ export const Navbar = () => {
                           return null;
                         }
 
-                        const isExternal = item.href.startsWith("http");
-
                         return (
                           <li
                             className="font-serif-2 text-black text-m lg:text-l"
                             key={item.name}
                           >
-                            {isExternal ? (
-                              <Link
-                                className="grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-2.25 after:border-black after:border-b-2 after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
-                                onClick={closeMenu}
-                                to={item.href as never}
-                              >
-                                {item.name}
-                              </Link>
-                            ) : (
-                              <Link
-                                className="grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-2.25 after:border-black after:border-b-2 after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
-                                onClick={closeMenu}
-                                to={item.href}
-                              >
-                                {item.name}
-                              </Link>
-                            )}
+                            <a
+                              className="grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-2.25 after:border-black after:border-b-2 after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
+                              href={item.href}
+                              onClick={closeMenu}
+                              target="_blank"
+                            >
+                              {item.name}
+                            </a>
                           </li>
                         );
                       })}

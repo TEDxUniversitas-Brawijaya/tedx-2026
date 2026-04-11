@@ -80,14 +80,12 @@ export const Footer = () => {
           <nav aria-label="Social links" id="footer-social">
             <ul className="m-0 flex list-none flex-wrap justify-start gap-x-4 gap-y-[0.55rem] p-0 font-sans-2">
               <li>
-                <Link
+                <a
                   aria-label="Instagram"
                   className="inline-flex items-center gap-2 p-0 text-[clamp(1.05rem,3.8vw,1.24rem)] text-[color-mix(in_oklch,var(--color-white)_85%,transparent_15%)] no-underline transition-[transform,color,background-color] duration-180 ease-in-out hover:-translate-y-0.5 hover:text-red-2 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-[3px] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:text-[clamp(0.88rem,1.75vw,1rem)] md:text-[clamp(0.78rem,0.95vw,0.92rem)]"
+                  href={"https://www.instagram.com/tedxuniversitasbrawijaya/"}
                   rel="noopener noreferrer"
                   target="_blank"
-                  to={
-                    "https://www.instagram.com/tedxuniversitasbrawijaya/" as never
-                  }
                 >
                   <svg
                     aria-hidden="true"
@@ -103,15 +101,15 @@ export const Footer = () => {
                     />
                   </svg>
                   <span>Instagram</span>
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
+                <a
                   aria-label="Twitter"
                   className="inline-flex items-center gap-2 p-0 text-[clamp(1.05rem,3.8vw,1.24rem)] text-[color-mix(in_oklch,var(--color-white)_85%,transparent_15%)] no-underline transition-[transform,color,background-color] duration-180 ease-in-out hover:-translate-y-0.5 hover:text-red-2 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-[3px] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:text-[clamp(0.88rem,1.75vw,1rem)] md:text-[clamp(0.78rem,0.95vw,0.92rem)]"
+                  href={"https://x.com/TEDxBrawijaya"}
                   rel="noopener noreferrer"
                   target="_blank"
-                  to={"https://x.com/TEDxBrawijaya" as never}
                 >
                   <svg
                     aria-hidden="true"
@@ -127,17 +125,17 @@ export const Footer = () => {
                     />
                   </svg>
                   <span>Twitter</span>
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
+                <a
                   aria-label="TikTok"
                   className="inline-flex items-center gap-2 p-0 text-[clamp(1.05rem,3.8vw,1.24rem)] text-[color-mix(in_oklch,var(--color-white)_85%,transparent_15%)] no-underline transition-[transform,color,background-color] duration-180 ease-in-out hover:-translate-y-0.5 hover:text-red-2 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-[3px] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:text-[clamp(0.88rem,1.75vw,1rem)] md:text-[clamp(0.78rem,0.95vw,0.92rem)]"
+                  href={
+                    "https://www.tiktok.com/@tedxuniversitasbrawijaya?lang=en"
+                  }
                   rel="noopener noreferrer"
                   target="_blank"
-                  to={
-                    "https://www.tiktok.com/@tedxuniversitasbrawijaya?lang=en" as never
-                  }
                 >
                   <svg
                     aria-hidden="true"
@@ -153,7 +151,7 @@ export const Footer = () => {
                     />
                   </svg>
                   <span>TikTok</span>
-                </Link>
+                </a>
               </li>
             </ul>
           </nav>
@@ -173,6 +171,7 @@ export const Footer = () => {
             width={1722}
           />
           <p
+            aria-hidden="true"
             className="absolute right-[-6%] bottom-[-10%] z-3 translate-x-[6%] translate-y-[10%] font-black font-sans text-[#a01a1a] text-[14rem] before:absolute before:right-[4%] before:-z-1 before:h-full before:w-full before:-translate-x-[4%] before:text-red-2 before:content-['X'] sm:right-[2%] sm:bottom-[-6%] sm:-translate-x-[2%] sm:translate-y-[6%] md:text-[12rem]"
             id="footer-decoration-text"
           >

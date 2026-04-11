@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import HangingLamp from "@/assets/imgs/hanging-lamp.png";
 import PaperTexture1 from "@/assets/imgs/paper-texture-1.png";
 import RedBrushStroke from "@/assets/imgs/red-brush-stroke.png";
@@ -379,12 +378,14 @@ export const NotFoundPage = () => {
               Kami tidak dapat menemukan halaman yang kamu cari
             </p>
           </div>
-          <Link
+          <a
             className="rounded-lg bg-red-2 px-8 py-4 font-serif-2 text-m text-white no-underline transition-colors duration-300 ease-in-out hover:bg-[color-mix(in_oklch,var(--color-red-2)_80%,transparent_20%)] focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-4 active:bg-[color-mix(in_oklch,var(--color-red-2)_60%,transparent_40%)]"
-            to={"https://tedxuniversitasbrawijaya.com" as never}
+            href={"https://tedxuniversitasbrawijaya.com"}
+            rel="noopener noreferrer"
+            target="_blank"
           >
             Kembali ke home
-          </Link>
+          </a>
         </div>
 
         <img
