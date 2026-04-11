@@ -19,8 +19,11 @@ export const productsTable = sqliteTable(
     description: t.text(),
     price: t.integer().notNull(), // IDR, no decimals
     stock: t.integer(), // tickets only; null for merch (pre-order)
-    isActive: t.integer({ mode: "boolean" }).default(true).notNull(),
+    isActive: t.integer({ mode: "boolean" }).default(true).notNull(), // active means visible on the storefront and can be purchased
     imageUrl: t.text(),
+    category: t.text({
+      enum: ["t-shirt", "workshirt", "stickers", "socks", "keychain", "hat"],
+    }),
     variants: t.text({ mode: "json" }).$type<
       {
         id: string; // e.g. var_x
@@ -29,11 +32,40 @@ export const productsTable = sqliteTable(
       }[]
     >(),
     bundleItems: t.text({ mode: "json" }).$type<
-      {
-        productId: string;
-        quantity: number;
-        isSelectable: boolean; // for bundles only, whether the customer can choose this item or it's fixed
-      }[]
+      (
+        | {
+            type: "ticket";
+            productId: string;
+          }
+        | {
+            type: "merchandise";
+
+            category:
+              | "t-shirt"
+              | "workshirt"
+              | "stickers"
+              | "socks"
+              | "keychain"
+              | "hat";
+          }
+        | {
+            type: "selectable_item";
+            items: (
+              | {
+                  productId: string;
+                }
+              | {
+                  category:
+                    | "t-shirt"
+                    | "workshirt"
+                    | "stickers"
+                    | "socks"
+                    | "keychain"
+                    | "hat";
+                }
+            )[];
+          }
+      )[]
     >(),
     createdAt: t
       .text()

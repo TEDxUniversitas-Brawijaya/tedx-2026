@@ -19,6 +19,15 @@ export const productTypeSchema = z.enum([
 
 export const orderTypeSchema = z.enum(["ticket", "merch"]);
 
+export const productCategorySchema = z.enum([
+  "t-shirt",
+  "workshirt",
+  "stickers",
+  "socks",
+  "keychain",
+  "hat",
+]);
+
 // Order status
 export const orderStatusSchema = z.enum([
   "pending_payment",
@@ -64,11 +73,47 @@ export const productVariantSchema = z.object({
 });
 
 // Bundle item
-export const bundleItemSchema = z.object({
-  productId: z.string(),
-  quantity: z.number().int().positive(),
-  isSelectable: z.boolean(),
-});
+export const bundleItemSchema = z.union([
+  z.object({
+    type: z.literal("ticket"),
+    productId: z.string(),
+    productName: z.string(),
+  }),
+  z.object({
+    type: z.literal("merchandise"),
+    category: productCategorySchema,
+    products: z.array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        imageUrl: z.string().nullable(),
+        variants: z.array(productVariantSchema),
+      })
+    ),
+  }),
+  z.object({
+    type: z.literal("selectable_item"),
+    items: z.array(
+      z.union([
+        z.object({
+          productId: z.string(),
+          productName: z.string(),
+        }),
+        z.object({
+          category: productCategorySchema,
+          products: z.array(
+            z.object({
+              id: z.string(),
+              name: z.string(),
+              imageUrl: z.string().nullable(),
+              variants: z.array(productVariantSchema),
+            })
+          ),
+        }),
+      ])
+    ),
+  }),
+]);
 
 // Snapshot variant (for order items)
 export const snapshotVariantSchema = z.object({

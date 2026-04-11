@@ -27,13 +27,7 @@ export const listTicketProductsOutputSchema = z.array(
     isActive: z.boolean(),
     description: z.string().nullable(),
     imageUrl: z.string().nullable(),
-    bundleItems: z
-      .array(
-        bundleItemSchema.extend({
-          name: z.string(),
-        })
-      )
-      .optional(),
+    bundleItems: z.array(bundleItemSchema).optional(),
   })
 );
 
