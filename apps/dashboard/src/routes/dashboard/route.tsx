@@ -2,7 +2,12 @@ import AppLogo from "@/shared/components/app-logo";
 import UserMenu from "@/shared/components/user-menu";
 import { authClient } from "@/shared/lib/auth";
 import { canAccess, RESOURCES } from "@/shared/lib/permissions";
-import { IconDatabase, IconHome, IconLogout } from "@tabler/icons-react";
+import {
+  IconDatabase,
+  IconHome,
+  IconLogout,
+  IconShoppingBag,
+} from "@tabler/icons-react";
 import {
   createFileRoute,
   Link,
@@ -89,6 +94,12 @@ function RouteComponent() {
                   label: "Home",
                   to: "/dashboard/home",
                   icon: IconHome,
+                },
+                {
+                  label: "Orders",
+                  to: "/dashboard/orders",
+                  icon: IconShoppingBag,
+                  requiredResource: RESOURCES.ORDER,
                 },
                 {
                   label: "Storage",
