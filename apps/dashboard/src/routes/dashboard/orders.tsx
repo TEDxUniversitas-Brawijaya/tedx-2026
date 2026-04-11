@@ -1,8 +1,19 @@
 import { OrderManagement } from "@/features/order/components/order-management";
-import { createFileRoute } from "@tanstack/react-router";
+import { canAccess, RESOURCES } from "@/shared/lib/permissions";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard/orders")({
   component: RouteComponent,
+  beforeLoad: ({ context }) => {
+    const { user } = context;
+
+    if (!canAccess(user.role, RESOURCES.ORDER)) {
+      redirect({
+        to: "/dashboard/home",
+        throw: true,
+      });
+    }
+  },
 });
 
 function RouteComponent() {

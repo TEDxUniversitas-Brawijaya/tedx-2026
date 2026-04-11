@@ -617,6 +617,86 @@ const getSeededDetailsOrThrow = () => {
     .map((entry) => entry.parsed.data);
 };
 
+const parseLocalBoundary = (yyyyMmDd: string, boundary: "start" | "end") => {
+  const parts = yyyyMmDd.split("-");
+  if (parts.length !== 3) {
+    return null;
+  }
+
+  const [yearString, monthString, dayString] = parts as [
+    string,
+    string,
+    string,
+  ];
+  const year = Number(yearString);
+  const month = Number(monthString);
+  const day = Number(dayString);
+
+  if (
+    Number.isNaN(year) ||
+    Number.isNaN(month) ||
+    Number.isNaN(day) ||
+    yearString.length !== 4 ||
+    monthString.length !== 2 ||
+    dayString.length !== 2
+  ) {
+    return null;
+  }
+
+  return boundary === "start"
+    ? new Date(year, month - 1, day, 0, 0, 0, 0)
+    : new Date(year, month - 1, day, 23, 59, 59, 999);
+};
+
+type SeededListOrder = {
+  id: string;
+  type: string;
+  status: string;
+  buyerName: string;
+  buyerEmail: string;
+  createdAt: string;
+};
+
+const isWithinDateBoundaries = (
+  createdAt: string,
+  startBoundary: Date | null,
+  endBoundary: Date | null
+) => {
+  if (!(startBoundary || endBoundary)) {
+    return true;
+  }
+
+  const createdAtDate = new Date(createdAt);
+  if (Number.isNaN(createdAtDate.getTime())) {
+    return false;
+  }
+
+  if (startBoundary && createdAtDate < startBoundary) {
+    return false;
+  }
+
+  if (endBoundary && createdAtDate > endBoundary) {
+    return false;
+  }
+
+  return true;
+};
+
+const matchesSearchKeyword = (
+  order: SeededListOrder,
+  searchKeyword: string | undefined
+) => {
+  if (!searchKeyword) {
+    return true;
+  }
+
+  return (
+    order.id.toLowerCase().includes(searchKeyword) ||
+    order.buyerName.toLowerCase().includes(searchKeyword) ||
+    order.buyerEmail.toLowerCase().includes(searchKeyword)
+  );
+};
+
 const list = protectedProcedure
   .input(listOrdersInputSchema)
   .output(listOrdersOutputSchema)
@@ -633,6 +713,12 @@ const list = protectedProcedure
     }));
 
     const searchKeyword = input.search?.trim().toLowerCase();
+    const startBoundary = input.startDate
+      ? parseLocalBoundary(input.startDate, "start")
+      : null;
+    const endBoundary = input.endDate
+      ? parseLocalBoundary(input.endDate, "end")
+      : null;
 
     const filtered = seededListOrders.filter((order) => {
       if (input.type && order.type !== input.type) {
@@ -643,15 +729,13 @@ const list = protectedProcedure
         return false;
       }
 
-      if (!searchKeyword) {
-        return true;
+      if (
+        !isWithinDateBoundaries(order.createdAt, startBoundary, endBoundary)
+      ) {
+        return false;
       }
 
-      return (
-        order.id.toLowerCase().includes(searchKeyword) ||
-        order.buyerName.toLowerCase().includes(searchKeyword) ||
-        order.buyerEmail.toLowerCase().includes(searchKeyword)
-      );
+      return matchesSearchKeyword(order, searchKeyword);
     });
 
     const sorted = [...filtered].sort((a, b) => {
