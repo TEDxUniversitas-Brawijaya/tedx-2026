@@ -8,6 +8,7 @@ import {
   isoDateStringSchema,
   orderIdSchema,
   orderStatusSchema,
+  productCategorySchema,
   productIdSchema,
   productTypeSchema,
   productVariantSchema,
@@ -23,15 +24,10 @@ export const listMerchProductsOutputSchema = z.array(
     type: productTypeSchema,
     name: z.string(),
     price: z.number().int(),
-    imageUrl: z.string().nullable(),
-    variants: z.array(productVariantSchema),
-    bundleItems: z
-      .array(
-        bundleItemSchema.extend({
-          name: z.string(),
-        })
-      )
-      .optional(),
+    imageUrl: z.string().nullable().optional(),
+    category: productCategorySchema.optional(),
+    variants: z.array(productVariantSchema).optional(),
+    bundleItems: z.array(bundleItemSchema).optional(),
   })
 );
 
