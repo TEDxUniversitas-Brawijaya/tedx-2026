@@ -565,10 +565,6 @@ p {
 }
 
 @media (max-width: 768px) {
-  .texture {
-    filter: brightness(0.2);
-  }
-
   .frame-1 {
     height: 100svh;
   }
@@ -654,15 +650,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 6;
     will-change: transform;
-    overflow: hidden;
-  }
-
-  .frame-2 .carpet,
-  .frame-2 .floor-frame-2,
-  .frame-2 .placeholder {
-    filter: brightness(0.6);
   }
 
   .frame-2-content {

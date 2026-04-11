@@ -448,8 +448,10 @@ import "@/styles/propaganda-2.css";
       }
     } else {
       const vh = window.innerHeight;
+      const fadeDistance = vh * 0.5;
 
-      const brightnessProgress = Math.min(distancePastTop / vh, 1);
+      const brightnessProgress = Math.min(distancePastTop / fadeDistance, 1);
+
       const brightness = easeInOutCubic(brightnessProgress);
       frame6Wrapper.style.filter = `brightness(${brightness})`;
 
