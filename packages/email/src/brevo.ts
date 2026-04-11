@@ -47,8 +47,8 @@ type BrevoOptions = {
   sandbox?: boolean; // If true, use Brevo's sandbox environment (if available)
 };
 
-export const createBrevo = (apiKey: string, opts: BrevoOptions): Brevo => {
-  const { sandbox = false } = opts;
+export const createBrevo = (apiKey: string, opts?: BrevoOptions): Brevo => {
+  const { sandbox = false } = opts || {};
 
   return {
     sendEmail: async ({
