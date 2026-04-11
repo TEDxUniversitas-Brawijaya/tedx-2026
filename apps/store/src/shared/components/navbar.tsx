@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { cn } from "@tedx-2026/ui/lib/utils";
 import { Menu } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import Logo from "@/assets/imgs/logo.png";
@@ -253,21 +254,6 @@ export const Navbar = () => {
 
   const menuPageTransform = "translate(-50%, -50%) scale(1)";
 
-  const modalClassName = isOpen ? "pointer-events-auto" : "pointer-events-none";
-  const backdropClassName = isOpen ? "opacity-100" : "opacity-0";
-  const contentClassName = isOpen
-    ? "opacity-100 blur-0"
-    : "opacity-0 blur-[2px]";
-
-  const menuHeadingClassName =
-    "grid grid-cols-[auto_1fr] items-center after:translate-y-[5px] after:border-b-2 after:border-dotted after:border-black after:content-['']";
-
-  const menuLinkClassName =
-    "grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-[9px] after:border-b-2 after:border-dotted after:border-black after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:after:border-red-2 focus:outline-none";
-
-  const submenuLinkClassName =
-    "grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-[5px] after:border-b after:border-dotted after:border-black after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:after:border-red-2 focus:outline-none";
-
   return (
     <>
       <header className="fixed top-0 right-0 left-0 z-9999 flex h-18 items-center justify-between bg-[#171715] px-5 py-4 md:h-20 md:px-37.5">
@@ -305,13 +291,19 @@ export const Navbar = () => {
       {isOpen && (
         <div
           aria-modal="true"
-          className={`fixed top-0 left-0 z-10000 h-full w-full ${modalClassName}`}
+          className={cn(
+            "fixed top-0 left-0 z-10000 h-full w-full",
+            isOpen ? "pointer-events-auto" : "pointer-events-none"
+          )}
           id="modal"
           role="dialog"
         >
           <button
             aria-label="Close menu"
-            className={`absolute top-0 left-0 h-full w-full border-0 bg-black/50 transition-opacity duration-300 ease-in-out ${backdropClassName}`}
+            className={cn(
+              "absolute top-0 left-0 h-full w-full border-0 bg-black/50 transition-opacity duration-300 ease-in-out",
+              isOpen ? "opacity-100" : "opacity-0"
+            )}
             id="modal-backdrop"
             onClick={closeMenu}
             type="button"
@@ -320,7 +312,10 @@ export const Navbar = () => {
           <div
             aria-labelledby="menu-dialog-title"
             aria-modal="true"
-            className={`absolute top-1/2 left-[90%] aspect-[1.39/1] h-auto w-[150%] touch-pan-y overflow-visible transition-[opacity,transform,filter] duration-300 ease-in-out md:left-1/2 md:max-w-[90dvw] lg:w-[90%] lg:max-w-[60dvw] min-[1440px]:w-[80%] min-[1920px]:w-[80%] min-[1440px]:max-w-[60dvw] min-[1920px]:max-w-[50dvw] ${contentClassName}`}
+            className={cn(
+              "absolute top-1/2 left-[90%] aspect-[1.39/1] h-auto w-[150%] touch-pan-y overflow-visible transition-[opacity,transform,filter] duration-300 ease-in-out md:left-1/2 md:max-w-[90dvw] lg:w-[90%] lg:max-w-[60dvw] min-[1440px]:w-[80%] min-[1920px]:w-[80%] min-[1440px]:max-w-[60dvw] min-[1920px]:max-w-[50dvw]",
+              isOpen ? "opacity-100 blur-0" : "opacity-0 blur-[2px]"
+            )}
             id="modal-content"
             onTouchEnd={handleTouchEnd}
             onTouchMove={handleTouchMove}
@@ -380,7 +375,11 @@ export const Navbar = () => {
                               className="font-serif-2 text-black text-m lg:text-l"
                               key={item.name}
                             >
-                              <span className={menuHeadingClassName}>
+                              <span
+                                className={cn(
+                                  "grid grid-cols-[auto_1fr] items-center after:translate-y-1.25 after:border-black after:border-b-2 after:border-dotted after:content-['']"
+                                )}
+                              >
                                 {item.name}
                               </span>
                               <ul className="mt-1 flex list-none flex-col gap-1 pl-4">
@@ -395,7 +394,9 @@ export const Navbar = () => {
                                     >
                                       {isExternal ? (
                                         <Link
-                                          className={submenuLinkClassName}
+                                          className={cn(
+                                            "grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-1.25 after:border-black after:border-b after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
+                                          )}
                                           onClick={closeMenu}
                                           to={child.href as never}
                                         >
@@ -403,7 +404,9 @@ export const Navbar = () => {
                                         </Link>
                                       ) : (
                                         <Link
-                                          className={submenuLinkClassName}
+                                          className={cn(
+                                            "grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-1.25 after:border-black after:border-b after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
+                                          )}
                                           onClick={closeMenu}
                                           to={child.href}
                                         >
@@ -431,7 +434,9 @@ export const Navbar = () => {
                           >
                             {isExternal ? (
                               <Link
-                                className={menuLinkClassName}
+                                className={cn(
+                                  "grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-2.25 after:border-black after:border-b-2 after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
+                                )}
                                 onClick={closeMenu}
                                 to={item.href as never}
                               >
@@ -439,7 +444,9 @@ export const Navbar = () => {
                               </Link>
                             ) : (
                               <Link
-                                className={menuLinkClassName}
+                                className={cn(
+                                  "grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-2.25 after:border-black after:border-b-2 after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
+                                )}
                                 onClick={closeMenu}
                                 to={item.href}
                               >
