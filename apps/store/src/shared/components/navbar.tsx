@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Menu } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Logo from "@/assets/imgs/logo.png";
 import MenuBook from "@/assets/imgs/menu-book.png";
 
@@ -128,32 +128,33 @@ export const Navbar = () => {
   const menuButtonRef = useRef<HTMLButtonElement | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+  const keyDownHandlerRef = useRef<((event: KeyboardEvent) => void) | null>(
+    null
+  );
 
-  const closeMenu = useCallback(() => {
-    setIsOpen(false);
-  }, []);
-
-  const openMenu = useCallback(() => {
-    setIsOpen(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isOpen) {
+  const removeKeyDownListener = useCallback(() => {
+    if (!keyDownHandlerRef.current) {
       return;
     }
 
+    document.removeEventListener("keydown", keyDownHandlerRef.current);
+    keyDownHandlerRef.current = null;
+  }, []);
+
+  const closeMenu = useCallback(() => {
+    removeKeyDownListener();
+    document.body.style.overflow = "";
+    setPage("left");
+    setIsOpen(false);
+    previouslyFocusedRef.current?.focus();
+  }, [removeKeyDownListener]);
+
+  const openMenu = useCallback(() => {
+    removeKeyDownListener();
     previouslyFocusedRef.current =
       document.activeElement instanceof HTMLElement
         ? document.activeElement
         : null;
-
-    const dialogElement = dialogRef.current;
-    if (!dialogElement) {
-      return;
-    }
-
-    const focusableOnOpen = getFocusableElements(dialogElement);
-    (focusableOnOpen[0] ?? dialogElement).focus();
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -162,23 +163,37 @@ export const Navbar = () => {
         return;
       }
 
+      const dialogElement = dialogRef.current;
+      if (!dialogElement) {
+        return;
+      }
+
       handleTabFocusTrap(event, dialogElement);
     };
 
+    keyDownHandlerRef.current = handleKeyDown;
     document.addEventListener("keydown", handleKeyDown);
 
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      previouslyFocusedRef.current?.focus();
-    };
-  }, [isOpen, closeMenu]);
+    document.body.style.overflow = "hidden";
+    setIsOpen(true);
+  }, [closeMenu, removeKeyDownListener]);
 
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+  const setDialogElement = useCallback(
+    (node: HTMLDivElement | null) => {
+      dialogRef.current = node;
+      if (!node) {
+        return;
+      }
+
+      if (!isOpen) {
+        return;
+      }
+
+      const focusableOnOpen = getFocusableElements(node);
+      (focusableOnOpen[0] ?? node).focus();
+    },
+    [isOpen]
+  );
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     const firstTouch = event.touches[0];
@@ -235,12 +250,6 @@ export const Navbar = () => {
     touchStartYRef.current = null;
     isTouchInMenuRef.current = false;
   };
-
-  useEffect(() => {
-    if (!isOpen) {
-      setPage("left");
-    }
-  }, [isOpen]);
 
   const menuPageTransform = "translate(-50%, -50%) scale(1)";
 
@@ -316,7 +325,7 @@ export const Navbar = () => {
             onTouchEnd={handleTouchEnd}
             onTouchMove={handleTouchMove}
             onTouchStart={handleTouchStart}
-            ref={dialogRef}
+            ref={setDialogElement}
             role="dialog"
             style={{
               transform: menuPageTransform,
