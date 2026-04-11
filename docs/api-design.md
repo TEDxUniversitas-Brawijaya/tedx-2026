@@ -10,8 +10,8 @@ Non-tRPC routes (plain Hono) are used for: Midtrans webhook, file uploads (multi
 
 ## **Authentication**
 
-- **Public procedures**: No auth. Protected by rate limiting + CAPTCHA.
-- **Admin procedures**: Cookie-based session via better-auth. tRPC middleware checks role.
+- **Public procedures**: No auth. Protected by tRPC-level rate limiting (100 req/min per IP) + CAPTCHA.
+- **Admin procedures**: Cookie-based session via better-auth. tRPC middleware checks role. No rate limiting (relies on Cloudflare's infrastructure protection).
 
 ## **Payment Mode**
 
