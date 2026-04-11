@@ -375,7 +375,7 @@ export const NotFoundPage = () => {
             <h1 className={"font-serif-2 text-white text-xl-2 md:text-xxl"}>
               Halaman Tidak Ditemukan
             </h1>
-            <p className={"font-sans text-m text-white md:text-l"}>
+            <p className={"font-sans-2 text-m text-white md:text-l"}>
               Kami tidak dapat menemukan halaman yang kamu cari
             </p>
           </div>

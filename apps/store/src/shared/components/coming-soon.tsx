@@ -75,7 +75,7 @@ export const ComingSoon = () => {
             <h1 className={"font-serif-2 text-white text-xl-2 md:text-xxl"}>
               Segera Hadir.
             </h1>
-            <p className={"font-sans text-m text-white md:text-l"}>
+            <p className={"font-sans-2 text-m text-white md:text-l"}>
               Kami sedang menyiapkan sesuatu yang akan segera bisa kamu jelajahi
             </p>
           </div>

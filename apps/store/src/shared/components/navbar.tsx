@@ -277,7 +277,7 @@ export const Navbar = () => {
           aria-controls="modal-content"
           aria-expanded={isOpen}
           aria-label="Menu"
-          className="flex cursor-pointer items-center gap-2 border-0 bg-transparent px-4 py-2 text-[#fff] focus-visible:rounded-lg focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 md:px-8 md:py-4"
+          className="flex cursor-pointer items-center gap-2 border-0 bg-transparent px-4 py-2 font-sans-2 text-[#fff] focus-visible:rounded-lg focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 md:px-8 md:py-4"
           id="navbar-menu-button"
           onClick={openMenu}
           ref={menuButtonRef}
@@ -301,8 +301,8 @@ export const Navbar = () => {
           <button
             aria-label="Close menu"
             className={cn(
-              "absolute top-0 left-0 h-full w-full border-0 bg-black/50 transition-opacity duration-300 ease-in-out",
-              isOpen ? "opacity-100" : "opacity-0"
+              "absolute top-0 left-0 h-full w-full border-0 transition-opacity duration-300 ease-in-out",
+              isOpen ? "bg-[#000]/50" : "bg-transparent"
             )}
             id="modal-backdrop"
             onClick={closeMenu}

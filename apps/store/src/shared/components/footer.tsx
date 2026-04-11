@@ -67,7 +67,7 @@ export const Footer = () => {
             </Link>
           </div>
           <div
-            className="flex flex-col items-start gap-[0.15rem] font-sans leading-[1.3] opacity-40"
+            className="flex flex-col items-start gap-[0.15rem] font-sans-2 leading-[1.3] opacity-40"
             id="footer-copy"
           >
             <p className="text-[clamp(1.04rem,4.2vw,1.28rem)] sm:text-[clamp(0.9rem,2.35vw,1rem)]">
@@ -78,7 +78,7 @@ export const Footer = () => {
             </p>
           </div>
           <nav aria-label="Social links" id="footer-social">
-            <ul className="m-0 flex list-none flex-wrap justify-start gap-x-4 gap-y-[0.55rem] p-0">
+            <ul className="m-0 flex list-none flex-wrap justify-start gap-x-4 gap-y-[0.55rem] p-0 font-sans-2">
               <li>
                 <Link
                   aria-label="Instagram"
