@@ -405,11 +405,12 @@ import Footer from "@/components/footer.astro";
     // Teks fade-out di 60% pertama scroll frame-2, diganti dengan pudarnya video (fade-in)
     const rawTextOut = Math.min(Math.max(rawProgress / 0.6, 0), 1);
     const progress = easeInOutCubic(rawTextOut);
-    
+
     const currentTextOpacity = 1 - progress;
     text2Content.style.opacity = currentTextOpacity.toString();
-    text2Content.style.pointerEvents = currentTextOpacity < 0.1 ? "none" : "auto";
-    
+    text2Content.style.pointerEvents =
+      currentTextOpacity < 0.1 ? "none" : "auto";
+
     if (placeholder2) {
       placeholder2.style.opacity = progress.toString();
       placeholder2.style.pointerEvents = progress > 0.9 ? "auto" : "none";
