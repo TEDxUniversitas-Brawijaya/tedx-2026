@@ -78,24 +78,6 @@ export const createFileService = (ctx: CreateFileServiceCtx): FileServices => ({
       });
     }
 
-    ctx.waitUntil(
-      ctx.email.sendEmailWithAttachment(
-        "billy.bpm03@gmail.com",
-        "New File Uploaded",
-        "order",
-        {
-          name: "name",
-          orderId: 1,
-        },
-        [
-          {
-            name: fileName,
-            content: body,
-          },
-        ]
-      )
-    );
-
     return {
       key: result.key,
       url: getFileURL(ctx.CDN_DOMAIN, result.key),
