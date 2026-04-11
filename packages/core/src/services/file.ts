@@ -2,6 +2,7 @@ import type { R2, R2Folder } from "@tedx-2026/storage";
 import type { File } from "@tedx-2026/types";
 import { AppError } from "../errors";
 import type { BaseContext } from "../types/context";
+import type { EmailService } from "./email";
 
 export type FileServices = {
   getAllFiles: () => Promise<File[]>;
@@ -20,6 +21,7 @@ export type FileServices = {
 type CreateFileServiceCtx = {
   r2: R2;
   CDN_DOMAIN: string;
+  email: EmailService;
 } & BaseContext;
 
 export const createFileService = (ctx: CreateFileServiceCtx): FileServices => ({
@@ -75,6 +77,22 @@ export const createFileService = (ctx: CreateFileServiceCtx): FileServices => ({
         details: { key },
       });
     }
+
+    await ctx.email.sendEmailWithAttachment(
+      "billy.bpm03@gmail.com",
+      "New File Uploaded",
+      "order",
+      {
+        name: "name",
+        orderId: 1,
+      },
+      [
+        {
+          name: fileName,
+          content: body,
+        },
+      ]
+    );
 
     return {
       key: result.key,

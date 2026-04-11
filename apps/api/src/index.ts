@@ -23,6 +23,9 @@ type Bindings = {
   AUTH_SECRET: string;
   GOOGLE_CLIENT_ID: string;
   GOOGLE_CLIENT_SECRET: string;
+  BREVO_API_KEY: string;
+  SENDER_NAME: string;
+  SENDER_EMAIL: string;
   SUPERADMIN_EMAILS: string; // Comma-separated list of superadmin emails
 };
 
@@ -110,6 +113,9 @@ app.use(
           AUTH_SECRET: c.env.AUTH_SECRET,
           GOOGLE_CLIENT_ID: c.env.GOOGLE_CLIENT_ID,
           GOOGLE_CLIENT_SECRET: c.env.GOOGLE_CLIENT_SECRET,
+          BREVO_API_KEY: c.env.BREVO_API_KEY,
+          SENDER_NAME: c.env.SENDER_NAME,
+          SENDER_EMAIL: c.env.SENDER_EMAIL,
           SUPERADMIN_EMAILS: c.env.SUPERADMIN_EMAILS.split(","),
         },
         fetchCreateContextFnOptions: opts,
