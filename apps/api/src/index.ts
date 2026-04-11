@@ -84,7 +84,7 @@ app.on(["POST", "GET"], "/auth/*", (c) => {
     baseURL: c.env.APP_URL,
     googleClientId: c.env.GOOGLE_CLIENT_ID,
     googleClientSecret: c.env.GOOGLE_CLIENT_SECRET,
-    waitUntil: c.executionCtx.waitUntil,
+    waitUntil: (promise) => c.executionCtx.waitUntil(promise),
     superadminEmails: c.env.SUPERADMIN_EMAILS.split(","),
   });
 
@@ -121,7 +121,7 @@ app.use(
         fetchCreateContextFnOptions: opts,
         logger: customLogger,
         requestId,
-        waitUntil: c.executionCtx.waitUntil,
+        waitUntil: (promise) => c.executionCtx.waitUntil(promise),
       });
     },
   })

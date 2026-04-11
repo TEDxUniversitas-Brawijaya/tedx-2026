@@ -78,20 +78,22 @@ export const createFileService = (ctx: CreateFileServiceCtx): FileServices => ({
       });
     }
 
-    await ctx.email.sendEmailWithAttachment(
-      "billy.bpm03@gmail.com",
-      "New File Uploaded",
-      "order",
-      {
-        name: "name",
-        orderId: 1,
-      },
-      [
+    ctx.waitUntil(
+      ctx.email.sendEmailWithAttachment(
+        "billy.bpm03@gmail.com",
+        "New File Uploaded",
+        "order",
         {
-          name: fileName,
-          content: body,
+          name: "name",
+          orderId: 1,
         },
-      ]
+        [
+          {
+            name: fileName,
+            content: body,
+          },
+        ]
+      )
     );
 
     return {
