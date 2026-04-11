@@ -617,37 +617,6 @@ const getSeededDetailsOrThrow = () => {
     .map((entry) => entry.parsed.data);
 };
 
-const parseLocalBoundary = (yyyyMmDd: string, boundary: "start" | "end") => {
-  const parts = yyyyMmDd.split("-");
-  if (parts.length !== 3) {
-    return null;
-  }
-
-  const [yearString, monthString, dayString] = parts as [
-    string,
-    string,
-    string,
-  ];
-  const year = Number(yearString);
-  const month = Number(monthString);
-  const day = Number(dayString);
-
-  if (
-    Number.isNaN(year) ||
-    Number.isNaN(month) ||
-    Number.isNaN(day) ||
-    yearString.length !== 4 ||
-    monthString.length !== 2 ||
-    dayString.length !== 2
-  ) {
-    return null;
-  }
-
-  return boundary === "start"
-    ? new Date(year, month - 1, day, 0, 0, 0, 0)
-    : new Date(year, month - 1, day, 23, 59, 59, 999);
-};
-
 type SeededListOrder = {
   id: string;
   type: string;
@@ -655,31 +624,6 @@ type SeededListOrder = {
   buyerName: string;
   buyerEmail: string;
   createdAt: string;
-};
-
-const isWithinDateBoundaries = (
-  createdAt: string,
-  startBoundary: Date | null,
-  endBoundary: Date | null
-) => {
-  if (!(startBoundary || endBoundary)) {
-    return true;
-  }
-
-  const createdAtDate = new Date(createdAt);
-  if (Number.isNaN(createdAtDate.getTime())) {
-    return false;
-  }
-
-  if (startBoundary && createdAtDate < startBoundary) {
-    return false;
-  }
-
-  if (endBoundary && createdAtDate > endBoundary) {
-    return false;
-  }
-
-  return true;
 };
 
 const matchesSearchKeyword = (
@@ -713,12 +657,6 @@ const list = protectedProcedure
     }));
 
     const searchKeyword = input.search?.trim().toLowerCase();
-    const startBoundary = input.startDate
-      ? parseLocalBoundary(input.startDate, "start")
-      : null;
-    const endBoundary = input.endDate
-      ? parseLocalBoundary(input.endDate, "end")
-      : null;
 
     const filtered = seededListOrders.filter((order) => {
       if (input.type && order.type !== input.type) {
@@ -726,12 +664,6 @@ const list = protectedProcedure
       }
 
       if (input.status && order.status !== input.status) {
-        return false;
-      }
-
-      if (
-        !isWithinDateBoundaries(order.createdAt, startBoundary, endBoundary)
-      ) {
         return false;
       }
 

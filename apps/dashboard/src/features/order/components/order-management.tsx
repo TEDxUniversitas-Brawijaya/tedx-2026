@@ -16,17 +16,8 @@ export function OrderManagement() {
   );
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
 
-  const {
-    endDate,
-    limit,
-    page,
-    search,
-    sortBy,
-    sortOrder,
-    startDate,
-    status,
-    type,
-  } = orderListState;
+  const { limit, page, search, sortBy, sortOrder, status, type } =
+    orderListState;
 
   const patchOrderListState = (patch: Partial<OrderListState>) => {
     setOrderListState((prev) => ({
@@ -42,8 +33,6 @@ export function OrderManagement() {
       type: type === "all" ? undefined : type,
       status: status === "all" ? undefined : status,
       search: search.trim() || undefined,
-      startDate: startDate || undefined,
-      endDate: endDate || undefined,
       sortBy,
       sortOrder,
     })

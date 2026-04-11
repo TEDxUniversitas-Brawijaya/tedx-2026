@@ -122,50 +122,6 @@ export function OrderFilters({ state, onPatch }: OrderFiltersProps) {
             </SelectContent>
           </Select>
         </div>
-
-        <div
-          className="grid grid-cols-2 gap-2"
-          id="order-management-date-range"
-        >
-          <div className="space-y-1.5">
-            <label
-              className="font-medium text-muted-foreground text-xs"
-              htmlFor="order-management-date-start"
-            >
-              Start Date
-            </label>
-            <Input
-              id="order-management-date-start"
-              onChange={(event) => {
-                onPatch({
-                  page: 1,
-                  startDate: event.target.value,
-                });
-              }}
-              type="date"
-              value={state.startDate}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <label
-              className="font-medium text-muted-foreground text-xs"
-              htmlFor="order-management-date-end"
-            >
-              End Date
-            </label>
-            <Input
-              id="order-management-date-end"
-              onChange={(event) => {
-                onPatch({
-                  page: 1,
-                  endDate: event.target.value,
-                });
-              }}
-              type="date"
-              value={state.endDate}
-            />
-          </div>
-        </div>
       </div>
 
       <div
