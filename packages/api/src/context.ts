@@ -9,10 +9,7 @@ import {
 } from "@tedx-2026/core";
 import { createDB, createUserQueries, type D1Database } from "@tedx-2026/db";
 import { createBrevo } from "@tedx-2026/email";
-import type {
-  // createKV,
-  KVNamespaceType,
-} from "@tedx-2026/kv";
+import type { KVNamespaceType } from "@tedx-2026/kv";
 import type { LoggerType } from "@tedx-2026/logger";
 import { createR2, type R2BucketType } from "@tedx-2026/storage";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
@@ -51,7 +48,6 @@ export const createContext = async ({
   };
 
   const db = createDB(env.db);
-  // const kv = createKV(env.kv);
   const cdn = createR2(env.cdn);
   const email = createBrevo(env.BREVO_API_KEY, {
     // sandbox: process.env.NODE_ENV !== "production",
@@ -117,7 +113,6 @@ export type Context = {
     file: FileServices;
     email: EmailService;
   };
-  // operations: {};
   waitUntil: (promise: Promise<unknown>) => void;
   session: Session | null;
 };
