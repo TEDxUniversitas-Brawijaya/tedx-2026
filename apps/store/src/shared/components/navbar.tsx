@@ -375,11 +375,7 @@ export const Navbar = () => {
                               className="font-serif-2 text-black text-m lg:text-l"
                               key={item.name}
                             >
-                              <span
-                                className={cn(
-                                  "grid grid-cols-[auto_1fr] items-center after:translate-y-1.25 after:border-black after:border-b-2 after:border-dotted after:content-['']"
-                                )}
-                              >
+                              <span className="grid grid-cols-[auto_1fr] items-center after:translate-y-1.25 after:border-black after:border-b-2 after:border-dotted after:content-['']">
                                 {item.name}
                               </span>
                               <ul className="mt-1 flex list-none flex-col gap-1 pl-4">
@@ -394,9 +390,7 @@ export const Navbar = () => {
                                     >
                                       {isExternal ? (
                                         <Link
-                                          className={cn(
-                                            "grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-1.25 after:border-black after:border-b after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
-                                          )}
+                                          className="grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-1.25 after:border-black after:border-b after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
                                           onClick={closeMenu}
                                           to={child.href as never}
                                         >
@@ -404,9 +398,7 @@ export const Navbar = () => {
                                         </Link>
                                       ) : (
                                         <Link
-                                          className={cn(
-                                            "grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-1.25 after:border-black after:border-b after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
-                                          )}
+                                          className="grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-1.25 after:border-black after:border-b after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
                                           onClick={closeMenu}
                                           to={child.href}
                                         >
@@ -434,9 +426,7 @@ export const Navbar = () => {
                           >
                             {isExternal ? (
                               <Link
-                                className={cn(
-                                  "grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-2.25 after:border-black after:border-b-2 after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
-                                )}
+                                className="grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-2.25 after:border-black after:border-b-2 after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
                                 onClick={closeMenu}
                                 to={item.href as never}
                               >
@@ -444,9 +434,7 @@ export const Navbar = () => {
                               </Link>
                             ) : (
                               <Link
-                                className={cn(
-                                  "grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-2.25 after:border-black after:border-b-2 after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
-                                )}
+                                className="grid grid-cols-[auto_1fr] items-center text-black no-underline transition-colors duration-300 ease-in-out after:translate-y-2.25 after:border-black after:border-b-2 after:border-dotted after:transition-colors after:duration-300 after:ease-in-out after:content-[''] hover:text-red-2 hover:after:border-red-2 focus:text-red-2 focus:outline-none focus:after:border-red-2"
                                 onClick={closeMenu}
                                 to={item.href}
                               >

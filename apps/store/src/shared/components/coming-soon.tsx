@@ -5,23 +5,16 @@ import SmallMirror2 from "@/assets/imgs/small-mirror-2.png";
 import YellowWindow from "@/assets/imgs/yellow-window.png";
 import { Footer } from "./footer";
 import { Navbar } from "./navbar";
-import { cn } from "@tedx-2026/ui/lib/utils";
 
 export const ComingSoon = () => {
   return (
     <>
       <Navbar />
-      <main
-        className={cn(
-          "relative min-h-dvh overflow-hidden bg-red pt-18 md:pt-20"
-        )}
-      >
+      <main className="relative min-h-dvh overflow-hidden bg-red pt-18 md:pt-20">
         <img
           alt=""
           aria-hidden="true"
-          className={cn(
-            "pointer-events-none absolute top-1/2 left-1/2 h-[140dvh] w-dvw -translate-x-1/2 -translate-y-1/2 object-cover object-top opacity-50"
-          )}
+          className="pointer-events-none absolute top-1/2 left-1/2 h-[140dvh] w-dvw -translate-x-1/2 -translate-y-1/2 object-cover object-top opacity-50"
           height={646}
           id="red-brush-stroke"
           src={RedBrushStroke}
@@ -30,35 +23,27 @@ export const ComingSoon = () => {
         <img
           alt=""
           aria-hidden="true"
-          className={cn(
-            "pointer-events-none absolute top-0 left-0 aspect-[1.78/1] h-dvh w-dvw object-cover mix-blend-multiply"
-          )}
+          className="pointer-events-none absolute top-0 left-0 aspect-[1.78/1] h-dvh w-dvw object-cover mix-blend-multiply"
           height={713}
           id="paper-texture-1"
           src={PaperTexture1}
           width={1268}
         />
         <section
-          className={cn(
-            "relative h-[calc(100dvh-72px)] w-full md:h-[calc(100dvh-80px)]"
-          )}
+          className="relative h-[calc(100dvh-72px)] w-full md:h-[calc(100dvh-80px)]"
           id="section-1"
         >
           <div
-            className={cn("relative top-[-10%] h-full w-full")}
+            className="relative top-[-10%] h-full w-full"
             id="window-container"
           >
             <div
-              className={cn(
-                "absolute top-0 left-1/2 h-[60dvh] w-full -translate-x-1/2"
-              )}
+              className="absolute top-0 left-1/2 h-[60dvh] w-full -translate-x-1/2"
               id="yellow-window-group"
             >
               <img
                 alt="Yellow Window"
-                className={cn(
-                  "pointer-events-none absolute top-0 left-1/2 z-1 aspect-[1.13/1] h-[60dvh] w-auto -translate-x-1/2 object-cover object-top"
-                )}
+                className="pointer-events-none absolute top-0 left-1/2 z-1 aspect-[1.13/1] h-[60dvh] w-auto -translate-x-1/2 object-cover object-top"
                 height={735}
                 id="yellow-window"
                 src={YellowWindow}
@@ -66,9 +51,7 @@ export const ComingSoon = () => {
               />
               <img
                 alt="Small Mirror 1"
-                className={cn(
-                  "pointer-events-none absolute top-1/2 left-1/2 aspect-[0.79/1] h-[20dvh] w-auto translate-x-[20%] -translate-y-[30%] object-cover"
-                )}
+                className="pointer-events-none absolute top-1/2 left-1/2 aspect-[0.79/1] h-[20dvh] w-auto translate-x-[20%] -translate-y-[30%] object-cover"
                 height={226}
                 id="small-mirror-1"
                 src={SmallMirror1}
@@ -76,9 +59,7 @@ export const ComingSoon = () => {
               />
               <img
                 alt="Small Mirror 2"
-                className={cn(
-                  "pointer-events-none absolute top-1/2 left-1/2 aspect-[0.79/1] h-[20dvh] w-auto -translate-x-[120%] -translate-y-[70%] object-contain"
-                )}
+                className="pointer-events-none absolute top-1/2 left-1/2 aspect-[0.79/1] h-[20dvh] w-auto -translate-x-[120%] -translate-y-[70%] object-contain"
                 height={265}
                 id="small-mirror-2"
                 src={SmallMirror2}
@@ -88,15 +69,13 @@ export const ComingSoon = () => {
           </div>
 
           <div
-            className={cn(
-              "absolute top-[80%] left-1/2 flex w-[90%] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-6 text-center sm:w-1/2 md:w-3/5 lg:w-2/5"
-            )}
+            className="absolute top-[80%] left-1/2 flex w-[90%] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-6 text-center sm:w-1/2 md:w-3/5 lg:w-2/5"
             id="text-container"
           >
-            <h1 className={cn("font-serif-2 text-white text-xl-2 md:text-xxl")}>
+            <h1 className={"font-serif-2 text-white text-xl-2 md:text-xxl"}>
               Segera Hadir.
             </h1>
-            <p className={cn("font-sans text-m text-white md:text-l")}>
+            <p className={"font-sans text-m text-white md:text-l"}>
               Kami sedang menyiapkan sesuatu yang akan segera bisa kamu jelajahi
             </p>
           </div>

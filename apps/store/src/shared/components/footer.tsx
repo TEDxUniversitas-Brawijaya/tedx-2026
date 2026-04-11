@@ -4,22 +4,17 @@ import Logo from "@/assets/imgs/logo.png";
 import Texture from "@/assets/imgs/paper-texture-1.png";
 import silhouetteOfLightMobile from "@/assets/svgs/silhouette-of-light-mobile.svg";
 import silhouetteOfLight from "@/assets/svgs/silhouette-of-light.svg";
-import { cn } from "@tedx-2026/ui/lib/utils";
 
 export const Footer = () => {
   return (
     <footer
-      className={cn(
-        "relative flex items-center justify-center overflow-hidden bg-[#0f0f0f] text-white"
-      )}
+      className="relative flex items-center justify-center overflow-hidden bg-[#0f0f0f] text-white"
       id="footer"
     >
       <img
         alt=""
         aria-hidden="true"
-        className={cn(
-          "pointer-events-none absolute inset-0 z-5 h-full w-full object-cover mix-blend-multiply"
-        )}
+        className="pointer-events-none absolute inset-0 z-5 h-full w-full object-cover mix-blend-multiply"
         height={713}
         id="footer-texture"
         loading="lazy"
@@ -27,17 +22,13 @@ export const Footer = () => {
         width={1268}
       />
       <div
-        className={cn(
-          "relative flex min-h-125 w-full items-start px-6 pt-[2.2rem] pb-[9.2rem] sm:min-h-62.5 sm:items-center sm:px-[4.7rem] sm:pt-[2.4rem] sm:pb-8 md:min-h-63.75 md:px-[4.8rem]"
-        )}
+        className="relative flex min-h-125 w-full items-start px-6 pt-[2.2rem] pb-[9.2rem] sm:min-h-62.5 sm:items-center sm:px-[4.7rem] sm:pt-[2.4rem] sm:pb-8 md:min-h-63.75 md:px-[4.8rem]"
         id="footer-backdrop"
       >
         <img
           alt=""
           aria-hidden="true"
-          className={cn(
-            "pointer-events-none absolute inset-0 hidden h-full w-full object-cover object-top brightness-[4] contrast-[3.8] md:block"
-          )}
+          className="pointer-events-none absolute inset-0 hidden h-full w-full object-cover object-top brightness-[4] contrast-[3.8] md:block"
           height={350}
           id="footer-light-desktop"
           loading="lazy"
@@ -47,9 +38,7 @@ export const Footer = () => {
         <img
           alt=""
           aria-hidden="true"
-          className={cn(
-            "pointer-events-none absolute inset-0 h-full w-full object-cover object-left brightness-[4] contrast-[3.8] md:hidden"
-          )}
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-left brightness-[4] contrast-[3.8] md:hidden"
           height={550}
           id="footer-light-mobile"
           loading="lazy"
@@ -57,22 +46,18 @@ export const Footer = () => {
           width={393}
         />
         <div
-          className={cn(
-            "relative z-3 mx-[0.45rem] mt-[0.7rem] flex max-w-92.5 flex-col items-start gap-5 text-left sm:mx-0 sm:mt-0 sm:max-w-125 sm:gap-[1.2rem] md:max-w-132.5"
-          )}
+          className="relative z-3 mx-[0.45rem] mt-[0.7rem] flex max-w-92.5 flex-col items-start gap-5 text-left sm:mx-0 sm:mt-0 sm:max-w-125 sm:gap-[1.2rem] md:max-w-132.5"
           id="footer-content"
         >
           <div id="footer-brand">
             <Link
-              className={cn("inline-flex w-fit items-center justify-center")}
+              className="inline-flex w-fit items-center justify-center"
               id="footer-logo-link"
               to="/"
             >
               <img
                 alt="TEDx Universitas Brawijaya logo"
-                className={cn(
-                  "h-auto w-[min(74vw,340px)] max-w-full object-cover object-center sm:w-[min(52vw,290px)] md:h-[clamp(2.1rem,3.3vw,3rem)] md:w-auto"
-                )}
+                className="h-auto w-[min(74vw,340px)] max-w-full object-cover object-center sm:w-[min(52vw,290px)] md:h-[clamp(2.1rem,3.3vw,3rem)] md:w-auto"
                 height={160}
                 id="footer-logo"
                 loading="lazy"
@@ -82,38 +67,22 @@ export const Footer = () => {
             </Link>
           </div>
           <div
-            className={cn(
-              "flex flex-col items-start gap-[0.15rem] font-sans leading-[1.3] opacity-40"
-            )}
+            className="flex flex-col items-start gap-[0.15rem] font-sans leading-[1.3] opacity-40"
             id="footer-copy"
           >
-            <p
-              className={cn(
-                "text-[clamp(1.04rem,4.2vw,1.28rem)] sm:text-[clamp(0.9rem,2.35vw,1rem)]"
-              )}
-            >
+            <p className="text-[clamp(1.04rem,4.2vw,1.28rem)] sm:text-[clamp(0.9rem,2.35vw,1rem)]">
               ©2026. TEDxUniversitasBrawijaya
             </p>
-            <p
-              className={cn(
-                "text-[clamp(1.04rem,4.2vw,1.28rem)] sm:text-[clamp(0.9rem,2.35vw,1rem)]"
-              )}
-            >
+            <p className="text-[clamp(1.04rem,4.2vw,1.28rem)] sm:text-[clamp(0.9rem,2.35vw,1rem)]">
               An independently organized TED-like event under license from TED.
             </p>
           </div>
           <nav aria-label="Social links" id="footer-social">
-            <ul
-              className={cn(
-                "m-0 flex list-none flex-wrap justify-start gap-x-4 gap-y-[0.55rem] p-0"
-              )}
-            >
+            <ul className="m-0 flex list-none flex-wrap justify-start gap-x-4 gap-y-[0.55rem] p-0">
               <li>
                 <Link
                   aria-label="Instagram"
-                  className={cn(
-                    "inline-flex items-center gap-2 p-0 text-[clamp(1.05rem,3.8vw,1.24rem)] text-[color-mix(in_oklch,var(--color-white)_85%,transparent_15%)] no-underline transition-[transform,color,background-color] duration-180 ease-in-out hover:-translate-y-0.5 hover:text-red-2 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-[3px] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:text-[clamp(0.88rem,1.75vw,1rem)] md:text-[clamp(0.78rem,0.95vw,0.92rem)]"
-                  )}
+                  className="inline-flex items-center gap-2 p-0 text-[clamp(1.05rem,3.8vw,1.24rem)] text-[color-mix(in_oklch,var(--color-white)_85%,transparent_15%)] no-underline transition-[transform,color,background-color] duration-180 ease-in-out hover:-translate-y-0.5 hover:text-red-2 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-[3px] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:text-[clamp(0.88rem,1.75vw,1rem)] md:text-[clamp(0.78rem,0.95vw,0.92rem)]"
                   rel="noopener noreferrer"
                   target="_blank"
                   to={
@@ -122,9 +91,7 @@ export const Footer = () => {
                 >
                   <svg
                     aria-hidden="true"
-                    className={cn(
-                      "h-[1.24em] w-[1.24em] shrink-0 sm:h-[1.1em] sm:w-[1.1em]"
-                    )}
+                    className="h-[1.24em] w-[1.24em] shrink-0 sm:h-[1.1em] sm:w-[1.1em]"
                     fill="none"
                     focusable="false"
                     viewBox="0 0 20 20"
@@ -141,16 +108,14 @@ export const Footer = () => {
               <li>
                 <Link
                   aria-label="Twitter"
-                  className={cn(
-                    "inline-flex items-center gap-2 p-0 text-[clamp(1.05rem,3.8vw,1.24rem)] text-[color-mix(in_oklch,var(--color-white)_85%,transparent_15%)] no-underline transition-[transform,color,background-color] duration-180 ease-in-out hover:-translate-y-0.5 hover:text-red-2 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-[3px] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:text-[clamp(0.88rem,1.75vw,1rem)] md:text-[clamp(0.78rem,0.95vw,0.92rem)]"
-                  )}
+                  className="inline-flex items-center gap-2 p-0 text-[clamp(1.05rem,3.8vw,1.24rem)] text-[color-mix(in_oklch,var(--color-white)_85%,transparent_15%)] no-underline transition-[transform,color,background-color] duration-180 ease-in-out hover:-translate-y-0.5 hover:text-red-2 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-[3px] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:text-[clamp(0.88rem,1.75vw,1rem)] md:text-[clamp(0.78rem,0.95vw,0.92rem)]"
                   rel="noopener noreferrer"
                   target="_blank"
                   to={"https://x.com/TEDxBrawijaya" as never}
                 >
                   <svg
                     aria-hidden="true"
-                    className={cn("h-[0.88em] w-[0.88em] shrink-0")}
+                    className="h-[0.88em] w-[0.88em] shrink-0"
                     fill="none"
                     focusable="false"
                     viewBox="0 0 16 16"
@@ -167,9 +132,7 @@ export const Footer = () => {
               <li>
                 <Link
                   aria-label="TikTok"
-                  className={cn(
-                    "inline-flex items-center gap-2 p-0 text-[clamp(1.05rem,3.8vw,1.24rem)] text-[color-mix(in_oklch,var(--color-white)_85%,transparent_15%)] no-underline transition-[transform,color,background-color] duration-180 ease-in-out hover:-translate-y-0.5 hover:text-red-2 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-[3px] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:text-[clamp(0.88rem,1.75vw,1rem)] md:text-[clamp(0.78rem,0.95vw,0.92rem)]"
-                  )}
+                  className="inline-flex items-center gap-2 p-0 text-[clamp(1.05rem,3.8vw,1.24rem)] text-[color-mix(in_oklch,var(--color-white)_85%,transparent_15%)] no-underline transition-[transform,color,background-color] duration-180 ease-in-out hover:-translate-y-0.5 hover:text-red-2 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-[3px] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:text-[clamp(0.88rem,1.75vw,1rem)] md:text-[clamp(0.78rem,0.95vw,0.92rem)]"
                   rel="noopener noreferrer"
                   target="_blank"
                   to={
@@ -178,9 +141,7 @@ export const Footer = () => {
                 >
                   <svg
                     aria-hidden="true"
-                    className={cn(
-                      "h-[1.24em] w-[1.24em] shrink-0 sm:h-[1.1em] sm:w-[1.1em]"
-                    )}
+                    className="h-[1.24em] w-[1.24em] shrink-0 sm:h-[1.1em] sm:w-[1.1em]"
                     fill="none"
                     focusable="false"
                     viewBox="0 0 22 22"
@@ -198,15 +159,13 @@ export const Footer = () => {
           </nav>
         </div>
         <div
-          className={cn("absolute inset-0 flex h-full w-full justify-end")}
+          className="absolute inset-0 flex h-full w-full justify-end"
           id="footer-decoration-container"
         >
           <img
             alt=""
             aria-hidden="true"
-            className={cn(
-              "pointer-events-none absolute right-[-16%] bottom-[-0.4rem] z-2 h-auto w-[166%] max-w-none select-none sm:right-[-5%] sm:w-[95%] md:right-0 md:w-[30%]"
-            )}
+            className="pointer-events-none absolute right-[-16%] bottom-[-0.4rem] z-2 h-auto w-[166%] max-w-none select-none sm:right-[-5%] sm:w-[95%] md:right-0 md:w-[30%]"
             height={308}
             id="footer-decoration-image"
             loading="lazy"
@@ -214,9 +173,7 @@ export const Footer = () => {
             width={1722}
           />
           <p
-            className={cn(
-              "absolute right-[-6%] bottom-[-10%] z-3 translate-x-[6%] translate-y-[10%] font-black font-sans text-[#a01a1a] text-[14rem] before:absolute before:right-[4%] before:-z-1 before:h-full before:w-full before:-translate-x-[4%] before:text-red-2 before:content-['X'] sm:right-[2%] sm:bottom-[-6%] sm:-translate-x-[2%] sm:translate-y-[6%] md:text-[12rem]"
-            )}
+            className="absolute right-[-6%] bottom-[-10%] z-3 translate-x-[6%] translate-y-[10%] font-black font-sans text-[#a01a1a] text-[14rem] before:absolute before:right-[4%] before:-z-1 before:h-full before:w-full before:-translate-x-[4%] before:text-red-2 before:content-['X'] sm:right-[2%] sm:bottom-[-6%] sm:-translate-x-[2%] sm:translate-y-[6%] md:text-[12rem]"
             id="footer-decoration-text"
           >
             X
