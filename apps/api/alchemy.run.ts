@@ -66,6 +66,9 @@ export const worker = await Worker("api", {
     AUTH_SECRET: alchemy.secret(process.env.AUTH_SECRET),
     GOOGLE_CLIENT_ID: alchemy.secret(process.env.GOOGLE_CLIENT_ID),
     GOOGLE_CLIENT_SECRET: alchemy.secret(process.env.GOOGLE_CLIENT_SECRET),
+    BREVO_API_KEY: alchemy.secret(process.env.BREVO_API_KEY),
+    SENDER_NAME: alchemy.secret(process.env.SENDER_NAME),
+    SENDER_EMAIL: alchemy.secret(process.env.SENDER_EMAIL),
     SUPERADMIN_EMAILS: alchemy.secret(process.env.SUPERADMIN_EMAILS),
   },
   bundle: {

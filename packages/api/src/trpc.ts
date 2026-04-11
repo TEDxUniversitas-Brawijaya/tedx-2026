@@ -30,7 +30,11 @@ const baseProcedure = t.procedure.use(async (opts) => {
     type,
     durationMs,
     status: "error",
-    error,
+    error: {
+      code: error.code,
+      message: error.message,
+      name: error.name,
+    },
   });
 
   if (error.cause instanceof AppError) {
@@ -42,7 +46,11 @@ const baseProcedure = t.procedure.use(async (opts) => {
     });
   }
 
-  throw error;
+  throw new TRPCError({
+    code: "INTERNAL_SERVER_ERROR",
+    message: "An unexpected error occurred",
+    cause: error,
+  });
 });
 
 export const createTRPCRouter = t.router;
