@@ -2,9 +2,7 @@ import { z } from "zod";
 import {
   bundleItemSchema,
   buyerInfoSchema,
-  captchaTokenSchema,
   idempotencyKeySchema,
-  imageFileSchema,
   isoDateStringSchema,
   orderIdSchema,
   orderStatusSchema,
@@ -40,9 +38,10 @@ export const createMerchOrderInputSchema = buyerInfoSchema.extend({
       variantIds: z.array(z.string()),
     })
   ),
-  captchaToken: captchaTokenSchema,
   idempotencyKey: idempotencyKeySchema,
-  paymentProof: imageFileSchema.optional(),
+  // TODO: Add CAPTCHA and payment proof fields when implementing bot protection and manual payment verification
+  // captchaToken: captchaTokenSchema,
+  // paymentProof: imageFileSchema.optional(),
 });
 
 export const createMerchOrderOutputSchema = z.object({
