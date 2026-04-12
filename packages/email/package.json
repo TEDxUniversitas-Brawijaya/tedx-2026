@@ -12,7 +12,8 @@
     }
   },
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "generate": "bun run scripts/generate-html.ts"
   },
   "devDependencies": {
     "@tedx-2026/tsconfig": "workspace:*",

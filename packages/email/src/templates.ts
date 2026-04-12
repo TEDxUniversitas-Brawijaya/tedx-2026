@@ -1,45 +1,25 @@
+import { detailMerchOrderTable, detailTickerOrderTable } from "./components";
 import { createEmailLayout } from "./layout";
-import {
-  header,
-  footer,
-  heading,
-  paragraph,
-  button,
-  spacer,
-  section,
-  highlightBox,
-} from "./components";
 
-/**
- * Template parameter types
- * Add new template types here with their required parameters
- */
 export type TemplateMap = {
-  welcome: {
-    recipientName: string;
-    ctaUrl?: string;
-  };
-  greeting: {
+  merchOrder: {
     name: string;
+    items: {
+      name: string;
+      quantity: number;
+      size?: string;
+      price: number;
+    }[];
   };
-  order: {
+  ticketOrder: {
     name: string;
-    orderId: number;
-    orderTotal?: string;
-    orderDate?: string;
-    trackingUrl?: string;
-  };
-  passwordReset: {
-    name: string;
-    resetUrl: string;
-    expiryHours?: number;
-  };
-  eventReminder: {
-    name: string;
-    eventName: string;
-    eventDate: string;
-    eventLocation: string;
-    eventUrl?: string;
+    ticket: {
+      name: string;
+      quantity: number;
+      price: number;
+      whatsappGroupUrl: string;
+    };
+    refundUrl: string;
   };
 };
 
@@ -49,195 +29,139 @@ type Renderers = {
   [K in TemplatesKey]: (params: TemplateMap[K]) => string;
 };
 
-/**
- * Template renderers
- * Each renderer returns the complete HTML email
- */
 const renderers: Renderers = {
-  welcome: (params) => {
-    const { recipientName, ctaUrl } = params;
+  merchOrder: (params) => {
+    const { name, items } = params;
 
     const content = `
-      ${heading({ text: `Welcome to TEDx 2026, ${recipientName}!`, level: 1 })}
-      ${paragraph({
-        text: "We're thrilled to have you join our community of innovators, thinkers, and change-makers.",
-      })}
-      ${paragraph({
-        text: "TEDx 2026 brings together inspiring speakers, thought-provoking ideas, and meaningful connections. Get ready for an unforgettable experience!",
-      })}
-      ${section(
-        highlightBox(
-          `${paragraph({
-            text: "<strong>What to expect:</strong>",
-            muted: false,
-          })}
-          ${paragraph({ text: "• Inspiring talks from world-class speakers", muted: false })}
-          ${paragraph({ text: "• Networking opportunities with like-minded individuals", muted: false })}
-          ${paragraph({ text: "• Exclusive access to TEDx community events", muted: false })}`
-        ),
-        "24px 0"
-      )}
-      ${ctaUrl ? button({ href: ctaUrl, text: "Explore the Event", variant: "primary" }) : ""}
-      ${spacer(24)}
-      ${paragraph({
-        text: "Stay tuned for updates and announcements!",
-        muted: true,
-      })}
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td>
+            <span>Halo ${name}!</span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitasBrawijaya 2026!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Pembayaran kamu telah berhasil diproses. Saat ini, pesanan kamu sedang masuk dalam tahap pemrosesan. Mohon kesediaannya menunggu beberapa waktu sampai merchandise-mu siap untuk diambil. Jika ada pertanyaan mengenai detail pesanan atau pengambilan, jangan ragu untuk menghubungi contact person yang tertera pada email ini.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih!
+            </span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
+
+      ${detailMerchOrderTable(items)}
     `;
 
     return createEmailLayout(content, {
-      preheader: `Welcome to TEDx 2026, ${recipientName}!`,
-      header: header({ title: "TEDx 2026" }),
-      footer: footer({
-        companyName: "TEDx 2026",
-        socialLinks: {
-          facebook: "https://facebook.com/tedx",
-          twitter: "https://twitter.com/tedx",
-          instagram: "https://instagram.com/tedx",
-        },
-      }),
+      preheader: "Terima kasih atas pesanan merchandise Anda!",
     });
   },
-
-  greeting: (params) => {
-    const { name } = params;
+  ticketOrder: (params) => {
+    const { name, ticket, refundUrl } = params;
 
     const content = `
-      ${heading({ text: `Hi ${name}!`, level: 1 })}
-      ${paragraph({
-        text: "Hope you're having a great day. We wanted to reach out and say hello!",
-      })}
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td>
+            <span>Halo ${name}!</span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitasBrawijaya 2026!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Pembayaran kamu telah berhasil diproses. Tiket ini adalah pintu masuk-mu menuju ruang tempat berbagai kisah dari perjalanan hidup dipertemukan. Pastikan kamu menyimpan tiket ini dengan aman dan membawanya saat hari penukaran tiket dan/atau Hari-H acara diselenggarakan.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kami sangat menantikan kehadiran dan cerita yang akan kamu bawa. Siapkan dirimu untuk saling mendengar dan membangun makna baru di rumah kita nanti!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr><td style="border-top: 1px solid #ccc;"></td></tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Gabung grup WhatsApp peserta untuk info terbaru, jadwal, dan pengumuman acara mengenai [nama tiket], [day ticket]!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="4"></td></tr>
+        <tr>
+          <td align="left">
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td bgcolor="#0E5454" style="border-radius: 8px;">
+                  <a href="${ticket.whatsappGroupUrl}" target="_blank" style="display: inline-block; padding: 16px 24px; color: #ffffff; text-decoration: none;">
+                    Gabung Grup WhatsApp
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr><td style="border-top: 1px solid #ccc;"></td></tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Apabila kamu memiliki kendala dan ingin mengajukan pengembalian dana (refund) tiket, silakan kunjungi laman refund <a href="${refundUrl}" target="_blank" style="color: #DC2625; text-decoration: none; font-weight: 700;">disini</a>.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>Terima kasih!</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
+
+      ${detailTickerOrderTable(ticket)}
     `;
 
     return createEmailLayout(content, {
-      preheader: `Hi ${name}!`,
-      header: header({ title: "TEDx 2026" }),
-      footer: footer({
-        companyName: "TEDx 2026",
-      }),
-    });
-  },
-
-  order: (params) => {
-    const { name, orderId, orderTotal, orderDate, trackingUrl } = params;
-
-    const content = `
-      ${heading({ text: `Order Confirmation #${orderId}`, level: 1 })}
-      ${paragraph({
-        text: `Hi ${name},`,
-      })}
-      ${paragraph({
-        text: "Thank you for your order! We've received your purchase and are processing it now.",
-      })}
-      ${section(
-        highlightBox(
-          `${heading({ text: "Order Details", level: 3 })}
-          ${paragraph({ text: `<strong>Order Number:</strong> #${orderId}`, muted: false })}
-          ${orderDate ? paragraph({ text: `<strong>Order Date:</strong> ${orderDate}`, muted: false }) : ""}
-          ${orderTotal ? paragraph({ text: `<strong>Total:</strong> ${orderTotal}`, muted: false }) : ""}`,
-          { backgroundColor: "#F5F5F5", borderColor: "#6B1414" }
-        ),
-        "24px 0"
-      )}
-      ${trackingUrl ? button({ href: trackingUrl, text: "Track Your Order", variant: "primary" }) : ""}
-      ${spacer(24)}
-      ${paragraph({
-        text: "If you have any questions about your order, please don't hesitate to contact us.",
-        muted: true,
-      })}
-    `;
-
-    return createEmailLayout(content, {
-      preheader: `Order #${orderId} confirmed`,
-      header: header({ title: "TEDx 2026" }),
-      footer: footer({
-        companyName: "TEDx 2026",
-        unsubscribeUrl: "https://example.com/unsubscribe",
-      }),
-    });
-  },
-
-  passwordReset: (params) => {
-    const { name, resetUrl, expiryHours = 24 } = params;
-
-    const content = `
-      ${heading({ text: "Reset Your Password", level: 1 })}
-      ${paragraph({
-        text: `Hi ${name},`,
-      })}
-      ${paragraph({
-        text: "We received a request to reset your password. Click the button below to create a new password.",
-      })}
-      ${spacer(24)}
-      ${button({ href: resetUrl, text: "Reset Password", variant: "primary" })}
-      ${spacer(24)}
-      ${section(
-        highlightBox(
-          paragraph({
-            text: `This link will expire in ${expiryHours} hours. If you didn't request this password reset, you can safely ignore this email.`,
-            muted: false,
-          })
-        ),
-        "0"
-      )}
-    `;
-
-    return createEmailLayout(content, {
-      preheader: "Reset your password",
-      header: header({ title: "TEDx 2026" }),
-      footer: footer({
-        companyName: "TEDx 2026",
-      }),
-    });
-  },
-
-  eventReminder: (params) => {
-    const { name, eventName, eventDate, eventLocation, eventUrl } = params;
-
-    const content = `
-      ${heading({ text: `Don't Forget: ${eventName}`, level: 1 })}
-      ${paragraph({
-        text: `Hi ${name},`,
-      })}
-      ${paragraph({
-        text: `This is a friendly reminder about the upcoming ${eventName}. We can't wait to see you there!`,
-      })}
-      ${section(
-        highlightBox(
-          `${heading({ text: "Event Details", level: 3 })}
-          ${paragraph({ text: `<strong>Event:</strong> ${eventName}`, muted: false })}
-          ${paragraph({ text: `<strong>Date:</strong> ${eventDate}`, muted: false })}
-          ${paragraph({ text: `<strong>Location:</strong> ${eventLocation}`, muted: false })}`,
-          { backgroundColor: "#FFF9F0", borderColor: "#D9C366" }
-        ),
-        "24px 0"
-      )}
-      ${eventUrl ? button({ href: eventUrl, text: "View Event Details", variant: "primary" }) : ""}
-      ${spacer(24)}
-      ${paragraph({
-        text: "See you soon!",
-        muted: true,
-      })}
-    `;
-
-    return createEmailLayout(content, {
-      preheader: `Reminder: ${eventName} on ${eventDate}`,
-      header: header({ title: "TEDx 2026" }),
-      footer: footer({
-        companyName: "TEDx 2026",
-        socialLinks: {
-          facebook: "https://facebook.com/tedx",
-          twitter: "https://twitter.com/tedx",
-          instagram: "https://instagram.com/tedx",
-        },
-      }),
+      preheader: "Terima kasih atas pesanan tiket Anda!",
     });
   },
 };
 
-/**
- * Creates a complete email template with layout and styling
- */
 export const createTemplate = <K extends TemplatesKey>(
   type: K,
   params: TemplateMap[K]
