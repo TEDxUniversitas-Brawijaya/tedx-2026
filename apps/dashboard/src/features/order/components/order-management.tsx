@@ -1,74 +1,44 @@
-import { trpc } from "@/shared/lib/trpc";
-import { OrderDetailDialog } from "./order-detail-dialog";
 import { OrderFilters } from "./order-filters";
-import {
-  initialOrderListState,
-  type OrderListState,
-} from "../types/order.types";
+import type { ListOrder, OrderListState } from "../types/order";
 import { OrdersTable } from "./orders-table";
 import { PaginationControls } from "./pagination-controls";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import type { ReactNode } from "react";
 
-export function OrderManagement() {
-  const [orderListState, setOrderListState] = useState<OrderListState>(
-    initialOrderListState
-  );
-  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+type OrderManagementProps = {
+  currentPage: number;
+  onNext: () => void;
+  onPatch: (patch: Partial<OrderListState>) => void;
+  onPrev: () => void;
+  orders: ListOrder[];
+  renderState?: ReactNode;
+  state: OrderListState;
+  totalPages: number;
+};
 
-  const { limit, page, search, sortBy, sortOrder, status, type } =
-    orderListState;
-
-  const patchOrderListState = (patch: Partial<OrderListState>) => {
-    setOrderListState((prev) => ({
-      ...prev,
-      ...patch,
-    }));
-  };
-
-  const listQuery = useQuery(
-    trpc.admin.order.list.queryOptions({
-      page,
-      limit,
-      type: type === "all" ? undefined : type,
-      status: status === "all" ? undefined : status,
-      search: search.trim() || undefined,
-      sortBy,
-      sortOrder,
-    })
-  );
-
-  const filteredOrders = listQuery.data?.orders ?? [];
-
-  const totalPages = listQuery.data?.pagination.totalPages ?? 1;
+export function OrderManagement({
+  currentPage,
+  onNext,
+  onPatch,
+  onPrev,
+  orders,
+  renderState,
+  state,
+  totalPages,
+}: OrderManagementProps) {
+  const { page } = state;
 
   return (
     <div className="space-y-4" id="order-management">
-      <OrderFilters onPatch={patchOrderListState} state={orderListState} />
+      <OrderFilters onPatch={onPatch} state={state} />
 
-      <OrdersTable
-        isLoading={listQuery.isLoading}
-        onOpenDetail={setSelectedOrderId}
-        orders={filteredOrders}
-      />
+      {renderState ?? <OrdersTable orders={orders} />}
 
       <PaginationControls
-        currentPage={listQuery.data?.pagination.page ?? page}
-        onNext={() =>
-          patchOrderListState({ page: Math.min(totalPages, page + 1) })
-        }
-        onPrev={() => patchOrderListState({ page: Math.max(1, page - 1) })}
+        currentPage={currentPage}
+        onNext={onNext}
+        onPrev={onPrev}
         page={page}
         totalPages={totalPages}
-      />
-
-      <OrderDetailDialog
-        onOpenChange={(open) => {
-          if (!open) {
-            setSelectedOrderId(null);
-          }
-        }}
-        selectedOrderId={selectedOrderId}
       />
     </div>
   );

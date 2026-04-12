@@ -1,11 +1,11 @@
-import type { ListOrder } from "../types/order.types";
+import type { ListOrder } from "../types/order";
+import { OrderDetailDialogContainer } from "../containers/order-detail-dialog-container";
 import {
   formatCurrency,
   formatDate,
   statusVariant,
-} from "./order-management.utils";
+} from "../utils/order-management.utils";
 import { Badge } from "@tedx-2026/ui/components/badge";
-import { Button } from "@tedx-2026/ui/components/button";
 import {
   Table,
   TableBody,
@@ -16,16 +16,10 @@ import {
 } from "@tedx-2026/ui/components/table";
 
 type OrdersTableProps = {
-  isLoading: boolean;
-  onOpenDetail: (orderId: string) => void;
   orders: ListOrder[];
 };
 
-export function OrdersTable({
-  isLoading,
-  onOpenDetail,
-  orders,
-}: OrdersTableProps) {
+export function OrdersTable({ orders }: OrdersTableProps) {
   return (
     <div className="rounded-xl border" id="order-management-table-wrapper">
       <Table>
@@ -42,15 +36,7 @@ export function OrdersTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {isLoading && (
-            <TableRow>
-              <TableCell className="h-16 text-center" colSpan={8}>
-                Loading orders...
-              </TableCell>
-            </TableRow>
-          )}
-
-          {!isLoading && orders.length === 0 && (
+          {orders.length === 0 && (
             <TableRow>
               <TableCell className="h-16 text-center" colSpan={8}>
                 No orders found.
@@ -82,13 +68,7 @@ export function OrdersTable({
               <TableCell>{formatDate(order.createdAt)}</TableCell>
               <TableCell>{formatDate(order.paidAt)}</TableCell>
               <TableCell className="text-right">
-                <Button
-                  onClick={() => onOpenDetail(order.id)}
-                  size="sm"
-                  variant="outline"
-                >
-                  Detail
-                </Button>
+                <OrderDetailDialogContainer orderId={order.id} />
               </TableCell>
             </TableRow>
           ))}

@@ -1,8 +1,4 @@
-import type {
-  OrderListState,
-  OrderStatus,
-  OrderType,
-} from "../types/order.types";
+import type { OrderListState, OrderStatus, OrderType } from "../types/order";
 import { IconSearch } from "@tabler/icons-react";
 import { Input } from "@tedx-2026/ui/components/input";
 import {

@@ -53,8 +53,6 @@ export type OrderListState = {
   sortOrder: "asc" | "desc";
   page: number;
   limit: number;
-  startDate: string;
-  endDate: string;
 };
 
 export const initialOrderListState: OrderListState = {
@@ -65,6 +63,4 @@ export const initialOrderListState: OrderListState = {
   sortOrder: "desc",
   page: 1,
   limit: 10,
-  startDate: "",
-  endDate: "",
 };

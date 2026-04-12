@@ -1,5 +1,9 @@
-import type { OrderDetail } from "../types/order.types";
-import { formatCurrency, formatDate } from "./order-management.utils";
+import type { OrderDetail } from "../types/order";
+import {
+  formatCurrency,
+  formatDate,
+  statusVariant,
+} from "../utils/order-management.utils";
 import {
   Table,
   TableBody,
@@ -9,6 +13,7 @@ import {
   TableRow,
 } from "@tedx-2026/ui/components/table";
 
+import { Badge } from "@tedx-2026/ui/components/badge";
 type OrderDetailContentProps = {
   order: OrderDetail;
 };
@@ -16,6 +21,50 @@ type OrderDetailContentProps = {
 export function OrderDetailContent({ order }: OrderDetailContentProps) {
   return (
     <div className="space-y-4" id="order-detail-content">
+      <div
+        className="grid gap-2 rounded-lg border p-4 md:grid-cols-2"
+        id="order-detail-payment-info"
+      >
+        <p id="order-detail-payment-method">
+          <span className="font-medium" id="order-detail-payment-method-label">
+            Payment Method:
+          </span>{" "}
+          {order.paymentMethod ?? "-"}
+        </p>
+        <p id="order-detail-status">
+          <span className="font-medium" id="order-detail-status-label">
+            Status:
+          </span>{" "}
+          <Badge variant={statusVariant(order.status)}>{order.status}</Badge>
+        </p>
+        <p id="order-detail-midtrans-order-id">
+          <span
+            className="font-medium"
+            id="order-detail-midtrans-order-id-label"
+          >
+            Midtrans Order ID:
+          </span>{" "}
+          {order.midtransOrderId ?? "-"}
+        </p>
+        <p id="order-detail-paid-at">
+          <span className="font-medium" id="order-detail-paid-at-label">
+            Paid:
+          </span>{" "}
+          {formatDate(order.paidAt)}
+        </p>
+        <p id="order-detail-created-at">
+          <span className="font-medium" id="order-detail-created-at-label">
+            Created:
+          </span>{" "}
+          {formatDate(order.createdAt)}
+        </p>
+        <p id="order-detail-expires-at">
+          <span className="font-medium" id="order-detail-expires-at-label">
+            Expires:
+          </span>{" "}
+          {formatDate(order.expiresAt)}
+        </p>
+      </div>
       <div
         className="grid gap-2 rounded-lg border p-4 md:grid-cols-2"
         id="order-detail-buyer-info"
@@ -85,51 +134,6 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
             ))}
           </TableBody>
         </Table>
-      </div>
-
-      <div
-        className="grid gap-2 rounded-lg border p-4 md:grid-cols-2"
-        id="order-detail-payment-info"
-      >
-        <p id="order-detail-payment-method">
-          <span className="font-medium" id="order-detail-payment-method-label">
-            Payment Method:
-          </span>{" "}
-          {order.paymentMethod ?? "-"}
-        </p>
-        <p id="order-detail-midtrans-order-id">
-          <span
-            className="font-medium"
-            id="order-detail-midtrans-order-id-label"
-          >
-            Midtrans Order ID:
-          </span>{" "}
-          {order.midtransOrderId ?? "-"}
-        </p>
-        <p id="order-detail-created-at">
-          <span className="font-medium" id="order-detail-created-at-label">
-            Created:
-          </span>{" "}
-          {formatDate(order.createdAt)}
-        </p>
-        <p id="order-detail-paid-at">
-          <span className="font-medium" id="order-detail-paid-at-label">
-            Paid:
-          </span>{" "}
-          {formatDate(order.paidAt)}
-        </p>
-        <p id="order-detail-expires-at">
-          <span className="font-medium" id="order-detail-expires-at-label">
-            Expires:
-          </span>{" "}
-          {formatDate(order.expiresAt)}
-        </p>
-        <p id="order-detail-status">
-          <span className="font-medium" id="order-detail-status-label">
-            Status:
-          </span>{" "}
-          {order.status}
-        </p>
       </div>
     </div>
   );

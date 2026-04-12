@@ -1,4 +1,4 @@
-import { OrderManagement } from "@/features/order/components/order-management";
+import { OrderManagementContainer } from "@/features/order/containers/order-management-container";
 import { canAccess, RESOURCES } from "@/shared/lib/permissions";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
@@ -22,7 +22,7 @@ function RouteComponent() {
       <div className="flex items-center justify-between">
         <h1 className="font-semibold text-lg md:text-xl">Order Management</h1>
       </div>
-      <OrderManagement />
+      <OrderManagementContainer />
     </div>
   );
 }
