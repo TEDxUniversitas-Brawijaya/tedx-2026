@@ -44,14 +44,8 @@ export const MerchPageContainer = () => {
     getViewportAnchorSnapshot,
     getViewportAnchorServerSnapshot
   );
-  const {
-    scrollRef,
-    activeIndex,
-    handleScroll,
-    scrollPrev,
-    scrollNext,
-    scrollToIndex,
-  } = useCategoryScroll();
+  const { scrollRef, activeIndex, handleScroll, scrollPrev, scrollNext } =
+    useCategoryScroll();
 
   const showFloatingCheckout = (() => {
     if (typeof window === "undefined") {
@@ -84,7 +78,6 @@ export const MerchPageContainer = () => {
           categories={CATEGORIES}
           logo={Logo}
           loopCategories={LOOP_CATEGORIES}
-          onCategoryClick={scrollToIndex}
           onNext={scrollNext}
           onPrev={scrollPrev}
           onScroll={handleScroll}

@@ -9,7 +9,6 @@ const CategorySection = ({
   categories,
   logo,
   loopCategories,
-  onCategoryClick,
   onNext,
   onPrev,
   onScroll,
@@ -39,11 +38,7 @@ const CategorySection = ({
         </div>
       </div>
 
-      <BottomNav
-        activeIndex={activeIndex}
-        categories={categories}
-        onCategoryClick={onCategoryClick}
-      />
+      <BottomNav activeIndex={activeIndex} categories={categories} />
     </section>
   );
 };

@@ -66,7 +66,6 @@ export type CategorySectionViewProps = {
   categories: CategoryNavItem[];
   logo: string;
   loopCategories: CategoryNavItem[];
-  onCategoryClick: (index: number) => void;
   onNext: () => void;
   onPrev: () => void;
   onScroll: UIEventHandler<HTMLDivElement>;
