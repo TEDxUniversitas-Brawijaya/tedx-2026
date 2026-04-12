@@ -1,5 +1,5 @@
 import { useForm } from "@tanstack/react-form";
-import { checkoutSchema, type CheckoutFormData } from "../types/types";
+import { checkoutSchema, type CheckoutFormData } from "../types/checkout";
 
 export const useCheckoutForm = (onSubmit: () => void) =>
   useForm({

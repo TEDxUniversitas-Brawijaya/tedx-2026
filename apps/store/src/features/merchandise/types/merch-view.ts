@@ -1,7 +1,7 @@
 import type { FormEvent, ReactNode, RefObject, UIEventHandler } from "react";
 import type { CartItem } from "./cart";
 import type { BundleItem, Product } from "./product";
-import type { CheckoutStep } from "./types";
+import type { CheckoutStep } from "./checkout";
 
 export const REGULAR_MERCH_CATEGORIES = [
   "t-shirt",
