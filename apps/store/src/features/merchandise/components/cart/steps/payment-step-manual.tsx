@@ -1,34 +1,24 @@
-import { useId, useState } from "react";
-import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { Button } from "@tedx-2026/ui/components/button";
-import { useOrderStatusMutation } from "@/features/merchandise/hooks/use-order-status-mutation";
-import { useCartStore } from "@/features/merchandise/store/cart-store";
-
-type PaymentStepProps = {
-  onNext: () => void;
-};
+import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
+import { formatIdrCurrency } from "../../../lib/order-management-utils";
+import type { PaymentManualStepViewProps } from "../../../types/order-step";
 
 const manualPaymentContentClassName =
   "mt-1 min-h-0 flex-1 space-y-2 overflow-y-auto pr-1 pb-3 sm:space-y-2.5 sm:pr-2 sm:pb-4 [scrollbar-color:rgba(224,224,224,0.35)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/30 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/45";
 
-export function PaymentStepManual({ onNext }: PaymentStepProps) {
-  const { orderId, orderPayment, orderTotalPrice, setStep } = useCartStore();
-  const fileInputId = useId();
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-  const statusMutation = useOrderStatusMutation({
-    onOrderSynced: onNext,
-  });
-
-  const uploadUrl =
-    orderPayment && "uploadUrl" in orderPayment ? orderPayment.uploadUrl : null;
-
-  const handleOpenUploadLink = () => {
-    if (uploadUrl && selectedFile) {
-      window.open(uploadUrl, "_blank", "noopener,noreferrer");
-    }
-  };
-
+export function PaymentStepManual({
+  canUploadProof,
+  fileInputId,
+  isCheckingStatus,
+  onBack,
+  onCheckStatus,
+  onFileChange,
+  onUploadProof,
+  orderId,
+  selectedFileName,
+  totalPrice,
+  uploadUrl,
+}: PaymentManualStepViewProps) {
   return (
     <div className="flex max-h-[80vh] min-h-0 flex-col overflow-hidden font-sans-2">
       <DialogHeader>
@@ -41,10 +31,7 @@ export function PaymentStepManual({ onNext }: PaymentStepProps) {
         <div className="flex w-full items-center justify-between border-gray-2/40 border-b pb-2">
           <span className="font-sans-2 text-gray-2 text-sm">Total</span>
           <span className="font-sans-2 text-base text-white sm:text-lg">
-            {orderTotalPrice.toLocaleString("id-ID", {
-              style: "currency",
-              currency: "IDR",
-            })}
+            {formatIdrCurrency(totalPrice)}
           </span>
         </div>
         <div className="flex w-full items-center justify-between border-gray-2/40 border-b pb-2">
@@ -103,7 +90,7 @@ export function PaymentStepManual({ onNext }: PaymentStepProps) {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {selectedFile?.name ?? "Belum ada file"}
+                  {selectedFileName ?? "Belum ada file"}
                 </span>
               </div>
 
@@ -111,10 +98,7 @@ export function PaymentStepManual({ onNext }: PaymentStepProps) {
                 accept="image/*,.pdf"
                 className="sr-only"
                 id={fileInputId}
-                onChange={(event) => {
-                  const file = event.target.files?.[0] ?? null;
-                  setSelectedFile(file);
-                }}
+                onChange={onFileChange}
                 type="file"
               />
             </div>
@@ -122,7 +106,7 @@ export function PaymentStepManual({ onNext }: PaymentStepProps) {
             <div className="flex gap-2 sm:gap-3">
               <Button
                 className="w-2/5"
-                onClick={() => setStep("summary")}
+                onClick={onBack}
                 size="checkout"
                 variant="secondary"
               >
@@ -131,8 +115,8 @@ export function PaymentStepManual({ onNext }: PaymentStepProps) {
 
               <Button
                 className="w-3/5"
-                disabled={!selectedFile}
-                onClick={handleOpenUploadLink}
+                disabled={!canUploadProof}
+                onClick={onUploadProof}
                 size="checkout"
                 type="button"
                 variant="primary"
@@ -144,14 +128,12 @@ export function PaymentStepManual({ onNext }: PaymentStepProps) {
         ) : (
           <Button
             className="w-full"
-            disabled={!orderId || statusMutation.isPending}
-            onClick={() => statusMutation.mutate()}
+            disabled={!orderId || isCheckingStatus}
+            onClick={onCheckStatus}
             size="checkout"
             variant="primary"
           >
-            {statusMutation.isPending
-              ? "Memeriksa..."
-              : "Cek Status Pembayaran"}
+            {isCheckingStatus ? "Memeriksa..." : "Cek Status Pembayaran"}
           </Button>
         )}
       </div>

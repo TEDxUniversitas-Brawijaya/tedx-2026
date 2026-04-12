@@ -1,93 +1,22 @@
-import {
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@tedx-2026/ui/components/dialog";
+import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { Button } from "@tedx-2026/ui/components/button";
 import { MinusIcon, PlusIcon, ChevronDownIcon } from "lucide-react";
-import { useCartStore } from "@/features/merchandise/store/cart-store";
+import {
+  formatIdrCurrency,
+  getBundleItemSubtitle,
+  getBundleSelectionLabel,
+} from "../../../lib/order-management-utils";
+import type { CartStepViewProps } from "../../../types/merch-view";
 
-type CartStepProps = {
-  onNext: () => void;
-};
-
-export function CartStep({ onNext }: CartStepProps) {
-  const { items, updateQuantity, openSelection, getTotalPrice } =
-    useCartStore();
-  const total = getTotalPrice();
+export function CartStep({
+  items,
+  onCancel,
+  onEditSelection,
+  onNext,
+  onUpdateQuantity,
+  totalPrice,
+}: CartStepViewProps) {
   const shouldScrollItems = items.length > 2;
-
-  const getItemSubtitle = (item: (typeof items)[number]) => {
-    if (item.type !== "merch_bundle") {
-      return null;
-    }
-
-    const labels =
-      item.bundleItems
-        ?.filter((bundleItem) => bundleItem.type === "merchandise")
-        .map((bundleItem) => {
-          if (bundleItem.category === "t-shirt") {
-            return "kaos";
-          }
-          if (bundleItem.category === "hat") {
-            return "topi";
-          }
-          return bundleItem.category;
-        }) ?? [];
-
-    if (labels.length === 0) {
-      return null;
-    }
-
-    return `(${labels.join(" + ")})`;
-  };
-
-  const getBundleSelectionLabel = (item: (typeof items)[number]) => {
-    if (item.type !== "merch_bundle") {
-      return null;
-    }
-
-    const selections =
-      item.bundleItems
-        ?.map((bundleItem, idx) => {
-          if (bundleItem.type !== "merchandise") {
-            return null;
-          }
-
-          const selectedProductId =
-            item.selectedBundleProductIds?.[idx] ?? bundleItem.products[0]?.id;
-          const selectedProduct =
-            bundleItem.products.find(
-              (product) => product.id === selectedProductId
-            ) ?? bundleItem.products[0];
-
-          if (!selectedProduct) {
-            return null;
-          }
-
-          const selectedVariantId = item.selectedVariantIds[idx];
-          const selectedVariantLabel =
-            selectedProduct.variants?.find(
-              (variant) => variant.id === selectedVariantId
-            )?.label ?? selectedProduct.variants?.[0]?.label;
-
-          return selectedVariantLabel
-            ? `${selectedProduct.name} - ${selectedVariantLabel}`
-            : selectedProduct.name;
-        })
-        .filter((selection): selection is string => Boolean(selection)) ?? [];
-
-    if (selections.length === 0) {
-      return null;
-    }
-
-    // Keep cart row proportions stable by showing a compact bundle summary.
-    if (selections.length === 1) {
-      return selections[0];
-    }
-
-    return `${selections[0]} +${selections.length - 1}`;
-  };
 
   return (
     <div className="flex max-h-[80vh] flex-col">
@@ -111,7 +40,7 @@ export function CartStep({ onNext }: CartStepProps) {
         ) : (
           items.map((item) => (
             <div
-              className="flex items-start gap-3 border-white/10 border-b pb-4 last:border-b-0 last:pb-0 sm:gap-6 sm:pb-6"
+              className="flex items-center gap-3 border-white/10 border-b pb-4 last:border-b-0 last:pb-0 sm:gap-6 sm:pb-6"
               key={item.id}
             >
               <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-200 sm:h-32 sm:w-32 sm:rounded-2xl">
@@ -129,14 +58,11 @@ export function CartStep({ onNext }: CartStepProps) {
                     {item.name}
                   </h4>
                   <p className="truncate text-base text-white-2 sm:text-xl">
-                    {item.price.toLocaleString("id-ID", {
-                      style: "currency",
-                      currency: "IDR",
-                    })}
+                    {formatIdrCurrency(item.price)}
                   </p>
-                  {getItemSubtitle(item) && (
+                  {getBundleItemSubtitle(item) && (
                     <p className="truncate text-white text-xs sm:text-sm">
-                      {getItemSubtitle(item)}
+                      {getBundleItemSubtitle(item)}
                     </p>
                   )}
                 </div>
@@ -147,7 +73,7 @@ export function CartStep({ onNext }: CartStepProps) {
                       (item.variants?.length ?? 0) > 0) && (
                       <button
                         className="flex h-6 w-full cursor-pointer items-center justify-between rounded-md border border-white/10 bg-white px-1.5 text-[8px] text-black sm:h-10 sm:rounded-lg sm:px-3 sm:text-xs"
-                        onClick={() => openSelection(item, "edit")}
+                        onClick={() => onEditSelection(item)}
                         type="button"
                       >
                         <span className="truncate">
@@ -169,7 +95,9 @@ export function CartStep({ onNext }: CartStepProps) {
                   <div className="flex w-[54%] items-center justify-end gap-1 px-0 py-1 sm:w-2/5 sm:gap-2 sm:px-2 sm:py-1">
                     <button
                       className="p-1 text-white hover:text-white"
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      onClick={() =>
+                        onUpdateQuantity(item.id, item.quantity - 1)
+                      }
                       type="button"
                     >
                       <MinusIcon size={16} />
@@ -179,7 +107,9 @@ export function CartStep({ onNext }: CartStepProps) {
                     </span>
                     <button
                       className="p-1 text-white hover:text-white"
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      onClick={() =>
+                        onUpdateQuantity(item.id, item.quantity + 1)
+                      }
                       type="button"
                     >
                       <PlusIcon size={16} />
@@ -196,18 +126,18 @@ export function CartStep({ onNext }: CartStepProps) {
         <div className="mb-4 flex items-center justify-between sm:mb-6">
           <span className="text-gray-2 text-sm sm:text-base">Harga Total</span>
           <span className="text-gray-2 text-sm sm:text-base">
-            {total.toLocaleString("id-ID", {
-              style: "currency",
-              currency: "IDR",
-            })}
+            {formatIdrCurrency(totalPrice)}
           </span>
         </div>
         <div className="flex gap-2 sm:gap-4">
-          <DialogTrigger className="flex-1">
-            <Button className="w-full" size="checkout" variant="secondary">
-              Batal
-            </Button>
-          </DialogTrigger>
+          <Button
+            className="w-full flex-1"
+            onClick={onCancel}
+            size="checkout"
+            variant="secondary"
+          >
+            Batal
+          </Button>
           <Button
             className="flex-1"
             disabled={items.length === 0}

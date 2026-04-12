@@ -1,4 +1,3 @@
-import { useForm } from "@tanstack/react-form";
 import { ShoppingCart } from "lucide-react";
 import Chandelier from "@/assets/imgs/chandelier-1.png";
 import {
@@ -6,81 +5,30 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@tedx-2026/ui/components/dialog";
-import { useCartStore } from "../../store/cart-store";
 import { CheckoutProgress } from "./checkout-progress";
-import { CartStep } from "./steps/cart-step";
-import { IdentificationStep } from "./steps/identification-step";
-import { PaymentStepManual } from "./steps/payment-step-manual";
-import { PaymentStep } from "./steps/payment-step";
-import {
-  type CheckoutFormData,
-  type CheckoutStep,
-  checkoutSchema,
-} from "../../types/types";
-import { SummaryStep } from "./steps/summary-step";
-import { SuccessStep } from "./steps/success-step";
-import { SelectionStep } from "./steps/selection-step";
+import type { CheckoutModalViewProps } from "../../types/merch-view";
 
-const useCheckoutForm = (onSubmit: () => void) =>
-  useForm({
-    defaultValues: {
-      fullName: "",
-      email: "",
-      phone: "",
-      address: "",
-    } satisfies CheckoutFormData,
-    validators: {
-      onSubmit: checkoutSchema,
-    },
-    onSubmit,
-  });
-
-export type CheckoutForm = ReturnType<typeof useCheckoutForm>;
-
-export function CheckoutModal() {
-  const {
-    items,
-    isModalOpen,
-    closeModal,
-    currentStep,
-    setStep,
-    orderPayment,
-    orderPaymentMethod,
-  } = useCartStore();
-
-  const isManualPayment =
-    orderPaymentMethod === "manual" ||
-    (!orderPaymentMethod &&
-      Boolean(orderPayment && "uploadUrl" in orderPayment));
-
-  const form = useCheckoutForm(() => setStep("summary"));
-
+export function CheckoutModal({
+  children,
+  currentStep,
+  isModalOpen,
+  itemCount,
+  onOpenCart,
+  onOpenChange,
+}: CheckoutModalViewProps) {
   return (
-    <Dialog
-      onOpenChange={(open) => {
-        if (open) {
-          setStep("cart");
-          return;
-        }
-
-        closeModal();
-      }}
-      open={isModalOpen}
-    >
+    <Dialog onOpenChange={onOpenChange} open={isModalOpen}>
       <DialogTrigger
         render={
           <button
             className="relative flex cursor-pointer items-center rounded-lg border-2 border-[#1A1A1A] p-2 transition-colors hover:bg-black/5"
-            onClick={() => {
-              setStep("cart");
-              useCartStore.setState({ isModalOpen: true });
-            }}
+            onClick={onOpenCart}
             type="button"
           >
             <ShoppingCart />
-            {items.length > 0 && (
+            {itemCount > 0 && (
               <span className="absolute -top-2 -right-2 flex aspect-square h-5 w-5 items-center justify-center rounded-full bg-[#FF1818] text-[10px] text-white">
-                {items.reduce((acc, item) => acc + item.quantity, 0)}
+                {itemCount}
               </span>
             )}
           </button>
@@ -102,33 +50,7 @@ export function CheckoutModal() {
               currentStep={currentStep}
             />
           )}
-
-          {currentStep === "selection" && <SelectionStep />}
-
-          {currentStep === "cart" && (
-            <CartStep onNext={() => setStep("identification")} />
-          )}
-
-          {currentStep === "identification" && (
-            <IdentificationStep form={form} onBack={() => setStep("cart")} />
-          )}
-
-          {currentStep === "summary" && (
-            <SummaryStep
-              form={form}
-              onMoveStep={(step: CheckoutStep) => setStep(step)}
-              onNext={() => setStep("payment")}
-            />
-          )}
-
-          {currentStep === "payment" &&
-            (isManualPayment ? (
-              <PaymentStepManual onNext={() => setStep("success")} />
-            ) : (
-              <PaymentStep onNext={() => setStep("success")} />
-            ))}
-
-          {currentStep === "success" && <SuccessStep />}
+          {children}
         </div>
       </DialogContent>
     </Dialog>

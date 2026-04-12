@@ -27,7 +27,7 @@ export const BottomNav = ({
               <span className="font-light font-sans-2 text-[#ffffff] text-lg transition-transform group-hover:translate-x-1 md:text-2xl">
                 →
               </span>
-              <span className="font-medium font-sans-2 text-[#ffffff] text-base tracking-tight md:text-2xl lg:text-3xl">
+              <span className="whitespace-nowrap font-medium font-sans-2 text-[#ffffff] text-base tracking-tight md:text-2xl lg:text-3xl">
                 {cat.title}
               </span>
             </button>

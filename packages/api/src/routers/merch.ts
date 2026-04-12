@@ -8,17 +8,12 @@ import {
 } from "../schemas/merch";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
-const DUMMY_MERCH_PAYMENT_CONFIG = {
-  useManualQris: true,
+const DUMMY_MERCH_PAYMENT_CONFIG: { method: "manual" | "midtrans" } = {
+  method: "midtrans",
 };
 
-const getDummyMerchPaymentMethod = (): "manual" | "midtrans" => {
-  if (DUMMY_MERCH_PAYMENT_CONFIG.useManualQris) {
-    return "manual";
-  }
-
-  return "midtrans";
-};
+const getDummyMerchPaymentMethod = (): "manual" | "midtrans" =>
+  DUMMY_MERCH_PAYMENT_CONFIG.method;
 
 const generateOrderId = () => {
   const now = new Date();

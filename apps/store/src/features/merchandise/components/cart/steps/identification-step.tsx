@@ -1,15 +1,11 @@
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { Input } from "@tedx-2026/ui/components/input";
+import { Textarea } from "@tedx-2026/ui/components/textarea";
 import { Button } from "@tedx-2026/ui/components/button";
 import { FieldError } from "@tedx-2026/ui/components/field";
-import { useState } from "react";
+import type { CheckoutForm } from "@/features/merchandise/hooks/use-checkout-form";
+import type { IdentificationStepViewProps } from "@/features/merchandise/types/merch-view";
 import type { CheckoutFormData } from "../../../types/types";
-import type { CheckoutForm } from "../";
-
-type IdentificationStepProps = {
-  form: CheckoutForm;
-  onBack: () => void;
-};
 
 type CheckoutFieldRenderProps = {
   name: keyof CheckoutFormData;
@@ -48,8 +44,8 @@ const inputBaseClassName =
   "h-12 rounded-xl border-white/10 bg-white text-sm text-black placeholder:text-neutral-500 focus:ring-[#FF1818] sm:h-14 sm:text-base";
 const inputErrorClassName = "border-red-500 ring-1 ring-red-500";
 const textareaBaseClassName =
-  "w-full resize-none rounded-xl border border-white/10 bg-white p-3 text-sm text-black transition-all placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-[#FF1818] sm:p-4 sm:text-base";
-const textareaErrorClassName = "border-red-500 ring-2 ring-red-500";
+  "min-h-24 rounded-xl border-white/10 bg-white px-3 py-3 text-sm text-black placeholder:text-neutral-500 focus:ring-[#FF1818] sm:min-h-28 sm:px-4 sm:py-4 sm:text-base";
+const textareaErrorClassName = "border-red-500 ring-1 ring-red-500";
 
 const getInputClassName = (hasError: boolean) =>
   `${inputBaseClassName} ${hasError ? inputErrorClassName : ""}`;
@@ -57,9 +53,12 @@ const getInputClassName = (hasError: boolean) =>
 const getTextareaClassName = (hasError: boolean) =>
   `${textareaBaseClassName} ${hasError ? textareaErrorClassName : ""}`;
 
-export function IdentificationStep({ form, onBack }: IdentificationStepProps) {
-  const [hasSubmitted, setHasSubmitted] = useState(false);
-
+export function IdentificationStep({
+  form,
+  hasSubmitted,
+  onBack,
+  onSubmit,
+}: IdentificationStepViewProps<CheckoutForm>) {
   return (
     <div className="space-y-4 sm:space-y-6">
       <DialogHeader>
@@ -68,15 +67,7 @@ export function IdentificationStep({ form, onBack }: IdentificationStepProps) {
         </DialogTitle>
       </DialogHeader>
 
-      <form
-        className="space-y-4 sm:space-y-6"
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setHasSubmitted(true);
-          form.handleSubmit();
-        }}
-      >
+      <form className="space-y-4 sm:space-y-6" onSubmit={onSubmit}>
         <div className="space-y-4 sm:space-y-6">
           <form.Field name="fullName">
             {(field: CheckoutFieldRenderProps) => {
@@ -216,7 +207,7 @@ export function IdentificationStep({ form, onBack }: IdentificationStepProps) {
                   >
                     Alamat
                   </label>
-                  <textarea
+                  <Textarea
                     aria-describedby={hasError ? errorId : undefined}
                     aria-invalid={hasError}
                     autoComplete="street-address"

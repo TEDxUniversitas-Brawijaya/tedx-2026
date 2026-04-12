@@ -1,72 +1,17 @@
-import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { Button } from "@tedx-2026/ui/components/button";
-import { createNanoIdWithPrefix } from "@tedx-2026/utils";
-import { useCartStore } from "@/features/merchandise/store/cart-store";
-import { useCreateMerchOrderMutation } from "@/features/merchandise/hooks/use-create-merch-order-mutation";
-import type { CheckoutStep } from "@/features/merchandise/types/types";
-import type { CheckoutForm } from "../";
+import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
+import { formatIdrCurrency } from "../../../lib/order-management-utils";
+import type { SummaryStepViewProps } from "../../../types/order-step";
 
-type SummaryStepProps = {
-  form: CheckoutForm;
-  onMoveStep: (step: CheckoutStep) => void;
-  onNext: () => void;
-};
-
-export function SummaryStep({ form, onMoveStep, onNext }: SummaryStepProps) {
-  const { items, getTotalPrice, setOrder } = useCartStore();
-  const total = getTotalPrice();
-  const createOrderMutation = useCreateMerchOrderMutation({
-    onSuccess: (data) => {
-      setOrder({
-        orderId: data.orderId,
-        status: data.status,
-        items: items.map((item) => {
-          const variants = item.selectedVariantIds
-            .map((variantId) =>
-              item.variants?.find((variant) => variant.id === variantId)
-            )
-            .filter(
-              (
-                variant
-              ): variant is { id: string; label: string; type: string } =>
-                variant !== undefined
-            )
-            .map((variant) => ({
-              label: variant.label,
-              type: variant.type,
-            }));
-
-          return {
-            snapshotName: item.name,
-            quantity: item.quantity,
-            unitPrice: item.price,
-            snapshotVariants: variants.length > 0 ? variants : undefined,
-          };
-        }),
-        totalPrice: data.totalPrice,
-        paymentMethod: data.paymentMethod,
-        payment: data.payment,
-      });
-      onNext();
-    },
-  });
-
-  const handleSubmitOrder = () => {
-    createOrderMutation.mutate({
-      fullName: form.getFieldValue("fullName"),
-      email: form.getFieldValue("email"),
-      phone: form.getFieldValue("phone"),
-      address: form.getFieldValue("address"),
-      items: items.map((item) => ({
-        productId: item.id,
-        quantity: item.quantity,
-        variantIds: item.selectedVariantIds,
-      })),
-      captchaToken: "dummy-captcha",
-      idempotencyKey: createNanoIdWithPrefix("idemp"),
-    });
-  };
-
+export function SummaryStep({
+  buyerInfo,
+  isSubmitting,
+  items,
+  onEditCart,
+  onEditIdentification,
+  onSubmitOrder,
+  totalPrice,
+}: SummaryStepViewProps) {
   return (
     <div className="flex max-h-[80vh] flex-col">
       <DialogHeader>
@@ -81,7 +26,7 @@ export function SummaryStep({ form, onMoveStep, onNext }: SummaryStepProps) {
             </h5>
             <button
               className="font-sans-2 text-gray-2 text-xs underline hover:cursor-pointer"
-              onClick={() => onMoveStep("cart")}
+              onClick={onEditCart}
               type="button"
             >
               ubah
@@ -111,10 +56,7 @@ export function SummaryStep({ form, onMoveStep, onNext }: SummaryStepProps) {
                   )}
                 </div>
                 <p className="shrink-0 font-sans-2 text-base text-gray-2">
-                  {(item.price * item.quantity).toLocaleString("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                  })}
+                  {formatIdrCurrency(item.price * item.quantity)}
                 </p>
               </div>
             ))}
@@ -126,7 +68,7 @@ export function SummaryStep({ form, onMoveStep, onNext }: SummaryStepProps) {
             <h5 className="font-sans-2 text-white text-xs">Identitas</h5>
             <button
               className="font-sans-2 text-gray-2 text-xs underline hover:cursor-pointer"
-              onClick={() => onMoveStep("identification")}
+              onClick={onEditIdentification}
               type="button"
             >
               ubah
@@ -141,7 +83,7 @@ export function SummaryStep({ form, onMoveStep, onNext }: SummaryStepProps) {
                 className="font-sans-2 text-sm text-white"
                 style={{ textAlign: "right" }}
               >
-                {form.getFieldValue("fullName")}
+                {buyerInfo.fullName}
               </span>
             </div>
             <div className="flex items-start justify-between border-white/5 border-b pb-4">
@@ -150,7 +92,7 @@ export function SummaryStep({ form, onMoveStep, onNext }: SummaryStepProps) {
                 className="max-w-50 truncate font-sans-2 text-sm text-white"
                 style={{ textAlign: "right" }}
               >
-                {form.getFieldValue("email")}
+                {buyerInfo.email}
               </span>
             </div>
             <div className="flex items-start justify-between border-white/5 border-b pb-4">
@@ -159,7 +101,7 @@ export function SummaryStep({ form, onMoveStep, onNext }: SummaryStepProps) {
                 className="font-sans-2 text-sm text-white"
                 style={{ textAlign: "right" }}
               >
-                {form.getFieldValue("phone")}
+                {buyerInfo.phone}
               </span>
             </div>
             <div className="flex items-start justify-between pt-2">
@@ -170,7 +112,7 @@ export function SummaryStep({ form, onMoveStep, onNext }: SummaryStepProps) {
                 className="max-w-62.5 pl-4 font-sans-2 text-sm text-white"
                 style={{ textAlign: "right" }}
               >
-                {form.getFieldValue("address")}
+                {buyerInfo.address}
               </span>
             </div>
           </div>
@@ -182,20 +124,17 @@ export function SummaryStep({ form, onMoveStep, onNext }: SummaryStepProps) {
           <div className="space-y-0.5">
             <p className="text-gray-2 text-sm sm:text-base">Harga Total</p>
             <p className="text-gray-2 text-sm sm:text-base">
-              {total.toLocaleString("id-ID", {
-                style: "currency",
-                currency: "IDR",
-              })}
+              {formatIdrCurrency(totalPrice)}
             </p>
           </div>
           <Button
             className="w-1/2"
-            disabled={createOrderMutation.isPending}
-            onClick={handleSubmitOrder}
+            disabled={isSubmitting}
+            onClick={onSubmitOrder}
             size="checkout"
             variant="primary"
           >
-            {createOrderMutation.isPending ? "Memproses..." : "Bayar"}
+            {isSubmitting ? "Memproses..." : "Bayar"}
           </Button>
         </div>
       </div>

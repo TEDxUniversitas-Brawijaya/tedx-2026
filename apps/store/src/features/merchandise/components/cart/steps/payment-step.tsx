@@ -1,47 +1,22 @@
-import { useEffect, useState } from "react";
-import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { Button } from "@tedx-2026/ui/components/button";
-import { useOrderStatusMutation } from "@/features/merchandise/hooks/use-order-status-mutation";
-import { useCartStore } from "@/features/merchandise/store/cart-store";
-
-type PaymentStepProps = {
-  onNext: () => void;
-};
+import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
+import {
+  formatCountdownClock,
+  formatIdrCurrency,
+} from "../../../lib/order-management-utils";
+import type { PaymentStepViewProps } from "../../../types/order-step";
 
 const paymentContentClassName =
   "mt-3 min-h-0 flex-1 space-y-2.5 overflow-y-hidden [@media(max-height:900px)]:overflow-y-auto pr-1 sm:space-y-3 sm:pr-2 [scrollbar-color:rgba(224,224,224,0.35)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/30 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/45";
 
-export function PaymentStep({ onNext }: PaymentStepProps) {
-  const { orderId, orderPayment, orderTotalPrice } = useCartStore();
-  const total = orderTotalPrice;
-  const [timeLeft, setTimeLeft] = useState(300);
-  const statusMutation = useOrderStatusMutation({
-    onOrderSynced: onNext,
-  });
-
-  const qrisUrl =
-    orderPayment && "qrisUrl" in orderPayment
-      ? orderPayment.qrisUrl
-      : "/qris.png";
-
-  useEffect(() => {
-    if (timeLeft <= 0) {
-      return;
-    }
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [timeLeft]);
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs
-      .toString()
-      .padStart(2, "0")}`;
-  };
-
+export function PaymentStep({
+  isCheckingStatus,
+  onCheckStatus,
+  orderId,
+  qrisUrl,
+  timeLeftSeconds,
+  totalPrice,
+}: PaymentStepViewProps) {
   return (
     <div className="flex min-h-0 flex-col overflow-hidden font-sans-2 sm:h-[94vh] sm:max-h-[84vh]">
       <DialogHeader>
@@ -54,10 +29,7 @@ export function PaymentStep({ onNext }: PaymentStepProps) {
         <div className="flex items-center justify-between border-gray-2 border-b pb-3">
           <span className="font-sans-2 text-gray-2 text-sm">Total</span>
           <span className="font-sans-2 text-base text-gray-2 sm:text-lg">
-            {total.toLocaleString("id-ID", {
-              style: "currency",
-              currency: "IDR",
-            })}
+            {formatIdrCurrency(totalPrice)}
           </span>
         </div>
         <div className="flex items-center justify-between border-gray-2 border-b pb-3">
@@ -69,7 +41,7 @@ export function PaymentStep({ onNext }: PaymentStepProps) {
 
         <div className="pt-1">
           <p className="text-center font-sans-2 text-base text-gray-2 sm:text-lg">
-            Bayar dalam {formatTime(timeLeft)}
+            Bayar dalam {formatCountdownClock(timeLeftSeconds)}
           </p>
         </div>
 
@@ -89,12 +61,12 @@ export function PaymentStep({ onNext }: PaymentStepProps) {
       <div className="mt-auto bg-black pt-2.5 pb-2 sm:pb-3">
         <Button
           className="w-full"
-          disabled={!orderId || statusMutation.isPending}
-          onClick={() => statusMutation.mutate()}
+          disabled={!orderId || isCheckingStatus}
+          onClick={onCheckStatus}
           size="checkout"
           variant="primary"
         >
-          {statusMutation.isPending ? "Memeriksa..." : "Cek Status Pembayaran"}
+          {isCheckingStatus ? "Memeriksa..." : "Cek Status Pembayaran"}
         </Button>
       </div>
     </div>
