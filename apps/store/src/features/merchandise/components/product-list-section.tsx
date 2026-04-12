@@ -246,21 +246,29 @@ type ProductCardProps = {
 
 function ProductCard({ onAddProduct, product }: ProductCardProps) {
   const { name, price, imageUrl } = product;
+  const hasImage = typeof imageUrl === "string" && imageUrl.length > 0;
 
   return (
     <div className="group space-y-6 rounded-xl border-[1.5px] border-transparent p-3 transition-all duration-150">
       <div
         className={
-          "relative aspect-3/4 w-full overflow-hidden rounded-lg bg-neutral-200"
+          "relative aspect-3/4 w-full overflow-hidden rounded-lg bg-neutral"
         }
       >
-        <img
-          alt={name}
-          className="opacity-45 transition-all duration-300"
-          height={0}
-          src={imageUrl ?? ""}
-          width={0}
-        />
+        {hasImage ? (
+          <img
+            alt={name}
+            className="h-full w-full object-cover opacity-45 transition-all duration-300"
+            height={400}
+            loading="lazy"
+            src={imageUrl}
+            width={300}
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-neutral-300 text-center text-neutral-600">
+            <span className="font-sans-2 text-sm">Gambar tidak tersedia</span>
+          </div>
+        )}
       </div>
       <div className="flex flex-row items-start justify-between">
         <div className="flex w-full flex-col">
