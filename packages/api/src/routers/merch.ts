@@ -460,12 +460,33 @@ const listProducts = publicProcedure
     ];
   });
 
+const DUMMY_PRODUCT_PRICES: Record<string, number> = {
+  prod_m_tshirt_1: 120_000,
+  prod_m_tshirt_2: 120_000,
+  prod_m_tshirt_3: 120_000,
+  prod_m_workshirt_black_1: 150_000,
+  prod_m_workshirt_black_2: 150_000,
+  prod_m_workshirt_maroon_1: 150_000,
+  prod_m_workshirt_maroon_2: 150_000,
+  prod_m_workshirt_maroon_3: 150_000,
+  prod_m_topi_1: 50_000,
+  prod_m_socks: 35_000,
+  prod_m_keychain: 25_000,
+  prod_m_sticker: 15_000,
+  prod_mb_a: 155_000,
+  prod_mb_b: 185_000,
+  prod_mb_c: 145_000,
+  prod_mb_d: 175_000,
+  prod_mb_e: 70_000,
+};
+
 const createOrder = publicProcedure
   .input(createMerchOrderInputSchema)
   .output(createMerchOrderOutputSchema)
   .mutation((opts) => {
     const totalPrice = opts.input.items.reduce(
-      (sum, item) => sum + item.quantity * 100_000,
+      (sum, item) =>
+        sum + item.quantity * (DUMMY_PRODUCT_PRICES[item.productId] ?? 0),
       0
     );
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();

@@ -1,3 +1,5 @@
+import { cn } from "@tedx-2026/ui/lib/utils";
+
 type BottomNavProps = {
   categories: Array<{ id: string; title: string }>;
   activeIndex: number;
@@ -17,9 +19,10 @@ export const BottomNav = ({
 
           return (
             <button
-              className={`group flex items-center gap-2 transition-all hover:opacity-80 md:gap-3 ${
+              className={cn(
+                "group flex items-center gap-2 transition-all hover:opacity-80 md:gap-3",
                 isActive ? "opacity-100" : "opacity-40"
-              }`}
+              )}
               key={`nav-${cat.id}`}
               onClick={() => onCategoryClick(index)}
               type="button"

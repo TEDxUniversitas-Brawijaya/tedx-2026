@@ -1,6 +1,7 @@
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { Button } from "@tedx-2026/ui/components/button";
 import { MinusIcon, PlusIcon, ChevronDownIcon } from "lucide-react";
+import { cn } from "@tedx-2026/ui/lib/utils";
 import {
   formatIdrCurrency,
   getBundleItemSubtitle,
@@ -27,11 +28,12 @@ export function CartStep({
       </DialogHeader>
 
       <div
-        className={`mt-6 space-y-4 px-1 pb-2 [scrollbar-color:rgba(224,224,224,0.35)_transparent] [scrollbar-width:thin] sm:mt-8 sm:space-y-6 sm:px-2 sm:pb-3 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/30 hover:[&::-webkit-scrollbar-thumb]:bg-white/45 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1 ${
+        className={cn(
+          "mt-6 space-y-4 px-1 pb-2 [scrollbar-color:rgba(224,224,224,0.35)_transparent] [scrollbar-width:thin] sm:mt-8 sm:space-y-6 sm:px-2 sm:pb-3 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/30 hover:[&::-webkit-scrollbar-thumb]:bg-white/45 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1",
           shouldScrollItems
             ? "max-h-74 overflow-y-auto sm:max-h-96"
             : "overflow-y-visible"
-        }`}
+        )}
       >
         {items.length === 0 ? (
           <div className="py-10 text-center text-gray-2">
@@ -134,7 +136,7 @@ export function CartStep({
             className="w-full flex-1"
             onClick={onCancel}
             size="checkout"
-            variant="secondary"
+            variant="ghost-white"
           >
             Batal
           </Button>

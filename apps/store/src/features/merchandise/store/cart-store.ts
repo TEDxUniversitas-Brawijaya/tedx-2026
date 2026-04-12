@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { Product } from "../types/product";
-import type { CheckoutStep } from "../types/types";
+import type { CheckoutStep } from "../types/checkout";
 import type {
   CartItem,
   OrderPayment,

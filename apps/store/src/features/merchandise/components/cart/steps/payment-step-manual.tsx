@@ -108,7 +108,7 @@ export function PaymentStepManual({
                 className="w-2/5"
                 onClick={onBack}
                 size="checkout"
-                variant="secondary"
+                variant="ghost-white"
               >
                 Kembali
               </Button>

@@ -1,4 +1,5 @@
 import { Button } from "@tedx-2026/ui/components/button";
+import { cn } from "@tedx-2026/ui/lib/utils";
 import type { BundleItem, Product } from "../../../types/product";
 
 type BundleSelectionStepProps = {
@@ -88,11 +89,12 @@ export function BundleSelectionStep({
                   <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
                     {bundleItem.products.map((product) => (
                       <button
-                        className={`flex flex-col overflow-hidden rounded-lg border-[3px] bg-white p-2 transition-all ${
+                        className={cn(
+                          "flex flex-col overflow-hidden rounded-lg border-[3px] bg-white p-2 transition-all",
                           selectedProdId === product.id
                             ? "border-[3px] border-red-2"
                             : "border-transparent"
-                        }`}
+                        )}
                         key={product.id}
                         onClick={() =>
                           onBundleProductChange(idx, product.id, bundleItem)
@@ -127,11 +129,12 @@ export function BundleSelectionStep({
                     <div className="mt-2 grid w-full grid-cols-3 gap-2 sm:grid-cols-4">
                       {selectedProd.variants.map((v) => (
                         <button
-                          className={`h-10 w-full rounded-lg border-[3px] px-2 font-semibold text-sm transition-all ${
+                          className={cn(
+                            "h-10 w-full rounded-lg border-[3px] px-2 font-semibold text-sm transition-all",
                             selectedBundleVariantIds[idx] === v.id
                               ? "border-red-2 bg-white text-black"
                               : "border-transparent bg-white text-[#ADADAD] hover:bg-neutral-100"
-                          }`}
+                          )}
                           key={v.id}
                           onClick={() => onBundleVariantChange(idx, v.id)}
                           type="button"

@@ -1,5 +1,5 @@
 import { cn } from "@tedx-2026/ui/lib/utils";
-import { progressSteps, type CheckoutStep } from "../../types/types";
+import { progressSteps, type CheckoutStep } from "../../types/checkout";
 
 type CheckoutProgressProps = {
   currentStep: CheckoutStep;

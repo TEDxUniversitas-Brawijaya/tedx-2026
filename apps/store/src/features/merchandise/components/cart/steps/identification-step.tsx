@@ -5,7 +5,7 @@ import { Button } from "@tedx-2026/ui/components/button";
 import { FieldError } from "@tedx-2026/ui/components/field";
 import type { CheckoutForm } from "@/features/merchandise/hooks/use-checkout-form";
 import type { IdentificationStepViewProps } from "@/features/merchandise/types/merch-view";
-import type { CheckoutFormData } from "../../../types/types";
+import type { CheckoutFormData } from "../../../types/checkout";
 
 type CheckoutFieldRenderProps = {
   name: keyof CheckoutFormData;
@@ -240,7 +240,7 @@ export function IdentificationStep({
             onClick={onBack}
             size="checkout"
             type="button"
-            variant="secondary"
+            variant="ghost-white"
           >
             Kembali
           </Button>
