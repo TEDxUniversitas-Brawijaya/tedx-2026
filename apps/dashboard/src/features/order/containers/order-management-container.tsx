@@ -1,23 +1,21 @@
 import { OrderManagement } from "../components/order-management";
-import { initialOrderListState, type OrderListState } from "../types/order";
+import {
+  useOrderFilterStore,
+  type OrderFilterStoreState,
+} from "../stores/use-order-filter-store";
 import { trpc } from "@/shared/lib/trpc";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 
 export function OrderManagementContainer() {
-  const [orderListState, setOrderListState] = useState<OrderListState>(
-    initialOrderListState
+  const orderListState = useOrderFilterStore(
+    (state: OrderFilterStoreState) => state.orderListState
+  );
+  const patchOrderListState = useOrderFilterStore(
+    (state: OrderFilterStoreState) => state.patchOrderListState
   );
 
   const { limit, page, search, sortBy, sortOrder, status, type } =
     orderListState;
-
-  const patchOrderListState = (patch: Partial<OrderListState>) => {
-    setOrderListState((prev) => ({
-      ...prev,
-      ...patch,
-    }));
-  };
 
   const listQuery = useQuery(
     trpc.admin.order.list.queryOptions({
@@ -48,10 +46,8 @@ export function OrderManagementContainer() {
       onNext={() =>
         patchOrderListState({ page: Math.min(totalPages, page + 1) })
       }
-      onPatch={patchOrderListState}
       onPrev={() => patchOrderListState({ page: Math.max(1, page - 1) })}
       orders={orders}
-      state={orderListState}
       totalPages={totalPages}
     />
   );

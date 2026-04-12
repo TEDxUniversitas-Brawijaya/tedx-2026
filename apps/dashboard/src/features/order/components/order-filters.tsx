@@ -1,4 +1,8 @@
-import type { OrderListState, OrderStatus, OrderType } from "../types/order";
+import {
+  useOrderFilterStore,
+  type OrderFilterStoreState,
+} from "../stores/use-order-filter-store";
+import type { OrderStatus, OrderType } from "../types/order";
 import { IconSearch } from "@tabler/icons-react";
 import { Input } from "@tedx-2026/ui/components/input";
 import {
@@ -9,12 +13,16 @@ import {
   SelectValue,
 } from "@tedx-2026/ui/components/select";
 
-type OrderFiltersProps = {
-  state: OrderListState;
-  onPatch: (patch: Partial<OrderListState>) => void;
-};
+export function OrderFilters() {
+  const patchOrderListState = useOrderFilterStore(
+    (state: OrderFilterStoreState) => state.patchOrderListState
+  );
+  const orderListState = useOrderFilterStore(
+    (state: OrderFilterStoreState) => state.orderListState
+  );
 
-export function OrderFilters({ state, onPatch }: OrderFiltersProps) {
+  const { limit, search, sortBy, sortOrder, status, type } = orderListState;
+
   return (
     <div
       className="rounded-xl border bg-card p-4"
@@ -37,13 +45,13 @@ export function OrderFilters({ state, onPatch }: OrderFiltersProps) {
               className="pl-9"
               id="order-management-search"
               onChange={(event) => {
-                onPatch({
+                patchOrderListState({
                   page: 1,
                   search: event.target.value,
                 });
               }}
               placeholder="Search by name, email, order ID"
-              value={state.search}
+              value={search}
             />
           </div>
         </div>
@@ -61,12 +69,12 @@ export function OrderFilters({ state, onPatch }: OrderFiltersProps) {
                 return;
               }
 
-              onPatch({
+              patchOrderListState({
                 page: 1,
                 type: value as "all" | OrderType,
               });
             }}
-            value={state.type}
+            value={type}
           >
             <SelectTrigger className="w-full" id="order-management-filter-type">
               <SelectValue placeholder="Filter by type" />
@@ -92,12 +100,12 @@ export function OrderFilters({ state, onPatch }: OrderFiltersProps) {
                 return;
               }
 
-              onPatch({
+              patchOrderListState({
                 page: 1,
                 status: value as "all" | OrderStatus,
               });
             }}
-            value={state.status}
+            value={status}
           >
             <SelectTrigger
               className="w-full"
@@ -137,11 +145,11 @@ export function OrderFilters({ state, onPatch }: OrderFiltersProps) {
                 return;
               }
 
-              onPatch({
+              patchOrderListState({
                 sortBy: value as "createdAt" | "totalPrice" | "status",
               });
             }}
-            value={state.sortBy}
+            value={sortBy}
           >
             <SelectTrigger className="w-full" id="order-management-sort-by">
               <SelectValue placeholder="Sort by" />
@@ -167,11 +175,11 @@ export function OrderFilters({ state, onPatch }: OrderFiltersProps) {
                 return;
               }
 
-              onPatch({
+              patchOrderListState({
                 sortOrder: value as "asc" | "desc",
               });
             }}
-            value={state.sortOrder}
+            value={sortOrder}
           >
             <SelectTrigger className="w-full" id="order-management-sort-order">
               <SelectValue placeholder="Sort order" />
@@ -196,12 +204,12 @@ export function OrderFilters({ state, onPatch }: OrderFiltersProps) {
                 return;
               }
 
-              onPatch({
+              patchOrderListState({
                 limit: Number(value),
                 page: 1,
               });
             }}
-            value={String(state.limit)}
+            value={String(limit)}
           >
             <SelectTrigger
               className="w-full"
