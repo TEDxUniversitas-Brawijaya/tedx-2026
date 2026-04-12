@@ -98,6 +98,9 @@ const getSortedOrders = async (
 export type MerchQueries = {
   listActiveProducts: () => Promise<SelectProduct[]>;
   getProductsByIds: (productIds: string[]) => Promise<SelectProduct[]>;
+  getOrderByIdempotencyKey: (
+    idempotencyKey: string
+  ) => Promise<SelectOrder | null>;
   createOrderWithItems: (
     order: InsertOrder,
     items: InsertOrderItem[]
@@ -139,6 +142,14 @@ export const createMerchQueries = (db: DB): MerchQueries => ({
     return await db.query.productsTable.findMany({
       where: inArray(productsTable.id, productIds),
     });
+  },
+
+  getOrderByIdempotencyKey: async (idempotencyKey) => {
+    return (
+      (await db.query.ordersTable.findFirst({
+        where: eq(ordersTable.idempotencyKey, idempotencyKey),
+      })) ?? null
+    );
   },
 
   createOrderWithItems: async (order, items) => {

@@ -58,6 +58,137 @@ const parseISODate = (input: string | null) => {
   return Number.isNaN(value.getTime()) ? null : value;
 };
 
+const isOrderCreationStatus = (
+  status: string
+): status is "pending_payment" | "pending_verification" => {
+  return status === "pending_payment" || status === "pending_verification";
+};
+
+const isUniqueConstraintError = (error: unknown) => {
+  if (!(error && typeof error === "object")) {
+    return false;
+  }
+
+  const maybeError = error as {
+    code?: string | number;
+    message?: string;
+    cause?: { code?: string | number; message?: string };
+  };
+
+  const candidates = [
+    String(maybeError.code ?? ""),
+    maybeError.message ?? "",
+    String(maybeError.cause?.code ?? ""),
+    maybeError.cause?.message ?? "",
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  return (
+    candidates.includes("23505") ||
+    candidates.includes("sqlite_constraint") ||
+    candidates.includes("unique constraint")
+  );
+};
+
+const assertOrderItemsPresent = (items: CreateOrderInput["items"]) => {
+  if (items.length === 0) {
+    throw new AppError("BAD_REQUEST", "Order items are required");
+  }
+};
+
+const buildResponseFromExistingOrder = async ({
+  merchQueries,
+  paymentService,
+  apiBaseUrl,
+  idempotencyKey,
+  orderId,
+}: {
+  merchQueries: MerchQueries;
+  paymentService: PaymentService;
+  apiBaseUrl: string;
+  idempotencyKey: string;
+  orderId: string;
+}) => {
+  const existingOrder =
+    await merchQueries.getOrderByIdempotencyKey(idempotencyKey);
+
+  if (!existingOrder || existingOrder.type !== "merch") {
+    throw createOrderNotFoundError(orderId);
+  }
+
+  if (!isOrderCreationStatus(existingOrder.status)) {
+    throw new AppError(
+      "CONFLICT",
+      "Idempotency key was already used for a finalized order",
+      {
+        details: {
+          orderId: existingOrder.id,
+          status: existingOrder.status,
+        },
+      }
+    );
+  }
+
+  const orderExpiresAt = existingOrder.expiresAt;
+  if (!orderExpiresAt) {
+    throw new AppError(
+      "INTERNAL_SERVER_ERROR",
+      "Existing order is missing expiry timestamp",
+      {
+        details: {
+          orderId: existingOrder.id,
+        },
+      }
+    );
+  }
+
+  const paymentMethod =
+    existingOrder.paymentMethod ??
+    (existingOrder.midtransOrderId ? "midtrans" : "manual");
+
+  if (paymentMethod === "midtrans") {
+    const expiresAtDate = new Date(orderExpiresAt);
+    const remainingMinutes = Math.ceil(
+      (expiresAtDate.getTime() - Date.now()) / 60_000
+    );
+    const expiryMinutes = Math.max(1, remainingMinutes);
+
+    const payment = await paymentService.createMidtransTransaction({
+      orderId: existingOrder.id,
+      totalPrice: existingOrder.totalPrice,
+      buyerName: existingOrder.buyerName,
+      buyerEmail: existingOrder.buyerEmail,
+      buyerPhone: existingOrder.buyerPhone,
+      expiryMinutes,
+    });
+
+    if (existingOrder.midtransOrderId !== payment.midtransOrderId) {
+      await merchQueries.updateOrder(existingOrder.id, {
+        midtransOrderId: payment.midtransOrderId,
+      });
+    }
+
+    return {
+      orderId: existingOrder.id,
+      status: existingOrder.status,
+      totalPrice: existingOrder.totalPrice,
+      expiresAt: orderExpiresAt,
+      payment,
+    };
+  }
+
+  return {
+    orderId: existingOrder.id,
+    status: existingOrder.status,
+    totalPrice: existingOrder.totalPrice,
+    expiresAt: orderExpiresAt,
+    payment: {
+      uploadUrl: `${apiBaseUrl}/api/orders/${existingOrder.id}/payment-proof`,
+    },
+  };
+};
+
 export type MerchService = {
   listProducts: () => Promise<
     {
@@ -156,9 +287,20 @@ export const createMerchService = ({
     idempotencyKey,
     items,
   }) => {
-    if (items.length === 0) {
-      throw new AppError("BAD_REQUEST", "Order items are required");
+    const existingOrderByIdempotencyKey =
+      await merchQueries.getOrderByIdempotencyKey(idempotencyKey);
+
+    if (existingOrderByIdempotencyKey) {
+      return await buildResponseFromExistingOrder({
+        merchQueries,
+        paymentService,
+        apiBaseUrl,
+        idempotencyKey,
+        orderId: existingOrderByIdempotencyKey.id,
+      });
     }
+
+    assertOrderItemsPresent(items);
 
     const preorderDeadline = parseISODate(
       await configQueries.getMerchPreorderDeadline()
@@ -233,23 +375,37 @@ export const createMerchService = ({
       snapshotVariants: normalizedItem.snapshotVariants,
     }));
 
-    await merchQueries.createOrderWithItems(
-      {
-        id: orderId,
-        type: "merch",
-        status: "pending_payment",
-        buyerName,
-        buyerEmail,
-        buyerPhone,
-        buyerCollege: buyerInstansi,
-        totalPrice,
+    try {
+      await merchQueries.createOrderWithItems(
+        {
+          id: orderId,
+          type: "merch",
+          status: "pending_payment",
+          buyerName,
+          buyerEmail,
+          buyerPhone,
+          buyerCollege: buyerInstansi,
+          totalPrice,
+          idempotencyKey,
+          expiresAt,
+          paymentMethod: paymentMode,
+          refundToken: createNanoId(24),
+        },
+        orderItems
+      );
+    } catch (error) {
+      if (!isUniqueConstraintError(error)) {
+        throw error;
+      }
+
+      return await buildResponseFromExistingOrder({
+        merchQueries,
+        paymentService,
+        apiBaseUrl,
         idempotencyKey,
-        expiresAt,
-        paymentMethod: paymentMode,
-        refundToken: createNanoId(24),
-      },
-      orderItems
-    );
+        orderId,
+      });
+    }
 
     if (orderKVOperations) {
       const cooldownConfig = await configQueries.getByKey("cooldown_minutes");
