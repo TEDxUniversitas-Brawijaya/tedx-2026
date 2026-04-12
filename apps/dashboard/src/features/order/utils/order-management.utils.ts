@@ -18,6 +18,22 @@ export const statusVariant = (status: string) => {
   return "outline" as const;
 };
 
+export const refundStatusVariant = (status: string) => {
+  if (status === "approved") {
+    return "default" as const;
+  }
+
+  if (status === "requested") {
+    return "secondary" as const;
+  }
+
+  if (status === "rejected") {
+    return "destructive" as const;
+  }
+
+  return "outline" as const;
+};
+
 export const formatDate = (value: string | null) => {
   if (!value) {
     return "-";

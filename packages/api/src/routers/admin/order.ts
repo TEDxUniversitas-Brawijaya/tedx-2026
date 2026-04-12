@@ -581,6 +581,67 @@ const seededOrderDetails = [
     ],
     refund: null,
   },
+  {
+    id: "TDX-260410-K8L9M",
+    type: "ticket",
+    status: "refund_requested",
+    buyerName: "Mira Oktaviani",
+    buyerEmail: "mira.oktaviani@example.com",
+    buyerPhone: "081344455566",
+    buyerCollege: "Universitas Diponegoro",
+    totalPrice: 95_000,
+    idempotencyKey: "idem-013",
+    expiresAt: "2026-04-10T13:20:00.000Z",
+    paidAt: "2026-04-10T13:08:00.000Z",
+    createdAt: "2026-04-10T13:00:00.000Z",
+    updatedAt: "2026-04-11T08:40:00.000Z",
+    paymentMethod: "manual",
+    midtransOrderId: null,
+    proofImageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/temp/proof-013.jpg",
+    verifiedBy: "user_admin_02",
+    verifiedAt: "2026-04-10T13:10:00.000Z",
+    rejectionReason: null,
+    refundToken: "ref-token-013",
+    pickedUpAt: null,
+    pickedUpBy: null,
+    items: [
+      {
+        id: "oi_015",
+        productId: "prod_ticket_propaganda",
+        quantity: 1,
+        snapshotName: "Propaganda Ticket",
+        snapshotPrice: 95_000,
+        snapshotType: "ticket_regular",
+        snapshotVariants: null,
+      },
+    ],
+    tickets: [
+      {
+        id: "tkt_010",
+        qrCode: "qr-propa-010",
+        eventDay: "propa3_day2",
+        attendanceStatus: "not_checked_in",
+        checkedInAt: null,
+        checkedInBy: null,
+      },
+    ],
+    refund: {
+      id: "ref_003",
+      status: "requested",
+      reason: "Unexpected family emergency.",
+      paymentMethod: "manual",
+      paymentProofUrl:
+        "https://cdn.tedxuniversitasbrawijaya.com/temp/ref-proof-003.jpg",
+      bankAccountNumber: "9876543210",
+      bankName: "BNI",
+      bankAccountHolder: "Mira Oktaviani",
+      processedBy: null,
+      processedAt: null,
+      rejectionReason: null,
+      createdAt: "2026-04-11T08:40:00.000Z",
+    },
+  },
 ] as const;
 
 const parsedSeededDetails = seededOrderDetails.map((item, index) => ({
@@ -617,6 +678,44 @@ const getSeededDetailsOrThrow = () => {
     .map((entry) => entry.parsed.data);
 };
 
+let mutableSeededDetails = getSeededDetailsOrThrow();
+
+const getMutableSeededDetails = () => {
+  return mutableSeededDetails;
+};
+
+const updateMutableSeededOrder = (
+  orderId: string,
+  updater: (
+    order: (typeof getOrderByIdOutputSchema)["_output"]
+  ) => (typeof getOrderByIdOutputSchema)["_output"]
+) => {
+  const index = mutableSeededDetails.findIndex((item) => item.id === orderId);
+
+  if (index < 0) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: `Order ${orderId} not found.`,
+    });
+  }
+
+  const existingOrder = mutableSeededDetails[index];
+
+  if (!existingOrder) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: `Order ${orderId} not found.`,
+    });
+  }
+
+  const updatedOrder = updater(existingOrder);
+  mutableSeededDetails = mutableSeededDetails.map((item) =>
+    item.id === orderId ? updatedOrder : item
+  );
+
+  return updatedOrder;
+};
+
 type SeededListOrder = {
   id: string;
   type: string;
@@ -645,7 +744,7 @@ const list = protectedProcedure
   .input(listOrdersInputSchema)
   .output(listOrdersOutputSchema)
   .query(({ input }) => {
-    const seededListOrders = getSeededDetailsOrThrow().map((order) => ({
+    const seededListOrders = getMutableSeededDetails().map((order) => ({
       id: order.id,
       type: order.type,
       status: order.status,
@@ -709,7 +808,7 @@ const getById = protectedProcedure
   .input(getOrderByIdInputSchema)
   .output(getOrderByIdOutputSchema)
   .query(({ input }) => {
-    const seededDetails = getSeededDetailsOrThrow();
+    const seededDetails = getMutableSeededDetails();
     const order = seededDetails.find((item) => item.id === input.orderId);
 
     if (!order) {
@@ -725,30 +824,116 @@ const getById = protectedProcedure
 const verifyPayment = protectedProcedure
   .input(verifyPaymentInputSchema)
   .output(getOrderByIdOutputSchema)
-  .mutation(() => {
-    // TODO: Implement admin.order.verifyPayment
-    // - Validate order exists and status is pending_verification
-    // - If action is "approve": update order to "paid", generate tickets + QR, queue confirmation email
-    // - If action is "reject": update order with rejection reason, release stock
-    // - Return order status and message
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.order.verifyPayment is not implemented yet",
+  .mutation(({ ctx, input }) => {
+    const actor =
+      ctx.session.user.name?.trim() ||
+      ctx.session.user.email ||
+      ctx.session.user.id;
+
+    return updateMutableSeededOrder(input.orderId, (order) => {
+      if (order.status !== "pending_verification") {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Order is not waiting for payment verification.",
+        });
+      }
+
+      const now = new Date().toISOString();
+
+      if (input.action === "approve") {
+        return {
+          ...order,
+          status: "paid",
+          paidAt: now,
+          updatedAt: now,
+          verifiedBy: actor,
+          verifiedAt: now,
+          rejectionReason: null,
+        };
+      }
+
+      const rejectionReason = input.reason?.trim();
+
+      if (!rejectionReason) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Payment rejection reason is required.",
+        });
+      }
+
+      return {
+        ...order,
+        status: "expired",
+        updatedAt: now,
+        verifiedBy: actor,
+        verifiedAt: now,
+        rejectionReason,
+      };
     });
   });
 
 const processRefund = protectedProcedure
   .input(processRefundInputSchema)
   .output(getOrderByIdOutputSchema)
-  .mutation(() => {
-    // TODO: Implement admin.order.processRefund
-    // - Validate order exists and has refund request
-    // - If action is "approve": release stock (KV), update order status, queue refund confirmation email
-    // - If action is "reject": update refund request with rejection reason
-    // - Return refund status and message
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.order.processRefund is not implemented yet",
+  .mutation(({ ctx, input }) => {
+    const actor =
+      ctx.session.user.name?.trim() ||
+      ctx.session.user.email ||
+      ctx.session.user.id;
+
+    return updateMutableSeededOrder(input.orderId, (order) => {
+      if (!order.refund) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Order has no refund request.",
+        });
+      }
+
+      if (order.refund.status !== "requested") {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Refund has already been processed.",
+        });
+      }
+
+      const now = new Date().toISOString();
+
+      if (input.action === "approve") {
+        return {
+          ...order,
+          status: "refunded",
+          updatedAt: now,
+          refund: {
+            ...order.refund,
+            status: "approved",
+            processedAt: now,
+            processedBy: actor,
+            rejectionReason: null,
+          },
+        };
+      }
+
+      const rejectionReason = input.reason?.trim();
+
+      if (!rejectionReason) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Rejection reason is required.",
+        });
+      }
+
+      return {
+        ...order,
+        status: "paid",
+        updatedAt: now,
+        refund: {
+          ...order.refund,
+          status: "rejected",
+          processedAt: now,
+          processedBy: actor,
+          rejectionReason,
+        },
+      };
     });
   });
 
