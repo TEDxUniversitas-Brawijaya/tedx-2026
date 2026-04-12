@@ -4,7 +4,7 @@ import {
   formatCurrency,
   formatDate,
   statusVariant,
-} from "../utils/order-management.utils";
+} from "../utils/order-management";
 import { Badge } from "@tedx-2026/ui/components/badge";
 import {
   Table,
