@@ -1,17 +1,35 @@
 import { createAuth, type Session } from "@tedx-2026/auth";
 import {
+  createMerchService,
+  createOrderService,
+  createPaymentService,
   createEmailService,
   createFileService,
   createUserService,
+  type MerchService,
+  type OrderService,
+  type PaymentService,
   type EmailService,
   type FileServices,
   type UserServices,
 } from "@tedx-2026/core";
-import { createDB, createUserQueries, type D1Database } from "@tedx-2026/db";
+import {
+  createConfigQueries,
+  createDB,
+  createMerchQueries,
+  createUserQueries,
+  type ConfigQueries,
+  type D1Database,
+  type DB,
+  type MerchQueries,
+  type UserQueries,
+} from "@tedx-2026/db";
 import { createBrevo } from "@tedx-2026/email";
-import type {
-  // createKV,
-  KVNamespaceType,
+import {
+  createKV,
+  createOrderKVOperations,
+  type KVNamespaceType,
+  type OrderKVOperations,
 } from "@tedx-2026/kv";
 import type { LoggerType } from "@tedx-2026/logger";
 import { createR2, type R2BucketType } from "@tedx-2026/storage";
@@ -51,13 +69,16 @@ export const createContext = async ({
   };
 
   const db = createDB(env.db);
-  // const kv = createKV(env.kv);
+  const kv = createKV(env.kv);
+  const orderKVOperations = createOrderKVOperations(kv);
   const cdn = createR2(env.cdn);
   const email = createBrevo(env.BREVO_API_KEY, {
     // sandbox: process.env.NODE_ENV !== "production",
   });
 
   const userQueries = createUserQueries(db);
+  const merchQueries = createMerchQueries(db);
+  const configQueries = createConfigQueries(db);
 
   const userService = createUserService({
     ...baseContext,
@@ -96,28 +117,76 @@ export const createContext = async ({
 
   const session = await auth.api.getSession(fetchCreateContextFnOptions.req);
 
+  const midtransServerKeyConfig = await configQueries.getByKey(
+    "midtrans_server_key"
+  );
+  const midtransIsProductionConfig = await configQueries.getByKey(
+    "midtrans_is_production"
+  );
+
+  const paymentService = createPaymentService({
+    serverKey: midtransServerKeyConfig?.value ?? "",
+    isProduction: midtransIsProductionConfig?.value === "true",
+  });
+
+  const merchService = createMerchService({
+    configQueries,
+    merchQueries,
+    orderKVOperations,
+    paymentService,
+    apiBaseUrl: env.APP_URL,
+  });
+
+  const orderService = createOrderService({
+    configQueries,
+    merchQueries,
+  });
+
   return {
     requestId,
+    db,
     logger,
     waitUntil,
     session,
+    queries: {
+      user: userQueries,
+      merch: merchQueries,
+      config: configQueries,
+    },
+    operations: {
+      orderKV: orderKVOperations,
+    },
     services: {
       user: userService,
       file: fileService,
       email: emailService,
+      payment: paymentService,
+      merch: merchService,
+      order: orderService,
     },
   };
 };
 
 export type Context = {
   requestId: string;
+  db: DB;
   logger: LoggerType;
+  queries: {
+    user: UserQueries;
+    merch: MerchQueries;
+    config: ConfigQueries;
+  };
+  operations: {
+    orderKV: OrderKVOperations;
+  };
   services: {
     user: UserServices;
     file: FileServices;
     email: EmailService;
+    payment: PaymentService;
+    merch: MerchService;
+    order: OrderService;
   };
-  // operations: {};
   waitUntil: (promise: Promise<unknown>) => void;
   session: Session | null;
 };
