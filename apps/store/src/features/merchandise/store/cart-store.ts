@@ -2,28 +2,14 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { Product } from "../types/product";
 import type { CheckoutStep } from "../types/types";
-
-export interface CartItem extends Product {
-  quantity: number;
-  selectedVariantIds: string[];
-  selectedBundleProductIds?: string[];
-}
-
-export type OrderSnapshotVariant = {
-  label: string;
-  type: string;
-};
-
-export type OrderSnapshotItem = {
-  snapshotName: string;
-  quantity: number;
-  unitPrice: number;
-  snapshotVariants?: OrderSnapshotVariant[];
-};
-
-export type OrderPayment =
-  | { qrisUrl: string; midtransOrderId: string }
-  | { uploadUrl: string };
+import type {
+  CartItem,
+  OrderPayment,
+  OrderPaymentMethod,
+  OrderSnapshotItem,
+  OrderStatus,
+  SetOrderPayload,
+} from "../types/cart";
 
 type CartStore = {
   items: CartItem[];
@@ -43,33 +29,17 @@ type CartStore = {
   clearCart: () => void;
   getTotalPrice: () => number;
 
-  // Order State
   orderId: string | null;
-  orderStatus:
-    | "pending_payment"
-    | "pending_verification"
-    | "paid"
-    | "expired"
-    | "refund_requested"
-    | "refunded"
-    | null;
+  orderStatus: OrderStatus | null;
   orderItems: OrderSnapshotItem[];
   orderTotalPrice: number;
+  orderPaymentMethod: OrderPaymentMethod | null;
   orderPayment: OrderPayment | null;
   orderCreatedAt: string | null;
   orderPaidAt: string | null;
-  setOrder: (order: {
-    orderId: string;
-    status: CartStore["orderStatus"];
-    items?: OrderSnapshotItem[];
-    totalPrice: number;
-    payment?: OrderPayment | null;
-    createdAt?: string | null;
-    paidAt?: string | null;
-  }) => void;
+  setOrder: (order: SetOrderPayload) => void;
   clearOrder: () => void;
 
-  // Modal State
   isModalOpen: boolean;
   activeProduct: Product | null;
   editingItemId: string | null;
@@ -178,15 +148,27 @@ export const useCartStore = create<CartStore>()(
       orderStatus: null,
       orderItems: [],
       orderTotalPrice: 0,
+      orderPaymentMethod: null,
       orderPayment: null,
       orderCreatedAt: null,
       orderPaidAt: null,
       setOrder: (order) => {
+        let derivedPaymentMethod = order.paymentMethod ?? null;
+
+        if (!derivedPaymentMethod && order.payment) {
+          if ("uploadUrl" in order.payment) {
+            derivedPaymentMethod = "manual";
+          } else {
+            derivedPaymentMethod = "midtrans";
+          }
+        }
+
         set({
           orderId: order.orderId,
           orderStatus: order.status ?? null,
           orderItems: order.items ?? [],
           orderTotalPrice: order.totalPrice,
+          orderPaymentMethod: derivedPaymentMethod,
           orderPayment: order.payment ?? null,
           orderCreatedAt: order.createdAt ?? null,
           orderPaidAt: order.paidAt ?? null,
@@ -198,6 +180,7 @@ export const useCartStore = create<CartStore>()(
           orderStatus: null,
           orderItems: [],
           orderTotalPrice: 0,
+          orderPaymentMethod: null,
           orderPayment: null,
           orderCreatedAt: null,
           orderPaidAt: null,
@@ -239,7 +222,7 @@ export const useCartStore = create<CartStore>()(
     {
       name: "tedx-cart-storage",
       storage: createJSONStorage(() => sessionStorage),
-      partialize: (state) => ({ items: state.items }), // Only persist cart items
+      partialize: (state) => ({ items: state.items }),
     }
   )
 );

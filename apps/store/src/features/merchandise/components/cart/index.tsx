@@ -38,9 +38,20 @@ const useCheckoutForm = (onSubmit: () => void) =>
 export type CheckoutForm = ReturnType<typeof useCheckoutForm>;
 
 export function CheckoutModal() {
-  const { items, isModalOpen, closeModal, currentStep, setStep, orderPayment } =
-    useCartStore();
-  const isManualPayment = Boolean(orderPayment && "uploadUrl" in orderPayment);
+  const {
+    items,
+    isModalOpen,
+    closeModal,
+    currentStep,
+    setStep,
+    orderPayment,
+    orderPaymentMethod,
+  } = useCartStore();
+
+  const isManualPayment =
+    orderPaymentMethod === "manual" ||
+    (!orderPaymentMethod &&
+      Boolean(orderPayment && "uploadUrl" in orderPayment));
 
   const form = useCheckoutForm(() => setStep("summary"));
 

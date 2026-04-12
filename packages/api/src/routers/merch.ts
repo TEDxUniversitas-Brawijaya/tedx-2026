@@ -8,6 +8,18 @@ import {
 } from "../schemas/merch";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
+const DUMMY_MERCH_PAYMENT_CONFIG = {
+  useManualQris: true,
+};
+
+const getDummyMerchPaymentMethod = (): "manual" | "midtrans" => {
+  if (DUMMY_MERCH_PAYMENT_CONFIG.useManualQris) {
+    return "manual";
+  }
+
+  return "midtrans";
+};
+
 const generateOrderId = () => {
   const now = new Date();
   const yy = now.getFullYear().toString().slice(-2);
@@ -462,15 +474,27 @@ const createOrder = publicProcedure
       0
     );
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+    const paymentMethod = getDummyMerchPaymentMethod();
+
+    const payment:
+      | { qrisUrl: string; midtransOrderId: string }
+      | { uploadUrl: string } =
+      paymentMethod === "midtrans"
+        ? {
+            qrisUrl: "https://example.com/qris-midtrans",
+            midtransOrderId: `MID-${generateOrderId()}`,
+          }
+        : {
+            uploadUrl: "https://example.com/upload",
+          };
 
     return {
       orderId: generateOrderId(),
       status: "paid",
       totalPrice,
       expiresAt,
-      payment: {
-        uploadUrl: "https://example.com/upload",
-      },
+      paymentMethod,
+      payment,
     };
   });
 

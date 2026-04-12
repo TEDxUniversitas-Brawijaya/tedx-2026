@@ -44,6 +44,7 @@ export function SummaryStep({ form, onMoveStep, onNext }: SummaryStepProps) {
           };
         }),
         totalPrice: data.totalPrice,
+        paymentMethod: data.paymentMethod,
         payment: data.payment,
       });
       onNext();

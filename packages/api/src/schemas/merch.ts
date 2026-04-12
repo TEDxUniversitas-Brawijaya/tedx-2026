@@ -8,6 +8,7 @@ import {
   isoDateStringSchema,
   orderIdSchema,
   orderStatusSchema,
+  paymentMethodSchema,
   productCategorySchema,
   productIdSchema,
   productTypeSchema,
@@ -53,6 +54,7 @@ export const createMerchOrderOutputSchema = z.object({
     .or(z.literal("paid")),
   totalPrice: z.number().int(),
   expiresAt: isoDateStringSchema,
+  paymentMethod: paymentMethodSchema,
   payment: z
     .object({
       qrisUrl: z.string().url(),
