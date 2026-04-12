@@ -240,7 +240,7 @@ export function IdentificationStep({
             onClick={onBack}
             size="checkout"
             type="button"
-            variant="secondary"
+            variant="store-secondary"
           >
             Kembali
           </Button>
@@ -248,7 +248,7 @@ export function IdentificationStep({
             className="flex-1"
             size="checkout"
             type="submit"
-            variant="primary"
+            variant="store-primary"
           >
             Lanjutkan
           </Button>

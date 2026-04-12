@@ -32,7 +32,7 @@ export function SuccessStep({ onClose }: SuccessStepViewProps) {
           className="w-full"
           onClick={onClose}
           size="checkout"
-          variant="primary"
+          variant="store-primary"
         >
           Tutup
         </Button>

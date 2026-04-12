@@ -108,7 +108,7 @@ export function PaymentStepManual({
                 className="w-2/5"
                 onClick={onBack}
                 size="checkout"
-                variant="secondary"
+                variant="store-secondary"
               >
                 Kembali
               </Button>
@@ -119,7 +119,7 @@ export function PaymentStepManual({
                 onClick={onUploadProof}
                 size="checkout"
                 type="button"
-                variant="primary"
+                variant="store-primary"
               >
                 Upload Bukti Pembayaran
               </Button>
@@ -131,7 +131,7 @@ export function PaymentStepManual({
             disabled={!orderId || isCheckingStatus}
             onClick={onCheckStatus}
             size="checkout"
-            variant="primary"
+            variant="store-primary"
           >
             {isCheckingStatus ? "Memeriksa..." : "Cek Status Pembayaran"}
           </Button>

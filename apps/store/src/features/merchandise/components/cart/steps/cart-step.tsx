@@ -140,7 +140,7 @@ export function CartStep({
                 className="w-full flex-1"
                 onClick={onCancel}
                 size="checkout"
-                variant="secondary"
+                variant="store-secondary"
               />
             }
           >
@@ -151,7 +151,7 @@ export function CartStep({
             disabled={items.length === 0}
             onClick={onNext}
             size="checkout"
-            variant="primary"
+            variant="store-primary"
           >
             Lanjutkan
           </Button>

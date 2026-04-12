@@ -64,7 +64,7 @@ export function PaymentStep({
           disabled={!orderId || isCheckingStatus}
           onClick={onCheckStatus}
           size="checkout"
-          variant="primary"
+          variant="store-primary"
         >
           {isCheckingStatus ? "Memeriksa..." : "Cek Status Pembayaran"}
         </Button>

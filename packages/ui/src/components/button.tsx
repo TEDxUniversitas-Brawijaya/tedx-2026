@@ -11,11 +11,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/80",
-        primary:
+        "store-primary":
           "rounded-xl border-none bg-red-2 font-sans-2 text-white shadow-lg shadow-red-900/20 hover:bg-[#C01F1F]",
         outline:
           "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:bg-transparent dark:hover:bg-input/30",
         secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+        "store-secondary":
           "rounded-xl border-white/20 bg-transparent font-sans-2 text-white hover:bg-white/5",
         ghost:
           "hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",

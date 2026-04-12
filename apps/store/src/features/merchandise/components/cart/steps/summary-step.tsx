@@ -132,7 +132,7 @@ export function SummaryStep({
             disabled={isSubmitting}
             onClick={onSubmitOrder}
             size="checkout"
-            variant="primary"
+            variant="store-primary"
           >
             {isSubmitting ? "Memproses..." : "Bayar"}
           </Button>
