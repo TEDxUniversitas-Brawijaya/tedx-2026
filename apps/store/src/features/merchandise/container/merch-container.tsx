@@ -4,7 +4,7 @@ import Hero from "../components/hero";
 import HeroImage from "../components/hero-image";
 import { getRouteApi } from "@tanstack/react-router";
 import { useIsMobile } from "@tedx-2026/ui/hooks/use-is-mobile";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { CheckoutModalContainer } from "./checkout-modal-container";
 import {
   CATEGORIES,
@@ -43,6 +43,31 @@ const baseCounts: MerchFilterCounts = {
 };
 
 const routeApi = getRouteApi("/merchandise");
+const noopUnsubscribe = () => undefined;
+
+const subscribeToViewportChange = (onStoreChange: () => void) => {
+  if (typeof window === "undefined") {
+    return noopUnsubscribe;
+  }
+
+  window.addEventListener("scroll", onStoreChange, { passive: true });
+  window.addEventListener("resize", onStoreChange);
+
+  return () => {
+    window.removeEventListener("scroll", onStoreChange);
+    window.removeEventListener("resize", onStoreChange);
+  };
+};
+
+const getViewportAnchorSnapshot = () => {
+  if (typeof window === "undefined") {
+    return 0;
+  }
+
+  return window.scrollY + window.innerHeight * 0.35;
+};
+
+const getViewportAnchorServerSnapshot = () => 0;
 
 const MerchContainer = () => {
   const navigate = routeApi.useNavigate();
@@ -50,7 +75,14 @@ const MerchContainer = () => {
   const { data: merchs = [], isLoading, isError } = useMerchProductsQuery();
   const { openSelection } = useCartStore();
   const [showMenu, setShowMenu] = useState(false);
+  const categorySectionRef = useRef<HTMLDivElement | null>(null);
+  const productSectionRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useIsMobile();
+  const viewportAnchor = useSyncExternalStore(
+    subscribeToViewportChange,
+    getViewportAnchorSnapshot,
+    getViewportAnchorServerSnapshot
+  );
   const { globalProgress: rawProgress } = useMerchScroll(
     isMobile ? 0.003 : 0.001
   );
@@ -99,6 +131,28 @@ const MerchContainer = () => {
 
   const activeFilterLabel =
     normalizedFilter === "" ? "SEMUA" : normalizedFilter.toUpperCase();
+
+  const showFloatingCheckout = (() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    const categoryRect = categorySectionRef.current?.getBoundingClientRect();
+    if (!categoryRect) {
+      return false;
+    }
+
+    const productRect = productSectionRef.current?.getBoundingClientRect();
+    if (!productRect) {
+      return false;
+    }
+
+    const activationLine = viewportAnchor - window.scrollY;
+    const hasReachedCategorySection = categoryRect.top <= activationLine;
+    const isBeforeProductSectionEnd = productRect.bottom >= activationLine;
+
+    return hasReachedCategorySection && isBeforeProductSectionEnd;
+  })();
 
   const cards = useMemo(() => {
     const viewportWidth =
@@ -182,48 +236,39 @@ const MerchContainer = () => {
     });
   };
 
-  if (isLoading) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-white">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#FF1818] border-t-transparent" />
-      </main>
-    );
-  }
-
-  if (isError) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-white text-[#FF1818]">
-        Failed to load products. Please try again.
-      </main>
-    );
-  }
-
   return (
     <main className="">
       <Hero heroImage={<HeroImage cards={cards} />} />
-      <CategorySection
-        activeIndex={activeIndex}
-        categories={CATEGORIES}
-        logo={Logo}
-        loopCategories={LOOP_CATEGORIES}
-        onCategoryClick={scrollToIndex}
-        onNext={scrollNext}
-        onPrev={scrollPrev}
-        onScroll={handleScroll}
-        scrollRef={scrollRef}
-      />
-      <ProductListSection
-        activeFilterLabel={activeFilterLabel}
-        checkoutModal={<CheckoutModalContainer />}
-        counts={counts}
-        filter={normalizedFilter}
-        filteredMerchs={filteredMerchs}
-        merchs={merchs}
-        onAddProduct={openSelection}
-        onMenuOpenChange={setShowMenu}
-        onSelectFilter={handleSelectFilter}
-        showMenu={showMenu}
-      />
+      <div ref={categorySectionRef}>
+        <CategorySection
+          activeIndex={activeIndex}
+          categories={CATEGORIES}
+          logo={Logo}
+          loopCategories={LOOP_CATEGORIES}
+          onCategoryClick={scrollToIndex}
+          onNext={scrollNext}
+          onPrev={scrollPrev}
+          onScroll={handleScroll}
+          scrollRef={scrollRef}
+        />
+      </div>
+      <div ref={productSectionRef}>
+        <ProductListSection
+          activeFilterLabel={activeFilterLabel}
+          checkoutModal={<CheckoutModalContainer />}
+          counts={counts}
+          filter={normalizedFilter}
+          filteredMerchs={filteredMerchs}
+          hasProductLoadError={isError}
+          isProductsLoading={isLoading}
+          merchs={merchs}
+          onAddProduct={openSelection}
+          onMenuOpenChange={setShowMenu}
+          onSelectFilter={handleSelectFilter}
+          showFloatingCheckout={showFloatingCheckout}
+          showMenu={showMenu}
+        />
+      </div>
     </main>
   );
 };

@@ -1,6 +1,7 @@
 const CatalogX = "/catalogx.png";
 
 import { ChevronDownIcon, PlusIcon } from "lucide-react";
+import type { ReactNode } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,13 +44,55 @@ export default function ProductListSection({
   counts,
   filter,
   filteredMerchs,
+  hasProductLoadError,
+  isProductsLoading,
   merchs,
   onAddProduct,
   onMenuOpenChange,
   onSelectFilter,
+  showFloatingCheckout,
   showMenu,
 }: ProductListSectionViewProps) {
   const isAllFilterActive = filter === "";
+  let productGridContent: ReactNode;
+
+  if (isProductsLoading) {
+    productGridContent = (
+      <div className="col-span-full rounded-2xl border border-[#CACACA]/60 bg-white p-8 text-center">
+        <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-[#FF1818] border-t-transparent" />
+        <p className="mt-4 font-sans-2 text-base text-neutral-700 sm:text-lg">
+          Memuat produk...
+        </p>
+      </div>
+    );
+  } else if (hasProductLoadError) {
+    productGridContent = (
+      <div className="col-span-full rounded-2xl border border-[#CACACA]/60 bg-white p-8 text-center">
+        <p className="font-sans-2 text-base text-neutral-700 sm:text-lg">
+          Gagal memuat produk. Coba refresh halaman.
+        </p>
+      </div>
+    );
+  } else if (filteredMerchs.length > 0) {
+    productGridContent = filteredMerchs.map((merch) => (
+      <ProductCard key={merch.id} onAddProduct={onAddProduct} product={merch} />
+    ));
+  } else {
+    productGridContent = (
+      <div className="col-span-full rounded-2xl border border-[#CACACA]/60 bg-white p-8 text-center">
+        <p className="font-sans-2 text-base text-neutral-700 sm:text-lg">
+          Tidak ada produk untuk filter ini.
+        </p>
+        <button
+          className="mt-4 cursor-pointer font-sans-2 text-red-2 text-sm underline"
+          onClick={() => onSelectFilter("")}
+          type="button"
+        >
+          Tampilkan semua produk
+        </button>
+      </div>
+    );
+  }
 
   return (
     <section className="flex w-full flex-col gap-16 bg-white px-5 py-24 md:px-16 lg:flex-row">
@@ -180,30 +223,15 @@ export default function ProductListSection({
       </div>
       <div className="w-full">
         <div className="relative grid h-3/4 w-full grid-cols-1 gap-10 md:grid-cols-2 md:gap-x-6 md:gap-y-10 xl:grid-cols-3">
-          {filteredMerchs.length > 0 ? (
-            filteredMerchs.map((merch) => (
-              <ProductCard
-                key={merch.id}
-                onAddProduct={onAddProduct}
-                product={merch}
-              />
-            ))
-          ) : (
-            <div className="col-span-full rounded-2xl border border-[#CACACA]/60 bg-white p-8 text-center">
-              <p className="font-sans-2 text-base text-neutral-700 sm:text-lg">
-                Tidak ada produk untuk filter ini.
-              </p>
-              <button
-                className="mt-4 cursor-pointer font-sans-2 text-red-2 text-sm underline"
-                onClick={() => onSelectFilter("")}
-                type="button"
-              >
-                Tampilkan semua produk
-              </button>
-            </div>
-          )}
+          {productGridContent}
         </div>
-        <div className="fixed right-6 bottom-6 z-50 md:right-8 md:bottom-8">
+        <div
+          className={`fixed right-6 bottom-6 z-50 transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none md:right-8 md:bottom-8 ${
+            showFloatingCheckout
+              ? "translate-y-0 opacity-100"
+              : "pointer-events-none translate-y-3 opacity-0"
+          }`}
+        >
           {checkoutModal}
         </div>
       </div>

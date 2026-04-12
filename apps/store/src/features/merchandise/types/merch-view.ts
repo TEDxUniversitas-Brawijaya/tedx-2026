@@ -35,10 +35,13 @@ export type ProductListSectionViewProps = {
   counts: MerchFilterCounts;
   filter: MerchFilter;
   filteredMerchs: Product[];
+  hasProductLoadError: boolean;
+  isProductsLoading: boolean;
   merchs: Product[];
   onAddProduct: (product: Product) => void;
   onMenuOpenChange: (open: boolean) => void;
   onSelectFilter: (filter: MerchFilter) => void;
+  showFloatingCheckout: boolean;
   showMenu: boolean;
 };
 
