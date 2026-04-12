@@ -8,7 +8,7 @@ import {
 type CreateOrderServiceOptions = {
   merchQueries: MerchQueries;
   configQueries: ConfigQueries;
-  signProofUrl?: (key: string) => Promise<string>;
+  signProofUrl?: (key: string) => string | Promise<string>;
 };
 
 type OrderWithItems = NonNullable<

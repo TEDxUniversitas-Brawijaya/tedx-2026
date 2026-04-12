@@ -137,9 +137,18 @@ export const createContext = async ({
     apiBaseUrl: env.APP_URL,
   });
 
+  const signProofUrl = (key: string) => {
+    if (key.startsWith("http://") || key.startsWith("https://")) {
+      return key;
+    }
+
+    return `https://${env.CDN_DOMAIN}/${key}`;
+  };
+
   const orderService = createOrderService({
     configQueries,
     merchQueries,
+    signProofUrl,
   });
 
   return {
