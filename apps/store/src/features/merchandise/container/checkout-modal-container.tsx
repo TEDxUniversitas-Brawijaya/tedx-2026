@@ -208,9 +208,12 @@ const SelectionStepSection = () => {
   const isBundling = activeProduct.type === "merch_bundle";
 
   const handlePay = () => {
-    const variantIds = isBundling
-      ? selectedBundleVariantIds
-      : [selectedVariantId];
+    const variantIds: string[] = [];
+    if (isBundling) {
+      variantIds.push(...selectedBundleVariantIds);
+    } else if (selectedVariantId) {
+      variantIds.push(selectedVariantId);
+    }
     const bundleIds = isBundling ? selectedBundleProductIds : undefined;
     const shouldReplace =
       editingItemId !== null && editingItemId !== activeProduct.id;
