@@ -106,7 +106,7 @@ export default function ProductListSection({
         </div>
         <div className="hidden w-full space-y-10 lg:block">
           <div>
-            <h3 className="mb-5 font-semibold text-xl">SEMUA</h3>
+            <h3 className="mb-5 font-semibold text-black text-xl">SEMUA</h3>
             <button
               className={cn(
                 "flex w-full cursor-pointer flex-row items-center justify-between border-[#CACACA]/35 border-b-2 py-2 transition-all duration-150 hover:bg-neutral-100",
@@ -128,7 +128,9 @@ export default function ProductListSection({
           </div>
 
           <div>
-            <h3 className="mb-5 font-semibold text-xl">REGULAR</h3>
+            <h3 className="mb-5 font-semibold text-tedx-black text-xl">
+              REGULAR
+            </h3>
             {REGULAR_MERCH_CATEGORIES.map((category) => {
               const isTypeActive = filter === category;
               const count = counts[category] || 0;
@@ -137,7 +139,7 @@ export default function ProductListSection({
                 <button
                   className={cn(
                     "flex w-full cursor-pointer flex-row items-center justify-between border-[#CACACA]/35 border-b-2 py-2 transition-all duration-150 hover:bg-neutral-100",
-                    isTypeActive ? "text-tedx-black" : "text-neutral-400"
+                    isTypeActive ? "text-black" : "text-neutral-400"
                   )}
                   key={category}
                   onClick={() => onSelectFilter(category)}
@@ -157,7 +159,7 @@ export default function ProductListSection({
             })}
           </div>
           <div>
-            <h3 className="mb-5 font-semibold text-xl">BUNDLING</h3>
+            <h3 className="mb-5 font-semibold text-black text-xl">BUNDLING</h3>
             <button
               className={cn(
                 "flex w-full cursor-pointer flex-row items-center justify-between border-[#CACACA]/35 border-b-2 py-2 transition-all duration-150 hover:bg-neutral-100",
