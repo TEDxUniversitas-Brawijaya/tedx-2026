@@ -25,12 +25,20 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
 >
   <Navbar />
   <div class="envelope-overlay" id="envelope-overlay"></div>
-  <div class="opened-envelope-container-wrapper" id="opened-envelope-wrapper">
+  <div
+    class="opened-envelope-container-wrapper"
+    id="opened-envelope-wrapper"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="pre-event-benefits-title"
+    aria-hidden="true"
+    tabindex="-1"
+  >
     <div class="opened-envelope-container">
       <Image src={EnvelopeOpen} alt="Envelope Open" class="opened-envelope" />
       <div class="envelope-content-wrapper">
         <div class="envelope-content">
-          <h4>Benefit</h4>
+          <h4 id="pre-event-benefits-title">Benefit</h4>
           <ol>
             <li>
               Kesempatan mengenal lebih dekat semangat dan pengalaman khas TEDX
@@ -530,6 +538,12 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
 
   .section-2-content .cta-button:hover {
     transform: scale(1.05);
+  }
+
+  .section-2-content .cta-button:focus-visible,
+  .envelope-buy-btn:focus-visible {
+    outline: 2px solid var(--color-white);
+    outline-offset: 4px;
   }
 
   .floating-envelope {
@@ -1102,23 +1116,116 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
     const overlay = document.getElementById("envelope-overlay");
 
     if (buyBtn && envelope && envelopeOpen && overlay) {
+      let previouslyFocusedElement: HTMLElement | null = null;
+
+      const isDialogOpen = (): boolean => {
+        return (
+          overlay.classList.contains("is-active") &&
+          envelopeOpen.classList.contains("is-open")
+        );
+      };
+
+      const getFocusableElements = (): HTMLElement[] => {
+        const focusableSelector =
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+        const focusableElements =
+          envelopeOpen.querySelectorAll<HTMLElement>(focusableSelector);
+
+        return [...focusableElements].filter((element) => {
+          return element.getAttribute("aria-hidden") !== "true";
+        });
+      };
+
+      const focusIntoDialog = () => {
+        const [firstFocusableElement] = getFocusableElements();
+        const focusTarget = firstFocusableElement ?? envelopeOpen;
+        focusTarget.focus();
+      };
+
+      const closeDialog = () => {
+        overlay.classList.remove("is-active");
+        envelopeOpen.classList.remove("is-open");
+        envelopeOpen.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("no-scroll");
+        document.removeEventListener("keydown", handleDialogKeydown);
+
+        previouslyFocusedElement?.focus();
+      };
+
+      const trapTabFocus = (event: KeyboardEvent) => {
+        const focusableElements = getFocusableElements();
+
+        if (focusableElements.length === 0) {
+          event.preventDefault();
+          envelopeOpen.focus();
+          return;
+        }
+
+        const firstFocusableElement = focusableElements[0];
+        const lastFocusableElement = focusableElements.at(-1);
+
+        if (!(firstFocusableElement && lastFocusableElement)) {
+          return;
+        }
+
+        const isActiveOutsideDialog = !envelopeOpen.contains(
+          document.activeElement
+        );
+        const shouldWrapBackward =
+          event.shiftKey &&
+          (document.activeElement === firstFocusableElement ||
+            isActiveOutsideDialog);
+        const shouldWrapForward =
+          !event.shiftKey && document.activeElement === lastFocusableElement;
+
+        if (shouldWrapBackward) {
+          event.preventDefault();
+          lastFocusableElement.focus();
+        }
+
+        if (shouldWrapForward) {
+          event.preventDefault();
+          firstFocusableElement.focus();
+        }
+      };
+
+      const handleDialogKeydown = (event: KeyboardEvent) => {
+        if (!isDialogOpen()) {
+          return;
+        }
+
+        if (event.key === "Escape") {
+          event.preventDefault();
+          closeDialog();
+          return;
+        }
+
+        if (event.key === "Tab") {
+          trapTabFocus(event);
+        }
+      };
+
       buyBtn.addEventListener("click", (e) => {
         e.preventDefault();
+        previouslyFocusedElement =
+          document.activeElement instanceof HTMLElement
+            ? document.activeElement
+            : null;
         envelope.classList.add("is-animating");
 
         setTimeout(() => {
           envelope.classList.remove("is-animating");
           overlay.classList.add("is-active");
           envelopeOpen.classList.add("is-open");
+          envelopeOpen.setAttribute("aria-hidden", "false");
           document.body.classList.add("no-scroll");
+          focusIntoDialog();
+          document.addEventListener("keydown", handleDialogKeydown);
         }, 1500);
       });
 
-      overlay.addEventListener("click", () => {
-        overlay.classList.remove("is-active");
-        envelopeOpen.classList.remove("is-open");
-        document.body.classList.remove("no-scroll");
-      });
+      overlay.addEventListener("click", closeDialog);
     }
   })();
 </script>
