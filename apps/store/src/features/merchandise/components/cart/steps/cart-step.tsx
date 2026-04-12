@@ -1,4 +1,8 @@
-import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
+import {
+  DialogClose,
+  DialogHeader,
+  DialogTitle,
+} from "@tedx-2026/ui/components/dialog";
 import { Button } from "@tedx-2026/ui/components/button";
 import { MinusIcon, PlusIcon, ChevronDownIcon } from "lucide-react";
 import {
@@ -47,9 +51,9 @@ export function CartStep({
                 <img
                   alt={item.name}
                   className="h-full w-full object-cover"
-                  height={0}
+                  height={400}
                   src={item.imageUrl ?? ""}
-                  width={0}
+                  width={400}
                 />
               </div>
               <div className="min-w-0 flex-1 font-sans-2">
@@ -130,14 +134,18 @@ export function CartStep({
           </span>
         </div>
         <div className="flex gap-2 sm:gap-4">
-          <Button
-            className="w-full flex-1"
-            onClick={onCancel}
-            size="checkout"
-            variant="secondary"
+          <DialogClose
+            render={
+              <Button
+                className="w-full flex-1"
+                onClick={onCancel}
+                size="checkout"
+                variant="secondary"
+              />
+            }
           >
             Batal
-          </Button>
+          </DialogClose>
           <Button
             className="flex-1"
             disabled={items.length === 0}
