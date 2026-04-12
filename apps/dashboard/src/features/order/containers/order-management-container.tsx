@@ -39,14 +39,16 @@ export function OrderManagementContainer() {
 
   const orders = listQuery.data?.orders ?? [];
   const totalPages = listQuery.data?.pagination.totalPages ?? 1;
-
+  const effectivePage = listQuery.data?.pagination.page ?? page;
   return (
     <OrderManagement
-      currentPage={listQuery.data?.pagination.page ?? page}
+      currentPage={effectivePage}
       onNext={() =>
-        patchOrderListState({ page: Math.min(totalPages, page + 1) })
+        patchOrderListState({ page: Math.min(totalPages, effectivePage + 1) })
       }
-      onPrev={() => patchOrderListState({ page: Math.max(1, page - 1) })}
+      onPrev={() =>
+        patchOrderListState({ page: Math.max(1, effectivePage - 1) })
+      }
       orders={orders}
       totalPages={totalPages}
     />

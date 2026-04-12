@@ -35,11 +35,10 @@ export function OrderPaymentVerificationActions({
             description: error.message,
           });
         },
-        onSuccess: (updatedOrder) => {
-          queryClient.setQueryData(
-            trpc.admin.order.getById.queryKey({ orderId }),
-            updatedOrder
-          );
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: trpc.admin.order.getById.queryKey({ orderId }),
+          });
 
           queryClient.invalidateQueries({
             queryKey: trpc.admin.order.list.queryKey(),
@@ -75,11 +74,10 @@ export function OrderPaymentVerificationActions({
             description: error.message,
           });
         },
-        onSuccess: (updatedOrder) => {
-          queryClient.setQueryData(
-            trpc.admin.order.getById.queryKey({ orderId }),
-            updatedOrder
-          );
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: trpc.admin.order.getById.queryKey({ orderId }),
+          });
 
           queryClient.invalidateQueries({
             queryKey: trpc.admin.order.list.queryKey(),

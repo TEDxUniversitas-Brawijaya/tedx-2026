@@ -5,7 +5,6 @@ type PaginationControlsProps = {
   currentPage: number;
   onNext: () => void;
   onPrev: () => void;
-  page: number;
   totalPages: number;
 };
 
@@ -13,7 +12,6 @@ export function PaginationControls({
   currentPage,
   onNext,
   onPrev,
-  page,
   totalPages,
 }: PaginationControlsProps) {
   return (
@@ -34,7 +32,7 @@ export function PaginationControls({
         <div className="flex flex-col items-center gap-1">
           <Button
             aria-label="Previous page"
-            disabled={page <= 1}
+            disabled={currentPage <= 1}
             onClick={onPrev}
             size="icon-sm"
             title="Previous page"
@@ -47,7 +45,7 @@ export function PaginationControls({
         <div className="flex flex-col items-center gap-1">
           <Button
             aria-label="Next page"
-            disabled={page >= totalPages}
+            disabled={currentPage >= totalPages}
             onClick={onNext}
             size="icon-sm"
             title="Next page"

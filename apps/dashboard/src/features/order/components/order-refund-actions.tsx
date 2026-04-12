@@ -33,11 +33,10 @@ export function OrderRefundActions({ orderId }: OrderRefundActionsProps) {
             description: error.message,
           });
         },
-        onSuccess: (updatedOrder) => {
-          queryClient.setQueryData(
-            trpc.admin.order.getById.queryKey({ orderId }),
-            updatedOrder
-          );
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: trpc.admin.order.getById.queryKey({ orderId }),
+          });
 
           queryClient.invalidateQueries({
             queryKey: trpc.admin.order.list.queryKey(),
@@ -73,11 +72,10 @@ export function OrderRefundActions({ orderId }: OrderRefundActionsProps) {
             description: error.message,
           });
         },
-        onSuccess: (updatedOrder) => {
-          queryClient.setQueryData(
-            trpc.admin.order.getById.queryKey({ orderId }),
-            updatedOrder
-          );
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: trpc.admin.order.getById.queryKey({ orderId }),
+          });
 
           queryClient.invalidateQueries({
             queryKey: trpc.admin.order.list.queryKey(),

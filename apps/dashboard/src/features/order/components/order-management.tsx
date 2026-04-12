@@ -1,8 +1,4 @@
 import { OrderFilters } from "./order-filters";
-import {
-  useOrderFilterStore,
-  type OrderFilterStoreState,
-} from "../stores/use-order-filter-store";
 import type { ListOrder } from "../types/order";
 import { OrdersTable } from "./orders-table";
 import { PaginationControls } from "./pagination-controls";
@@ -25,10 +21,6 @@ export function OrderManagement({
   renderState,
   totalPages,
 }: OrderManagementProps) {
-  const page = useOrderFilterStore(
-    (state: OrderFilterStoreState) => state.orderListState.page
-  );
-
   return (
     <div className="space-y-4" id="order-management">
       <OrderFilters />
@@ -39,7 +31,6 @@ export function OrderManagement({
         currentPage={currentPage}
         onNext={onNext}
         onPrev={onPrev}
-        page={page}
         totalPages={totalPages}
       />
     </div>

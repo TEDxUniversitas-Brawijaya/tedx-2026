@@ -5,7 +5,9 @@ import {
   listOrdersInputSchema,
   listOrdersOutputSchema,
   processRefundInputSchema,
+  processRefundOutputSchema,
   verifyPaymentInputSchema,
+  verifyPaymentOutputSchema,
 } from "../../schemas/order";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
 
@@ -678,9 +680,38 @@ const getSeededDetailsOrThrow = () => {
     .map((entry) => entry.parsed.data);
 };
 
-let mutableSeededDetails = getSeededDetailsOrThrow();
+type SeededOrderDetail = (typeof getOrderByIdOutputSchema)["_output"];
 
-const getMutableSeededDetails = () => {
+let mutableSeededDetails: SeededOrderDetail[] | null = null;
+
+const isFixtureFailFastEnabled = () => {
+  return (
+    process.env.NODE_ENV !== "production" ||
+    process.env.ORDER_FIXTURES_FAIL_FAST === "true"
+  );
+};
+
+const initializeMutableSeededDetails = (): SeededOrderDetail[] => {
+  try {
+    return getSeededDetailsOrThrow();
+  } catch (error) {
+    if (isFixtureFailFastEnabled()) {
+      throw error;
+    }
+
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message:
+        "Order fixtures are invalid. Enable fail-fast in non-production to debug fixture issues.",
+    });
+  }
+};
+
+const getMutableSeededDetails = (): SeededOrderDetail[] => {
+  if (!mutableSeededDetails) {
+    mutableSeededDetails = initializeMutableSeededDetails();
+  }
+
   return mutableSeededDetails;
 };
 
@@ -690,7 +721,8 @@ const updateMutableSeededOrder = (
     order: (typeof getOrderByIdOutputSchema)["_output"]
   ) => (typeof getOrderByIdOutputSchema)["_output"]
 ) => {
-  const index = mutableSeededDetails.findIndex((item) => item.id === orderId);
+  const details = getMutableSeededDetails();
+  const index = details.findIndex((item) => item.id === orderId);
 
   if (index < 0) {
     throw new TRPCError({
@@ -698,8 +730,7 @@ const updateMutableSeededOrder = (
       message: `Order ${orderId} not found.`,
     });
   }
-
-  const existingOrder = mutableSeededDetails[index];
+  const existingOrder = details[index];
 
   if (!existingOrder) {
     throw new TRPCError({
@@ -709,7 +740,8 @@ const updateMutableSeededOrder = (
   }
 
   const updatedOrder = updater(existingOrder);
-  mutableSeededDetails = mutableSeededDetails.map((item) =>
+
+  mutableSeededDetails = details.map((item) =>
     item.id === orderId ? updatedOrder : item
   );
 
@@ -823,14 +855,14 @@ const getById = protectedProcedure
 
 const verifyPayment = protectedProcedure
   .input(verifyPaymentInputSchema)
-  .output(getOrderByIdOutputSchema)
+  .output(verifyPaymentOutputSchema)
   .mutation(({ ctx, input }) => {
     const actor =
       ctx.session.user.name?.trim() ||
       ctx.session.user.email ||
       ctx.session.user.id;
 
-    return updateMutableSeededOrder(input.orderId, (order) => {
+    const updatedOrder = updateMutableSeededOrder(input.orderId, (order) => {
       if (order.status !== "pending_verification") {
         throw new TRPCError({
           code: "CONFLICT",
@@ -870,18 +902,27 @@ const verifyPayment = protectedProcedure
         rejectionReason,
       };
     });
+
+    return {
+      orderId: updatedOrder.id,
+      status: updatedOrder.status,
+      message:
+        input.action === "approve"
+          ? "Payment approved successfully."
+          : "Payment rejected successfully.",
+    };
   });
 
 const processRefund = protectedProcedure
   .input(processRefundInputSchema)
-  .output(getOrderByIdOutputSchema)
+  .output(processRefundOutputSchema)
   .mutation(({ ctx, input }) => {
     const actor =
       ctx.session.user.name?.trim() ||
       ctx.session.user.email ||
       ctx.session.user.id;
 
-    return updateMutableSeededOrder(input.orderId, (order) => {
+    const updatedOrder = updateMutableSeededOrder(input.orderId, (order) => {
       if (!order.refund) {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -935,6 +976,22 @@ const processRefund = protectedProcedure
         },
       };
     });
+
+    if (!updatedOrder.refund) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Refund state is unavailable after processing.",
+      });
+    }
+
+    return {
+      orderId: updatedOrder.id,
+      refundStatus: updatedOrder.refund.status,
+      message:
+        input.action === "approve"
+          ? "Refund approved successfully."
+          : "Refund rejected successfully.",
+    };
   });
 
 export const orderRouter = createTRPCRouter({

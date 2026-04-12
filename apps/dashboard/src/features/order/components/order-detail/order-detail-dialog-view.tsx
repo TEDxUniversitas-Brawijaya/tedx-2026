@@ -34,10 +34,8 @@ export function OrderDetailDialogView({
 }: OrderDetailDialogViewProps) {
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
-      <DialogTrigger>
-        <Button size="sm" variant="outline">
-          Detail
-        </Button>
+      <DialogTrigger render={<Button size="sm" variant="outline" />}>
+        Detail
       </DialogTrigger>
       <DialogContent className="max-h-[88dvh] overflow-y-auto sm:max-w-6xl">
         <DialogHeader>
