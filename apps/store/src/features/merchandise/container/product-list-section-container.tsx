@@ -73,8 +73,13 @@ export const ProductListSectionContainer = ({
     normalizedFilter === "" ? "SEMUA" : normalizedFilter.toUpperCase();
 
   const handleSelectFilter = (nextFilter: MerchFilter) => {
+    if (nextFilter === normalizedFilter) {
+      return;
+    }
+
     navigate({
       replace: true,
+      resetScroll: false,
       search: (previous) => {
         if (nextFilter === "") {
           const { filter: _removedFilter, ...restSearch } = previous;
