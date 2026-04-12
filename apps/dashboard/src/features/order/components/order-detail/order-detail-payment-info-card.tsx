@@ -1,23 +1,15 @@
 import { Badge } from "@tedx-2026/ui/components/badge";
-import {
-  formatCurrency,
-  formatDate,
-  statusVariant,
-} from "../../utils/order-management";
-import {
-  useOrderDetailStore,
-  type OrderDetailStoreState,
-} from "../../stores/use-order-detail-store";
+import type { DetailOrder } from "../../types/order";
+import { formatCurrency, formatDate } from "../../utils/formatter";
+import { orderStatusBadgeVariantMap } from "../../utils/variant-mapper";
 
-export function OrderDetailPaymentInfoCard() {
-  const order = useOrderDetailStore(
-    (state: OrderDetailStoreState) => state.orderDetail
-  );
+type OrderDetailPaymentInfoCardProps = {
+  order: DetailOrder;
+};
 
-  if (!order) {
-    return null;
-  }
-
+export function OrderDetailPaymentInfoCard({
+  order,
+}: OrderDetailPaymentInfoCardProps) {
   return (
     <div
       className="grid gap-2 rounded-lg border p-4 md:grid-cols-2"
@@ -45,7 +37,9 @@ export function OrderDetailPaymentInfoCard() {
         <span className="font-medium" id="order-detail-status-label">
           Status:
         </span>{" "}
-        <Badge variant={statusVariant(order.status)}>{order.status}</Badge>
+        <Badge variant={orderStatusBadgeVariantMap[order.status]}>
+          {order.status}
+        </Badge>
       </p>
       <p id="order-detail-midtrans-order-id">
         <span className="font-medium" id="order-detail-midtrans-order-id-label">

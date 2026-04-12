@@ -1,11 +1,10 @@
-import type { ListOrder } from "../types/order";
-import { OrderDetailDialogContainer } from "../containers/order-detail-dialog-container";
-import {
-  formatCurrency,
-  formatDate,
-  statusVariant,
-} from "../utils/order-management";
 import { Badge } from "@tedx-2026/ui/components/badge";
+import { Button } from "@tedx-2026/ui/components/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@tedx-2026/ui/components/dialog";
 import {
   Table,
   TableBody,
@@ -14,9 +13,13 @@ import {
   TableHeader,
   TableRow,
 } from "@tedx-2026/ui/components/table";
+import { OrderDetailDialogContainer } from "../containers/order-detail-dialog-content-container";
+import type { Order } from "../types/order";
+import { formatCurrency, formatDate } from "../utils/formatter";
+import { orderStatusBadgeVariantMap } from "../utils/variant-mapper";
 
 type OrdersTableProps = {
-  orders: ListOrder[];
+  orders: Order[];
 };
 
 export function OrdersTable({ orders }: OrdersTableProps) {
@@ -60,7 +63,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
                 <Badge variant="outline">{order.type}</Badge>
               </TableCell>
               <TableCell>
-                <Badge variant={statusVariant(order.status)}>
+                <Badge variant={orderStatusBadgeVariantMap[order.status]}>
                   {order.status}
                 </Badge>
               </TableCell>
@@ -68,7 +71,16 @@ export function OrdersTable({ orders }: OrdersTableProps) {
               <TableCell>{formatDate(order.createdAt)}</TableCell>
               <TableCell>{formatDate(order.paidAt)}</TableCell>
               <TableCell className="text-right">
-                <OrderDetailDialogContainer orderId={order.id} />
+                <Dialog>
+                  <DialogTrigger
+                    render={<Button size="sm" variant="outline" />}
+                  >
+                    Detail
+                  </DialogTrigger>
+                  <DialogContent className="max-h-[88dvh] overflow-y-auto sm:max-w-6xl">
+                    <OrderDetailDialogContainer orderId={order.id} />
+                  </DialogContent>
+                </Dialog>
               </TableCell>
             </TableRow>
           ))}

@@ -6,25 +6,20 @@ import {
   TableHeader,
   TableRow,
 } from "@tedx-2026/ui/components/table";
-import { formatDate } from "../../utils/order-management";
-import {
-  useOrderDetailStore,
-  type OrderDetailStoreState,
-} from "../../stores/use-order-detail-store";
+import type { DetailOrder } from "../../types/order";
+import { formatDate } from "../../utils/formatter";
 
-export function OrderDetailTicketsCard() {
-  const order = useOrderDetailStore(
-    (state: OrderDetailStoreState) => state.orderDetail
-  );
+type OrderDetailTicketsCardProps = {
+  tickets: NonNullable<DetailOrder["tickets"]>;
+};
 
-  if (!order) {
-    return null;
-  }
-
+export function OrderDetailTicketsCard({
+  tickets,
+}: OrderDetailTicketsCardProps) {
   return (
     <div className="space-y-3 rounded-lg border p-4" id="order-detail-tickets">
       <h3 className="font-semibold">Tickets</h3>
-      {order.tickets?.length ? (
+      {tickets.length > 0 ? (
         <Table>
           <TableHeader>
             <TableRow>
@@ -37,7 +32,7 @@ export function OrderDetailTicketsCard() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {order.tickets.map((ticket) => (
+            {tickets.map((ticket) => (
               <TableRow key={ticket.id}>
                 <TableCell>{ticket.id}</TableCell>
                 <TableCell>{ticket.qrCode}</TableCell>

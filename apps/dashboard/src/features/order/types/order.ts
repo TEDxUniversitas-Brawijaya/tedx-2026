@@ -8,7 +8,7 @@ export type OrderStatus =
   | "refund_requested"
   | "refunded";
 
-export type ListOrder = {
+export type Order = {
   id: string;
   type: OrderType;
   status: OrderStatus;
@@ -19,19 +19,11 @@ export type ListOrder = {
   paidAt: string | null;
 };
 
-export type OrderDetail = {
-  id: string;
-  type: OrderType;
-  status: OrderStatus;
-  buyerName: string;
-  buyerEmail: string;
+export type DetailOrder = Order & {
   buyerPhone: string;
   buyerCollege: string;
-  totalPrice: number;
   idempotencyKey: string | null;
   updatedAt: string;
-  createdAt: string;
-  paidAt: string | null;
   expiresAt: string | null;
   paymentMethod: "midtrans" | "manual" | null;
   midtransOrderId: string | null;
@@ -73,24 +65,4 @@ export type OrderDetail = {
     rejectionReason: string | null;
     createdAt: string;
   } | null;
-};
-
-export type OrderListState = {
-  type: "all" | OrderType;
-  status: "all" | OrderStatus;
-  search: string;
-  sortBy: "createdAt" | "totalPrice" | "status";
-  sortOrder: "asc" | "desc";
-  page: number;
-  limit: number;
-};
-
-export const initialOrderListState: OrderListState = {
-  type: "all",
-  status: "all",
-  search: "",
-  sortBy: "createdAt",
-  sortOrder: "desc",
-  page: 1,
-  limit: 10,
 };

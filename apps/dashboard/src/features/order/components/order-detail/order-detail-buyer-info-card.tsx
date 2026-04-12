@@ -1,17 +1,15 @@
-import {
-  useOrderDetailStore,
-  type OrderDetailStoreState,
-} from "../../stores/use-order-detail-store";
+type OrderDetailBuyerInfoCardProps = {
+  order: {
+    buyerName: string;
+    buyerEmail: string;
+    buyerPhone: string;
+    buyerCollege: string;
+  };
+};
 
-export function OrderDetailBuyerInfoCard() {
-  const order = useOrderDetailStore(
-    (state: OrderDetailStoreState) => state.orderDetail
-  );
-
-  if (!order) {
-    return null;
-  }
-
+export function OrderDetailBuyerInfoCard({
+  order,
+}: OrderDetailBuyerInfoCardProps) {
   return (
     <div
       className="grid gap-2 rounded-lg border p-4 md:grid-cols-2"

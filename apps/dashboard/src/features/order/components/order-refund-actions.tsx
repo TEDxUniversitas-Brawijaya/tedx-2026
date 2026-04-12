@@ -1,165 +1,84 @@
-import { queryClient } from "@/shared/lib/query-client";
-import { trpc } from "@/shared/lib/trpc";
-import { useMutation } from "@tanstack/react-query";
 import { Button } from "@tedx-2026/ui/components/button";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@tedx-2026/ui/components/field";
 import { Textarea } from "@tedx-2026/ui/components/textarea";
-import { useState } from "react";
-import { toast } from "sonner";
+import { useRefundActionForm } from "../hooks/use-refund-action-form";
 
 type OrderRefundActionsProps = {
   orderId: string;
 };
 
 export function OrderRefundActions({ orderId }: OrderRefundActionsProps) {
-  const [isRejectingRefund, setIsRejectingRefund] = useState(false);
-  const [refundRejectionReason, setRefundRejectionReason] = useState("");
-  const [refundReasonError, setRefundReasonError] = useState<string | null>(
-    null
-  );
-
-  const processRefundMutation = useMutation(
-    trpc.admin.order.processRefund.mutationOptions()
-  );
-
-  const handleApproveRefund = () => {
-    processRefundMutation.mutate(
-      {
-        action: "approve",
-        orderId,
-      },
-      {
-        onError: (error) => {
-          toast.error("Failed to approve refund", {
-            description: error.message,
-          });
-        },
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: trpc.admin.order.getById.queryKey({ orderId }),
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: trpc.admin.order.list.queryKey(),
-          });
-
-          setIsRejectingRefund(false);
-          setRefundReasonError(null);
-          setRefundRejectionReason("");
-
-          toast.success("Refund approved");
-        },
-      }
-    );
-  };
-
-  const handleRejectRefund = () => {
-    const trimmedReason = refundRejectionReason.trim();
-
-    if (!trimmedReason) {
-      setRefundReasonError("Rejection reason is required.");
-      return;
-    }
-
-    processRefundMutation.mutate(
-      {
-        action: "reject",
-        orderId,
-        reason: trimmedReason,
-      },
-      {
-        onError: (error) => {
-          toast.error("Failed to reject refund", {
-            description: error.message,
-          });
-        },
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: trpc.admin.order.getById.queryKey({ orderId }),
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: trpc.admin.order.list.queryKey(),
-          });
-
-          setIsRejectingRefund(false);
-          setRefundReasonError(null);
-          setRefundRejectionReason("");
-
-          toast.success("Refund rejected");
-        },
-      }
-    );
-  };
+  const form = useRefundActionForm(orderId);
 
   return (
-    <div className="space-y-3 rounded-lg border p-4" id="order-refund-actions">
-      <div className="flex flex-wrap items-center gap-2">
-        <Button
-          disabled={processRefundMutation.isPending}
-          id="order-refund-approve-button"
-          onClick={handleApproveRefund}
-          type="button"
-        >
-          {processRefundMutation.isPending ? "Processing..." : "Approve Refund"}
-        </Button>
-        <Button
-          disabled={processRefundMutation.isPending}
-          id="order-refund-reject-button"
-          onClick={() => {
-            setIsRejectingRefund((previousValue) => !previousValue);
-            setRefundReasonError(null);
-          }}
-          type="button"
-          variant="destructive"
-        >
-          Reject Refund
-        </Button>
-      </div>
+    <form
+      className="space-y-2"
+      id="order-refund-reject-form"
+      onSubmit={(e) => {
+        e.preventDefault();
+        form.handleRejectRefund();
+      }}
+    >
+      <FieldGroup>
+        <form.Field name="reason">
+          {(field) => {
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
 
-      {isRejectingRefund ? (
-        <div className="space-y-2" id="order-refund-reject-form">
-          <Textarea
-            aria-invalid={Boolean(refundReasonError)}
-            id="order-refund-rejection-reason"
-            onChange={(event) => {
-              setRefundRejectionReason(event.target.value);
-              if (refundReasonError) {
-                setRefundReasonError(null);
-              }
-            }}
-            placeholder="Write the reason for rejecting this refund request"
-            value={refundRejectionReason}
-          />
-          {refundReasonError ? (
-            <p className="text-destructive text-sm">{refundReasonError}</p>
-          ) : null}
-          <div className="flex flex-wrap gap-2">
-            <Button
-              disabled={processRefundMutation.isPending}
-              id="order-refund-submit-rejection"
-              onClick={handleRejectRefund}
-              type="button"
-              variant="destructive"
-            >
-              {processRefundMutation.isPending
-                ? "Processing..."
-                : "Confirm Rejection"}
-            </Button>
-            <Button
-              disabled={processRefundMutation.isPending}
-              id="order-refund-cancel-rejection"
-              onClick={() => {
-                setIsRejectingRefund(false);
-                setRefundReasonError(null);
-              }}
-              type="button"
-              variant="outline"
-            >
-              Cancel
-            </Button>
-          </div>
-        </div>
-      ) : null}
-    </div>
+            return (
+              <Field data-invalid={isInvalid}>
+                <FieldLabel htmlFor={field.name}>
+                  Reason for refund rejection
+                </FieldLabel>
+                <Textarea
+                  aria-invalid={isInvalid}
+                  disabled={form.isLoading}
+                  id={field.name}
+                  name={field.name}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  placeholder="Enter reason for refund rejection"
+                />
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        </form.Field>
+      </FieldGroup>
+      <Field
+        className="flex flex-row items-center gap-2"
+        orientation="horizontal"
+      >
+        <form.Subscribe>
+          {(field) => (
+            <>
+              <Button
+                className="flex-1"
+                disabled={field.isSubmitting}
+                id="order-refund-reject-form"
+                type="submit"
+                variant="destructive"
+              >
+                {field.isSubmitting ? "Processing..." : "Reject Refund"}
+              </Button>
+              <Button
+                className="flex-1"
+                disabled={field.isSubmitting}
+                id="order-refund-approve-button"
+                onClick={form.handleApproveRefund}
+                type="button"
+              >
+                {field.isSubmitting ? "Processing..." : "Approve Refund"}
+              </Button>
+            </>
+          )}
+        </form.Subscribe>
+      </Field>
+    </form>
   );
 }

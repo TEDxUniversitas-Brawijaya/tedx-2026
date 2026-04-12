@@ -6,22 +6,14 @@ import {
   TableHeader,
   TableRow,
 } from "@tedx-2026/ui/components/table";
-import type { OrderDetail } from "../../types/order";
-import { formatCurrency } from "../../utils/order-management";
-import {
-  useOrderDetailStore,
-  type OrderDetailStoreState,
-} from "../../stores/use-order-detail-store";
+import type { DetailOrder } from "../../types/order";
+import { formatCurrency } from "../../utils/formatter";
 
-export function OrderDetailItemsCard() {
-  const order = useOrderDetailStore(
-    (state: OrderDetailStoreState) => state.orderDetail
-  );
+type OrderDetailItemsCardProps = {
+  items: DetailOrder["items"];
+};
 
-  if (!order) {
-    return null;
-  }
-
+export function OrderDetailItemsCard({ items }: OrderDetailItemsCardProps) {
   return (
     <div className="rounded-lg border" id="order-detail-items">
       <Table>
@@ -37,7 +29,7 @@ export function OrderDetailItemsCard() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {order.items.map((item: OrderDetail["items"][number]) => (
+          {items.map((item) => (
             <TableRow key={item.id}>
               <TableCell id={`order-detail-item-${item.id}-id`}>
                 {item.id}
@@ -61,13 +53,7 @@ export function OrderDetailItemsCard() {
                 <span id={`order-detail-item-${item.id}-variants`}>
                   {item.snapshotVariants?.length
                     ? item.snapshotVariants
-                        .map(
-                          (
-                            variant: NonNullable<
-                              OrderDetail["items"][number]["snapshotVariants"]
-                            >[number]
-                          ) => `${variant.type}: ${variant.label}`
-                        )
+                        .map((variant) => `${variant.label} (${variant.type})`)
                         .join(", ")
                     : "-"}
                 </span>

@@ -1,8 +1,3 @@
-import {
-  useOrderFilterStore,
-  type OrderFilterStoreState,
-} from "../stores/use-order-filter-store";
-import type { OrderStatus, OrderType } from "../types/order";
 import { IconSearch } from "@tabler/icons-react";
 import { Input } from "@tedx-2026/ui/components/input";
 import {
@@ -12,16 +7,52 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@tedx-2026/ui/components/select";
+import { useOrderFilterStore } from "../stores/use-order-filter-store";
+
+const typeItems = [
+  { label: "All Types", value: "all" },
+  { label: "Ticket", value: "ticket" },
+  { label: "Merch", value: "merch" },
+];
+
+const statusItems = [
+  { label: "All Statuses", value: "all" },
+  { label: "Pending Payment", value: "pending_payment" },
+  { label: "Pending Verification", value: "pending_verification" },
+  { label: "Paid", value: "paid" },
+  { label: "Expired", value: "expired" },
+  { label: "Refund Requested", value: "refund_requested" },
+  { label: "Refunded", value: "refunded" },
+];
+
+const sortByItems = [
+  { label: "Created At", value: "createdAt" },
+  { label: "Total Price", value: "totalPrice" },
+  { label: "Status", value: "status" },
+];
+
+const sortOrderItems = [
+  { label: "Ascending", value: "asc" },
+  { label: "Descending", value: "desc" },
+];
+
+const rowsPerPageItems = [
+  { label: "5 rows", value: "5" },
+  { label: "10 rows", value: "10" },
+  { label: "20 rows", value: "20" },
+];
 
 export function OrderFilters() {
-  const patchOrderListState = useOrderFilterStore(
-    (state: OrderFilterStoreState) => state.patchOrderListState
-  );
-  const orderListState = useOrderFilterStore(
-    (state: OrderFilterStoreState) => state.orderListState
-  );
+  const {
+    filter: { limit, search, sortBy, sortOrder, status, type },
 
-  const { limit, search, sortBy, sortOrder, status, type } = orderListState;
+    onChangeSearch,
+    onChangeLimit,
+    onChangeSortBy,
+    onChangeSortOrder,
+    onChangeStatus,
+    onChangeType,
+  } = useOrderFilterStore();
 
   return (
     <div
@@ -45,10 +76,7 @@ export function OrderFilters() {
               className="pl-9"
               id="order-management-search"
               onChange={(event) => {
-                patchOrderListState({
-                  page: 1,
-                  search: event.target.value,
-                });
+                onChangeSearch(event.target.value);
               }}
               placeholder="Search by name, email, order ID"
               value={search}
@@ -64,15 +92,13 @@ export function OrderFilters() {
             Type
           </label>
           <Select
+            items={typeItems}
             onValueChange={(value) => {
               if (value === null) {
                 return;
               }
 
-              patchOrderListState({
-                page: 1,
-                type: value as "all" | OrderType,
-              });
+              onChangeType(value);
             }}
             value={type}
           >
@@ -80,9 +106,11 @@ export function OrderFilters() {
               <SelectValue placeholder="Filter by type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="ticket">ticket</SelectItem>
-              <SelectItem value="merch">merch</SelectItem>
+              {typeItems.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -95,15 +123,13 @@ export function OrderFilters() {
             Status
           </label>
           <Select
+            items={statusItems}
             onValueChange={(value) => {
               if (value === null) {
                 return;
               }
 
-              patchOrderListState({
-                page: 1,
-                status: value as "all" | OrderStatus,
-              });
+              onChangeStatus(value);
             }}
             value={status}
           >
@@ -114,15 +140,11 @@ export function OrderFilters() {
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
-              <SelectItem value="pending_payment">pending_payment</SelectItem>
-              <SelectItem value="pending_verification">
-                pending_verification
-              </SelectItem>
-              <SelectItem value="paid">paid</SelectItem>
-              <SelectItem value="expired">expired</SelectItem>
-              <SelectItem value="refund_requested">refund_requested</SelectItem>
-              <SelectItem value="refunded">refunded</SelectItem>
+              {statusItems.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -140,14 +162,13 @@ export function OrderFilters() {
             Sort By
           </label>
           <Select
+            items={sortByItems}
             onValueChange={(value) => {
               if (value === null) {
                 return;
               }
 
-              patchOrderListState({
-                sortBy: value as "createdAt" | "totalPrice" | "status",
-              });
+              onChangeSortBy(value);
             }}
             value={sortBy}
           >
@@ -155,9 +176,11 @@ export function OrderFilters() {
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="createdAt">createdAt</SelectItem>
-              <SelectItem value="totalPrice">totalPrice</SelectItem>
-              <SelectItem value="status">status</SelectItem>
+              {sortByItems.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -170,14 +193,13 @@ export function OrderFilters() {
             Sort Order
           </label>
           <Select
+            items={sortOrderItems}
             onValueChange={(value) => {
               if (value === null) {
                 return;
               }
 
-              patchOrderListState({
-                sortOrder: value as "asc" | "desc",
-              });
+              onChangeSortOrder(value);
             }}
             value={sortOrder}
           >
@@ -185,8 +207,11 @@ export function OrderFilters() {
               <SelectValue placeholder="Sort order" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="asc">asc</SelectItem>
-              <SelectItem value="desc">desc</SelectItem>
+              {sortOrderItems.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -199,15 +224,13 @@ export function OrderFilters() {
             Rows Per Page
           </label>
           <Select
+            items={rowsPerPageItems}
             onValueChange={(value) => {
               if (value === null) {
                 return;
               }
 
-              patchOrderListState({
-                limit: Number(value),
-                page: 1,
-              });
+              onChangeLimit(Number(value));
             }}
             value={String(limit)}
           >
@@ -218,9 +241,11 @@ export function OrderFilters() {
               <SelectValue placeholder="Rows per page" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="5">5 rows</SelectItem>
-              <SelectItem value="10">10 rows</SelectItem>
-              <SelectItem value="20">20 rows</SelectItem>
+              {rowsPerPageItems.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

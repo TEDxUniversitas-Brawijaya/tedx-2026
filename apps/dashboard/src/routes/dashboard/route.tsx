@@ -154,7 +154,7 @@ function RouteComponent() {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset className="[--header-height:4rem]">
-        <header className="sticky top-0 flex h-(--header-height) shrink-0 items-center justify-between gap-2 bg-background px-4">
+        <header className="sticky top-0 z-10 flex h-(--header-height) shrink-0 items-center justify-between gap-2 bg-background px-4">
           <div className="flex flex-1 flex-row items-center gap-2">
             <SidebarTrigger className="size-9" />
             <Separator

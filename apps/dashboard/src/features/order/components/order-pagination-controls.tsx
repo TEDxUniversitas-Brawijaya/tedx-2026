@@ -1,19 +1,35 @@
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { Button } from "@tedx-2026/ui/components/button";
+import { useOrderFilterStore } from "../stores/use-order-filter-store";
 
-type PaginationControlsProps = {
-  currentPage: number;
-  onNext: () => void;
-  onPrev: () => void;
+type OrderPaginationControlsProps = {
   totalPages: number;
 };
 
-export function PaginationControls({
-  currentPage,
-  onNext,
-  onPrev,
+export function OrderPaginationControls({
   totalPages,
-}: PaginationControlsProps) {
+}: OrderPaginationControlsProps) {
+  const {
+    filter: { page },
+    onChangePage,
+  } = useOrderFilterStore();
+
+  const onPrev = () => {
+    if (page <= 1) {
+      return;
+    }
+
+    onChangePage(page - 1);
+  };
+
+  const onNext = () => {
+    if (page >= totalPages) {
+      return;
+    }
+
+    onChangePage(page + 1);
+  };
+
   return (
     <div
       className="flex items-center justify-between"
@@ -23,7 +39,7 @@ export function PaginationControls({
         className="text-muted-foreground text-sm"
         id="order-management-pagination-text"
       >
-        Page {currentPage} of {totalPages}
+        Page {page} of {totalPages}
       </p>
       <div
         className="flex items-center gap-2"
@@ -32,7 +48,7 @@ export function PaginationControls({
         <div className="flex flex-col items-center gap-1">
           <Button
             aria-label="Previous page"
-            disabled={currentPage <= 1}
+            disabled={page <= 1}
             onClick={onPrev}
             size="icon-sm"
             title="Previous page"
@@ -45,7 +61,7 @@ export function PaginationControls({
         <div className="flex flex-col items-center gap-1">
           <Button
             aria-label="Next page"
-            disabled={currentPage >= totalPages}
+            disabled={page >= totalPages}
             onClick={onNext}
             size="icon-sm"
             title="Next page"

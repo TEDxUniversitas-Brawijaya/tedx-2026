@@ -1,10 +1,12 @@
-import { queryClient } from "@/shared/lib/query-client";
-import { trpc } from "@/shared/lib/trpc";
-import { useMutation } from "@tanstack/react-query";
 import { Button } from "@tedx-2026/ui/components/button";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@tedx-2026/ui/components/field";
 import { Textarea } from "@tedx-2026/ui/components/textarea";
-import { useState } from "react";
-import { toast } from "sonner";
+import { usePaymentVerificationActionForm } from "../hooks/use-payment-verification-form";
 
 type OrderPaymentVerificationActionsProps = {
   orderId: string;
@@ -13,157 +15,72 @@ type OrderPaymentVerificationActionsProps = {
 export function OrderPaymentVerificationActions({
   orderId,
 }: OrderPaymentVerificationActionsProps) {
-  const [isRejectingPayment, setIsRejectingPayment] = useState(false);
-  const [paymentRejectionReason, setPaymentRejectionReason] = useState("");
-  const [paymentReasonError, setPaymentReasonError] = useState<string | null>(
-    null
-  );
-
-  const verifyPaymentMutation = useMutation(
-    trpc.admin.order.verifyPayment.mutationOptions()
-  );
-
-  const handleApprovePayment = () => {
-    verifyPaymentMutation.mutate(
-      {
-        action: "approve",
-        orderId,
-      },
-      {
-        onError: (error) => {
-          toast.error("Failed to approve payment", {
-            description: error.message,
-          });
-        },
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: trpc.admin.order.getById.queryKey({ orderId }),
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: trpc.admin.order.list.queryKey(),
-          });
-
-          setIsRejectingPayment(false);
-          setPaymentReasonError(null);
-          setPaymentRejectionReason("");
-
-          toast.success("Payment approved");
-        },
-      }
-    );
-  };
-
-  const handleRejectPayment = () => {
-    const trimmedReason = paymentRejectionReason.trim();
-
-    if (!trimmedReason) {
-      setPaymentReasonError("Rejection reason is required.");
-      return;
-    }
-
-    verifyPaymentMutation.mutate(
-      {
-        action: "reject",
-        orderId,
-        reason: trimmedReason,
-      },
-      {
-        onError: (error) => {
-          toast.error("Failed to reject payment", {
-            description: error.message,
-          });
-        },
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: trpc.admin.order.getById.queryKey({ orderId }),
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: trpc.admin.order.list.queryKey(),
-          });
-
-          setIsRejectingPayment(false);
-          setPaymentReasonError(null);
-          setPaymentRejectionReason("");
-
-          toast.success("Payment rejected");
-        },
-      }
-    );
-  };
+  const form = usePaymentVerificationActionForm(orderId);
 
   return (
-    <div className="space-y-3 rounded-lg border p-4" id="order-payment-actions">
-      <div className="flex flex-wrap items-center gap-2">
-        <Button
-          disabled={verifyPaymentMutation.isPending}
-          id="order-payment-approve-button"
-          onClick={handleApprovePayment}
-          type="button"
-        >
-          {verifyPaymentMutation.isPending
-            ? "Processing..."
-            : "Approve Payment"}
-        </Button>
-        <Button
-          disabled={verifyPaymentMutation.isPending}
-          id="order-payment-reject-button"
-          onClick={() => {
-            setIsRejectingPayment((previousValue) => !previousValue);
-            setPaymentReasonError(null);
-          }}
-          type="button"
-          variant="destructive"
-        >
-          Reject Payment
-        </Button>
-      </div>
+    <form
+      className="space-y-2"
+      id="order-payment-verification-reject-form"
+      onSubmit={(e) => {
+        e.preventDefault();
+        form.handleRejectPayment();
+      }}
+    >
+      <FieldGroup>
+        <form.Field name="reason">
+          {(field) => {
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
 
-      {isRejectingPayment ? (
-        <div className="space-y-2" id="order-payment-reject-form">
-          <Textarea
-            aria-invalid={Boolean(paymentReasonError)}
-            id="order-payment-rejection-reason"
-            onChange={(event) => {
-              setPaymentRejectionReason(event.target.value);
-              if (paymentReasonError) {
-                setPaymentReasonError(null);
-              }
-            }}
-            placeholder="Write the reason for rejecting this payment"
-            value={paymentRejectionReason}
-          />
-          {paymentReasonError ? (
-            <p className="text-destructive text-sm">{paymentReasonError}</p>
-          ) : null}
-          <div className="flex flex-wrap gap-2">
-            <Button
-              disabled={verifyPaymentMutation.isPending}
-              id="order-payment-submit-rejection"
-              onClick={handleRejectPayment}
-              type="button"
-              variant="destructive"
-            >
-              {verifyPaymentMutation.isPending
-                ? "Processing..."
-                : "Confirm Rejection"}
-            </Button>
-            <Button
-              disabled={verifyPaymentMutation.isPending}
-              id="order-payment-cancel-rejection"
-              onClick={() => {
-                setIsRejectingPayment(false);
-                setPaymentReasonError(null);
-              }}
-              type="button"
-              variant="outline"
-            >
-              Cancel
-            </Button>
-          </div>
-        </div>
-      ) : null}
-    </div>
+            return (
+              <Field data-invalid={isInvalid}>
+                <FieldLabel htmlFor={field.name}>
+                  Reason for payment rejection
+                </FieldLabel>
+                <Textarea
+                  aria-invalid={isInvalid}
+                  disabled={form.isLoading}
+                  id={field.name}
+                  name={field.name}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  placeholder="Enter reason for payment rejection"
+                />
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        </form.Field>
+      </FieldGroup>
+      <Field
+        className="flex flex-row items-center gap-2"
+        orientation="horizontal"
+      >
+        <form.Subscribe>
+          {(field) => (
+            <>
+              <Button
+                className="flex-1"
+                disabled={field.isSubmitting}
+                id="order-payment-verification-reject-form"
+                type="submit"
+                variant="destructive"
+              >
+                {field.isSubmitting ? "Processing..." : "Reject Payment"}
+              </Button>
+              <Button
+                className="flex-1"
+                disabled={field.isSubmitting}
+                id="order-payment-verification-approve-button"
+                onClick={form.handleApprovePayment}
+                type="button"
+              >
+                {field.isSubmitting ? "Processing..." : "Approve Payment"}
+              </Button>
+            </>
+          )}
+        </form.Subscribe>
+      </Field>
+    </form>
   );
 }
