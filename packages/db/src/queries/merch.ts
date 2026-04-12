@@ -244,7 +244,7 @@ export const createMerchQueries = (db: DB): MerchQueries => ({
       .where(
         and(
           eq(ordersTable.status, "pending_payment"),
-          sql`${ordersTable.expiresAt} < ${nowIso}`
+          sql`datetime(${ordersTable.expiresAt}) < datetime(${nowIso})`
         )
       )
       .returning({ id: ordersTable.id });
