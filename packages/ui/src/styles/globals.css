@@ -122,7 +122,7 @@
   /* This is from Figma */
   /* Colors */
   --color-red: oklch(0.351 0.094 20.649);
-  --color-gray-2: #e0e0e0;
+  --color-gray-2: oklch(0.9067 0 0);
   --color-red-2: oklch(0.577 0.215 27.527);
   --color-green: oklch(0.406 0.064 194.914);
   --color-black: oklch(0.26 0 0);
