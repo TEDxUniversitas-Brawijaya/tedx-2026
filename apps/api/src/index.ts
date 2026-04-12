@@ -29,46 +29,30 @@ type Bindings = {
   SUPERADMIN_EMAILS: string; // Comma-separated list of superadmin emails
 };
 
+// CORS allowed origin patterns (top-level for performance)
+const ALLOWED_ORIGIN_PATTERNS = [
+  /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/, // localhost with any port (http/https)
+  /^https:\/\/(.*\.)?tedxuniversitasbrawijaya\.com$/, // production domain + subdomains (https only)
+  /^https:\/\/.*\.workers\.dev$/, // Cloudflare Workers preview (https only)
+];
+
 const app = new Hono<{
   Bindings: Bindings;
 }>();
 
 app.use(logger());
 
-// TODO: SCALABILITY - Add rate limiting middleware
-// Current implementation has no rate limiting, making it vulnerable to:
-// - DDoS attacks
-// - Resource exhaustion
-// - API abuse
-// Recommended solutions:
-// 1. Use Cloudflare Workers KV for rate limiting state
-// 2. Implement sliding window algorithm (e.g., 100 requests per minute per IP)
-// 3. Add different limits for authenticated vs unauthenticated users
-// 4. Return 429 Too Many Requests with Retry-After header
-// Example: app.use(rateLimit({ windowMs: 60000, maxRequests: 100 }))
-
 app.use(
   "/*",
   cors({
     origin: (origin) => {
-      // TODO: SECURITY VULNERABILITY - Fix CORS origin matching
-      // Current implementation uses .includes() which is unsafe:
-      // - "evil-localhost.com" would match "localhost"
-      // - "tedxuniversitasbrawijaya.com.attacker.com" would match "tedxuniversitasbrawijaya.com"
-      // Fix: Use exact domain matching or regex with proper anchoring:
-      // const allowedOrigins = ["http://localhost:5173", "https://tedxuniversitasbrawijaya.com"];
-      // return allowedOrigins.includes(origin) ? origin : null;
-      // Or use regex: /^https:\/\/(.*\.)?ahargunyllib\.dev$/
-      const allowedOrigins = [
-        "localhost",
-        "tedxuniversitasbrawijaya.com",
-        "workers.dev",
-      ];
-      if (
-        allowedOrigins.some((allowedOrigin) => origin.includes(allowedOrigin))
-      ) {
-        return origin;
-      }
+      // Secure CORS origin validation using regex with proper anchoring
+      // Prevents attacks from domains like "evil-localhost.com" or "tedxuniversitasbrawijaya.com.attacker.com"
+      const isAllowed = ALLOWED_ORIGIN_PATTERNS.some((pattern) =>
+        pattern.test(origin)
+      );
+
+      return isAllowed ? origin : null;
     },
     allowMethods: ["GET", "POST", "OPTIONS"],
     allowHeaders: ["Content-Type", "Authorization", "trpc-accept"],

@@ -57,6 +57,7 @@ export const createTRPCRouter = t.router;
 
 /**
  * Public procedure that does not require authentication.
+ * Protected by CAPTCHA validation.
  */
 export const publicProcedure = baseProcedure;
 
