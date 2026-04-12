@@ -129,6 +129,13 @@ export const createPaymentService = ({
       grossAmount,
       signatureKey,
     }) => {
+      if (!serverKey) {
+        throw new AppError(
+          "INTERNAL_SERVER_ERROR",
+          "Midtrans server key is not configured"
+        );
+      }
+
       const payload = `${orderId}${statusCode}${grossAmount}${serverKey}`;
       const data = new TextEncoder().encode(payload);
       const digestBuffer = await crypto.subtle.digest("SHA-512", data);
