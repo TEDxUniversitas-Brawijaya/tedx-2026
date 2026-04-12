@@ -38,7 +38,7 @@ export function BundleSelectionStep({
               alt={activeProduct.name}
               className="h-full w-full object-cover"
               height={160}
-              src={activeProduct.imageUrl ?? ""}
+              src={activeProduct.imageUrl || undefined}
               width={160}
             />
           </div>
@@ -106,7 +106,7 @@ export function BundleSelectionStep({
                             alt={product.name}
                             className="h-full w-full object-cover"
                             height={72}
-                            src={product.imageUrl ?? ""}
+                            src={product.imageUrl || undefined}
                             width={72}
                           />
                         </div>

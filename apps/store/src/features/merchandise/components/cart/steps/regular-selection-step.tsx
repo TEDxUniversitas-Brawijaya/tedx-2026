@@ -53,7 +53,7 @@ export function RegularSelectionStep({
               alt={activeProduct.name}
               className="h-full w-full object-cover"
               height={160}
-              src={activeProduct.imageUrl ?? ""}
+              src={activeProduct.imageUrl || undefined}
               width={160}
             />
           </div>

@@ -54,7 +54,7 @@ export function CartStep({
                   alt={item.name}
                   className="h-full w-full object-cover"
                   height={400}
-                  src={item.imageUrl ?? ""}
+                  src={item.imageUrl || undefined}
                   width={400}
                 />
               </div>

@@ -148,7 +148,9 @@ export const MerchPageContainer = () => {
 
         return {
           id: index,
-          imageUrl: heroImages[index % heroImages.length] ?? "",
+          imageUrl:
+            heroImages[index % heroImages.length] ??
+            "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=800",
           width,
           x,
           zIndex: Math.floor(itemProgress * 10),
