@@ -1,4 +1,4 @@
-import Logo from "../../../../public/x.png";
+import Logo from "@/assets/imgs/x.png";
 import CategorySection from "../components/category-section";
 import Hero from "../components/hero";
 import HeroImage from "../components/hero-image";
