@@ -6,49 +6,77 @@ import {
   listOrdersOutputSchema,
   processRefundInputSchema,
   verifyPaymentInputSchema,
+  verifyPaymentOutputSchema,
 } from "../../schemas/order";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
 
 const list = protectedProcedure
   .input(listOrdersInputSchema)
   .output(listOrdersOutputSchema)
-  .query(() => {
-    // TODO: Implement admin.order.list
-    // - Apply filters: type, status, search
-    // - Apply sorting: sortBy, sortOrder
-    // - Apply pagination: page, limit
-    // - Return orders with pagination info
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.order.list is not implemented yet",
+  .query(async ({ ctx, input }) => {
+    const result = await ctx.services.order.listAdminOrders({
+      page: input.page,
+      limit: input.limit,
+      type: input.type,
+      status: input.status,
+      search: input.search,
+      sortBy: input.sortBy,
+      sortOrder: input.sortOrder,
     });
+
+    return {
+      orders: result.orders.map((order) => ({
+        id: order.id,
+        type: order.type,
+        status: order.status,
+        buyerName: order.buyerName,
+        buyerEmail: order.buyerEmail,
+        totalPrice: order.totalPrice,
+        createdAt: order.createdAt,
+        paidAt: order.paidAt,
+      })),
+      pagination: {
+        page: input.page,
+        limit: input.limit,
+        total: result.total,
+        totalPages: Math.max(1, Math.ceil(result.total / input.limit)),
+      },
+    };
   });
 
 const getById = protectedProcedure
   .input(getOrderByIdInputSchema)
   .output(getOrderByIdOutputSchema)
-  .query(() => {
-    // TODO: Implement admin.order.getById
-    // - Fetch full order details including items, tickets, payment, and refund info
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.order.getById is not implemented yet",
-    });
+  .query(async ({ ctx, input }) => {
+    const result = await ctx.services.order.getAdminOrderById(input.orderId);
+
+    return {
+      ...result.order,
+      items: result.items,
+      tickets: [],
+      refund: null,
+    };
   });
 
 const verifyPayment = protectedProcedure
   .input(verifyPaymentInputSchema)
-  .output(getOrderByIdOutputSchema)
-  .mutation(() => {
-    // TODO: Implement admin.order.verifyPayment
-    // - Validate order exists and status is pending_verification
-    // - If action is "approve": update order to "paid", generate tickets + QR, queue confirmation email
-    // - If action is "reject": update order with rejection reason, release stock
-    // - Return order status and message
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.order.verifyPayment is not implemented yet",
+  .output(verifyPaymentOutputSchema)
+  .mutation(async ({ ctx, input }) => {
+    const status = await ctx.services.order.verifyPayment({
+      orderId: input.orderId,
+      action: input.action,
+      reason: input.reason,
+      verifierId: ctx.session.user.id,
     });
+
+    return {
+      orderId: input.orderId,
+      status,
+      message:
+        status === "paid"
+          ? "Payment has been approved"
+          : "Payment has been rejected",
+    };
   });
 
 const processRefund = protectedProcedure
