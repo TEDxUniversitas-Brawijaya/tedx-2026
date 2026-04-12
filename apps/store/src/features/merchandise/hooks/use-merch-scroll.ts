@@ -4,7 +4,7 @@ export const useMerchScroll = (speedFactor = 0.001) => {
   const [renderScroll, setRenderScroll] = useState(0);
   const virtualScroll = useRef(0);
   const currentInterpolated = useRef(0);
-  const requestRef = useRef<number>(null);
+  const requestRef = useRef<number | null>(null);
 
   useEffect(() => {
     const animate = () => {
