@@ -3,4 +3,7 @@ export {
   type KV,
   type KVNamespaceType,
 } from "./kv";
-// export { createTodoOperations, type TodoOperations } from "./operations";
+export {
+  createOrderKVOperations,
+  type OrderKVOperations,
+} from "./operations";
