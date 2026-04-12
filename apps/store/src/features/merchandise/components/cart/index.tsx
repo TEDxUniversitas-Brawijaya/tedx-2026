@@ -38,10 +38,10 @@ export function CheckoutModal({
         <img
           alt="chandelier"
           aria-hidden="true"
-          className="k pointer-events-none absolute -top-15 -right-15 z-1 w-44 opacity-30 md:w-56"
-          height={100}
+          className="pointer-events-none absolute -top-15 -right-15 z-1 w-44 opacity-30 md:w-56"
+          height={300}
           src={Chandelier}
-          width={100}
+          width={150}
         />
         <div className="relative z-2 w-full p-4 sm:p-8">
           {currentStep !== "selection" && currentStep !== "success" && (
