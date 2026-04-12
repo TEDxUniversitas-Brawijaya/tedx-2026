@@ -1177,7 +1177,9 @@ import EnvelopeOpen from "@/assets/imgs/envelope-open.png";
           (document.activeElement === firstFocusableElement ||
             isActiveOutsideDialog);
         const shouldWrapForward =
-          !event.shiftKey && document.activeElement === lastFocusableElement;
+          !event.shiftKey &&
+          (document.activeElement === lastFocusableElement ||
+            isActiveOutsideDialog);
 
         if (shouldWrapBackward) {
           event.preventDefault();
