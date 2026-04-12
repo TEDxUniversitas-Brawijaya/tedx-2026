@@ -12,6 +12,9 @@ export {
   createProductNotFoundError,
 } from "./product-error";
 
-export { createOrderNotFoundError } from "./order-error";
+export {
+  createInvalidOrderStatusError,
+  createOrderNotFoundError,
+} from "./order-error";
 
 export { createPaymentModeMismatchError } from "./payment-error";

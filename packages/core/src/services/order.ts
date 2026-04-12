@@ -1,5 +1,6 @@
 import type { ConfigQueries, MerchQueries } from "@tedx-2026/db";
 import {
+  createInvalidOrderStatusError,
   createOrderNotFoundError,
   createPaymentModeMismatchError,
 } from "../errors";
@@ -73,10 +74,16 @@ export const createOrderService = ({
       throw createOrderNotFoundError(orderId);
     }
 
+    const orderPaymentMethod = order.paymentMethod ?? "manual";
+    if (orderPaymentMethod !== "manual") {
+      throw createPaymentModeMismatchError("manual", orderPaymentMethod);
+    }
+
     if (!isPendingPayment(order.status)) {
-      throw createPaymentModeMismatchError(
-        "manual",
-        order.paymentMethod ?? "manual"
+      throw createInvalidOrderStatusError(
+        orderId,
+        "pending_payment",
+        order.status
       );
     }
 
