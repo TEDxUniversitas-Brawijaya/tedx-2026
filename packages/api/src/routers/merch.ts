@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server";
 import {
   createMerchOrderInputSchema,
   createMerchOrderOutputSchema,
@@ -8,6 +7,15 @@ import {
   listMerchProductsOutputSchema,
 } from "../schemas/merch";
 import { createTRPCRouter, publicProcedure } from "../trpc";
+
+const generateOrderId = () => {
+  const now = new Date();
+  const yy = now.getFullYear().toString().slice(-2);
+  const mm = `${now.getMonth() + 1}`.padStart(2, "0");
+  const dd = `${now.getDate()}`.padStart(2, "0");
+  const random = Math.random().toString(36).toUpperCase().slice(2, 7);
+  return `TDX-${yy}${mm}${dd}-${random}`;
+};
 
 const listProducts = publicProcedure
   .input(listMerchProductsInputSchema)
@@ -158,6 +166,7 @@ const listProducts = publicProcedure
         id: "prod_m_topi_1",
         type: "merch_regular",
         name: "Topi 1",
+        category: "hat",
         description: "TEDxUB 2026 Cap",
         price: 50_000,
         isActive: true,
@@ -174,6 +183,7 @@ const listProducts = publicProcedure
         name: "Socks",
         description: "TEDxUB 2026 Socks",
         price: 35_000,
+        category: "socks",
         isActive: true,
         variants: [{ id: "var_sk_free", type: "size", label: "Free Size" }],
         createdAt: now,
@@ -186,6 +196,7 @@ const listProducts = publicProcedure
         description: "TEDxUB 2026 Keychain",
         price: 25_000,
         isActive: true,
+        category: "keychain",
         createdAt: now,
         updatedAt: now,
       },
@@ -196,6 +207,7 @@ const listProducts = publicProcedure
         description: "TEDxUB 2026 Sticker Pack",
         price: 15_000,
         isActive: true,
+        category: "stickers",
         createdAt: now,
         updatedAt: now,
       },
@@ -444,31 +456,50 @@ const listProducts = publicProcedure
 const createOrder = publicProcedure
   .input(createMerchOrderInputSchema)
   .output(createMerchOrderOutputSchema)
-  .mutation(() => {
-    // TODO: Implement merch.createOrder
-    // - Validate CAPTCHA
-    // - Check idempotency key
-    // - Validate all products exist and are active
-    // - Check pre-order deadline not passed (from config)
-    // - Validate variant IDs are valid for each product
-    // - Validate payment proof if payment_mode is manual
-    // - Create order with pending_payment or pending_verification status
-    // - Return order details with payment info
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "merch.createOrder is not implemented yet",
-    });
+  .mutation((opts) => {
+    const totalPrice = opts.input.items.reduce(
+      (sum, item) => sum + item.quantity * 100_000,
+      0
+    );
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+
+    return {
+      orderId: generateOrderId(),
+      status: "paid",
+      totalPrice,
+      expiresAt,
+      payment: {
+        uploadUrl: "https://example.com/upload",
+      },
+    };
   });
 
 const getOrderStatus = publicProcedure
   .input(getMerchOrderStatusInputSchema)
   .output(getMerchOrderStatusOutputSchema)
-  .query(() => {
-    // TODO: Implement merch.getOrderStatus
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "merch.getOrderStatus is not implemented yet",
-    });
+  .query((opts) => {
+    const now = new Date().toISOString();
+    return {
+      orderId: opts.input.orderId,
+      status: "paid",
+      type: "merch",
+      totalPrice: 250_000,
+      items: [
+        {
+          snapshotName: "TEDx Merch Item",
+          quantity: 1,
+          unitPrice: 150_000,
+          snapshotVariants: [{ label: "M", type: "size" }],
+        },
+        {
+          snapshotName: "Sticker Pack",
+          quantity: 1,
+          unitPrice: 100_000,
+        },
+      ],
+      createdAt: now,
+      paidAt: now,
+    };
   });
 
 export const merchRouter = createTRPCRouter({

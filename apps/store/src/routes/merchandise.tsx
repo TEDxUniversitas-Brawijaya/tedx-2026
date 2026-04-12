@@ -1,10 +1,12 @@
+import MerchContainer from "@/features/merchandise/container/merch-container";
 import { createFileRoute } from "@tanstack/react-router";
-import MerchContainer from "../features/merchandise/container/merch-container";
+import { z } from "zod";
 
-export const Route = createFileRoute("/merchandise")({
-  component: RouteComponent,
+const merchSearchSchema = z.object({
+  filter: z.string().optional(),
 });
 
-function RouteComponent() {
-  return <MerchContainer />;
-}
+export const Route = createFileRoute("/merchandise")({
+  validateSearch: (search) => merchSearchSchema.parse(search),
+  component: MerchContainer,
+});

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import {
   bundleItemSchema,
-  buyerInfoSchema,
+  merchBuyerInfoSchema,
   captchaTokenSchema,
   idempotencyKeySchema,
   imageFileSchema,
@@ -32,7 +32,7 @@ export const listMerchProductsOutputSchema = z.array(
 );
 
 // merch.createOrder
-export const createMerchOrderInputSchema = buyerInfoSchema.extend({
+export const createMerchOrderInputSchema = merchBuyerInfoSchema.extend({
   items: z.array(
     z.object({
       productId: productIdSchema,
@@ -47,7 +47,10 @@ export const createMerchOrderInputSchema = buyerInfoSchema.extend({
 
 export const createMerchOrderOutputSchema = z.object({
   orderId: orderIdSchema,
-  status: z.literal("pending_payment").or(z.literal("pending_verification")),
+  status: z
+    .literal("pending_payment")
+    .or(z.literal("pending_verification"))
+    .or(z.literal("paid")),
   totalPrice: z.number().int(),
   expiresAt: isoDateStringSchema,
   payment: z
