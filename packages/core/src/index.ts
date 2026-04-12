@@ -1,14 +1,26 @@
 export {
   AppError,
   ErrorCode,
+  createInvalidVariantsError,
+  createOrderNotFoundError,
+  createPaymentModeMismatchError,
+  createPreorderDeadlinePassedError,
+  createProductInactiveError,
+  createProductNotFoundError,
   type ErrorCodeType,
   type ErrorMetadata,
 } from "./errors";
 export {
   createEmailService,
   createFileService,
+  createMerchService,
+  createOrderService,
+  createPaymentService,
   createUserService,
   type EmailService,
   type FileServices,
+  type MerchService,
+  type OrderService,
+  type PaymentService,
   type UserServices,
 } from "./services";
