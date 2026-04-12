@@ -157,15 +157,26 @@ export const createOrderService = ({
   },
 
   verifyPayment: async ({ orderId, action, reason, verifierId }) => {
+    const paymentMode = await configQueries.getPaymentMode();
+    if (paymentMode !== "manual") {
+      throw createPaymentModeMismatchError("manual", paymentMode);
+    }
+
     const order = await merchQueries.getOrderById(orderId);
     if (!order) {
       throw createOrderNotFoundError(orderId);
     }
 
+    const orderPaymentMethod = order.paymentMethod ?? "manual";
+    if (orderPaymentMethod !== "manual") {
+      throw createPaymentModeMismatchError("manual", orderPaymentMethod);
+    }
+
     if (order.status !== "pending_verification") {
-      throw createPaymentModeMismatchError(
-        "manual",
-        order.paymentMethod ?? "manual"
+      throw createInvalidOrderStatusError(
+        orderId,
+        "pending_verification",
+        order.status
       );
     }
 
