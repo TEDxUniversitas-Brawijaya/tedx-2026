@@ -1,5 +1,6 @@
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { Button } from "@tedx-2026/ui/components/button";
+import { cn } from "@tedx-2026/ui/lib/utils";
 import {
   Select,
   SelectContent,
@@ -194,11 +195,12 @@ export function RegularSelectionStep({
           <div className="mt-2 grid grid-cols-2 gap-2.5">
             {categorySiblings.map((prod) => (
               <button
-                className={`flex w-full min-w-0 items-center justify-between gap-2 overflow-hidden rounded-xl border-[3px] bg-white px-2 py-1.5 text-black transition-all ${
+                className={cn(
+                  "flex w-full min-w-0 items-center justify-between gap-2 overflow-hidden rounded-xl border-[3px] bg-white px-2 py-1.5 text-black transition-all",
                   activeProduct.id === prod.id
                     ? "border-red-2 shadow-md"
                     : "border-transparent hover:bg-neutral-100"
-                }`}
+                )}
                 key={prod.id}
                 onClick={() => onProductSwitch(prod)}
                 type="button"

@@ -22,10 +22,6 @@ export const useCategoryScroll = () => {
   const activeIndexRef = useRef(0);
 
   useEffect(() => {
-    activeIndexRef.current = activeIndex;
-  }, [activeIndex]);
-
-  useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) {
       return;
@@ -63,7 +59,8 @@ export const useCategoryScroll = () => {
     const normalizedScroll = scrollLeft % totalSetWidth;
     const currentActive =
       Math.round(normalizedScroll / itemWidth) % CATEGORIES.length;
-    if (currentActive !== activeIndex) {
+    if (currentActive !== activeIndexRef.current) {
+      activeIndexRef.current = currentActive;
       setActiveIndex(currentActive);
     }
   };

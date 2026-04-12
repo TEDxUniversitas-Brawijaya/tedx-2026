@@ -2,6 +2,7 @@ const CatalogX = "/catalogx.png";
 
 import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import { cn } from "@tedx-2026/ui/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +31,10 @@ const Image = ({
 }) => (
   <img
     alt={alt}
-    className={`${fill ? "absolute inset-0 h-full w-full object-cover" : ""} ${className}`}
+    className={cn(
+      fill && "absolute inset-0 h-full w-full object-cover",
+      className
+    )}
     height={100}
     src={src}
     width={100}
@@ -104,13 +108,19 @@ export default function ProductListSection({
           <div>
             <h3 className="mb-5 font-semibold text-xl">SEMUA</h3>
             <button
-              className={`flex w-full cursor-pointer flex-row items-center justify-between border-[#CACACA]/35 border-b-2 py-2 transition-all duration-150 hover:bg-neutral-100 ${isAllFilterActive ? "text-tedx-black" : "text-neutral-400"}`}
+              className={cn(
+                "flex w-full cursor-pointer flex-row items-center justify-between border-[#CACACA]/35 border-b-2 py-2 transition-all duration-150 hover:bg-neutral-100",
+                isAllFilterActive ? "text-tedx-black" : "text-neutral-400"
+              )}
               onClick={() => onSelectFilter("")}
               type="button"
             >
               <span className="text-xl uppercase">SEMUA</span>
               <span
-                className={`font-semibold text-2xl leading-none ${isAllFilterActive ? "text-[#FF1818]" : "text-[#FF1818]/50"}`}
+                className={cn(
+                  "font-semibold text-2xl leading-none",
+                  isAllFilterActive ? "text-[#FF1818]" : "text-[#FF1818]/50"
+                )}
               >
                 {merchs.length}
               </span>
@@ -125,14 +135,20 @@ export default function ProductListSection({
 
               return (
                 <button
-                  className={`flex w-full cursor-pointer flex-row items-center justify-between border-[#CACACA]/35 border-b-2 py-2 transition-all duration-150 hover:bg-neutral-100 ${isTypeActive ? "text-tedx-black" : "text-neutral-400"}`}
+                  className={cn(
+                    "flex w-full cursor-pointer flex-row items-center justify-between border-[#CACACA]/35 border-b-2 py-2 transition-all duration-150 hover:bg-neutral-100",
+                    isTypeActive ? "text-tedx-black" : "text-neutral-400"
+                  )}
                   key={category}
                   onClick={() => onSelectFilter(category)}
                   type="button"
                 >
                   <span className="text-xl uppercase">{category}</span>
                   <span
-                    className={`font-semibold text-2xl leading-none ${isTypeActive ? "text-[#FF1818]" : "text-[#FF1818]/50"}`}
+                    className={cn(
+                      "font-semibold text-2xl leading-none",
+                      isTypeActive ? "text-[#FF1818]" : "text-[#FF1818]/50"
+                    )}
                   >
                     {count}
                   </span>
@@ -143,13 +159,19 @@ export default function ProductListSection({
           <div>
             <h3 className="mb-5 font-semibold text-xl">BUNDLING</h3>
             <button
-              className={`flex w-full cursor-pointer flex-row items-center justify-between border-[#CACACA]/35 border-b-2 py-2 transition-all duration-150 hover:bg-neutral-100 ${filter === "bundling" ? "text-tedx-black" : "text-neutral-400"}`}
+              className={cn(
+                "flex w-full cursor-pointer flex-row items-center justify-between border-[#CACACA]/35 border-b-2 py-2 transition-all duration-150 hover:bg-neutral-100",
+                filter === "bundling" ? "text-tedx-black" : "text-neutral-400"
+              )}
               onClick={() => onSelectFilter("bundling")}
               type="button"
             >
               <span className="text-xl uppercase">BUNDLING</span>
               <span
-                className={`font-semibold text-2xl leading-none ${filter === "bundling" ? "text-[#FF1818]" : "text-[#FF1818]/50"}`}
+                className={cn(
+                  "font-semibold text-2xl leading-none",
+                  filter === "bundling" ? "text-[#FF1818]" : "text-[#FF1818]/50"
+                )}
               >
                 {counts.bundling}
               </span>
@@ -169,19 +191,28 @@ export default function ProductListSection({
                   </span>
                 </div>
                 <ChevronDownIcon
-                  className={`transition-all duration-300 ${showMenu && "rotate-180"}`}
+                  className={cn(
+                    "transition-all duration-300",
+                    showMenu && "rotate-180"
+                  )}
                   size={17}
                 />
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-48 bg-white p-0">
               <DropdownMenuItem
-                className={`${filter ? "text-neutral-400" : "text-tedx-black"} flex w-full flex-row items-center justify-between gap-4 border-[#CACACA]/35 border-b-2 p-2 focus:bg-zinc-100`}
+                className={cn(
+                  "flex w-full flex-row items-center justify-between gap-4 border-[#CACACA]/35 border-b-2 p-2 focus:bg-zinc-100",
+                  filter ? "text-neutral-400" : "text-tedx-black"
+                )}
                 onClick={() => onSelectFilter("")}
               >
                 <span className="uppercase">SEMUA</span>
                 <span
-                  className={`font-semibold text-[#FF1818] leading-none ${filter ? "text-[#FF1818]/50" : "text-[#FF1818]"}`}
+                  className={cn(
+                    "font-semibold text-[#FF1818] leading-none",
+                    filter ? "text-[#FF1818]/50" : "text-[#FF1818]"
+                  )}
                 >
                   {merchs.length}
                 </span>
@@ -193,13 +224,19 @@ export default function ProductListSection({
 
                 return (
                   <DropdownMenuItem
-                    className={`${isTypeActive ? "text-tedx-black" : "text-neutral-400"} flex w-full flex-row items-center justify-between gap-4 border-[#CACACA]/35 border-b-2 p-2 focus:bg-zinc-100`}
+                    className={cn(
+                      "flex w-full flex-row items-center justify-between gap-4 border-[#CACACA]/35 border-b-2 p-2 focus:bg-zinc-100",
+                      isTypeActive ? "text-tedx-black" : "text-neutral-400"
+                    )}
                     key={category}
                     onClick={() => onSelectFilter(category)}
                   >
                     <span className="uppercase">{category}</span>
                     <span
-                      className={`font-semibold text-[#FF1818] leading-none ${isTypeActive ? "text-[#FF1818]" : "text-[#FF1818]/50"}`}
+                      className={cn(
+                        "font-semibold text-[#FF1818] leading-none",
+                        isTypeActive ? "text-[#FF1818]" : "text-[#FF1818]/50"
+                      )}
                     >
                       {count}
                     </span>
@@ -207,12 +244,20 @@ export default function ProductListSection({
                 );
               })}
               <DropdownMenuItem
-                className={`${filter === "bundling" ? "text-tedx-black" : "text-neutral-400"} flex w-full flex-row items-center justify-between gap-4 border-[#CACACA]/35 border-b-2 p-2 focus:bg-zinc-100`}
+                className={cn(
+                  "flex w-full flex-row items-center justify-between gap-4 border-[#CACACA]/35 border-b-2 p-2 focus:bg-zinc-100",
+                  filter === "bundling" ? "text-tedx-black" : "text-neutral-400"
+                )}
                 onClick={() => onSelectFilter("bundling")}
               >
                 <span>BUNDLING</span>
                 <span
-                  className={`font-semibold text-[#FF1818] leading-none ${filter === "bundling" ? "text-[#FF1818]" : "text-[#FF1818]/50"}`}
+                  className={cn(
+                    "font-semibold text-[#FF1818] leading-none",
+                    filter === "bundling"
+                      ? "text-[#FF1818]"
+                      : "text-[#FF1818]/50"
+                  )}
                 >
                   {counts.bundling}
                 </span>
@@ -226,11 +271,12 @@ export default function ProductListSection({
           {productGridContent}
         </div>
         <div
-          className={`fixed right-6 bottom-6 z-50 transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none md:right-8 md:bottom-8 ${
+          className={cn(
+            "fixed right-6 bottom-6 z-50 transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none md:right-8 md:bottom-8",
             showFloatingCheckout
               ? "translate-y-0 opacity-100"
               : "pointer-events-none translate-y-3 opacity-0"
-          }`}
+          )}
         >
           {checkoutModal}
         </div>
