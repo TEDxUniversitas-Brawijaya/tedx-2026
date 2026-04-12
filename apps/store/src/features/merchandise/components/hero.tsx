@@ -6,7 +6,7 @@ type HeroProps = {
 
 const Hero = ({ heroImage }: HeroProps) => {
   return (
-    <section className="relative min-h-screen w-full overflow-hidden py-24">
+    <section className="relative min-h-screen w-full overflow-hidden bg-white py-24">
       <div className="container mx-auto px-4 md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl">
         <div className="font-extrabold font-sans-2 text-6xl text-black md:text-8xl">
           <h1>TEDXUB</h1>

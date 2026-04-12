@@ -7,20 +7,41 @@ export const useMerchScroll = (speedFactor = 0.001) => {
   const requestRef = useRef<number | null>(null);
 
   useEffect(() => {
+    const EASING = 0.08;
+    const STOP_EPSILON = 0.05;
+
+    const stopAnimation = () => {
+      if (requestRef.current !== null) {
+        cancelAnimationFrame(requestRef.current);
+        requestRef.current = null;
+      }
+    };
+
     const animate = () => {
       const diff = virtualScroll.current - currentInterpolated.current;
 
-      currentInterpolated.current += diff * 0.06;
+      currentInterpolated.current += diff * EASING;
 
-      if (Math.abs(diff) > 0.001) {
+      if (Math.abs(diff) > STOP_EPSILON) {
         setRenderScroll(currentInterpolated.current);
+        requestRef.current = requestAnimationFrame(animate);
+        return;
       }
 
-      requestRef.current = requestAnimationFrame(animate);
+      currentInterpolated.current = virtualScroll.current;
+      setRenderScroll(currentInterpolated.current);
+      stopAnimation();
+    };
+
+    const ensureAnimating = () => {
+      if (requestRef.current === null) {
+        requestRef.current = requestAnimationFrame(animate);
+      }
     };
 
     const handleWheel = (e: WheelEvent) => {
       virtualScroll.current += e.deltaY;
+      ensureAnimating();
     };
 
     let lastTouchY = 0;
@@ -35,6 +56,7 @@ export const useMerchScroll = (speedFactor = 0.001) => {
         const delta = lastTouchY - touchY;
         virtualScroll.current += delta * 2.5;
         lastTouchY = touchY;
+        ensureAnimating();
       }
     };
 
@@ -42,15 +64,11 @@ export const useMerchScroll = (speedFactor = 0.001) => {
     window.addEventListener("touchstart", handleTouchStart, { passive: true });
     window.addEventListener("touchmove", handleTouchMove, { passive: true });
 
-    requestRef.current = requestAnimationFrame(animate);
-
     return () => {
       window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
-      if (requestRef.current !== null) {
-        cancelAnimationFrame(requestRef.current);
-      }
+      stopAnimation();
     };
   }, []);
 

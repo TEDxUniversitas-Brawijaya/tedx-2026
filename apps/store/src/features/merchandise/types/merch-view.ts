@@ -48,13 +48,10 @@ export type ProductListSectionViewProps = {
 export type HeroImageCard = {
   id: number;
   imageUrl: string;
+  isVisible: boolean;
   width: number;
   x: number;
   zIndex: number;
-};
-
-export type HeroImageViewProps = {
-  cards: HeroImageCard[];
 };
 
 export type CategoryNavItem = {
