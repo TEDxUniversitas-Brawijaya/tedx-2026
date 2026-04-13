@@ -4,6 +4,7 @@ import {
   buyerInfoSchema,
   idempotencyKeySchema,
   isoDateStringSchema,
+  merchBuyerInfoSchema,
   orderIdSchema,
   orderStatusSchema,
   productCategorySchema,
@@ -38,12 +39,20 @@ export const listMerchProductsOutputSchema = z.array(
 );
 
 // merch.createOrder
-export const createMerchOrderInputSchema = buyerInfoSchema.extend({
+export const createMerchOrderInputSchema = merchBuyerInfoSchema.extend({
   items: z.array(
     z.object({
       productId: productIdSchema,
       quantity: z.number().int().min(1).max(100),
-      variantIds: z.array(z.string()),
+      variantIds: z.array(z.string()).optional(), // for regular items, the selected variant IDs (if applicable)
+      bundleItemProducts: z
+        .array(
+          z.object({
+            productId: productIdSchema,
+            variantIds: z.array(z.string()).optional(),
+          })
+        )
+        .optional(), // for bundle items, the selected product IDs (if applicable)
     })
   ),
   idempotencyKey: idempotencyKeySchema,
@@ -54,19 +63,10 @@ export const createMerchOrderInputSchema = buyerInfoSchema.extend({
 
 export const createMerchOrderOutputSchema = z.object({
   orderId: orderIdSchema,
-  status: z.literal("pending_payment").or(z.literal("pending_verification")),
+  status: z.literal("pending_payment").or(z.literal("paid")),
   totalPrice: z.number().int(),
   expiresAt: isoDateStringSchema,
-  payment: z
-    .object({
-      qrisUrl: z.string().url(),
-      midtransOrderId: z.string(),
-    })
-    .or(
-      z.object({
-        uploadUrl: z.string().url(),
-      })
-    ),
+  qrisUrl: z.url().nullable(),
 });
 
 // merch.getOrderStatus
