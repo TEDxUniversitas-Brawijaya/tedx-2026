@@ -1,11 +1,14 @@
-import "@tedx-2026/ui/globals.css";
+import { TanStackDevtools } from "@tanstack/react-devtools";
+import { FormDevtoolsPanel } from "@tanstack/react-form-devtools";
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import {
   HeadContent,
   Outlet,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+
+import "@tedx-2026/ui/globals.css";
 
 // biome-ignore lint/complexity/noBannedTypes: TODO
 export type RouterAppContext = {};
@@ -34,8 +37,22 @@ function RootComponent() {
     <>
       <HeadContent />
       <Outlet />
-      <TanStackRouterDevtools position="bottom-left" />
-      <ReactQueryDevtools initialIsOpen={false} />
+      <TanStackDevtools
+        plugins={[
+          {
+            name: "TanStack Query",
+            render: <ReactQueryDevtoolsPanel />,
+          },
+          {
+            name: "TanStack Router",
+            render: <TanStackRouterDevtoolsPanel />,
+          },
+          {
+            name: "TanStack Form",
+            render: <FormDevtoolsPanel />,
+          },
+        ]}
+      />
     </>
   );
 }

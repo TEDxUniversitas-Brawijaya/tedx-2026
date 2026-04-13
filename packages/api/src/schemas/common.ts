@@ -65,6 +65,16 @@ export const buyerInfoSchema = z.object({
   buyerInstansi: z.string().min(1).max(255),
 });
 
+export const merchBuyerInfoSchema = z.object({
+  fullName: z.string().min(1, "Nama lengkap wajib diisi").max(255),
+  email: z.string().email("Format email tidak valid"),
+  phone: z
+    .string()
+    .min(10, "Nomor telepon minimal 10 digit")
+    .max(20, "Nomor telepon maksimal 20 digit"),
+  address: z.string().min(1, "Alamat wajib diisi"),
+});
+
 // Product variant
 export const productVariantSchema = z.object({
   id: z.string(),
@@ -96,10 +106,12 @@ export const bundleItemSchema = z.union([
     items: z.array(
       z.union([
         z.object({
+          type: z.literal("ticket"),
           productId: z.string(),
           productName: z.string(),
         }),
         z.object({
+          type: z.literal("merchandise"),
           category: productCategorySchema,
           products: z.array(
             z.object({
