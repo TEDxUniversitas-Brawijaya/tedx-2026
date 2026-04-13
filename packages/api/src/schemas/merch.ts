@@ -1,14 +1,13 @@
 import { z } from "zod";
 import {
   bundleItemSchema,
-  merchBuyerInfoSchema,
   captchaTokenSchema,
   idempotencyKeySchema,
   imageFileSchema,
   isoDateStringSchema,
+  merchBuyerInfoSchema,
   orderIdSchema,
   orderStatusSchema,
-  paymentMethodSchema,
   productCategorySchema,
   productIdSchema,
   productTypeSchema,
@@ -38,7 +37,15 @@ export const createMerchOrderInputSchema = merchBuyerInfoSchema.extend({
     z.object({
       productId: productIdSchema,
       quantity: z.number().int().min(1).max(100),
-      variantIds: z.array(z.string()),
+      variantIds: z.array(z.string()).optional(), // for regular items, the selected variant IDs (if applicable)
+      bundleItemProducts: z
+        .array(
+          z.object({
+            productId: productIdSchema,
+            variantIds: z.array(z.string()).optional(),
+          })
+        )
+        .optional(), // for bundle items, the selected product IDs (if applicable)
     })
   ),
   captchaToken: captchaTokenSchema,
@@ -48,23 +55,10 @@ export const createMerchOrderInputSchema = merchBuyerInfoSchema.extend({
 
 export const createMerchOrderOutputSchema = z.object({
   orderId: orderIdSchema,
-  status: z
-    .literal("pending_payment")
-    .or(z.literal("pending_verification"))
-    .or(z.literal("paid")),
+  status: z.literal("pending_payment").or(z.literal("paid")),
   totalPrice: z.number().int(),
   expiresAt: isoDateStringSchema,
-  paymentMethod: paymentMethodSchema,
-  payment: z
-    .object({
-      qrisUrl: z.string().url(),
-      midtransOrderId: z.string(),
-    })
-    .or(
-      z.object({
-        uploadUrl: z.string().url(),
-      })
-    ),
+  qrisUrl: z.url().nullable(),
 });
 
 // merch.getOrderStatus

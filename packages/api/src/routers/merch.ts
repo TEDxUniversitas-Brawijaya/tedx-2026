@@ -8,13 +8,6 @@ import {
 } from "../schemas/merch";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
-const DUMMY_MERCH_PAYMENT_CONFIG: { method: "manual" | "midtrans" } = {
-  method: "midtrans",
-};
-
-const getDummyMerchPaymentMethod = (): "manual" | "midtrans" =>
-  DUMMY_MERCH_PAYMENT_CONFIG.method;
-
 const generateOrderId = () => {
   const now = new Date();
   const yy = now.getFullYear().toString().slice(-2);
@@ -473,43 +466,29 @@ const listProducts = publicProcedure
 const createOrder = publicProcedure
   .input(createMerchOrderInputSchema)
   .output(createMerchOrderOutputSchema)
-  .mutation((opts) => {
-    const totalPrice = opts.input.items.reduce(
+  .mutation(({ input }) => {
+    const totalPrice = input.items.reduce(
       (sum, item) => sum + item.quantity * getDummyMerchPrice(item.productId),
       0
     );
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
-    const paymentMethod = getDummyMerchPaymentMethod();
-
-    const payment:
-      | { qrisUrl: string; midtransOrderId: string }
-      | { uploadUrl: string } =
-      paymentMethod === "midtrans"
-        ? {
-            qrisUrl: "https://example.com/qris-midtrans",
-            midtransOrderId: `MID-${generateOrderId()}`,
-          }
-        : {
-            uploadUrl: "https://example.com/upload",
-          };
 
     return {
       orderId: generateOrderId(),
       status: "paid",
       totalPrice,
       expiresAt,
-      paymentMethod,
-      payment,
+      qrisUrl: input.paymentProof ? "https://example.com/qris.png" : null,
     };
   });
 
 const getOrderStatus = publicProcedure
   .input(getMerchOrderStatusInputSchema)
   .output(getMerchOrderStatusOutputSchema)
-  .query((opts) => {
+  .mutation(({ input }) => {
     const now = new Date().toISOString();
     return {
-      orderId: opts.input.orderId,
+      orderId: input.orderId,
       status: "paid",
       type: "merch",
       totalPrice: 250_000,

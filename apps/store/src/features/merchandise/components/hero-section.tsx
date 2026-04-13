@@ -16,7 +16,7 @@ const heroImages = [
 const FALLBACK_HERO_IMAGE =
   "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=800";
 
-const HeroImage = () => {
+export const HeroSection = () => {
   const isMobile = useIsMobile();
   const { globalProgress: rawProgress } = useMerchScroll(
     isMobile ? 0.003 : 0.001
@@ -84,39 +84,51 @@ const HeroImage = () => {
   }, [isMobile, rawProgress]);
 
   return (
-    <div className="pointer-events-none absolute inset-0 flex h-screen w-full items-end overflow-hidden bg-transparent">
-      <div className="relative -mb-5 h-3/4 w-full">
-        {cards.map((card) => (
-          <div
-            className="absolute bottom-0 left-0 aspect-square overflow-hidden shadow-[0_16px_40px_-24px_rgba(0,0,0,0.35)]"
-            key={card.id}
-            style={{
-              backfaceVisibility: "hidden",
-              contain: "paint",
-              opacity: card.isVisible ? 1 : 0,
-              width: `${card.width + 1}px`,
-              transform: `translate3d(${card.x}px, 0, 0)`,
-              transformOrigin: "left bottom",
-              visibility: card.isVisible ? "visible" : "hidden",
-              zIndex: card.zIndex,
-              willChange: "transform",
-            }}
-          >
-            <img
-              alt="Merchandise product displaying local culture"
-              className="h-full w-full object-cover"
-              decoding="async"
-              draggable={false}
-              height={800}
-              loading="eager"
-              src={card.imageUrl}
-              width={800}
-            />
+    <section className="relative h-[300dvh]">
+      <div className="sticky top-0 left-0 h-dvh w-full overflow-hidden bg-white py-24">
+        <div className="container mx-auto px-4 md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl">
+          <div className="font-extrabold font-sans-2 text-6xl text-black md:text-8xl">
+            <h1>TEDXUB</h1>
+            <h2>MERCH</h2>
           </div>
-        ))}
+          <p className="w-2/3 font-sans-2 text-black text-xs md:text-base lg:w-1/4">
+            Lengkapi jejak ceritamu sebagai bagian dari ruang bertumbuh bersama
+            TEDxUniversitasBrawijaya 2026.
+          </p>
+        </div>
+        <div className="pointer-events-none absolute inset-0 flex h-screen w-full items-end overflow-hidden bg-transparent">
+          <div className="relative -mb-5 h-3/4 w-full">
+            {cards.map((card) => (
+              <div
+                className="absolute bottom-0 left-0 aspect-square overflow-hidden shadow-[0_16px_40px_-24px_rgba(0,0,0,0.35)]"
+                key={card.id}
+                style={{
+                  backfaceVisibility: "hidden",
+                  contain: "paint",
+                  opacity: card.isVisible ? 1 : 0,
+                  width: `${card.width + 1}px`,
+                  transform: `translate3d(${card.x}px, 0, 0)`,
+                  transformOrigin: "left bottom",
+                  visibility: card.isVisible ? "visible" : "hidden",
+                  zIndex: card.zIndex,
+                  willChange: "transform",
+                }}
+              >
+                <img
+                  alt="Merchandise product displaying local culture"
+                  className="h-full w-full object-cover"
+                  decoding="async"
+                  draggable={false}
+                  height={800}
+                  loading="eager"
+                  src={card.imageUrl}
+                  width={800}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
-
-export default HeroImage;

@@ -1,22 +1,57 @@
+import { trpc } from "@/shared/lib/trpc";
+import { useMutation } from "@tanstack/react-query";
 import { Button } from "@tedx-2026/ui/components/button";
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
+import { toast } from "sonner";
+import { useCountdownSeconds } from "../../../hooks/use-countdown-seconds";
 import {
   formatCountdownClock,
   formatIdrCurrency,
-} from "../../../lib/order-management-utils";
-import type { PaymentStepViewProps } from "../../../types/order-step";
+} from "../../../lib/formatter";
+import { useCartStore } from "../../../stores/use-cart-store";
 
-const paymentContentClassName =
-  "mt-3 min-h-0 flex-1 space-y-2.5 overflow-y-hidden [@media(max-height:900px)]:overflow-y-auto pr-1 sm:space-y-3 sm:pr-2 [scrollbar-color:rgba(224,224,224,0.35)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/30 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/45";
+type PaymentStepProps = {
+  order: {
+    totalPrice: number;
+    orderId: string;
+    qrisUrl: string;
+    expiresAt: string;
+  };
+};
 
-export function PaymentStep({
-  isCheckingStatus,
-  onCheckStatus,
-  orderId,
-  qrisUrl,
-  timeLeftSeconds,
-  totalPrice,
-}: PaymentStepViewProps) {
+export function PaymentStep({ order }: PaymentStepProps) {
+  const { totalPrice, orderId, qrisUrl, expiresAt } = order;
+
+  const { onNextStep } = useCartStore();
+
+  const orderStatusMutation = useMutation(
+    trpc.merch.getOrderStatus.mutationOptions()
+  );
+
+  const onCheckStatus = () => {
+    orderStatusMutation.mutate(
+      { orderId },
+      {
+        onSuccess: (data) => {
+          if (data.status !== "paid") {
+            return;
+          }
+
+          onNextStep();
+        },
+        onError: () => {
+          toast.error("Gagal memeriksa status pembayaran. Silakan coba lagi.");
+        },
+      }
+    );
+  };
+
+  const durationInSeconds = Math.max(
+    0,
+    Math.floor((new Date(expiresAt).getTime() - Date.now()) / 1000)
+  );
+  const timeLeftSeconds = useCountdownSeconds(durationInSeconds);
+
   return (
     <div className="flex min-h-0 flex-col overflow-hidden font-sans-2 sm:h-[94vh] sm:max-h-[84vh]">
       <DialogHeader>
@@ -25,7 +60,7 @@ export function PaymentStep({
         </DialogTitle>
       </DialogHeader>
 
-      <div className={paymentContentClassName}>
+      <div className="mt-3 min-h-0 flex-1 space-y-2.5 overflow-y-hidden pr-1 [scrollbar-color:rgba(224,224,224,0.35)_transparent] [scrollbar-width:thin] sm:space-y-3 sm:pr-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/30 hover:[&::-webkit-scrollbar-thumb]:bg-white/45 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1 [@media(max-height:900px)]:overflow-y-auto">
         <div className="flex items-center justify-between border-gray-2 border-b pb-3">
           <span className="font-sans-2 text-gray-2 text-sm">Total</span>
           <span className="font-sans-2 text-base text-gray-2 sm:text-lg">
@@ -35,7 +70,7 @@ export function PaymentStep({
         <div className="flex items-center justify-between border-gray-2 border-b pb-3">
           <span className="font-sans-2 text-gray-2 text-sm">Order ID</span>
           <span className="font-sans-2 text-gray-2 text-sm sm:text-base">
-            {orderId ?? "-"}
+            {orderId}
           </span>
         </div>
 
@@ -61,12 +96,14 @@ export function PaymentStep({
       <div className="mt-auto bg-black pt-2.5 pb-2 sm:pb-3">
         <Button
           className="w-full"
-          disabled={!orderId || isCheckingStatus}
+          disabled={orderStatusMutation.isPending}
           onClick={onCheckStatus}
           size="checkout"
           variant="store-primary"
         >
-          {isCheckingStatus ? "Memeriksa..." : "Cek Status Pembayaran"}
+          {orderStatusMutation.isPending
+            ? "Memeriksa..."
+            : "Cek Status Pembayaran"}
         </Button>
       </div>
     </div>

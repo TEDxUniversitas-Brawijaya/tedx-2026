@@ -1,3 +1,24 @@
+export type ProductVariant = {
+  id: string;
+  label: string;
+  type: string;
+};
+
+export type MerchCategory =
+  | "t-shirt"
+  | "workshirt"
+  | "stickers"
+  | "socks"
+  | "keychain"
+  | "hat";
+
+export type MerchProduct = {
+  id: string;
+  name: string;
+  imageUrl: string | null;
+  variants?: ProductVariant[];
+};
+
 export type BundleItem =
   | {
       type: "ticket";
@@ -6,46 +27,17 @@ export type BundleItem =
     }
   | {
       type: "merchandise";
-      category:
-        | "t-shirt"
-        | "workshirt"
-        | "stickers"
-        | "socks"
-        | "keychain"
-        | "hat";
-      products: {
-        id: string;
-        name: string;
-        imageUrl: string | null;
-        variants?: {
-          id: string;
-          label: string;
-          type: string;
-        }[];
-      }[];
+      category: MerchCategory;
+      products: MerchProduct[];
     }
   | {
       type: "selectable_item";
       items: (
-        | { productId: string; productName: string }
+        | { productId: string; productName: string; type: "ticket" }
         | {
-            category:
-              | "t-shirt"
-              | "workshirt"
-              | "stickers"
-              | "socks"
-              | "keychain"
-              | "hat";
-            products: {
-              id: string;
-              name: string;
-              imageUrl: string | null;
-              variants?: {
-                id: string;
-                label: string;
-                type: string;
-              }[];
-            }[];
+            type: "merchandise";
+            category: MerchCategory;
+            products: MerchProduct[];
           }
       )[];
     };
@@ -56,17 +48,7 @@ export type Product = {
   name: string;
   price: number;
   imageUrl?: string | null;
-  variants?: {
-    id: string;
-    label: string;
-    type: string;
-  }[];
-  category?:
-    | "t-shirt"
-    | "workshirt"
-    | "stickers"
-    | "socks"
-    | "keychain"
-    | "hat";
+  variants?: ProductVariant[];
+  category?: MerchCategory;
   bundleItems?: BundleItem[];
 };

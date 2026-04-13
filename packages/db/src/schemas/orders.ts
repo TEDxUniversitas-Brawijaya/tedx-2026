@@ -28,7 +28,7 @@ export const ordersTable = sqliteTable(
     buyerName: t.text().notNull(),
     buyerEmail: t.text().notNull(),
     buyerPhone: t.text().notNull(),
-    buyerCollege: t.text().notNull(), // instansi
+    buyerCollege: t.text().notNull(), // instansi for tickets, alamat for merch
     totalPrice: t.integer().notNull(), // IDR
     idempotencyKey: t.text().unique(), // client-generated, prevents duplicate orders
     expiresAt: t.text(), // 20-min TTL for pending_payment

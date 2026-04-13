@@ -1,259 +1,222 @@
+import { Button } from "@tedx-2026/ui/components/button";
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@tedx-2026/ui/components/field";
 import { Input } from "@tedx-2026/ui/components/input";
 import { Textarea } from "@tedx-2026/ui/components/textarea";
-import { Button } from "@tedx-2026/ui/components/button";
-import { FieldError } from "@tedx-2026/ui/components/field";
-import type { CheckoutForm } from "@/features/merchandise/hooks/use-checkout-form";
-import type { IdentificationStepViewProps } from "@/features/merchandise/types/merch-view";
-import type { CheckoutFormData } from "../../../types/checkout";
+import { cn } from "@tedx-2026/ui/lib/utils";
+import { useIdentificationForm } from "../../../hooks/use-identification-form";
+import { useCartStore } from "../../../stores/use-cart-store";
 
-type CheckoutFieldRenderProps = {
-  name: keyof CheckoutFormData;
-  state: {
-    value: string;
-    meta: {
-      errors: unknown[];
-    };
-  };
-  handleBlur: () => void;
-  handleChange: (value: string) => void;
-};
+export function IdentificationStep() {
+  const { onPrevStep } = useCartStore();
+  const form = useIdentificationForm();
 
-const normalizeFieldErrors = (errors: unknown[]) =>
-  errors
-    .map((error) => {
-      if (typeof error === "string") {
-        return { message: error };
-      }
-
-      if (error && typeof error === "object" && "message" in error) {
-        const message = (error as { message?: unknown }).message;
-        if (typeof message === "string") {
-          return { message };
-        }
-        if (message) {
-          return { message: String(message) };
-        }
-      }
-
-      return undefined;
-    })
-    .filter(Boolean) as { message?: string }[];
-
-const inputBaseClassName =
-  "h-12 rounded-xl border-white/10 bg-white text-sm text-black placeholder:text-neutral-500 focus:ring-[#FF1818] sm:h-14 sm:text-base";
-const inputErrorClassName = "border-red-500 ring-1 ring-red-500";
-const textareaBaseClassName =
-  "min-h-24 rounded-xl border-white/10 bg-white px-3 py-3 text-sm text-black placeholder:text-neutral-500 focus:ring-[#FF1818] sm:min-h-28 sm:px-4 sm:py-4 sm:text-base";
-const textareaErrorClassName = "border-red-500 ring-1 ring-red-500";
-
-const getInputClassName = (hasError: boolean) =>
-  `${inputBaseClassName} ${hasError ? inputErrorClassName : ""}`;
-
-const getTextareaClassName = (hasError: boolean) =>
-  `${textareaBaseClassName} ${hasError ? textareaErrorClassName : ""}`;
-
-export function IdentificationStep({
-  form,
-  hasSubmitted,
-  onBack,
-  onSubmit,
-}: IdentificationStepViewProps<CheckoutForm>) {
   return (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="flex max-h-[80vh] flex-col gap-y-4 sm:gap-y-6">
       <DialogHeader>
         <DialogTitle className="font-normal font-serif-2 text-lg sm:text-xl">
           Form Data Diri
         </DialogTitle>
       </DialogHeader>
 
-      <form className="space-y-4 sm:space-y-6" onSubmit={onSubmit}>
+      <div
+        className="no-scrollbar flex-1 space-y-4 overflow-x-hidden overflow-y-scroll sm:space-y-6"
+        id="order-form"
+      >
         <div className="space-y-4 sm:space-y-6">
-          <form.Field name="fullName">
-            {(field: CheckoutFieldRenderProps) => {
-              const errorMessages = normalizeFieldErrors(
-                field.state.meta.errors
-              );
-              const hasError = hasSubmitted && errorMessages.length > 0;
-              const errorId = `${field.name}-error`;
-
-              return (
-                <div className="space-y-1.5 sm:space-y-2">
-                  <label
-                    className="text-[#E0E0E0] text-sm sm:text-xs"
-                    htmlFor={field.name}
-                  >
-                    Nama Lengkap
-                  </label>
-                  <Input
-                    aria-describedby={hasError ? errorId : undefined}
-                    aria-invalid={hasError}
-                    autoComplete="name"
-                    className={getInputClassName(hasError)}
-                    id={field.name}
-                    name={field.name}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="Masukkan nama lengkap"
-                    required
-                    value={field.state.value}
-                  />
-                  {hasError && (
-                    <FieldError
-                      className="pl-1 text-[10px]"
-                      errors={errorMessages}
-                      id={errorId}
-                    />
-                  )}
-                </div>
-              );
+          <form
+            id="identification-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              form.handleSubmit();
             }}
-          </form.Field>
-          <form.Field name="email">
-            {(field: CheckoutFieldRenderProps) => {
-              const errorMessages = normalizeFieldErrors(
-                field.state.meta.errors
-              );
-              const hasError = hasSubmitted && errorMessages.length > 0;
-              const errorId = `${field.name}-error`;
+          >
+            <FieldGroup>
+              <form.Field name="fullName">
+                {(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                    <Field className="space-y-1.5 sm:space-y-2">
+                      <FieldLabel
+                        className="text-[#E0E0E0] text-sm sm:text-xs"
+                        htmlFor={field.name}
+                      >
+                        Nama Lengkap
+                      </FieldLabel>
+                      <Input
+                        aria-invalid={isInvalid}
+                        autoComplete="name"
+                        className={cn(
+                          "h-12 rounded-xl border-white/10 bg-white text-black text-sm placeholder:text-neutral-500 focus:ring-[#FF1818] sm:h-14 sm:text-base",
+                          isInvalid && "border-red-500 ring-1 ring-red-500"
+                        )}
+                        id={field.name}
+                        name={field.name}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="Masukkan nama lengkap"
+                        value={field.state.value}
+                      />
+                      {isInvalid && (
+                        <FieldError
+                          className="pl-1 text-[10px]"
+                          errors={field.state.meta.errors}
+                        />
+                      )}
+                    </Field>
+                  );
+                }}
+              </form.Field>
+              <form.Field name="email">
+                {(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
 
-              return (
-                <div className="space-y-1.5 sm:space-y-2">
-                  <label
-                    className="text-[#E0E0E0] text-sm sm:text-xs"
-                    htmlFor={field.name}
-                  >
-                    Email
-                  </label>
-                  <Input
-                    aria-describedby={hasError ? errorId : undefined}
-                    aria-invalid={hasError}
-                    autoComplete="email"
-                    className={getInputClassName(hasError)}
-                    id={field.name}
-                    name={field.name}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="contoh@email.com"
-                    required
-                    type="email"
-                    value={field.state.value}
-                  />
-                  {hasError && (
-                    <FieldError
-                      className="pl-1 text-[10px]"
-                      errors={errorMessages}
-                      id={errorId}
-                    />
-                  )}
-                </div>
-              );
-            }}
-          </form.Field>
-          <form.Field name="phone">
-            {(field: CheckoutFieldRenderProps) => {
-              const errorMessages = normalizeFieldErrors(
-                field.state.meta.errors
-              );
-              const hasError = hasSubmitted && errorMessages.length > 0;
-              const errorId = `${field.name}-error`;
+                  return (
+                    <Field className="space-y-1.5 sm:space-y-2">
+                      <FieldLabel
+                        className="text-[#E0E0E0] text-sm sm:text-xs"
+                        htmlFor={field.name}
+                      >
+                        Email
+                      </FieldLabel>
+                      <Input
+                        aria-invalid={isInvalid}
+                        autoComplete="email"
+                        className={cn(
+                          "h-12 rounded-xl border-white/10 bg-white text-black text-sm placeholder:text-neutral-500 focus:ring-[#FF1818] sm:h-14 sm:text-base",
+                          isInvalid && "border-red-500 ring-1 ring-red-500"
+                        )}
+                        id={field.name}
+                        name={field.name}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="contoh@email.com"
+                        type="email"
+                        value={field.state.value}
+                      />
+                      {isInvalid && (
+                        <FieldError
+                          className="pl-1 text-[10px]"
+                          errors={field.state.meta.errors}
+                        />
+                      )}
+                    </Field>
+                  );
+                }}
+              </form.Field>
+              <form.Field name="phone">
+                {(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
 
-              return (
-                <div className="space-y-1.5 sm:space-y-2">
-                  <label
-                    className="text-[#E0E0E0] text-sm sm:text-xs"
-                    htmlFor={field.name}
-                  >
-                    Nomor Telepon
-                  </label>
-                  <Input
-                    aria-describedby={hasError ? errorId : undefined}
-                    aria-invalid={hasError}
-                    autoComplete="tel"
-                    className={getInputClassName(hasError)}
-                    id={field.name}
-                    inputMode="tel"
-                    name={field.name}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="0812xxxx"
-                    required
-                    value={field.state.value}
-                  />
-                  {hasError && (
-                    <FieldError
-                      className="pl-1 text-[10px]"
-                      errors={errorMessages}
-                      id={errorId}
-                    />
-                  )}
-                </div>
-              );
-            }}
-          </form.Field>
-          <form.Field name="address">
-            {(field: CheckoutFieldRenderProps) => {
-              const errorMessages = normalizeFieldErrors(
-                field.state.meta.errors
-              );
-              const hasError = hasSubmitted && errorMessages.length > 0;
-              const errorId = `${field.name}-error`;
+                  return (
+                    <Field className="space-y-1.5 sm:space-y-2">
+                      <FieldLabel
+                        className="text-[#E0E0E0] text-sm sm:text-xs"
+                        htmlFor={field.name}
+                      >
+                        Nomor Telepon
+                      </FieldLabel>
+                      <Input
+                        aria-invalid={isInvalid}
+                        autoComplete="tel"
+                        className={cn(
+                          "h-12 rounded-xl border-white/10 bg-white text-black text-sm placeholder:text-neutral-500 focus:ring-[#FF1818] sm:h-14 sm:text-base",
+                          isInvalid && "border-red-500 ring-1 ring-red-500"
+                        )}
+                        id={field.name}
+                        inputMode="tel"
+                        name={field.name}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="+62812xxxx"
+                        value={field.state.value}
+                      />
+                      {isInvalid && (
+                        <FieldError
+                          className="pl-1 text-[10px]"
+                          errors={field.state.meta.errors}
+                        />
+                      )}
+                    </Field>
+                  );
+                }}
+              </form.Field>
+              <form.Field name="address">
+                {(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
 
-              return (
-                <div className="space-y-1.5 sm:space-y-2">
-                  <label
-                    className="text-[#E0E0E0] text-sm sm:text-xs"
-                    htmlFor={field.name}
-                  >
-                    Alamat
-                  </label>
-                  <Textarea
-                    aria-describedby={hasError ? errorId : undefined}
-                    aria-invalid={hasError}
-                    autoComplete="street-address"
-                    className={getTextareaClassName(hasError)}
-                    id={field.name}
-                    name={field.name}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="Jl. Merah Putih No. 1..."
-                    required
-                    rows={3}
-                    value={field.state.value}
-                  />
-                  {hasError && (
-                    <FieldError
-                      className="pl-1 text-[10px]"
-                      errors={errorMessages}
-                      id={errorId}
-                    />
-                  )}
-                </div>
-              );
-            }}
-          </form.Field>
+                  return (
+                    <Field className="space-y-1.5 sm:space-y-2">
+                      <FieldLabel
+                        className="text-[#E0E0E0] text-sm sm:text-xs"
+                        htmlFor={field.name}
+                      >
+                        Alamat
+                      </FieldLabel>
+                      <Textarea
+                        aria-invalid={isInvalid}
+                        autoComplete="street-address"
+                        className={cn(
+                          "min-h-24 rounded-xl border-white/10 bg-white px-3 py-3 text-black text-sm placeholder:text-neutral-500 focus:ring-[#FF1818] sm:min-h-28 sm:px-4 sm:py-4 sm:text-base",
+                          isInvalid && "border-red-500 ring-1 ring-red-500"
+                        )}
+                        id={field.name}
+                        name={field.name}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="Jl. Merah Putih No. 1..."
+                        rows={3}
+                        value={field.state.value}
+                      />
+                      {isInvalid && (
+                        <FieldError
+                          className="pl-1 text-[10px]"
+                          errors={field.state.meta.errors}
+                        />
+                      )}
+                    </Field>
+                  );
+                }}
+              </form.Field>
+            </FieldGroup>
+          </form>
         </div>
 
         <div className="flex gap-2 border-white/10 border-t pt-4 sm:gap-4 sm:pt-6">
           <Button
             className="flex-1"
-            onClick={onBack}
+            onClick={onPrevStep}
             size="checkout"
             type="button"
             variant="store-secondary"
           >
             Kembali
           </Button>
-          <Button
-            className="flex-1"
-            size="checkout"
-            type="submit"
-            variant="store-primary"
-          >
-            Lanjutkan
-          </Button>
+          <form.Subscribe>
+            {(field) => (
+              <Button
+                className="flex-1"
+                disabled={field.isSubmitting}
+                form="identification-form"
+                size="checkout"
+                type="submit"
+                variant="store-primary"
+              >
+                Lanjutkan
+              </Button>
+            )}
+          </form.Subscribe>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

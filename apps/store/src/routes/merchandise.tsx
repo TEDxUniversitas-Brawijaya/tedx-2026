@@ -1,4 +1,6 @@
-import { MerchPageContainer } from "@/features/merchandise/container/merch-page-container";
+import { CategorySection } from "@/features/merchandise/components/category-section";
+import { HeroSection } from "@/features/merchandise/components/hero-section";
+import { ProductListSection } from "@/features/merchandise/components/product-list-section";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
@@ -6,11 +8,17 @@ const merchSearchSchema = z.object({
   filter: z.string().optional(),
 });
 
-function RouteComponent() {
-  return <MerchPageContainer />;
-}
-
 export const Route = createFileRoute("/merchandise")({
-  validateSearch: (search) => merchSearchSchema.parse(search),
+  validateSearch: merchSearchSchema,
   component: RouteComponent,
 });
+
+function RouteComponent() {
+  return (
+    <main>
+      <HeroSection />
+      <CategorySection />
+      <ProductListSection />
+    </main>
+  );
+}

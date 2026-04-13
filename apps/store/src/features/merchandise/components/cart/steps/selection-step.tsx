@@ -1,56 +1,35 @@
-import type { SelectionStepViewProps } from "@/features/merchandise/types/merch-view";
-import { RegularSelectionStep } from "./regular-selection-step";
+import { trpc } from "@/shared/lib/trpc";
+import { useQuery } from "@tanstack/react-query";
+import type { CartItem } from "../../../types/cart";
 import { BundleSelectionStep } from "./bundle-selection-step";
+import { RegularSelectionStep } from "./regular-selection-step";
 
-const getVariantLabel = (variantType?: string) => {
-  if (variantType === "color") {
-    return "Warna";
+export function SelectionStep({ selectedItem }: { selectedItem: CartItem }) {
+  const { data } = useQuery(trpc.merch.listProducts.queryOptions({}));
+
+  const isBundling = selectedItem.type === "merch_bundle";
+  if (isBundling) {
+    return <BundleSelectionStep selectedItem={selectedItem} />;
   }
 
-  return "Ukuran";
-};
+  const getCategorySiblings = () => {
+    if (!data) {
+      return [];
+    }
 
-export function SelectionStep({
-  actionLabel,
-  activeProduct,
-  categorySiblings,
-  isBundling,
-  onBundleProductChange,
-  onBundleVariantChange,
-  onPay,
-  onProductSwitch,
-  onQuantityChange,
-  onVariantChange,
-  quantity,
-  selectedBundleProductIds,
-  selectedBundleVariantIds,
-  selectedVariantId,
-  selectedVariantLabel,
-}: SelectionStepViewProps) {
-  return isBundling ? (
-    <BundleSelectionStep
-      actionLabel={actionLabel}
-      activeProduct={activeProduct}
-      getVariantLabel={getVariantLabel}
-      onBundleProductChange={onBundleProductChange}
-      onBundleVariantChange={onBundleVariantChange}
-      onPay={onPay}
-      quantity={quantity}
-      selectedBundleProductIds={selectedBundleProductIds}
-      selectedBundleVariantIds={selectedBundleVariantIds}
-    />
-  ) : (
+    return data.filter(
+      (product) =>
+        product.category === selectedItem.category &&
+        product.type === "merch_regular"
+    );
+  };
+
+  const categorySiblings = getCategorySiblings();
+
+  return (
     <RegularSelectionStep
-      actionLabel={actionLabel}
-      activeProduct={activeProduct}
       categorySiblings={categorySiblings}
-      onPay={onPay}
-      onProductSwitch={onProductSwitch}
-      onQuantityChange={onQuantityChange}
-      onVariantChange={onVariantChange}
-      quantity={quantity}
-      selectedVariantId={selectedVariantId}
-      selectedVariantLabel={selectedVariantLabel}
+      selectedItem={selectedItem}
     />
   );
 }

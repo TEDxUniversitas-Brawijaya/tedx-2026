@@ -6,13 +6,32 @@ export const CATEGORIES = [
     title: "T-SHIRT",
     prev: "BUNDLING",
     next: "WORKSHIRT",
+    imageUrl: "",
   },
-  { id: "workshirt", title: "WORKSHIRT", prev: "T-SHIRT", next: "HAT" },
-  { id: "hat", title: "HAT", prev: "WORKSHIRT", next: "SOCKS" },
-  { id: "socks", title: "SOCKS", prev: "HAT", next: "STICKERS" },
-  { id: "stickers", title: "STICKERS", prev: "SOCKS", next: "BUNDLING" },
-  { id: "bundling", title: "BUNDLING", prev: "STICKERS", next: "T-SHIRT" },
-];
+  {
+    id: "workshirt",
+    title: "WORKSHIRT",
+    prev: "T-SHIRT",
+    next: "HAT",
+    imageUrl: "",
+  },
+  { id: "hat", title: "HAT", prev: "WORKSHIRT", next: "SOCKS", imageUrl: "" },
+  { id: "socks", title: "SOCKS", prev: "HAT", next: "STICKERS", imageUrl: "" },
+  {
+    id: "stickers",
+    title: "STICKERS",
+    prev: "SOCKS",
+    next: "BUNDLING",
+    imageUrl: "",
+  },
+  {
+    id: "bundling",
+    title: "BUNDLING",
+    prev: "STICKERS",
+    next: "T-SHIRT",
+    imageUrl: "",
+  },
+] as const;
 
 export const LOOP_CATEGORIES = [...CATEGORIES, ...CATEGORIES, ...CATEGORIES];
 

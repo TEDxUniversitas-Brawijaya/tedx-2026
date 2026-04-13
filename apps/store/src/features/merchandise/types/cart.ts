@@ -1,44 +1,31 @@
-import type { Product } from "./product";
+import type {
+  MerchCategory,
+  MerchProduct,
+  Product,
+  ProductVariant,
+} from "./product";
 
-export interface CartItem extends Product {
+export type CartItem = Product & {
+  itemId: string;
   quantity: number;
-  selectedVariantIds: string[];
-  selectedBundleProductIds?: string[];
-}
-
-export type OrderSnapshotVariant = {
-  label: string;
-  type: string;
+  selectedVariants?: ProductVariant[];
+  selectedBundleProducts?: (MerchProduct & {
+    category: MerchCategory;
+    selectedVariants?: ProductVariant[];
+  })[];
 };
 
-export type OrderSnapshotItem = {
-  snapshotName: string;
-  quantity: number;
-  unitPrice: number;
-  snapshotVariants?: OrderSnapshotVariant[];
-};
-
-export type OrderPayment =
-  | { qrisUrl: string; midtransOrderId: string }
-  | { uploadUrl: string };
-
-export type OrderPaymentMethod = "manual" | "midtrans";
-
-export type OrderStatus =
-  | "pending_payment"
-  | "pending_verification"
-  | "paid"
-  | "expired"
-  | "refund_requested"
-  | "refunded";
-
-export type SetOrderPayload = {
+export type Order = {
   orderId: string;
-  status: OrderStatus | null;
-  items?: OrderSnapshotItem[];
+  status: "pending_payment" | "paid";
   totalPrice: number;
-  paymentMethod?: OrderPaymentMethod | null;
-  payment?: OrderPayment | null;
-  createdAt?: string | null;
-  paidAt?: string | null;
+  expiresAt: string;
+  qrisUrl: string | null;
+};
+
+export type Buyer = {
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
 };

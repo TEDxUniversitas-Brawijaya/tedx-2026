@@ -1,15 +1,15 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "motion/react";
+import { CATEGORIES } from "../../hooks/use-category-scroll";
 
 type BottomNavProps = {
-  categories: Array<{ id: string; title: string }>;
   activeIndex: number;
 };
 
-export const BottomNav = ({ categories, activeIndex }: BottomNavProps) => {
+export const BottomNav = ({ activeIndex }: BottomNavProps) => {
   const shouldReduceMotion = useReducedMotion();
 
   const renderTrackItems = (track: "primary" | "secondary") =>
-    categories.map((cat, categoryIndex) => {
+    CATEGORIES.map((cat, categoryIndex) => {
       const isActive = categoryIndex === activeIndex;
 
       return (

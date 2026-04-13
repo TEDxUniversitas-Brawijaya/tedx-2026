@@ -106,10 +106,12 @@ export const bundleItemSchema = z.union([
     items: z.array(
       z.union([
         z.object({
+          type: z.literal("ticket"),
           productId: z.string(),
           productName: z.string(),
         }),
         z.object({
+          type: z.literal("merchandise"),
           category: productCategorySchema,
           products: z.array(
             z.object({

@@ -2,17 +2,13 @@ type CategorySlideProps = {
   category: {
     id: string;
     title: string;
+    imageUrl: string;
     next: string;
   };
-  logo: string;
   index: number;
 };
 
-export const CategorySlide = ({
-  category,
-  logo,
-  index,
-}: CategorySlideProps) => {
+export const CategorySlide = ({ category, index }: CategorySlideProps) => {
   return (
     <div
       className="relative h-screen w-full shrink-0 snap-center px-4 py-12 md:px-0"
@@ -26,7 +22,7 @@ export const CategorySlide = ({
                 alt={category.title}
                 className="h-full w-full object-contain grayscale"
                 height={500}
-                src={logo}
+                src={category.imageUrl}
                 width={500}
               />
             </div>

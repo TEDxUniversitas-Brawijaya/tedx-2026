@@ -1,8 +1,10 @@
-import { CheckIcon } from "lucide-react";
 import { Button } from "@tedx-2026/ui/components/button";
-import type { SuccessStepViewProps } from "@/features/merchandise/types/merch-view";
+import { CheckIcon } from "lucide-react";
+import { useCartStore } from "../../../stores/use-cart-store";
 
-export function SuccessStep({ onClose }: SuccessStepViewProps) {
+export function SuccessStep() {
+  const { onNextStep } = useCartStore();
+
   return (
     <div className="flex max-h-[80vh] flex-col items-center justify-center py-6 text-center sm:py-12">
       <div className="absolute top-0 right-0 h-48 w-48 opacity-20 transition-opacity hover:opacity-100" />
@@ -30,7 +32,7 @@ export function SuccessStep({ onClose }: SuccessStepViewProps) {
       <div className="mt-6 w-full max-w-sm sm:mt-12">
         <Button
           className="w-full"
-          onClick={onClose}
+          onClick={onNextStep}
           size="checkout"
           variant="store-primary"
         >
