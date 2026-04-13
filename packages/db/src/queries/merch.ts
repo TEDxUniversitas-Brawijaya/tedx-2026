@@ -53,48 +53,6 @@ const buildListOrdersWhereClause = ({
   );
 };
 
-const getSortedOrders = async (
-  db: DB,
-  input: Pick<ListOrdersInput, "sortBy" | "sortOrder" | "limit" | "page">,
-  whereClause: ReturnType<typeof buildListOrdersWhereClause>
-) => {
-  const offset = (input.page - 1) * input.limit;
-
-  if (input.sortBy === "totalPrice") {
-    return await db.query.ordersTable.findMany({
-      where: whereClause,
-      orderBy:
-        input.sortOrder === "asc"
-          ? asc(ordersTable.totalPrice)
-          : desc(ordersTable.totalPrice),
-      limit: input.limit,
-      offset,
-    });
-  }
-
-  if (input.sortBy === "status") {
-    return await db.query.ordersTable.findMany({
-      where: whereClause,
-      orderBy:
-        input.sortOrder === "asc"
-          ? asc(ordersTable.status)
-          : desc(ordersTable.status),
-      limit: input.limit,
-      offset,
-    });
-  }
-
-  return await db.query.ordersTable.findMany({
-    where: whereClause,
-    orderBy:
-      input.sortOrder === "asc"
-        ? asc(ordersTable.createdAt)
-        : desc(ordersTable.createdAt),
-    limit: input.limit,
-    offset,
-  });
-};
-
 export type MerchQueries = {
   listActiveProducts: () => Promise<SelectProduct[]>;
   getProductsByIds: (productIds: string[]) => Promise<SelectProduct[]>;
@@ -210,6 +168,7 @@ export const createMerchQueries = (db: DB): MerchQueries => ({
     sortBy,
     sortOrder,
   }) => {
+    const offset = (page - 1) * limit;
     const whereClause = buildListOrdersWhereClause({
       type,
       status,
@@ -223,11 +182,39 @@ export const createMerchQueries = (db: DB): MerchQueries => ({
 
     const count = countResult[0]?.count ?? 0;
 
-    const orders = await getSortedOrders(
-      db,
-      { sortBy, sortOrder, limit, page },
-      whereClause
-    );
+    let orders: SelectOrder[];
+
+    if (sortBy === "totalPrice") {
+      orders = await db.query.ordersTable.findMany({
+        where: whereClause,
+        orderBy:
+          sortOrder === "asc"
+            ? asc(ordersTable.totalPrice)
+            : desc(ordersTable.totalPrice),
+        limit,
+        offset,
+      });
+    } else if (sortBy === "status") {
+      orders = await db.query.ordersTable.findMany({
+        where: whereClause,
+        orderBy:
+          sortOrder === "asc"
+            ? asc(ordersTable.status)
+            : desc(ordersTable.status),
+        limit,
+        offset,
+      });
+    } else {
+      orders = await db.query.ordersTable.findMany({
+        where: whereClause,
+        orderBy:
+          sortOrder === "asc"
+            ? asc(ordersTable.createdAt)
+            : desc(ordersTable.createdAt),
+        limit,
+        offset,
+      });
+    }
 
     return {
       orders,
