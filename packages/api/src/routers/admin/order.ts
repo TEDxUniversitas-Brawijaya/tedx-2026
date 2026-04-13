@@ -748,30 +748,6 @@ const updateMutableSeededOrder = (
   return updatedOrder;
 };
 
-type SeededListOrder = {
-  id: string;
-  type: string;
-  status: string;
-  buyerName: string;
-  buyerEmail: string;
-  createdAt: string;
-};
-
-const _matchesSearchKeyword = (
-  order: SeededListOrder,
-  searchKeyword: string | undefined
-) => {
-  if (!searchKeyword) {
-    return true;
-  }
-
-  return (
-    order.id.toLowerCase().includes(searchKeyword) ||
-    order.buyerName.toLowerCase().includes(searchKeyword) ||
-    order.buyerEmail.toLowerCase().includes(searchKeyword)
-  );
-};
-
 const list = protectedProcedure
   .input(listOrdersInputSchema)
   .output(listOrdersOutputSchema)

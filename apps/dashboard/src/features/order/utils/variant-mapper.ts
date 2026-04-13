@@ -11,6 +11,7 @@ export const orderStatusBadgeVariantMap: Record<
   refund_requested: "outline",
   expired: "destructive",
   refunded: "destructive",
+  rejected: "destructive",
 } as const;
 
 export const orderRefundStatusBadgeVariantMap: Record<
