@@ -10,6 +10,7 @@ import {
   createProductNotFoundError,
 } from "../errors";
 import type { PaymentService } from "./payment";
+import type { CreateOrderInput } from "@tedx-2026/types/order";
 
 type CreateMerchServiceOptions = {
   configQueries: ConfigQueries;
@@ -17,19 +18,6 @@ type CreateMerchServiceOptions = {
   orderKVOperations?: OrderKVOperations;
   paymentService: PaymentService;
   apiBaseUrl: string;
-};
-
-type CreateOrderInput = {
-  buyerName: string;
-  buyerEmail: string;
-  buyerPhone: string;
-  buyerInstansi: string;
-  idempotencyKey: string;
-  items: {
-    productId: string;
-    quantity: number;
-    variantIds: string[];
-  }[];
 };
 
 const ORDER_CODE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

@@ -13,6 +13,14 @@ import {
   snapshotVariantSchema,
 } from "./common";
 
+const merchBundleItemSchema = z.union([
+  bundleItemSchema,
+  z.object({
+    type: z.literal("merchandise"),
+    category: productCategorySchema,
+  }),
+]);
+
 // merch.listProducts
 export const listMerchProductsInputSchema = z.object({});
 
@@ -25,7 +33,7 @@ export const listMerchProductsOutputSchema = z.array(
     imageUrl: z.string().nullable().optional(),
     category: productCategorySchema.optional(),
     variants: z.array(productVariantSchema).optional(),
-    bundleItems: z.array(bundleItemSchema).optional(),
+    bundleItems: z.array(merchBundleItemSchema).optional(),
   })
 );
 
