@@ -8,7 +8,6 @@ import {
   processRefundOutputSchema,
   verifyPaymentInputSchema,
   verifyPaymentOutputSchema,
-  verifyPaymentOutputSchema,
 } from "../../schemas/order";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
 
@@ -758,7 +757,7 @@ type SeededListOrder = {
   createdAt: string;
 };
 
-const matchesSearchKeyword = (
+const _matchesSearchKeyword = (
   order: SeededListOrder,
   searchKeyword: string | undefined
 ) => {
