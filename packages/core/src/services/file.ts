@@ -1,6 +1,7 @@
 import type { R2, R2Folder } from "@tedx-2026/storage";
 import type { File } from "@tedx-2026/types";
 import { AppError } from "../errors";
+import { getFileURL } from "../lib/formatter";
 import type { BaseContext } from "../types/context";
 import type { EmailService } from "./email";
 
@@ -90,8 +91,3 @@ export const createFileService = (ctx: CreateFileServiceCtx): FileServices => ({
     await ctx.r2.delete(keys);
   },
 });
-
-// Helpers
-const getFileURL = (domain: string, key: string) => {
-  return `https://${domain}/${key}`;
-};

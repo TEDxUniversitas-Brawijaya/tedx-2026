@@ -1,4 +1,5 @@
 import type { ConfigQueries, MerchQueries } from "@tedx-2026/db";
+import { isPendingPayment } from "../lib/checker";
 import {
   createInvalidOrderStatusError,
   createOrderNotFoundError,
@@ -55,8 +56,6 @@ export type OrderService = {
   runPendingPaymentExpiry: () => Promise<number>;
   runPendingVerificationExpiry: () => Promise<number>;
 };
-
-const isPendingPayment = (status: string) => status === "pending_payment";
 
 export const createOrderService = ({
   merchQueries,

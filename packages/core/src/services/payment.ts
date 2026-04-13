@@ -1,13 +1,8 @@
 import { AppError } from "../errors";
-
-type CreateMidtransTransactionInput = {
-  orderId: string;
-  totalPrice: number;
-  buyerName: string;
-  buyerEmail: string;
-  buyerPhone: string;
-  expiryMinutes: number;
-};
+import type {
+  CreateMidtransTransactionInput,
+  CreatePaymentServiceOptions,
+} from "@tedx-2026/types";
 
 export type PaymentService = {
   createMidtransTransaction: (
@@ -22,11 +17,6 @@ export type PaymentService = {
     grossAmount: string;
     signatureKey: string;
   }) => Promise<boolean>;
-};
-
-type CreatePaymentServiceOptions = {
-  serverKey: string;
-  isProduction: boolean;
 };
 
 const MIDTRANS_SANDBOX_BASE_URL = "https://api.sandbox.midtrans.com";

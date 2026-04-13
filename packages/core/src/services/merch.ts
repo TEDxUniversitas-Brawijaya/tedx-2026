@@ -1,8 +1,12 @@
 import type { ConfigQueries, MerchQueries } from "@tedx-2026/db";
 import type { OrderKVOperations } from "@tedx-2026/kv";
+import { assertOrderItemsPresent } from "../lib/assertion";
+import { buildResponseFromExistingOrder } from "../lib/builder";
+import { generateOrderId } from "../lib/generator";
+import { isUniqueConstraintError } from "../lib/checker";
+import { parseISODate } from "../lib/parser";
 import { createNanoId } from "@tedx-2026/utils";
 import {
-  AppError,
   createInvalidVariantsError,
   createOrderNotFoundError,
   createPreorderDeadlinePassedError,
@@ -18,163 +22,6 @@ type CreateMerchServiceOptions = {
   orderKVOperations?: OrderKVOperations;
   paymentService: PaymentService;
   apiBaseUrl: string;
-};
-
-const ORDER_CODE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-const generateOrderCode = (size = 5) => {
-  const randomBytes = crypto.getRandomValues(new Uint8Array(size));
-  return Array.from(randomBytes)
-    .map((value) => ORDER_CODE_ALPHABET[value % ORDER_CODE_ALPHABET.length])
-    .join("");
-};
-
-const generateOrderId = (date = new Date()) => {
-  const year = String(date.getUTCFullYear()).slice(-2);
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(date.getUTCDate()).padStart(2, "0");
-
-  return `TDX-${year}${month}${day}-${generateOrderCode()}`;
-};
-
-const parseISODate = (input: string | null) => {
-  if (!input) {
-    return null;
-  }
-
-  const value = new Date(input);
-  return Number.isNaN(value.getTime()) ? null : value;
-};
-
-const isOrderCreationStatus = (
-  status: string
-): status is "pending_payment" | "pending_verification" => {
-  return status === "pending_payment" || status === "pending_verification";
-};
-
-const isUniqueConstraintError = (error: unknown) => {
-  if (!(error && typeof error === "object")) {
-    return false;
-  }
-
-  const maybeError = error as {
-    code?: string | number;
-    message?: string;
-    cause?: { code?: string | number; message?: string };
-  };
-
-  const candidates = [
-    String(maybeError.code ?? ""),
-    maybeError.message ?? "",
-    String(maybeError.cause?.code ?? ""),
-    maybeError.cause?.message ?? "",
-  ]
-    .join(" ")
-    .toLowerCase();
-
-  return (
-    candidates.includes("23505") ||
-    candidates.includes("sqlite_constraint") ||
-    candidates.includes("unique constraint")
-  );
-};
-
-const assertOrderItemsPresent = (items: CreateOrderInput["items"]) => {
-  if (items.length === 0) {
-    throw new AppError("BAD_REQUEST", "Order items are required");
-  }
-};
-
-const buildResponseFromExistingOrder = async ({
-  merchQueries,
-  paymentService,
-  apiBaseUrl,
-  idempotencyKey,
-  orderId,
-}: {
-  merchQueries: MerchQueries;
-  paymentService: PaymentService;
-  apiBaseUrl: string;
-  idempotencyKey: string;
-  orderId: string;
-}) => {
-  const existingOrder =
-    await merchQueries.getOrderByIdempotencyKey(idempotencyKey);
-
-  if (!existingOrder || existingOrder.type !== "merch") {
-    throw createOrderNotFoundError(orderId);
-  }
-
-  if (!isOrderCreationStatus(existingOrder.status)) {
-    throw new AppError(
-      "CONFLICT",
-      "Idempotency key was already used for a finalized order",
-      {
-        details: {
-          orderId: existingOrder.id,
-          status: existingOrder.status,
-        },
-      }
-    );
-  }
-
-  const orderExpiresAt = existingOrder.expiresAt;
-  if (!orderExpiresAt) {
-    throw new AppError(
-      "INTERNAL_SERVER_ERROR",
-      "Existing order is missing expiry timestamp",
-      {
-        details: {
-          orderId: existingOrder.id,
-        },
-      }
-    );
-  }
-
-  const paymentMethod =
-    existingOrder.paymentMethod ??
-    (existingOrder.midtransOrderId ? "midtrans" : "manual");
-
-  if (paymentMethod === "midtrans") {
-    const expiresAtDate = new Date(orderExpiresAt);
-    const remainingMinutes = Math.ceil(
-      (expiresAtDate.getTime() - Date.now()) / 60_000
-    );
-    const expiryMinutes = Math.max(1, remainingMinutes);
-
-    const payment = await paymentService.createMidtransTransaction({
-      orderId: existingOrder.id,
-      totalPrice: existingOrder.totalPrice,
-      buyerName: existingOrder.buyerName,
-      buyerEmail: existingOrder.buyerEmail,
-      buyerPhone: existingOrder.buyerPhone,
-      expiryMinutes,
-    });
-
-    if (existingOrder.midtransOrderId !== payment.midtransOrderId) {
-      await merchQueries.updateOrder(existingOrder.id, {
-        midtransOrderId: payment.midtransOrderId,
-      });
-    }
-
-    return {
-      orderId: existingOrder.id,
-      status: existingOrder.status,
-      totalPrice: existingOrder.totalPrice,
-      expiresAt: orderExpiresAt,
-      payment,
-    };
-  }
-
-  return {
-    orderId: existingOrder.id,
-    status: existingOrder.status,
-    totalPrice: existingOrder.totalPrice,
-    expiresAt: orderExpiresAt,
-    payment: {
-      uploadUrl: `${apiBaseUrl}/api/orders/${existingOrder.id}/payment-proof`,
-    },
-  };
 };
 
 export type MerchService = {
