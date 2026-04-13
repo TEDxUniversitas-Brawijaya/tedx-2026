@@ -71,7 +71,7 @@ export function CartStep() {
                     {(item.type === "merch_bundle" ||
                       (item.variants && item.variants.length > 0)) && (
                       <button
-                        className="flex h-fit min-h-6 w-full cursor-pointer items-center justify-between rounded-md border border-white/10 bg-white px-1.5 text-[8px] text-black sm:h-10 sm:rounded-lg sm:px-3 sm:text-xs"
+                        className="flex h-fit min-h-6 w-full cursor-pointer items-center justify-between rounded-md border border-white/10 bg-white px-1.5 text-[8px] text-black sm:min-h-10 sm:rounded-lg sm:px-3 sm:text-xs"
                         onClick={() => openSelectionStep(item, "edit")}
                         type="button"
                       >

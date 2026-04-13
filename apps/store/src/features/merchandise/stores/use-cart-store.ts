@@ -13,9 +13,6 @@ type CartStore = {
   buyer: Buyer | null;
   setBuyer: (buyer: Buyer) => void;
 
-  paymentProof: File | null;
-  setPaymentProof: (file: File | null) => void;
-
   order: Order | null;
   setOrder: (order: Order) => void;
 
@@ -116,13 +113,6 @@ export const useCartStore = create<CartStore>()(
         });
       },
 
-      paymentProof: null,
-      setPaymentProof: (file) => {
-        set({
-          paymentProof: file,
-        });
-      },
-
       order: null,
       setOrder: (order) => {
         set({
@@ -157,7 +147,6 @@ export const useCartStore = create<CartStore>()(
             selectedItem: null,
             buyer: null,
             order: null,
-            paymentProof: null,
             items: [],
           });
 

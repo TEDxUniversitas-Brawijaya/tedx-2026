@@ -38,11 +38,10 @@ export function SummaryStep({ buyer }: SummaryStepProps) {
           variantIds: item.selectedVariants?.map((v) => v.id) ?? [],
           quantity: item.quantity,
         })),
-        buyerName: buyer.fullName,
-        buyerEmail: buyer.email,
-        buyerPhone: buyer.phone,
-        buyerInstansi: buyer.address,
-        idempotencyKey: crypto.randomUUID(),
+        ...buyer,
+        captchaToken: "TODO",
+        idempotencyKey: "TODO",
+        paymentProof: undefined,
       },
       {
         onSuccess: (data) => {
