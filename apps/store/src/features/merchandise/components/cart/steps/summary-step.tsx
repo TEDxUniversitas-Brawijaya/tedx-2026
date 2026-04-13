@@ -35,7 +35,11 @@ export function SummaryStep({ buyer }: SummaryStepProps) {
       {
         items: items.map((item) => ({
           productId: item.id,
-          variantIds: item.selectedVariants?.map((v) => v.id) ?? [],
+          variantIds: item.selectedVariants?.map((v) => v.id),
+          bundleItemProducts: item.selectedBundleProducts?.map((p) => ({
+            productId: p.id,
+            variantIds: p.selectedVariants?.map((v) => v.id),
+          })),
           quantity: item.quantity,
         })),
         ...buyer,
@@ -45,13 +49,7 @@ export function SummaryStep({ buyer }: SummaryStepProps) {
       },
       {
         onSuccess: (data) => {
-          setOrder({
-            orderId: data.orderId,
-            status: data.status,
-            totalPrice: data.totalPrice,
-            expiresAt: data.expiresAt,
-            qrisUrl: "qrisUrl" in data.payment ? data.payment.qrisUrl : null,
-          });
+          setOrder(data);
           onNextStep();
         },
         onError: () => {

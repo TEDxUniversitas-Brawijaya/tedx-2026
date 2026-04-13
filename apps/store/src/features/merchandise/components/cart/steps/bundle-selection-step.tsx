@@ -66,7 +66,6 @@ export function BundleSelectionStep({
               (p) => p.category === bundleItem.category
             );
             const variantItems = groupVariantsByType(product?.variants);
-            const bundleProducts = bundleItem.products ?? [];
 
             return (
               <div
@@ -80,7 +79,7 @@ export function BundleSelectionStep({
                   </span>
 
                   <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
-                    {bundleProducts.map((product) => {
+                    {bundleItem.products.map((product) => {
                       const selectedBundleProduct =
                         item.selectedBundleProducts?.find(
                           (p) => p.id === product.id
@@ -125,11 +124,6 @@ export function BundleSelectionStep({
                         </button>
                       );
                     })}
-                    {bundleProducts.length === 0 && (
-                      <div className="col-span-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-gray-2 text-sm">
-                        Opsi produk bundling belum tersedia.
-                      </div>
-                    )}
                   </div>
                 </div>
 

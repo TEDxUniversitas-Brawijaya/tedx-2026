@@ -33,10 +33,10 @@ export function ProductCard({ product }: ProductCardProps) {
 
     const defaultBundleProducts = product.bundleItems
       ?.filter((bundleItem) => bundleItem.type === "merchandise")
-      ?.flatMap((bundleItem) => {
+      ?.map((bundleItem) => {
         const bundleProduct = bundleItem.products?.[0];
         if (!bundleProduct) {
-          return [];
+          throw new Error("Bundle item must have at least one product");
         }
 
         const variantSet = new Set<string>();
@@ -56,13 +56,11 @@ export function ProductCard({ product }: ProductCardProps) {
             type: v.type,
           }));
 
-        return [
-          {
-            ...bundleProduct,
-            category: bundleItem.category,
-            selectedVariants,
-          },
-        ];
+        return {
+          ...bundleProduct,
+          category: bundleItem.category,
+          selectedVariants,
+        };
       });
 
     openSelectionStep(

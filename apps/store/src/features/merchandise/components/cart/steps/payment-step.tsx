@@ -24,10 +24,9 @@ export function PaymentStep({ order }: PaymentStepProps) {
 
   const { onNextStep } = useCartStore();
 
-  const orderStatusQuery = useQuery({
-    ...trpc.merch.getOrderStatus.queryOptions({ orderId }),
-    enabled: false,
-  });
+  const orderStatusQuery = useQuery(
+    trpc.merch.getOrderStatus.queryOptions({ orderId }, { enabled: false })
+  );
 
   const onCheckStatus = async () => {
     const result = await orderStatusQuery.refetch();
@@ -37,9 +36,11 @@ export function PaymentStep({ order }: PaymentStepProps) {
       return;
     }
 
-    if (result.data?.status === "paid") {
-      onNextStep();
+    if (!result.data || result.data.status !== "paid") {
+      return;
     }
+
+    onNextStep();
   };
 
   const durationInSeconds = Math.max(
