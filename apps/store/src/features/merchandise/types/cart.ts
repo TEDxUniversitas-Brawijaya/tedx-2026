@@ -17,7 +17,7 @@ export type CartItem = Product & {
 
 export type Order = {
   orderId: string;
-  status: "pending_payment" | "paid";
+  status: "pending_payment" | "pending_verification" | "paid";
   totalPrice: number;
   expiresAt: string;
   qrisUrl: string | null;

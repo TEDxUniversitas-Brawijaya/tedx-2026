@@ -28,7 +28,7 @@ export type BundleItem =
   | {
       type: "merchandise";
       category: MerchCategory;
-      products: MerchProduct[];
+      products?: MerchProduct[];
     }
   | {
       type: "selectable_item";
