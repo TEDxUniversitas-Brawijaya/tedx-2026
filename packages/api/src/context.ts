@@ -1,39 +1,38 @@
 import { createAuth, type Session } from "@tedx-2026/auth";
 import {
-  createMerchService,
-  createOrderService,
-  createPaymentService,
-  createEmailService,
-  createFileService,
-  createUserService,
-  type MerchService,
-  type OrderService,
-  type PaymentService,
-  type EmailService,
-  type FileServices,
+  createFileServices,
+  createOrderServices,
+  createPaymentServices,
+  createUserServices,
+  type OrderServices,
   type UserServices,
 } from "@tedx-2026/core";
+import { createConfigServices } from "@tedx-2026/core/services/config";
+import {
+  createProductServices,
+  type ProductServices,
+} from "@tedx-2026/core/services/product";
 import {
   createConfigQueries,
   createDB,
-  createMerchQueries,
+  createOrderQueries,
+  createProductQueries,
   createUserQueries,
-  type ConfigQueries,
   type D1Database,
   type DB,
-  type MerchQueries,
-  type UserQueries,
 } from "@tedx-2026/db";
 import { createBrevo } from "@tedx-2026/email";
 import {
+  createConfigOperations,
   createKV,
-  createOrderKVOperations,
+  createOrderOperations,
   type KVNamespaceType,
-  type OrderKVOperations,
 } from "@tedx-2026/kv";
 import type { LoggerType } from "@tedx-2026/logger";
 import { createR2, type R2BucketType } from "@tedx-2026/storage";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
+import { createEmailServices } from "../../core/src/services/email";
+import type { FileServices } from "../../core/src/services/file";
 
 type CreateContextOptions = {
   env: {
@@ -70,40 +69,9 @@ export const createContext = async ({
 
   const db = createDB(env.db);
   const kv = createKV(env.kv);
-  const orderKVOperations = createOrderKVOperations(kv);
   const cdn = createR2(env.cdn);
   const email = createBrevo(env.BREVO_API_KEY, {
     // sandbox: process.env.NODE_ENV !== "production",
-  });
-
-  const userQueries = createUserQueries(db);
-  const merchQueries = createMerchQueries(db);
-  const configQueries = createConfigQueries(db);
-
-  const userService = createUserService({
-    ...baseContext,
-    logger: logger.child({ service: "user" }),
-    userQueries,
-  });
-
-  const emailService = createEmailService(
-    {
-      ...baseContext,
-      logger: logger.child({ service: "email" }),
-      email,
-    },
-    {
-      senderName: env.SENDER_NAME,
-      senderEmail: env.SENDER_EMAIL,
-    }
-  );
-
-  const fileService = createFileService({
-    ...baseContext,
-    logger: logger.child({ service: "file" }),
-    r2: cdn,
-    CDN_DOMAIN: env.CDN_DOMAIN,
-    email: emailService,
   });
 
   const auth = createAuth(db, {
@@ -117,38 +85,71 @@ export const createContext = async ({
 
   const session = await auth.api.getSession(fetchCreateContextFnOptions.req);
 
-  const midtransServerKeyConfig = await configQueries.getByKey(
-    "midtrans_server_key"
-  );
-  const midtransIsProductionConfig = await configQueries.getByKey(
-    "midtrans_is_production"
-  );
+  const orderOperations = createOrderOperations(kv);
+  const configOperations = createConfigOperations(kv);
 
-  const paymentService = createPaymentService({
-    serverKey: midtransServerKeyConfig?.value ?? "",
-    isProduction: midtransIsProductionConfig?.value === "true",
-  });
+  const userQueries = createUserQueries(db);
+  const orderQueries = createOrderQueries(db);
+  const configQueries = createConfigQueries(db);
+  const productQueries = createProductQueries(db);
 
-  const merchService = createMerchService({
+  const configServices = createConfigServices({
+    ...baseContext,
+    logger: logger.child({ service: "config" }),
     configQueries,
-    merchQueries,
-    orderKVOperations,
-    paymentService,
-    apiBaseUrl: env.APP_URL,
+    configOperations,
   });
 
-  const signProofUrl = (key: string) => {
-    if (key.startsWith("http://") || key.startsWith("https://")) {
-      return key;
+  const userServices = createUserServices({
+    ...baseContext,
+    logger: logger.child({ service: "user" }),
+    userQueries,
+  });
+
+  const emailServices = createEmailServices(
+    {
+      ...baseContext,
+      logger: logger.child({ service: "email" }),
+      email,
+    },
+    {
+      senderName: env.SENDER_NAME,
+      senderEmail: env.SENDER_EMAIL,
     }
+  );
 
-    return `https://${env.CDN_DOMAIN}/${key}`;
-  };
+  const fileServices = createFileServices({
+    ...baseContext,
+    logger: logger.child({ service: "file" }),
+    r2: cdn,
+    CDN_DOMAIN: env.CDN_DOMAIN,
+  });
 
-  const orderService = createOrderService({
-    configQueries,
-    merchQueries,
-    signProofUrl,
+  const paymentServices = createPaymentServices({
+    ...baseContext,
+    logger: logger.child({ service: "payment" }),
+  });
+
+  const productServices = createProductServices({
+    ...baseContext,
+    logger: logger.child({ service: "product" }),
+    productQueries,
+  });
+
+  const orderServices = createOrderServices({
+    ...baseContext,
+    logger: logger.child({ service: "order" }),
+
+    configServices,
+    fileServices,
+    paymentServices,
+    emailServices,
+
+    orderQueries,
+    userQueries,
+    productQueries,
+
+    orderOperations,
   });
 
   return {
@@ -157,21 +158,11 @@ export const createContext = async ({
     logger,
     waitUntil,
     session,
-    queries: {
-      user: userQueries,
-      merch: merchQueries,
-      config: configQueries,
-    },
-    operations: {
-      orderKV: orderKVOperations,
-    },
     services: {
-      user: userService,
-      file: fileService,
-      email: emailService,
-      payment: paymentService,
-      merch: merchService,
-      order: orderService,
+      user: userServices,
+      file: fileServices,
+      order: orderServices,
+      product: productServices,
     },
   };
 };
@@ -180,21 +171,11 @@ export type Context = {
   requestId: string;
   db: DB;
   logger: LoggerType;
-  queries: {
-    user: UserQueries;
-    merch: MerchQueries;
-    config: ConfigQueries;
-  };
-  operations: {
-    orderKV: OrderKVOperations;
-  };
   services: {
     user: UserServices;
     file: FileServices;
-    email: EmailService;
-    payment: PaymentService;
-    merch: MerchService;
-    order: OrderService;
+    order: OrderServices;
+    product: ProductServices;
   };
   waitUntil: (promise: Promise<unknown>) => void;
   session: Session | null;

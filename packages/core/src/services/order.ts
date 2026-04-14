@@ -1,214 +1,541 @@
-import type { ConfigQueries, MerchQueries } from "@tedx-2026/db";
-import { isPendingPayment } from "../lib/checker";
+import type { OrderQueries, ProductQueries, UserQueries } from "@tedx-2026/db";
+import type { OrderOperations } from "@tedx-2026/kv";
+import type { Order, OrderItem, User } from "@tedx-2026/types";
 import {
-  createInvalidOrderStatusError,
-  createOrderNotFoundError,
-  createPaymentModeMismatchError,
-} from "../errors";
+  createNanoIdWithPrefix,
+  createUUIDv7,
+  tryCatch,
+} from "@tedx-2026/utils";
+import { AppError } from "../errors";
+import { generateOrderId } from "../lib/generator";
+import type { BaseContext } from "../types";
+import type { ConfigServices } from "./config";
+import type { EmailServices } from "./email";
+import type { FileServices } from "./file";
+import type { PaymentServices } from "./payment";
 
-type CreateOrderServiceOptions = {
-  merchQueries: MerchQueries;
-  configQueries: ConfigQueries;
-  signProofUrl?: (key: string) => string | Promise<string>;
-};
-
-type OrderWithItems = NonNullable<
-  Awaited<ReturnType<MerchQueries["getOrderWithItemsById"]>>
->;
-
-type ListOrdersResult = Awaited<ReturnType<MerchQueries["listOrders"]>>;
-
-export type OrderService = {
-  uploadManualPaymentProof: (input: {
-    orderId: string;
-    proofObjectKey: string;
-  }) => Promise<{ orderId: string; status: "pending_verification" }>;
-  handleMidtransStatus: (input: {
-    orderId: string;
-    transactionStatus: string;
-  }) => Promise<void>;
-  getAdminOrderById: (orderId: string) => Promise<{
-    order: OrderWithItems["order"];
-    items: OrderWithItems["items"];
-  }>;
-  listAdminOrders: (input: {
+export type OrderServices = {
+  getOrders: (opts?: {
     page: number;
     limit: number;
-    type?: "ticket" | "merch";
-    status?:
-      | "pending_payment"
-      | "pending_verification"
-      | "paid"
-      | "expired"
-      | "refund_requested"
-      | "refunded"
-      | "rejected";
+    type?: Order["type"];
+    status?: Order["status"];
     search?: string;
     sortBy: "createdAt" | "totalPrice" | "status";
     sortOrder: "asc" | "desc";
-  }) => Promise<ListOrdersResult>;
-  verifyPayment: (input: {
-    orderId: string;
-    action: "approve" | "reject";
-    reason?: string;
-    verifierId: string;
-  }) => Promise<"paid" | "rejected">;
-  runPendingPaymentExpiry: () => Promise<number>;
-  runPendingVerificationExpiry: () => Promise<number>;
+  }) => Promise<{
+    orders: Order[];
+    meta: {
+      total: number;
+    };
+  }>;
+
+  getOrderStatus: (orderId: Order["id"]) => Promise<Order["status"]>;
+
+  verifyPayment: (
+    orderId: Order["id"],
+    action: "approve" | "reject",
+    reason: NonNullable<Order["rejectionReason"]>,
+    verifierId: Order["verifiedBy"]
+  ) => Promise<void>;
+
+  // Seperate merch and ticket order
+  createMerchOrder(
+    order: Pick<Order, "buyer"> & {
+      paymentProof: File | null;
+      idempotencyKey: string;
+      captchaToken: string;
+    },
+    items: (Pick<OrderItem, "productId" | "quantity"> & {
+      variantIds?: string[]; // for regular items, the selected variant IDs (if applicable)
+      bundleItemProducts?: {
+        // for bundle items, the selected product IDs (if applicable)
+        productId: string;
+        variantIds?: string[];
+      }[];
+    })[]
+  ): Promise<{
+    orderId: Order["id"];
+    status: Order["status"];
+    totalPrice: Order["totalPrice"];
+    expiresAt: Order["expiresAt"];
+    qrisUrl: string | null;
+  }>;
+
+  expirePendingPaymentOrders: () => Promise<void>;
+  expirePendingVerificationOrders: () => Promise<void>;
 };
 
-export const createOrderService = ({
-  merchQueries,
-  configQueries,
-  signProofUrl,
-}: CreateOrderServiceOptions): OrderService => ({
-  uploadManualPaymentProof: async ({ orderId, proofObjectKey }) => {
-    const paymentMode = await configQueries.getPaymentMode();
-    if (paymentMode !== "manual") {
-      throw createPaymentModeMismatchError("manual", paymentMode);
+type CreateOrderServicesCtx = {
+  configServices: ConfigServices;
+  fileServices: FileServices;
+  paymentServices: PaymentServices;
+  emailServices: EmailServices;
+
+  orderQueries: OrderQueries;
+  userQueries: UserQueries;
+  productQueries: ProductQueries;
+
+  orderOperations: OrderOperations;
+} & BaseContext;
+
+export const createOrderServices = (
+  ctx: CreateOrderServicesCtx
+): OrderServices => ({
+  getOrders: async (opts) => {
+    const { orders, meta } = await ctx.orderQueries.getOrders(opts);
+
+    const orderIds: string[] = [];
+    const verifierIds: string[] = [];
+    const pickupIds: string[] = [];
+
+    for (const order of orders) {
+      orderIds.push(order.id);
+      if (order.verifiedBy) {
+        verifierIds.push(order.verifiedBy);
+      }
+      if (order.pickedUpBy) {
+        pickupIds.push(order.pickedUpBy);
+      }
     }
 
-    const order = await merchQueries.getOrderById(orderId);
-    if (!order) {
-      throw createOrderNotFoundError(orderId);
+    const adminIds = Array.from(new Set([...verifierIds, ...pickupIds]));
+
+    const [orderItems, admins] = await Promise.all([
+      ctx.orderQueries.getOrderItemsByOrderIds(orderIds),
+      ctx.userQueries.getUsersByIds(adminIds),
+    ]);
+
+    const adminMap: Record<string, User> = {};
+    for (const admin of admins) {
+      adminMap[admin.id] = admin;
     }
 
-    const orderPaymentMethod = order.paymentMethod ?? "manual";
-    if (orderPaymentMethod !== "manual") {
-      throw createPaymentModeMismatchError("manual", orderPaymentMethod);
-    }
+    const ordersWithDetails: Order[] = orders.map((order) => {
+      const items = orderItems.filter((item) => item.orderId === order.id);
 
-    if (!isPendingPayment(order.status)) {
-      throw createInvalidOrderStatusError(
-        orderId,
-        "pending_payment",
-        order.status
-      );
-    }
-
-    await merchQueries.updateOrder(orderId, {
-      proofImageUrl: proofObjectKey,
-      status: "pending_verification",
+      return {
+        buyer: {
+          name: order.buyerName,
+          email: order.buyerEmail,
+          phone: order.buyerPhone,
+          college: order.buyerCollege,
+        },
+        items,
+        verifiedByUser: order.verifiedBy
+          ? adminMap[order.verifiedBy] || null
+          : null,
+        pickedUpByUser: order.pickedUpBy
+          ? adminMap[order.pickedUpBy] || null
+          : null,
+        ...order,
+        expiresAt: new Date(order.expiresAt),
+        paidAt: order.paidAt ? new Date(order.paidAt) : null,
+        createdAt: new Date(order.createdAt),
+        updatedAt: new Date(order.updatedAt),
+        verifiedAt: order.verifiedAt ? new Date(order.verifiedAt) : null,
+        pickedUpAt: order.pickedUpAt ? new Date(order.pickedUpAt) : null,
+      };
     });
 
+    // TODO: optimize with better queries if needed, cache results, etc
+
     return {
-      orderId,
-      status: "pending_verification",
+      orders: ordersWithDetails,
+      meta,
     };
   },
 
-  handleMidtransStatus: async ({ orderId, transactionStatus }) => {
-    const paymentMode = await configQueries.getPaymentMode();
-    if (paymentMode !== "midtrans") {
-      throw createPaymentModeMismatchError("midtrans", paymentMode);
-    }
-
-    const order =
-      (await merchQueries.getOrderByMidtransOrderId(orderId)) ??
-      (await merchQueries.getOrderById(orderId));
-
-    if (!order) {
-      throw createOrderNotFoundError(orderId);
-    }
-
-    if (!isPendingPayment(order.status)) {
-      return;
-    }
-
-    if (transactionStatus === "settlement") {
-      await merchQueries.updateOrder(order.id, {
-        status: "paid",
-        paidAt: new Date().toISOString(),
-      });
-      return;
-    }
-
-    if (transactionStatus === "expire") {
-      await merchQueries.updateOrder(order.id, {
-        status: "expired",
+  getOrderStatus: async (orderId) => {
+    const status = await ctx.orderQueries.getOrderStatusById(orderId);
+    if (status === null) {
+      throw new AppError("NOT_FOUND", "Order not found", {
+        details: { orderId },
       });
     }
+
+    return status;
   },
 
-  getAdminOrderById: async (orderId) => {
-    const orderWithItems = await merchQueries.getOrderWithItemsById(orderId);
-    if (!orderWithItems) {
-      throw createOrderNotFoundError(orderId);
-    }
-
-    if (
-      signProofUrl &&
-      orderWithItems.order.proofImageUrl &&
-      !orderWithItems.order.proofImageUrl.startsWith("http")
-    ) {
-      const signedUrl = await signProofUrl(orderWithItems.order.proofImageUrl);
-      orderWithItems.order.proofImageUrl = signedUrl;
-    }
-
-    return {
-      order: orderWithItems.order,
-      items: orderWithItems.items,
-    };
-  },
-
-  listAdminOrders: async (input) => {
-    return await merchQueries.listOrders(input);
-  },
-
-  verifyPayment: async ({ orderId, action, reason, verifierId }) => {
-    const paymentMode = await configQueries.getPaymentMode();
-    if (paymentMode !== "manual") {
-      throw createPaymentModeMismatchError("manual", paymentMode);
-    }
-
-    const order = await merchQueries.getOrderById(orderId);
+  verifyPayment: async (orderId, action, reason, verifierId) => {
+    const order = await ctx.orderQueries.getOrderById(orderId);
     if (!order) {
-      throw createOrderNotFoundError(orderId);
-    }
-
-    const orderPaymentMethod = order.paymentMethod ?? "manual";
-    if (orderPaymentMethod !== "manual") {
-      throw createPaymentModeMismatchError("manual", orderPaymentMethod);
+      throw new AppError("BAD_REQUEST", "Order not found", {
+        details: { orderId },
+      });
     }
 
     if (order.status !== "pending_verification") {
-      throw createInvalidOrderStatusError(
-        orderId,
-        "pending_verification",
-        order.status
+      throw new AppError(
+        "BAD_REQUEST",
+        "Only orders with pending_verification status can be verified",
+        {
+          details: { orderId },
+        }
       );
     }
 
     if (action === "approve") {
-      await merchQueries.updateOrder(orderId, {
+      await ctx.orderQueries.updateOrder(orderId, {
         status: "paid",
-        paidAt: new Date().toISOString(),
-        verifiedAt: new Date().toISOString(),
         verifiedBy: verifierId,
-        rejectionReason: null,
+        verifiedAt: new Date().toISOString(),
       });
-      return "paid";
+    } else {
+      await ctx.orderQueries.updateOrder(orderId, {
+        status: "rejected",
+        verifiedBy: verifierId,
+        verifiedAt: new Date().toISOString(),
+        rejectionReason: reason,
+      });
     }
 
-    await merchQueries.updateOrder(orderId, {
-      status: "rejected",
-      rejectionReason: reason,
-      verifiedAt: new Date().toISOString(),
-      verifiedBy: verifierId,
+    // TODO: Invalidate cache if any, send confirmation email based on action
+  },
+
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor this function to reduce complexity
+  createMerchOrder: async (order, items) => {
+    const {
+      buyer,
+      idempotencyKey,
+      paymentProof: proofImage,
+      // captchaToken,
+    } = order;
+    const existingOrderResponse =
+      await ctx.orderOperations.getOrderResponse(idempotencyKey);
+    if (existingOrderResponse) {
+      return JSON.parse(existingOrderResponse);
+    }
+
+    const [
+      merchPreorderDeadline,
+      paymentMode,
+      paymentTimeoutMinutes,
+      cooldownMinutes,
+    ] = await Promise.all([
+      ctx.configServices.getConfig("merch_preorder_deadline"),
+      ctx.configServices.getConfig("payment_mode"),
+      ctx.configServices.getConfig("payment_timeout_minutes"),
+      ctx.configServices.getConfig("cooldown_minutes"),
+    ]);
+    if (
+      merchPreorderDeadline === null ||
+      paymentMode === null ||
+      paymentTimeoutMinutes === null ||
+      cooldownMinutes === null
+    ) {
+      throw new AppError(
+        "INTERNAL_SERVER_ERROR",
+        "Missing required configuration values"
+      );
+    }
+
+    // Deadline check
+    const deadline = new Date(merchPreorderDeadline);
+    const now = new Date();
+    if (now > deadline) {
+      throw new AppError("BAD_REQUEST", "Merch preorder deadline has passed", {
+        details: { merchPreorderDeadline, now: now.toISOString() },
+      });
+    }
+
+    // TODO: Captcha verification
+
+    // No cooldown on merch orders for now, but we can enable it in the future if needed
+
+    if (paymentMode === "manual" && proofImage === null) {
+      throw new AppError(
+        "BAD_REQUEST",
+        "Payment proof image is required for manual payment"
+      );
+    }
+
+    // Check all products exist and active
+    const productIds = items.map((item) => item.productId);
+    const products = await ctx.productQueries.getProductsByIds(productIds, {
+      isActive: true,
     });
+    if (products.length !== productIds.length) {
+      const foundProductIds = products.map((p) => p.id);
+      const missingProductIds = productIds.filter(
+        (id) => !foundProductIds.includes(id)
+      );
+      throw new AppError(
+        "BAD_REQUEST",
+        "Some products are not found or not active",
+        {
+          details: {
+            missingProductIds,
+            // Passing buyer here because why can buyer order inactive product?
+            buyer,
+          },
+        }
+      );
+    }
 
-    return "rejected";
+    // Validate variants against product variants
+    const validateVariants = (
+      variantIds: string[],
+      productVariants: {
+        id: string;
+        label: string;
+        type: string;
+      }[],
+      productId: string,
+      parentProductId?: string
+    ) => {
+      const availableVariantIds = productVariants.map((v) => v.id);
+      const invalidVariantIds = variantIds.filter(
+        (variantId) => !availableVariantIds.includes(variantId)
+      );
+
+      if (invalidVariantIds.length > 0) {
+        const errorMessage = parentProductId
+          ? "Some variants are invalid for a bundle product"
+          : "Some variants are invalid for a product";
+
+        throw new AppError("BAD_REQUEST", errorMessage, {
+          details: {
+            productId,
+            ...(parentProductId && { parentProductId }),
+            invalidVariantIds,
+          },
+        });
+      }
+    };
+
+    // Map selected variants to snapshot format
+    const mapSnapshotVariants = (
+      variantIds: string[] | undefined,
+      productVariants: {
+        id: string;
+        label: string;
+        type: string;
+      }[]
+    ) => {
+      if (!variantIds) {
+        return undefined;
+      }
+
+      return productVariants
+        ?.filter((v) => variantIds.includes(v.id))
+        .map((v) => ({
+          label: v.label,
+          type: v.type,
+        }));
+    };
+
+    // Create product map for O(1) lookups
+    const productMap = new Map(products.map((p) => [p.id, p]));
+
+    const orderId = generateOrderId();
+    let totalPrice = 0;
+    const orderItems: {
+      orderId: string;
+      productId: string;
+      id: string;
+      quantity: number;
+      snapshotName: string;
+      snapshotPrice: number;
+      snapshotType: string;
+      snapshotVariants?: { label: string; type: string }[];
+      snapshotBundleProducts?: {
+        name: string;
+        category: string | null;
+        selectedVariants?: { label: string; type: string }[];
+      }[];
+    }[] = [];
+
+    // Validate and build order items in single pass
+    for (const item of items) {
+      const product = productMap.get(item.productId);
+      if (!product) {
+        continue;
+      }
+
+      totalPrice += product.price * item.quantity;
+
+      // Validate variants if present
+      if (item.variantIds && product.variants) {
+        validateVariants(item.variantIds, product.variants, item.productId);
+      }
+
+      const snapshotVariants = product.variants
+        ? mapSnapshotVariants(item.variantIds, product.variants)
+        : undefined;
+
+      // Validate and map bundle products
+      const snapshotBundleProducts = item.bundleItemProducts?.map(
+        (bundleItemProduct) => {
+          const bundleProduct = productMap.get(bundleItemProduct.productId);
+
+          if (!bundleProduct) {
+            throw new AppError(
+              "BAD_REQUEST",
+              "Some bundle products are not found or not active",
+              {
+                details: {
+                  productId: bundleItemProduct.productId,
+                  parentProductId: item.productId,
+                },
+              }
+            );
+          }
+
+          if (bundleItemProduct.variantIds && bundleProduct.variants) {
+            validateVariants(
+              bundleItemProduct.variantIds,
+              bundleProduct.variants,
+              bundleItemProduct.productId,
+              item.productId
+            );
+          }
+
+          const selectedVariants = bundleProduct.variants
+            ? mapSnapshotVariants(
+                bundleItemProduct.variantIds,
+                bundleProduct.variants
+              )
+            : undefined;
+
+          return {
+            name: bundleProduct.name,
+            category: bundleProduct.category,
+            selectedVariants,
+          };
+        }
+      );
+
+      // Build order item
+      orderItems.push({
+        orderId,
+        productId: item.productId,
+        id: createNanoIdWithPrefix("oi"),
+        quantity: item.quantity,
+        snapshotName: product.name,
+        snapshotPrice: product.price,
+        snapshotType: product.type,
+        snapshotVariants,
+        snapshotBundleProducts,
+      });
+    }
+    const refundToken = createUUIDv7();
+
+    let proofImageUrl: string | null = null;
+    if (paymentMode === "manual" && proofImage) {
+      const uploadedProof = await ctx.fileServices.uploadFile(
+        `${orderId}-${proofImage.name}`,
+        await proofImage.arrayBuffer(),
+        "payment-proofs/merchandise",
+        {
+          maxSizeMB: 5,
+        }
+      );
+      proofImageUrl = uploadedProof.url;
+    }
+
+    const expiresAt = new Date(
+      Date.now() + Number.parseInt(paymentTimeoutMinutes, 10) * 60 * 1000
+    ).toISOString();
+
+    const orderStatus =
+      paymentMode === "manual" ? "pending_verification" : "pending_payment";
+
+    const { error: createOrderError } = await tryCatch(
+      ctx.orderQueries.createOrder(
+        {
+          id: orderId,
+          buyerName: buyer.name,
+          buyerEmail: buyer.email,
+          buyerPhone: buyer.phone,
+          buyerCollege: buyer.college,
+          totalPrice,
+          paymentMethod: paymentMode as Order["paymentMethod"],
+          proofImageUrl,
+          status: orderStatus,
+          type: "merch",
+          idempotencyKey,
+          expiresAt,
+          refundToken,
+        },
+        orderItems
+      )
+    );
+
+    if (createOrderError) {
+      throw new AppError(
+        "INTERNAL_SERVER_ERROR",
+        "Failed to create order, please try again later",
+        {
+          cause: createOrderError,
+          details: {
+            buyer,
+            items,
+          },
+        }
+      );
+    }
+
+    let qrisUrl: string | null = null;
+    if (paymentMode === "qris") {
+      const { data: chargeTransactionResponse, error: chargeTransactionError } =
+        await tryCatch(ctx.paymentServices.chargeTransaction());
+      if (chargeTransactionError) {
+        // Rollback
+        await ctx.orderQueries.deleteOrderById(orderId);
+
+        throw new AppError(
+          "INTERNAL_SERVER_ERROR",
+          "Failed to create QRIS payment, please try again later",
+          {
+            cause: chargeTransactionError,
+          }
+        );
+      }
+      qrisUrl = chargeTransactionResponse.qrisUrl;
+    }
+
+    // Set cooldown for buyer if needed
+
+    const response = {
+      orderId,
+      status: orderStatus,
+      totalPrice,
+      expiresAt,
+      qrisUrl,
+    };
+    ctx.waitUntil(
+      // Cache the response for 1 hour
+      ctx.orderOperations.setOrderResponse(
+        idempotencyKey,
+        JSON.stringify(response),
+        60 * 60
+      )
+    );
+
+    return response;
   },
 
-  runPendingPaymentExpiry: async () => {
-    return await merchQueries.expirePendingPaymentOrders(
-      new Date().toISOString()
-    );
+  expirePendingPaymentOrders: async () => {
+    const expiredOrders = await ctx.orderQueries.expirePendingPaymentOrders();
+
+    ctx.logger.info(`Expired ${expiredOrders.length} pending_payment orders`);
+
+    // TODO: Send email
+
+    return;
   },
 
-  runPendingVerificationExpiry: async () => {
-    return await merchQueries.expirePendingVerificationOrders(
-      new Date().toISOString()
+  expirePendingVerificationOrders: async () => {
+    const expiredOrders =
+      await ctx.orderQueries.expirePendingVerificationOrders();
+
+    ctx.logger.info(
+      `Expired ${expiredOrders.length} pending_verification orders`
     );
+
+    // TODO: Send email
+
+    return;
   },
 });

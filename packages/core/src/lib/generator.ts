@@ -7,10 +7,8 @@ const generateOrderCode = (size = 5) => {
     .join("");
 };
 
-export const generateOrderId = (date = new Date()) => {
-  const year = String(date.getUTCFullYear()).slice(-2);
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(date.getUTCDate()).padStart(2, "0");
-
-  return `TDX-${year}${month}${day}-${generateOrderCode()}`;
+export const generateOrderId = () => {
+  const date = new Date().toISOString().split("T")[0]?.replace(/-/g, "");
+  const code = generateOrderCode();
+  return `TDX-${date}-${code}`;
 };

@@ -12,7 +12,6 @@ import {
   productIdSchema,
   productTypeSchema,
   productVariantSchema,
-  snapshotVariantSchema,
 } from "./common";
 
 // merch.listProducts
@@ -67,18 +66,5 @@ export const getMerchOrderStatusInputSchema = z.object({
 });
 
 export const getMerchOrderStatusOutputSchema = z.object({
-  orderId: orderIdSchema,
   status: orderStatusSchema,
-  type: z.literal("merch"),
-  totalPrice: z.number().int(),
-  items: z.array(
-    z.object({
-      snapshotName: z.string(),
-      quantity: z.number().int(),
-      unitPrice: z.number().int(),
-      snapshotVariants: z.array(snapshotVariantSchema).optional(),
-    })
-  ),
-  createdAt: isoDateStringSchema,
-  paidAt: isoDateStringSchema.nullable(),
 });

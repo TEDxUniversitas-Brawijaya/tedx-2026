@@ -4,6 +4,8 @@ export {
   type KVNamespaceType,
 } from "./kv";
 export {
-  createOrderKVOperations,
-  type OrderKVOperations,
+  createConfigOperations,
+  createOrderOperations,
+  type ConfigOperations,
+  type OrderOperations,
 } from "./operations";

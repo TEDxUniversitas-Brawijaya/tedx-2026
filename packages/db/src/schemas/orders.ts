@@ -30,8 +30,8 @@ export const ordersTable = sqliteTable(
     buyerPhone: t.text().notNull(),
     buyerCollege: t.text().notNull(), // instansi for tickets, alamat for merch
     totalPrice: t.integer().notNull(), // IDR
-    idempotencyKey: t.text().unique(), // client-generated, prevents duplicate orders
-    expiresAt: t.text(), // 20-min TTL for pending_payment
+    idempotencyKey: t.text().unique().notNull(), // client-generated, prevents duplicate orders
+    expiresAt: t.text().notNull(), // 20-min TTL for pending_payment
     paidAt: t.text(), // ISO 8601
     createdAt: t
       .text()
@@ -44,9 +44,11 @@ export const ordersTable = sqliteTable(
       .notNull(),
 
     // Payment fields
-    paymentMethod: t.text({
-      enum: ["midtrans", "manual"],
-    }), // midtrans | manual — system-determined
+    paymentMethod: t
+      .text({
+        enum: ["midtrans", "manual"],
+      })
+      .notNull(), // midtrans | manual — system-determined
     midtransOrderId: t.text(),
     proofImageUrl: t.text(), // storage.tedxuniversitasbrawijaya.com (private bucket)
     verifiedBy: t.text().references(() => userTable.id), // admin user ID
@@ -54,7 +56,7 @@ export const ordersTable = sqliteTable(
     rejectionReason: t.text(),
 
     // Refund fields
-    refundToken: t.text().unique(), // nanoid, for tokenized refund link
+    refundToken: t.text().unique().notNull(), // nanoid, for tokenized refund link
 
     // Pickup fields
     pickedUpAt: t.text(), // ISO 8601
@@ -95,6 +97,16 @@ export const orderItemsTable = sqliteTable(
         type: string; // e.g. size, color
       }[]
     >(), // JSON array of selected variants at purchase time. e.g. [{"label":"M","type":"size"}]
+    snapshotBundleProducts: t.text({ mode: "json" }).$type<
+      {
+        name: string; // product name
+        category: string | null; // product category (for merch) or null (for tickets)
+        selectedVariants?: {
+          label: string; // e.g. M, Red
+          type: string; // e.g. size, color
+        }[]; // JSON array of selected variants for this bundle product at purchase time. e.g. [{"label":"M","type":"size"}]
+      }[]
+    >(), // JSON array of selected products (with variants) for bundle items at purchase time. e.g. [{"name":"Bundle Product 1","category":"T-Shirt","selectedVariants":[{"label":"M","type":"size"},{"label":"Red","type":"color"}]}]
   }),
   (t) => [index("order_items_order_id_idx").on(t.orderId)]
 );

@@ -1,4 +1,8 @@
 export {
-  createOrderKVOperations,
-  type OrderKVOperations,
+  createConfigOperations,
+  type ConfigOperations,
+} from "./config";
+export {
+  createOrderOperations,
+  type OrderOperations,
 } from "./order";

@@ -1,38 +1,45 @@
 import { KEYS } from "../keys";
 import type { KV } from "../kv";
 
-export type OrderKVOperations = {
-  setOrderExpiry: (
-    orderId: string,
-    expirationTtlSeconds: number
-  ) => Promise<void>;
-  deleteOrderExpiry: (orderId: string) => Promise<void>;
+export type OrderOperations = {
   setBuyerCooldown: (
     email: string,
     expirationTtlSeconds: number
   ) => Promise<void>;
-  hasBuyerCooldown: (email: string) => Promise<boolean>;
+  getBuyerCooldown: (email: string) => Promise<boolean>;
+  setOrderResponse: (
+    idempotencyKey: string,
+    // TODO: its already stringified when set in kv, consider changing to object and stringify inside the function
+    orderResponse: string,
+    expirationTtlSeconds: number
+  ) => Promise<void>;
+  getOrderResponse: (idempotencyKey: string) => Promise<string | null>;
 };
 
-export const createOrderKVOperations = (kv: KV): OrderKVOperations => ({
-  setOrderExpiry: async (orderId, expirationTtlSeconds) => {
-    await kv.set(KEYS.orderExpiry(orderId), "1", {
-      expirationTtl: expirationTtlSeconds,
-    });
-  },
-
-  deleteOrderExpiry: async (orderId) => {
-    await kv.delete(KEYS.orderExpiry(orderId));
-  },
-
+export const createOrderOperations = (kv: KV): OrderOperations => ({
   setBuyerCooldown: async (email, expirationTtlSeconds) => {
-    await kv.set(KEYS.buyerCooldown(email), "1", {
+    await kv.set(KEYS.order.buyerCooldown(email), "1", {
       expirationTtl: expirationTtlSeconds,
     });
   },
 
-  hasBuyerCooldown: async (email) => {
-    const value = await kv.get(KEYS.buyerCooldown(email));
-    return value !== null;
+  getBuyerCooldown: async (email) => {
+    const value = await kv.get(KEYS.order.buyerCooldown(email));
+    return value === "1";
+  },
+
+  setOrderResponse: async (
+    idempotencyKey,
+    orderResponse,
+    expirationTtlSeconds
+  ) => {
+    await kv.set(KEYS.order.idempotencyKey(idempotencyKey), orderResponse, {
+      expirationTtl: expirationTtlSeconds,
+    });
+  },
+
+  getOrderResponse: async (idempotencyKey) => {
+    const orderJson = await kv.get(KEYS.order.idempotencyKey(idempotencyKey));
+    return orderJson ? JSON.parse(orderJson) : null;
   },
 });
