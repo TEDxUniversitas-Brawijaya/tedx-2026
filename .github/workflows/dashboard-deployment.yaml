@@ -60,6 +60,8 @@ jobs:
           PULL_REQUEST: ${{ github.event.number }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # TODO: This should ideally be read from the deployed environment rather than constructed here, to avoid mismatches in URL construction logic between deploy and destroy steps
+          API_URL: https://tedx-2026-api-pr-${{ github.event.number }}.ahargunyllib.workers.dev
           NODE_ENV: production
 
   cleanup:
@@ -108,6 +110,4 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           PULL_REQUEST: ${{ github.event.number }}
-          # TODO: This should ideally be read from the deployed environment rather than constructed here, to avoid mismatches in URL construction logic between deploy and destroy steps
-          API_URL: https://tedx-2026-api-pr-${{ github.event.number }}.ahargunyllib.workers.dev
           NODE_ENV: production
