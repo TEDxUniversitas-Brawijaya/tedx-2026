@@ -101,7 +101,7 @@ if (process.env.PULL_REQUEST) {
     owner: "tedxuniversitas-brawijaya",
     repository: "tedx-2026",
     issueNumber: Number(process.env.PULL_REQUEST),
-    body: `### Preview Deployment
+    body: `### Preview API Deployment
 
 **Commit:** \`${process.env.GITHUB_SHA}\`
 **Preview URL:** ${worker.url}
