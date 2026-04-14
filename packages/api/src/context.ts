@@ -1,17 +1,17 @@
 import { createAuth, type Session } from "@tedx-2026/auth";
 import {
+  createConfigServices,
+  createEmailServices,
   createFileServices,
   createOrderServices,
   createPaymentServices,
+  createProductServices,
   createUserServices,
+  type FileServices,
   type OrderServices,
+  type ProductServices,
   type UserServices,
 } from "@tedx-2026/core";
-import { createConfigServices } from "@tedx-2026/core/services/config";
-import {
-  createProductServices,
-  type ProductServices,
-} from "@tedx-2026/core/services/product";
 import {
   createConfigQueries,
   createDB,
@@ -31,8 +31,6 @@ import {
 import type { LoggerType } from "@tedx-2026/logger";
 import { createR2, type R2BucketType } from "@tedx-2026/storage";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-import { createEmailServices } from "../../core/src/services/email";
-import type { FileServices } from "../../core/src/services/file";
 
 type CreateContextOptions = {
   env: {

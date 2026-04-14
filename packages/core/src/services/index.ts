@@ -1,3 +1,4 @@
+export { createConfigServices, type ConfigServices } from "./config";
 export { createEmailServices, type EmailServices } from "./email";
 export { createFileServices, type FileServices } from "./file";
 export { createOrderServices, type OrderServices } from "./order";
