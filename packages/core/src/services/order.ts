@@ -273,7 +273,14 @@ export const createOrderServices = (
     const existingOrderResponse =
       await ctx.orderOperations.getOrderResponse(idempotencyKey);
     if (existingOrderResponse) {
-      return JSON.parse(existingOrderResponse);
+      const parsed = JSON.parse(existingOrderResponse);
+      return {
+        orderId: parsed.orderId,
+        status: parsed.status,
+        totalPrice: parsed.totalPrice,
+        expiresAt: new Date(parsed.expiresAt),
+        qrisUrl: parsed.qrisUrl,
+      };
     }
 
     const [
@@ -507,7 +514,7 @@ export const createOrderServices = (
 
     const expiresAt = new Date(
       Date.now() + Number.parseInt(paymentTimeoutMinutes, 10) * 60 * 1000
-    ).toISOString();
+    );
 
     const orderStatus =
       paymentMode === "manual" ? "pending_verification" : "pending_payment";
@@ -526,7 +533,7 @@ export const createOrderServices = (
           status: orderStatus,
           type: "merch",
           idempotencyKey,
-          expiresAt,
+          expiresAt: expiresAt.toISOString(),
           refundToken,
         },
         orderItems
