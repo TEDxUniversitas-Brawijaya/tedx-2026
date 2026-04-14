@@ -22,7 +22,7 @@ export const listProductsOutputSchema = z.array(
     price: z.number().int(),
     stock: z.number().int().nullable(),
     isActive: z.boolean(),
-    imageUrl: z.url().nullable(),
+    imageUrl: z.nullable(z.url()),
     variants: z.array(productVariantSchema).nullable(),
     bundleItems: z.array(bundleItemSchema).nullable(),
     createdAt: isoDateStringSchema,

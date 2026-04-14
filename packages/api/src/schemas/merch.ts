@@ -57,7 +57,7 @@ export const createMerchOrderOutputSchema = z.object({
   status: orderStatusSchema,
   totalPrice: z.number().int(),
   expiresAt: isoDateStringSchema,
-  qrisUrl: z.url().nullable(),
+  qrisUrl: z.nullable(z.url()),
 });
 
 // merch.getOrderStatus

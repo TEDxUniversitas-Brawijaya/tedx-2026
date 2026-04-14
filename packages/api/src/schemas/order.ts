@@ -110,7 +110,7 @@ export const getOrderByIdOutputSchema = z.object({
       status: refundStatusSchema,
       reason: z.string(),
       paymentMethod: z.string(),
-      paymentProofUrl: z.url().nullable(),
+      paymentProofUrl: z.nullable(z.url()),
       bankAccountNumber: z.string(),
       bankName: z.string(),
       bankAccountHolder: z.string(),
