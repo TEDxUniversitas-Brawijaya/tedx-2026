@@ -6,6 +6,15 @@ import type { Context } from "./context";
 
 const t = initTRPC.context<Context>().create({
   transformer: SuperJSON,
+  errorFormatter: ({ shape }) => {
+    return {
+      ...shape,
+      data: {
+        ...shape.data,
+        stack: undefined, // Remove stack trace from error response
+      },
+    };
+  },
 });
 
 const baseProcedure = t.procedure.use(async (opts) => {
@@ -35,6 +44,7 @@ const baseProcedure = t.procedure.use(async (opts) => {
       code: error.code,
       message: error.message,
       name: error.name,
+      cause: error.cause,
     },
   });
 
