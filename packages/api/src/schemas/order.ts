@@ -28,8 +28,12 @@ export const listOrdersOutputSchema = z.object({
       id: orderIdSchema,
       type: orderTypeSchema,
       status: orderStatusSchema,
-      buyerName: z.string(),
-      buyerEmail: z.email(),
+      buyer: z.object({
+        name: z.string(),
+        email: z.email(),
+        phone: z.string(),
+        college: z.string(),
+      }),
       totalPrice: z.number().int(),
       createdAt: isoDateStringSchema,
       paidAt: isoDateStringSchema.nullable(),
@@ -52,10 +56,14 @@ export const getOrderByIdOutputSchema = z.object({
   id: orderIdSchema,
   type: orderTypeSchema,
   status: orderStatusSchema,
-  buyerName: z.string(),
-  buyerEmail: z.email(),
-  buyerPhone: z.string(),
-  buyerCollege: z.string(),
+
+  buyer: z.object({
+    name: z.string(),
+    email: z.email(),
+    phone: z.string(),
+    college: z.string(),
+  }),
+
   totalPrice: z.number().int(),
   idempotencyKey: z.string().nullable(),
   expiresAt: isoDateStringSchema.nullable(),
@@ -76,10 +84,12 @@ export const getOrderByIdOutputSchema = z.object({
       id: z.string(),
       productId: z.string(),
       quantity: z.number().int(),
-      snapshotName: z.string(),
-      snapshotPrice: z.number().int(),
-      snapshotType: z.string(),
-      snapshotVariants: z.array(snapshotVariantSchema).nullable(),
+      snapshot: z.object({
+        name: z.string(),
+        price: z.number().int(),
+        type: z.string(),
+        variants: z.array(snapshotVariantSchema).nullable(),
+      }),
     })
   ),
   tickets: z
@@ -93,7 +103,7 @@ export const getOrderByIdOutputSchema = z.object({
         checkedInBy: userIdSchema.nullable(),
       })
     )
-    .optional(),
+    .nullable(),
   refund: z
     .object({
       id: z.string(),

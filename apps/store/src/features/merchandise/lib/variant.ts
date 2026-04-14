@@ -6,9 +6,13 @@ type GroupedVariant = {
 };
 
 export function groupVariantsByType(
-  variants?: ProductVariant[]
-): GroupedVariant[] | undefined {
-  return variants?.reduce((acc, variant) => {
+  variants: ProductVariant[] | null | undefined
+): GroupedVariant[] | null | undefined {
+  if (!variants) {
+    return null;
+  }
+
+  return variants.reduce((acc, variant) => {
     const existing = acc.find((v) => v.type === variant.type);
 
     // Add value field for Select component

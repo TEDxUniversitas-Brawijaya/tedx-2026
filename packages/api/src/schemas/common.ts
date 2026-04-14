@@ -88,7 +88,10 @@ export const bundleItemSchema = z.union([
   z.object({
     type: z.literal("ticket"),
     productId: z.string(),
-    productName: z.string(),
+    product: z.object({
+      id: z.string(),
+      name: z.string(),
+    }),
   }),
   z.object({
     type: z.literal("merchandise"),
@@ -98,7 +101,7 @@ export const bundleItemSchema = z.union([
         id: z.string(),
         name: z.string(),
         imageUrl: z.string().nullable(),
-        variants: z.array(productVariantSchema).optional(),
+        variants: z.array(productVariantSchema).nullable(),
       })
     ),
   }),
@@ -109,7 +112,10 @@ export const bundleItemSchema = z.union([
         z.object({
           type: z.literal("ticket"),
           productId: z.string(),
-          productName: z.string(),
+          product: z.object({
+            id: z.string(),
+            name: z.string(),
+          }),
         }),
         z.object({
           type: z.literal("merchandise"),
@@ -119,7 +125,7 @@ export const bundleItemSchema = z.union([
               id: z.string(),
               name: z.string(),
               imageUrl: z.string().nullable(),
-              variants: z.array(productVariantSchema).optional(),
+              variants: z.array(productVariantSchema).nullable(),
             })
           ),
         }),

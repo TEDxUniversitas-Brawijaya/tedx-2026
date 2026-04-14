@@ -54,21 +54,23 @@ export type OrderItem = {
     name: string;
     price: number;
     type: string;
-    variants?:
+    variants:
       | {
           label: string;
           type: string;
         }[]
       | null;
-    bundleProducts?: {
-      name: string; // product name
-      category: string | null; // product category (for merch) or null (for tickets)
-      selectedVariants?: {
-        label: string; // e.g. M, Red
-        type: string; // e.g. size, color
-      }[]; // JSON array of selected variants for this bundle product at purchase time. e.g. [{"label":"M","type":"size"}]
-    }[];
+    bundleProducts:
+      | {
+          name: string; // product name
+          category: string | null; // product category (for merch) or null (for tickets)
+          selectedVariants:
+            | {
+                label: string; // e.g. M, Red
+                type: string; // e.g. size, color
+              }[]
+            | null; // JSON array of selected variants for this bundle product at purchase time. e.g. [{"label":"M","type":"size"}]
+        }[]
+      | null;
   };
-  createdAt: Date;
-  updatedAt: Date;
 };

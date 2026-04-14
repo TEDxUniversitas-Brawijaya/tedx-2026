@@ -43,6 +43,13 @@ export type DetailOrder = Order & {
     snapshotPrice: number;
     snapshotType: string;
     snapshotVariants: { label: string; type: string }[] | null;
+    snapshotBundleProducts:
+      | {
+          name: string;
+          category: string | null;
+          selectedVariants?: { label: string; type: string }[];
+        }[]
+      | null;
   }[];
   tickets?: {
     id: string;

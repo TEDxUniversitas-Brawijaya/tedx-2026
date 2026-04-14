@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server/unstable-core-do-not-import";
 import {
   createMerchOrderInputSchema,
   createMerchOrderOutputSchema,
@@ -12,31 +11,44 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 const listProducts = publicProcedure
   .input(listMerchProductsInputSchema)
   .output(listMerchProductsOutputSchema)
-  .query(() => {
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "Product listing is not implemented yet.",
+  .query(async ({ ctx }) => {
+    const products = await ctx.services.product.getMerchProducts({
+      isActive: true,
     });
+    return products;
   });
 
 const createOrder = publicProcedure
   .input(createMerchOrderInputSchema)
   .output(createMerchOrderOutputSchema)
-  .mutation(() => {
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "Order creation is not implemented yet.",
-    });
+  .mutation(async ({ ctx, input }) => {
+    const order = await ctx.services.order.createMerchOrder(
+      {
+        buyer: {
+          name: input.fullName,
+          email: input.email,
+          phone: input.phone,
+          college: input.address,
+        },
+        paymentProof: input.paymentProof ?? null,
+        idempotencyKey: input.idempotencyKey,
+        captchaToken: input.captchaToken,
+      },
+      input.items
+    );
+
+    return {
+      ...order,
+      expiresAt: order.expiresAt.toISOString(),
+    };
   });
 
 const getOrderStatus = publicProcedure
   .input(getMerchOrderStatusInputSchema)
   .output(getMerchOrderStatusOutputSchema)
-  .query(() => {
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "Get order status is not implemented yet.",
-    });
+  .query(async ({ ctx, input }) => {
+    const status = await ctx.services.order.getOrderStatus(input.orderId);
+    return { status };
   });
 
 export const merchRouter = createTRPCRouter({

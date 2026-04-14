@@ -14,21 +14,50 @@ import { createTRPCRouter, protectedProcedure } from "../../trpc";
 const list = protectedProcedure
   .input(listOrdersInputSchema)
   .output(listOrdersOutputSchema)
-  .query(() => {
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "Order listing is not implemented yet.",
+  .query(async ({ ctx, input }) => {
+    const { page, limit, type, status, search, sortBy, sortOrder } = input;
+    const { orders, meta } = await ctx.services.order.getOrders({
+      page,
+      limit,
+      type,
+      status,
+      search,
+      sortBy,
+      sortOrder,
     });
+
+    const totalPages = Math.ceil(meta.total / limit);
+
+    return {
+      orders: orders.map((order) => ({
+        ...order,
+        createdAt: order.createdAt.toISOString(),
+        updatedAt: order.updatedAt.toISOString(),
+        paidAt: order.paidAt ? order.paidAt.toISOString() : null,
+      })),
+      pagination: { total: meta.total, page, limit, totalPages },
+    };
   });
 
 const getById = protectedProcedure
   .input(getOrderByIdInputSchema)
   .output(getOrderByIdOutputSchema)
-  .query(() => {
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "Get order by ID is not implemented yet.",
-    });
+  .query(async ({ ctx, input }) => {
+    const order = await ctx.services.order.getOrderById(input.orderId);
+
+    return {
+      ...order,
+      createdAt: order.createdAt.toISOString(),
+      updatedAt: order.updatedAt.toISOString(),
+      paidAt: order.paidAt ? order.paidAt.toISOString() : null,
+      expiresAt: order.expiresAt ? order.expiresAt.toISOString() : null,
+      verifiedAt: order.verifiedAt ? order.verifiedAt.toISOString() : null,
+      pickedUpAt: order.pickedUpAt ? order.pickedUpAt.toISOString() : null,
+      // TODO: include refund details when available
+      refund: null,
+      // TODO: include ticket details when available
+      tickets: null,
+    };
   });
 
 const verifyPayment = protectedProcedure

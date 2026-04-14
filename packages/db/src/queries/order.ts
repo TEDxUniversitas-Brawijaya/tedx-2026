@@ -39,6 +39,9 @@ export type OrderQueries = {
     };
   }>;
 
+  getOrderItemsByOrderId: (
+    orderId: SelectOrder["id"]
+  ) => Promise<SelectOrderItem[]>;
   getOrderItemsByOrderIds: (
     orderIds: SelectOrder["id"][]
   ) => Promise<SelectOrderItem[]>;
@@ -156,6 +159,12 @@ export const createOrderQueries = (db: DB): OrderQueries => ({
         total: countRecords[0]?.count ?? 0,
       },
     };
+  },
+
+  getOrderItemsByOrderId: async (orderId) => {
+    return await db.query.orderItemsTable.findMany({
+      where: eq(orderItemsTable.orderId, orderId),
+    });
   },
 
   getOrderItemsByOrderIds: async (orderIds) => {

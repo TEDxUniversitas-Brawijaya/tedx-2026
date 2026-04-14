@@ -30,6 +30,10 @@ export type OrderServices = {
     };
   }>;
 
+  getOrderById: (
+    orderId: Order["id"]
+  ) => Promise<Order & { items: OrderItem[] }>;
+
   getOrderStatus: (orderId: Order["id"]) => Promise<Order["status"]>;
 
   verifyPayment: (
@@ -61,6 +65,13 @@ export type OrderServices = {
     expiresAt: Order["expiresAt"];
     qrisUrl: string | null;
   }>;
+
+  processRefund: (
+    orderId: Order["id"],
+    action: "approve" | "reject",
+    reason: NonNullable<Order["rejectionReason"]>,
+    processorId: Order["verifiedBy"]
+  ) => Promise<void>;
 
   expirePendingPaymentOrders: () => Promise<void>;
   expirePendingVerificationOrders: () => Promise<void>;
@@ -101,10 +112,7 @@ export const createOrderServices = (
 
     const adminIds = Array.from(new Set([...verifierIds, ...pickupIds]));
 
-    const [orderItems, admins] = await Promise.all([
-      ctx.orderQueries.getOrderItemsByOrderIds(orderIds),
-      ctx.userQueries.getUsersByIds(adminIds),
-    ]);
+    const admins = await ctx.userQueries.getUsersByIds(adminIds);
 
     const adminMap: Record<string, User> = {};
     for (const admin of admins) {
@@ -112,8 +120,6 @@ export const createOrderServices = (
     }
 
     const ordersWithDetails: Order[] = orders.map((order) => {
-      const items = orderItems.filter((item) => item.orderId === order.id);
-
       return {
         buyer: {
           name: order.buyerName,
@@ -121,7 +127,6 @@ export const createOrderServices = (
           phone: order.buyerPhone,
           college: order.buyerCollege,
         },
-        items,
         verifiedByUser: order.verifiedBy
           ? adminMap[order.verifiedBy] || null
           : null,
@@ -144,6 +149,70 @@ export const createOrderServices = (
       orders: ordersWithDetails,
       meta,
     };
+  },
+
+  getOrderById: async (orderId) => {
+    const order = await ctx.orderQueries.getOrderById(orderId);
+    if (!order) {
+      throw new AppError("NOT_FOUND", "Order not found", {
+        details: { orderId },
+      });
+    }
+
+    const adminIdsSet = new Set<string>();
+    if (order.verifiedBy) {
+      adminIdsSet.add(order.verifiedBy);
+    }
+    if (order.pickedUpBy) {
+      adminIdsSet.add(order.pickedUpBy);
+    }
+    const adminIds = Array.from(adminIdsSet);
+
+    const [orderItems, admins] = await Promise.all([
+      ctx.orderQueries.getOrderItemsByOrderId(orderId),
+      ctx.userQueries.getUsersByIds(adminIds),
+    ]);
+
+    const adminMap: Record<string, User> = {};
+    for (const admin of admins) {
+      adminMap[admin.id] = admin;
+    }
+
+    const orderWithDetails: Order & { items: OrderItem[] } = {
+      buyer: {
+        name: order.buyerName,
+        email: order.buyerEmail,
+        phone: order.buyerPhone,
+        college: order.buyerCollege,
+      },
+      items: orderItems.map((item) => ({
+        ...item,
+        snapshot: {
+          name: item.snapshotName,
+          price: item.snapshotPrice,
+          type: item.snapshotType,
+          variants: item.snapshotVariants,
+          bundleProducts: item.snapshotBundleProducts,
+        },
+      })),
+      verifiedByUser: order.verifiedBy
+        ? adminMap[order.verifiedBy] || null
+        : null,
+      pickedUpByUser: order.pickedUpBy
+        ? adminMap[order.pickedUpBy] || null
+        : null,
+      ...order,
+      expiresAt: new Date(order.expiresAt),
+      paidAt: order.paidAt ? new Date(order.paidAt) : null,
+      createdAt: new Date(order.createdAt),
+      updatedAt: new Date(order.updatedAt),
+      verifiedAt: order.verifiedAt ? new Date(order.verifiedAt) : null,
+      pickedUpAt: order.pickedUpAt ? new Date(order.pickedUpAt) : null,
+    };
+
+    // TODO: optimize with better queries if needed, cache results, etc
+
+    return orderWithDetails;
   },
 
   getOrderStatus: async (orderId) => {
@@ -314,7 +383,7 @@ export const createOrderServices = (
       }[]
     ) => {
       if (!variantIds) {
-        return undefined;
+        return null;
       }
 
       return productVariants
@@ -338,12 +407,14 @@ export const createOrderServices = (
       snapshotName: string;
       snapshotPrice: number;
       snapshotType: string;
-      snapshotVariants?: { label: string; type: string }[];
-      snapshotBundleProducts?: {
-        name: string;
-        category: string | null;
-        selectedVariants?: { label: string; type: string }[];
-      }[];
+      snapshotVariants: { label: string; type: string }[] | null;
+      snapshotBundleProducts:
+        | {
+            name: string;
+            category: string | null;
+            selectedVariants: { label: string; type: string }[] | null;
+          }[]
+        | null;
     }[] = [];
 
     // Validate and build order items in single pass
@@ -362,49 +433,49 @@ export const createOrderServices = (
 
       const snapshotVariants = product.variants
         ? mapSnapshotVariants(item.variantIds, product.variants)
-        : undefined;
+        : null;
 
       // Validate and map bundle products
-      const snapshotBundleProducts = item.bundleItemProducts?.map(
-        (bundleItemProduct) => {
-          const bundleProduct = productMap.get(bundleItemProduct.productId);
+      const snapshotBundleProducts = item.bundleItemProducts
+        ? item.bundleItemProducts.map((bundleItemProduct) => {
+            const bundleProduct = productMap.get(bundleItemProduct.productId);
 
-          if (!bundleProduct) {
-            throw new AppError(
-              "BAD_REQUEST",
-              "Some bundle products are not found or not active",
-              {
-                details: {
-                  productId: bundleItemProduct.productId,
-                  parentProductId: item.productId,
-                },
-              }
-            );
-          }
+            if (!bundleProduct) {
+              throw new AppError(
+                "BAD_REQUEST",
+                "Some bundle products are not found or not active",
+                {
+                  details: {
+                    productId: bundleItemProduct.productId,
+                    parentProductId: item.productId,
+                  },
+                }
+              );
+            }
 
-          if (bundleItemProduct.variantIds && bundleProduct.variants) {
-            validateVariants(
-              bundleItemProduct.variantIds,
-              bundleProduct.variants,
-              bundleItemProduct.productId,
-              item.productId
-            );
-          }
-
-          const selectedVariants = bundleProduct.variants
-            ? mapSnapshotVariants(
+            if (bundleItemProduct.variantIds && bundleProduct.variants) {
+              validateVariants(
                 bundleItemProduct.variantIds,
-                bundleProduct.variants
-              )
-            : undefined;
+                bundleProduct.variants,
+                bundleItemProduct.productId,
+                item.productId
+              );
+            }
 
-          return {
-            name: bundleProduct.name,
-            category: bundleProduct.category,
-            selectedVariants,
-          };
-        }
-      );
+            const selectedVariants = bundleProduct.variants
+              ? mapSnapshotVariants(
+                  bundleItemProduct.variantIds,
+                  bundleProduct.variants
+                )
+              : null;
+
+            return {
+              name: bundleProduct.name,
+              category: bundleProduct.category,
+              selectedVariants,
+            };
+          })
+        : null;
 
       // Build order item
       orderItems.push({
@@ -514,6 +585,46 @@ export const createOrderServices = (
     );
 
     return response;
+  },
+
+  processRefund: async (orderId, action, reason, processorId) => {
+    const order = await ctx.orderQueries.getOrderById(orderId);
+    if (!order) {
+      throw new AppError("BAD_REQUEST", "Order not found", {
+        details: { orderId },
+      });
+    }
+
+    if (order.status !== "refund_requested") {
+      throw new AppError(
+        "BAD_REQUEST",
+        "Only orders with refund_requested status can be processed for refund"
+      );
+    }
+
+    if (action === "approve") {
+      await ctx.orderQueries.updateOrder(orderId, {
+        status: "refunded",
+        verifiedBy: processorId,
+        verifiedAt: new Date().toISOString(),
+      });
+      // TODO: Invalidate cache if any, send confirmation email based on action
+      return;
+    }
+
+    ctx.logger.info("Refund rejected", {
+      orderId,
+      reason,
+      processorId,
+    });
+
+    // See ADR-004
+    await ctx.orderQueries.updateOrder(orderId, {
+      status: "paid",
+    });
+    // TODO: Invalidate cache if any, send rejection email based on action
+
+    return;
   },
 
   expirePendingPaymentOrders: async () => {

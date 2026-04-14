@@ -16,14 +16,17 @@ export type MerchProduct = {
   id: string;
   name: string;
   imageUrl: string | null;
-  variants?: ProductVariant[];
+  variants: ProductVariant[] | null;
 };
 
 export type BundleItem =
   | {
       type: "ticket";
       productId: string;
-      productName: string;
+      product: {
+        id: string;
+        name: string;
+      };
     }
   | {
       type: "merchandise";
@@ -33,7 +36,14 @@ export type BundleItem =
   | {
       type: "selectable_item";
       items: (
-        | { productId: string; productName: string; type: "ticket" }
+        | {
+            type: "ticket";
+            productId: string;
+            product: {
+              id: string;
+              name: string;
+            };
+          }
         | {
             type: "merchandise";
             category: MerchCategory;
@@ -47,8 +57,8 @@ export type Product = {
   type: "ticket_regular" | "ticket_bundle" | "merch_bundle" | "merch_regular";
   name: string;
   price: number;
-  imageUrl?: string | null;
-  variants?: ProductVariant[];
-  category?: MerchCategory;
-  bundleItems?: BundleItem[];
+  imageUrl: string | null;
+  variants: ProductVariant[] | null;
+  category: MerchCategory | null;
+  bundleItems: BundleItem[] | null;
 };
