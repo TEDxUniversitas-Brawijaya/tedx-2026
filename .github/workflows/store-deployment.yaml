@@ -109,5 +109,5 @@ jobs:
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           PULL_REQUEST: ${{ github.event.number }}
           # TODO: This should ideally be read from the deployed environment rather than constructed here, to avoid mismatches in URL construction logic between deploy and destroy steps
-          VITE_PUBLIC_API_URL: https://tedx-2026-api-pr-${{ github.event.number }}.ahargunyllib.workers.dev
+          API_URL: https://tedx-2026-api-pr-${{ github.event.number }}.ahargunyllib.workers.dev
           NODE_ENV: production
