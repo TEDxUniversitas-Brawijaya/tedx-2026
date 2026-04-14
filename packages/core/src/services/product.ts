@@ -25,18 +25,18 @@ export const createProductServices = (
     );
 
     // group products by category
-    const productsMapByCategory = new Map(
-      products
-        .filter((product) => product.category !== null)
-        .map((product) => [product.category, [product]])
-    );
+    // typeof products is hacky, we should declare entity type in packages/types
+    const productsMapByCategory = new Map<string, typeof products>();
     for (const product of products) {
       if (product.category === null) {
         continue;
       }
 
-      const existing = productsMapByCategory.get(product.category) || [];
-      productsMapByCategory.set(product.category, [...existing, product]);
+      if (!productsMapByCategory.has(product.category)) {
+        productsMapByCategory.set(product.category, []);
+      }
+
+      productsMapByCategory.get(product.category)?.push(product);
     }
 
     const response: Product[] = products.map((product) => {
@@ -123,6 +123,8 @@ export const createProductServices = (
         }),
       };
     });
+
+    // TOOD: cache the response
 
     return response;
   },
