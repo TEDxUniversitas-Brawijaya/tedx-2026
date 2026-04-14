@@ -1,3 +1,4 @@
+import { z } from "zod";
 import {
   createMerchOrderInputSchema,
   createMerchOrderOutputSchema,
@@ -19,9 +20,21 @@ const listProducts = publicProcedure
   });
 
 const createOrder = publicProcedure
-  .input(createMerchOrderInputSchema)
+  .input(z.instanceof(FormData))
   .output(createMerchOrderOutputSchema)
-  .mutation(async ({ ctx, input }) => {
+  .mutation(async ({ ctx, input: formData }) => {
+    const input = createMerchOrderInputSchema.parse({
+      fullName: formData.get("fullName"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      address: formData.get("address"),
+      // Too lazy to determine if the value is string or not
+      items: JSON.parse(formData.get("items") as string),
+      idempotencyKey: formData.get("idempotencyKey"),
+      captchaToken: formData.get("captchaToken"),
+      paymentProof: formData.get("paymentProof"),
+    });
+
     const order = await ctx.services.order.createMerchOrder(
       {
         buyer: {

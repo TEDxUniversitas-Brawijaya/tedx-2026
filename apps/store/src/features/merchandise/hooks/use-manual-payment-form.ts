@@ -35,11 +35,15 @@ export const useManualPaymentForm = () => {
         throw new Error("Buyer information is missing");
       }
 
-      console.log("Submitting manual payment with values:", value);
-
-      await createOrderMutation.mutateAsync(
-        {
-          items: items.map((item) => ({
+      const formData = new FormData();
+      formData.append("fullName", buyer.fullName);
+      formData.append("email", buyer.email);
+      formData.append("phone", buyer.phone);
+      formData.append("address", buyer.address);
+      formData.append(
+        "items",
+        JSON.stringify(
+          items.map((item) => ({
             productId: item.id,
             variantIds: item.selectedVariants?.map((v) => v.id),
             bundleItemProducts: item.selectedBundleProducts?.map((p) => ({
@@ -47,24 +51,26 @@ export const useManualPaymentForm = () => {
               variantIds: p.selectedVariants?.map((v) => v.id),
             })),
             quantity: item.quantity,
-          })),
-          ...buyer,
-          captchaToken: "TODO",
-          idempotencyKey: "TODO",
-          paymentProof: value.paymentProof ?? undefined,
-        },
-        {
-          onSuccess: (data) => {
-            setOrder(data);
-            onNextStep();
-          },
-          onError: (error) => {
-            toast.error("Gagal membuat pesanan. Silakan coba lagi.", {
-              description: error.message,
-            });
-          },
-        }
+          }))
+        )
       );
+      formData.append("captchaToken", "TODO");
+      formData.append("idempotencyKey", new Date().toISOString());
+      if (value.paymentProof) {
+        formData.append("paymentProof", value.paymentProof);
+      }
+
+      await createOrderMutation.mutateAsync(formData, {
+        onSuccess: (data) => {
+          setOrder(data);
+          onNextStep();
+        },
+        onError: (error) => {
+          toast.error("Gagal membuat pesanan. Silakan coba lagi.", {
+            description: error.message,
+          });
+        },
+      });
     },
   });
 

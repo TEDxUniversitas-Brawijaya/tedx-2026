@@ -31,9 +31,15 @@ export function SummaryStep({ buyer }: SummaryStepProps) {
       return;
     }
 
-    createOrderMutation.mutate(
-      {
-        items: items.map((item) => ({
+    const formData = new FormData();
+    formData.append("fullName", buyer.fullName);
+    formData.append("email", buyer.email);
+    formData.append("phone", buyer.phone);
+    formData.append("address", buyer.address);
+    formData.append(
+      "items",
+      JSON.stringify(
+        items.map((item) => ({
           productId: item.id,
           variantIds: item.selectedVariants?.map((v) => v.id),
           bundleItemProducts: item.selectedBundleProducts?.map((p) => ({
@@ -41,22 +47,21 @@ export function SummaryStep({ buyer }: SummaryStepProps) {
             variantIds: p.selectedVariants?.map((v) => v.id),
           })),
           quantity: item.quantity,
-        })),
-        ...buyer,
-        captchaToken: "TODO",
-        idempotencyKey: "TODO",
-        paymentProof: undefined,
-      },
-      {
-        onSuccess: (data) => {
-          setOrder(data);
-          onNextStep();
-        },
-        onError: () => {
-          toast.error("Gagal membuat pesanan. Silakan coba lagi.");
-        },
-      }
+        }))
+      )
     );
+    formData.append("captchaToken", "TODO");
+    formData.append("idempotencyKey", new Date().toISOString());
+
+    createOrderMutation.mutate(formData, {
+      onSuccess: (data) => {
+        setOrder(data);
+        onNextStep();
+      },
+      onError: () => {
+        toast.error("Gagal membuat pesanan. Silakan coba lagi.");
+      },
+    });
   };
 
   return (
