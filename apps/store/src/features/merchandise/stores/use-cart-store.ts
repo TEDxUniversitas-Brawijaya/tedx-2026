@@ -67,6 +67,7 @@ export const useCartStore = create<CartStore>()(
             existingItem.itemId,
             existingItem.quantity + item.quantity
           );
+          onNextStep();
           return;
         }
 

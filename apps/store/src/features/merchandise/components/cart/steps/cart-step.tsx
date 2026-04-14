@@ -8,6 +8,51 @@ import { ChevronDownIcon, MinusIcon, PlusIcon } from "lucide-react";
 import { capitalize } from "../../../../../shared/lib/string";
 import { formatIdrCurrency } from "../../../lib/formatter";
 import { useCartStore } from "../../../stores/use-cart-store";
+import type { CartItem } from "../../../types/cart";
+
+function getItemDetails(item: CartItem) {
+  if (item.type === "merch_bundle") {
+    if (!item.selectedBundleProducts) {
+      return null;
+    }
+
+    if (item.selectedBundleProducts.length === 0) {
+      return item.selectedBundleProducts.map((p) => p.name).join(", ");
+    }
+
+    return item.selectedBundleProducts
+      .map((p) => {
+        if (!p.selectedVariants || p.selectedVariants.length === 0) {
+          return p.name;
+        }
+
+        const variants = p.selectedVariants
+          .map((v) => `${capitalize(v.type)}: ${capitalize(v.label)}`)
+          .join(", ");
+
+        return `${p.name} (${variants})`;
+      })
+      .join(", ");
+  }
+
+  if (item.type === "merch_regular") {
+    if (!item.selectedVariants) {
+      return null;
+    }
+
+    if (item.selectedVariants.length === 0) {
+      return item.selectedVariants
+        .map((v) => `${capitalize(v.type)}: ${capitalize(v.label)}`)
+        .join(", ");
+    }
+
+    return item.selectedVariants
+      .map((v) => `${capitalize(v.type)}: ${capitalize(v.label)}`)
+      .join(", ");
+  }
+
+  return null;
+}
 
 export function CartStep() {
   const {
@@ -76,20 +121,7 @@ export function CartStep() {
                         type="button"
                       >
                         <span className="text-left">
-                          {/* TODO: Implement proper variant display */}
-                          {item.selectedBundleProducts
-                            ?.map(
-                              (p) =>
-                                `${p.name} (${p.selectedVariants?.map((v) => `${capitalize(v.type)}: ${capitalize(v.label)}`).join(", ")})`
-                            )
-                            .join(", ") ||
-                            item.selectedVariants
-                              ?.map(
-                                (v) =>
-                                  `${capitalize(v.type)}: ${capitalize(v.label)}`
-                              )
-                              .join(", ") ||
-                            "Pilih variant"}
+                          {getItemDetails(item) || "Pilih variant"}
                         </span>
                         <ChevronDownIcon
                           className="shrink-0 sm:size-3.5"
