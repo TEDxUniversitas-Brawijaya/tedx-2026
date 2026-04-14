@@ -31,7 +31,10 @@ export const listOrdersOutputSchema = z.object({
       buyer: z.object({
         name: z.string(),
         email: z.email(),
-        phone: z.string(),
+        phone: z
+          .e164("Nomor telepon harus dalam format (+628123456789)")
+          .min(10)
+          .max(20),
         college: z.string(),
       }),
       totalPrice: z.number().int(),
@@ -60,7 +63,10 @@ export const getOrderByIdOutputSchema = z.object({
   buyer: z.object({
     name: z.string(),
     email: z.email(),
-    phone: z.string(),
+    phone: z
+      .e164("Nomor telepon harus dalam format (+628123456789)")
+      .min(10)
+      .max(20),
     college: z.string(),
   }),
 

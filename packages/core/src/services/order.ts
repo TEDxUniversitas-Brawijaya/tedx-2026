@@ -327,7 +327,17 @@ export const createOrderServices = (
     }
 
     // Check all products exist and active
-    const productIds = items.map((item) => item.productId);
+    const productIds: string[] = [];
+    for (const item of items) {
+      productIds.push(item.productId);
+
+      // If bundle, also check the bundle products
+      if (item.bundleItemProducts) {
+        for (const bundleItemProduct of item.bundleItemProducts) {
+          productIds.push(bundleItemProduct.productId);
+        }
+      }
+    }
     const products = await ctx.productQueries.getProductsByIds(productIds, {
       isActive: true,
     });
@@ -446,6 +456,13 @@ export const createOrderServices = (
       const snapshotBundleProducts = item.bundleItemProducts
         ? item.bundleItemProducts.map((bundleItemProduct) => {
             const bundleProduct = productMap.get(bundleItemProduct.productId);
+
+            ctx.logger.info("Mapping bundle product for order snapshot", {
+              bundleItemProductId: bundleItemProduct.productId,
+              parentProductId: item.productId,
+              foundBundleProduct: !!bundleProduct,
+              productMapKeys: Array.from(productMap.keys()),
+            });
 
             if (!bundleProduct) {
               throw new AppError(
