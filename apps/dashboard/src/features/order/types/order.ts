@@ -13,16 +13,18 @@ export type Order = {
   id: string;
   type: OrderType;
   status: OrderStatus;
-  buyerName: string;
-  buyerEmail: string;
+  buyer: {
+    name: string;
+    email: string;
+    phone: string;
+    college: string; // instansi for tickets, alamat for merch
+  };
   totalPrice: number;
   createdAt: string;
   paidAt: string | null;
 };
 
 export type DetailOrder = Order & {
-  buyerPhone: string;
-  buyerCollege: string;
   idempotencyKey: string | null;
   updatedAt: string;
   expiresAt: string | null;
@@ -39,26 +41,30 @@ export type DetailOrder = Order & {
     id: string;
     productId: string;
     quantity: number;
-    snapshotName: string;
-    snapshotPrice: number;
-    snapshotType: string;
-    snapshotVariants: { label: string; type: string }[] | null;
-    snapshotBundleProducts:
-      | {
-          name: string;
-          category: string | null;
-          selectedVariants?: { label: string; type: string }[];
-        }[]
-      | null;
+    snapshot: {
+      name: string;
+      price: number;
+      type: string;
+      variants: { label: string; type: string }[] | null;
+      bundleProducts:
+        | {
+            name: string;
+            category: string | null;
+            selectedVariants: { label: string; type: string }[] | null;
+          }[]
+        | null;
+    };
   }[];
-  tickets?: {
-    id: string;
-    qrCode: string;
-    eventDay: string;
-    attendanceStatus: string;
-    checkedInAt: string | null;
-    checkedInBy: string | null;
-  }[];
+  tickets:
+    | {
+        id: string;
+        qrCode: string;
+        eventDay: string;
+        attendanceStatus: string;
+        checkedInAt: string | null;
+        checkedInBy: string | null;
+      }[]
+    | null;
   refund: {
     id: string;
     status: "requested" | "approved" | "rejected";

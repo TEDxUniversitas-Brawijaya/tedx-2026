@@ -51,12 +51,14 @@ export function OrdersTable({ orders }: OrdersTableProps) {
             <TableRow key={order.id}>
               <TableCell className="font-medium">{order.id}</TableCell>
               <TableCell>
-                <div id={`order-${order.id}-buyer-name`}>{order.buyerName}</div>
+                <div id={`order-${order.id}-buyer-name`}>
+                  {order.buyer.name}
+                </div>
                 <div
                   className="text-muted-foreground text-xs"
                   id={`order-${order.id}-buyer-email`}
                 >
-                  {order.buyerEmail}
+                  {order.buyer.email}
                 </div>
               </TableCell>
               <TableCell>

@@ -95,6 +95,15 @@ export const getOrderByIdOutputSchema = z.object({
         price: z.number().int(),
         type: z.string(),
         variants: z.array(snapshotVariantSchema).nullable(),
+        bundleProducts: z
+          .array(
+            z.object({
+              name: z.string(),
+              category: z.string().nullable(),
+              selectedVariants: z.array(snapshotVariantSchema).nullable(),
+            })
+          )
+          .nullable(),
       }),
     })
   ),

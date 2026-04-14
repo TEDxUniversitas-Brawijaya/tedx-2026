@@ -1,14 +1,13 @@
+import type { Order } from "../../types/order";
+
 type OrderDetailBuyerInfoCardProps = {
   order: {
-    buyerName: string;
-    buyerEmail: string;
-    buyerPhone: string;
-    buyerCollege: string;
+    buyer: Order["buyer"];
   };
 };
 
 export function OrderDetailBuyerInfoCard({
-  order,
+  order: { buyer },
 }: OrderDetailBuyerInfoCardProps) {
   return (
     <div
@@ -19,25 +18,25 @@ export function OrderDetailBuyerInfoCard({
         <span className="font-medium" id="order-detail-buyer-name-label">
           Nama:
         </span>{" "}
-        {order.buyerName}
+        {buyer.name}
       </p>
       <p id="order-detail-buyer-email">
         <span className="font-medium" id="order-detail-buyer-email-label">
           Email:
         </span>{" "}
-        {order.buyerEmail}
+        {buyer.email}
       </p>
       <p id="order-detail-buyer-phone">
         <span className="font-medium" id="order-detail-buyer-phone-label">
           Phone:
         </span>{" "}
-        {order.buyerPhone}
+        {buyer.phone}
       </p>
       <p id="order-detail-buyer-college">
         <span className="font-medium" id="order-detail-buyer-college-label">
           Instansi:
         </span>{" "}
-        {order.buyerCollege}
+        {buyer.college}
       </p>
     </div>
   );
