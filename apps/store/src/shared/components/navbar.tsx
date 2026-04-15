@@ -1,9 +1,9 @@
+import Logo from "@/assets/imgs/logo.png";
+import MenuBook from "@/assets/imgs/menu-book.png";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@tedx-2026/ui/lib/utils";
 import { Menu } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
-import Logo from "@/assets/imgs/logo.png";
-import MenuBook from "@/assets/imgs/menu-book.png";
 
 type MenuChild = {
   readonly name: string;
@@ -256,7 +256,7 @@ export const Navbar = () => {
 
   return (
     <>
-      <header className="fixed top-0 right-0 left-0 z-9999 flex h-18 items-center justify-between bg-[#171715] px-5 py-4 md:h-20 md:px-37.5">
+      <header className="fixed top-0 right-0 left-0 z-40 flex h-18 items-center justify-between bg-[#171715] px-5 py-4 md:h-20 md:px-37.5">
         <Link
           aria-label="TEDx Universitas Brawijaya Home"
           className="inline-block h-full w-auto rounded-lg focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2"
@@ -277,7 +277,7 @@ export const Navbar = () => {
           aria-controls="modal-content"
           aria-expanded={isOpen}
           aria-label="Menu"
-          className="flex cursor-pointer items-center gap-2 border-0 bg-transparent px-4 py-2 font-sans-2 text-[#fff] focus-visible:rounded-lg focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 md:px-8 md:py-4"
+          className="flex cursor-pointer items-center gap-2 border-0 bg-transparent px-4 py-2 font-sans-2 text-white focus-visible:rounded-lg focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 md:px-8 md:py-4"
           id="navbar-menu-button"
           onClick={openMenu}
           ref={menuButtonRef}
