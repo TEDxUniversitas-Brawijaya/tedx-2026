@@ -35,7 +35,6 @@ See [here](https://mermaid.live/edit#pako:eNqFVE2P2jAQ_Ssjn6BKECFAIIdK_Ti0qlDVrt
 |      **Key Pattern**     |     **Value**    |     **TTL**    |                      **Purpose**                     |
 |    `stock:{productId}`   |      integer     |      none      | Read cache for stock display (source of truth is D1) |
 |    `cooldown:{email}`    | expiry timestamp |  600s (10 min) |                   Purchase cooldown                  |
-| `order_expiry:{orderId}` |        "1"       | 1200s (20 min) |                     Expiry marker                    |
 |    `idempotency:{key}`   |   response JSON  | 3600s (1 hour) |             Duplicate request prevention             |
 
 ## **Config Examples**

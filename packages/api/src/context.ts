@@ -1,15 +1,33 @@
 import { createAuth, type Session } from "@tedx-2026/auth";
 import {
-  createEmailService,
-  createFileService,
-  createUserService,
-  type EmailService,
+  createConfigServices,
+  createEmailServices,
+  createFileServices,
+  createOrderServices,
+  createPaymentServices,
+  createProductServices,
+  createUserServices,
   type FileServices,
+  type OrderServices,
+  type ProductServices,
   type UserServices,
 } from "@tedx-2026/core";
-import { createDB, createUserQueries, type D1Database } from "@tedx-2026/db";
+import {
+  createConfigQueries,
+  createDB,
+  createOrderQueries,
+  createProductQueries,
+  createUserQueries,
+  type D1Database,
+  type DB,
+} from "@tedx-2026/db";
 import { createBrevo } from "@tedx-2026/email";
-import type { KVNamespaceType } from "@tedx-2026/kv";
+import {
+  createConfigOperations,
+  createKV,
+  createOrderOperations,
+  type KVNamespaceType,
+} from "@tedx-2026/kv";
 import type { LoggerType } from "@tedx-2026/logger";
 import { createR2, type R2BucketType } from "@tedx-2026/storage";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
@@ -48,37 +66,10 @@ export const createContext = async ({
   };
 
   const db = createDB(env.db);
+  const kv = createKV(env.kv);
   const cdn = createR2(env.cdn);
   const email = createBrevo(env.BREVO_API_KEY, {
     // sandbox: process.env.NODE_ENV !== "production",
-  });
-
-  const userQueries = createUserQueries(db);
-
-  const userService = createUserService({
-    ...baseContext,
-    logger: logger.child({ service: "user" }),
-    userQueries,
-  });
-
-  const emailService = createEmailService(
-    {
-      ...baseContext,
-      logger: logger.child({ service: "email" }),
-      email,
-    },
-    {
-      senderName: env.SENDER_NAME,
-      senderEmail: env.SENDER_EMAIL,
-    }
-  );
-
-  const fileService = createFileService({
-    ...baseContext,
-    logger: logger.child({ service: "file" }),
-    r2: cdn,
-    CDN_DOMAIN: env.CDN_DOMAIN,
-    email: emailService,
   });
 
   const auth = createAuth(db, {
@@ -92,26 +83,97 @@ export const createContext = async ({
 
   const session = await auth.api.getSession(fetchCreateContextFnOptions.req);
 
+  const orderOperations = createOrderOperations(kv);
+  const configOperations = createConfigOperations(kv);
+
+  const userQueries = createUserQueries(db);
+  const orderQueries = createOrderQueries(db);
+  const configQueries = createConfigQueries(db);
+  const productQueries = createProductQueries(db);
+
+  const configServices = createConfigServices({
+    ...baseContext,
+    logger: logger.child({ service: "config" }),
+    configQueries,
+    configOperations,
+  });
+
+  const userServices = createUserServices({
+    ...baseContext,
+    logger: logger.child({ service: "user" }),
+    userQueries,
+  });
+
+  const emailServices = createEmailServices(
+    {
+      ...baseContext,
+      logger: logger.child({ service: "email" }),
+      email,
+    },
+    {
+      senderName: env.SENDER_NAME,
+      senderEmail: env.SENDER_EMAIL,
+    }
+  );
+
+  const fileServices = createFileServices({
+    ...baseContext,
+    logger: logger.child({ service: "file" }),
+    r2: cdn,
+    CDN_DOMAIN: env.CDN_DOMAIN,
+  });
+
+  const paymentServices = createPaymentServices({
+    ...baseContext,
+    logger: logger.child({ service: "payment" }),
+  });
+
+  const productServices = createProductServices({
+    ...baseContext,
+    logger: logger.child({ service: "product" }),
+    productQueries,
+  });
+
+  const orderServices = createOrderServices({
+    ...baseContext,
+    logger: logger.child({ service: "order" }),
+
+    configServices,
+    fileServices,
+    paymentServices,
+    emailServices,
+
+    orderQueries,
+    userQueries,
+    productQueries,
+
+    orderOperations,
+  });
+
   return {
     requestId,
+    db,
     logger,
     waitUntil,
     session,
     services: {
-      user: userService,
-      file: fileService,
-      email: emailService,
+      user: userServices,
+      file: fileServices,
+      order: orderServices,
+      product: productServices,
     },
   };
 };
 
 export type Context = {
   requestId: string;
+  db: DB;
   logger: LoggerType;
   services: {
     user: UserServices;
     file: FileServices;
-    email: EmailService;
+    order: OrderServices;
+    product: ProductServices;
   };
   waitUntil: (promise: Promise<unknown>) => void;
   session: Session | null;

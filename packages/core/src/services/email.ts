@@ -6,7 +6,7 @@ import {
 } from "@tedx-2026/email";
 import type { BaseContext } from "../types";
 
-export type EmailService = {
+export type EmailServices = {
   sendEmail: <T extends TemplatesKey>(
     to: string,
     subject: string,
@@ -22,7 +22,7 @@ export type EmailService = {
   ) => Promise<void>;
 };
 
-type CreateEmailServiceCtx = {
+type CreateEmailServicesCtx = {
   email: Brevo;
 } & BaseContext;
 
@@ -31,10 +31,10 @@ type EmailServiceConfig = {
   senderEmail: string;
 };
 
-export const createEmailService = (
-  ctx: CreateEmailServiceCtx,
+export const createEmailServices = (
+  ctx: CreateEmailServicesCtx,
   config: EmailServiceConfig
-): EmailService => {
+): EmailServices => {
   const { senderName, senderEmail } = config;
 
   return {

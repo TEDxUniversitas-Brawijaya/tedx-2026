@@ -36,6 +36,7 @@ export const orderStatusSchema = z.enum([
   "expired",
   "refund_requested",
   "refunded",
+  "rejected",
 ]);
 
 // Event days
@@ -61,7 +62,10 @@ export const userRoleSchema = z.enum(["admin", "superadmin"]);
 export const buyerInfoSchema = z.object({
   buyerName: z.string().min(1).max(255),
   buyerEmail: z.string().email(),
-  buyerPhone: z.string().min(10).max(20),
+  phone: z
+    .e164("Nomor telepon harus dalam format (+628123456789)")
+    .min(10)
+    .max(20),
   buyerInstansi: z.string().min(1).max(255),
 });
 
@@ -87,7 +91,10 @@ export const bundleItemSchema = z.union([
   z.object({
     type: z.literal("ticket"),
     productId: z.string(),
-    productName: z.string(),
+    product: z.object({
+      id: z.string(),
+      name: z.string(),
+    }),
   }),
   z.object({
     type: z.literal("merchandise"),
@@ -97,7 +104,7 @@ export const bundleItemSchema = z.union([
         id: z.string(),
         name: z.string(),
         imageUrl: z.string().nullable(),
-        variants: z.array(productVariantSchema).optional(),
+        variants: z.array(productVariantSchema).nullable(),
       })
     ),
   }),
@@ -108,7 +115,10 @@ export const bundleItemSchema = z.union([
         z.object({
           type: z.literal("ticket"),
           productId: z.string(),
-          productName: z.string(),
+          product: z.object({
+            id: z.string(),
+            name: z.string(),
+          }),
         }),
         z.object({
           type: z.literal("merchandise"),
@@ -118,7 +128,7 @@ export const bundleItemSchema = z.union([
               id: z.string(),
               name: z.string(),
               imageUrl: z.string().nullable(),
-              variants: z.array(productVariantSchema).optional(),
+              variants: z.array(productVariantSchema).nullable(),
             })
           ),
         }),

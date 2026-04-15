@@ -1,10 +1,20 @@
 import { AppError } from "@tedx-2026/core";
 import { initTRPC, TRPCError } from "@trpc/server";
 import SuperJSON from "superjson";
+import { ZodError } from "zod";
 import type { Context } from "./context";
 
 const t = initTRPC.context<Context>().create({
   transformer: SuperJSON,
+  errorFormatter: ({ shape }) => {
+    return {
+      ...shape,
+      data: {
+        ...shape.data,
+        stack: undefined, // Remove stack trace from error response
+      },
+    };
+  },
 });
 
 const baseProcedure = t.procedure.use(async (opts) => {
@@ -34,6 +44,7 @@ const baseProcedure = t.procedure.use(async (opts) => {
       code: error.code,
       message: error.message,
       name: error.name,
+      cause: error.cause,
     },
   });
 
@@ -43,6 +54,18 @@ const baseProcedure = t.procedure.use(async (opts) => {
       code: appError.code,
       message: appError.message,
       cause: appError,
+    });
+  }
+
+  if (
+    error instanceof TRPCError &&
+    error.code === "BAD_REQUEST" &&
+    error.cause instanceof ZodError
+  ) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: `${error.cause.issues?.[0]?.path}: ${error.cause.issues?.[0]?.message}`,
+      cause: error,
     });
   }
 

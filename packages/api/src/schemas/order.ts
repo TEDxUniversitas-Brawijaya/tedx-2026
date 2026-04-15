@@ -28,8 +28,15 @@ export const listOrdersOutputSchema = z.object({
       id: orderIdSchema,
       type: orderTypeSchema,
       status: orderStatusSchema,
-      buyerName: z.string(),
-      buyerEmail: z.email(),
+      buyer: z.object({
+        name: z.string(),
+        email: z.email(),
+        phone: z
+          .e164("Nomor telepon harus dalam format (+628123456789)")
+          .min(10)
+          .max(20),
+        college: z.string(),
+      }),
       totalPrice: z.number().int(),
       createdAt: isoDateStringSchema,
       paidAt: isoDateStringSchema.nullable(),
@@ -52,12 +59,19 @@ export const getOrderByIdOutputSchema = z.object({
   id: orderIdSchema,
   type: orderTypeSchema,
   status: orderStatusSchema,
-  buyerName: z.string(),
-  buyerEmail: z.email(),
-  buyerPhone: z.string(),
-  buyerCollege: z.string(),
+
+  buyer: z.object({
+    name: z.string(),
+    email: z.email(),
+    phone: z
+      .e164("Nomor telepon harus dalam format (+628123456789)")
+      .min(10)
+      .max(20),
+    college: z.string(),
+  }),
+
   totalPrice: z.number().int(),
-  idempotencyKey: z.string().nullable(),
+  idempotencyKey: z.string(),
   expiresAt: isoDateStringSchema.nullable(),
   paidAt: isoDateStringSchema.nullable(),
   createdAt: isoDateStringSchema,
@@ -76,10 +90,21 @@ export const getOrderByIdOutputSchema = z.object({
       id: z.string(),
       productId: z.string(),
       quantity: z.number().int(),
-      snapshotName: z.string(),
-      snapshotPrice: z.number().int(),
-      snapshotType: z.string(),
-      snapshotVariants: z.array(snapshotVariantSchema).nullable(),
+      snapshot: z.object({
+        name: z.string(),
+        price: z.number().int(),
+        type: z.string(),
+        variants: z.array(snapshotVariantSchema).nullable(),
+        bundleProducts: z
+          .array(
+            z.object({
+              name: z.string(),
+              category: z.string().nullable(),
+              selectedVariants: z.array(snapshotVariantSchema).nullable(),
+            })
+          )
+          .nullable(),
+      }),
     })
   ),
   tickets: z
@@ -93,14 +118,14 @@ export const getOrderByIdOutputSchema = z.object({
         checkedInBy: userIdSchema.nullable(),
       })
     )
-    .optional(),
+    .nullable(),
   refund: z
     .object({
       id: z.string(),
       status: refundStatusSchema,
       reason: z.string(),
       paymentMethod: z.string(),
-      paymentProofUrl: z.url().nullable(),
+      paymentProofUrl: z.nullable(z.url()),
       bankAccountNumber: z.string(),
       bankName: z.string(),
       bankAccountHolder: z.string(),

@@ -1,3 +1,4 @@
+import { capitalize } from "@/shared/lib/string";
 import {
   Table,
   TableBody,
@@ -8,6 +9,36 @@ import {
 } from "@tedx-2026/ui/components/table";
 import type { DetailOrder } from "../../types/order";
 import { formatCurrency } from "../../utils/formatter";
+
+function getItemDetails(item: DetailOrder["items"][number]) {
+  if (item.snapshot.variants && item.snapshot.variants.length > 0) {
+    return item.snapshot.variants
+      .map(
+        (variant) =>
+          `${capitalize(variant.label)} (${capitalize(variant.type)})`
+      )
+      .join(", ");
+  }
+
+  if (item.snapshot.bundleProducts && item.snapshot.bundleProducts.length > 0) {
+    return item.snapshot.bundleProducts.map((bundleItem) => {
+      const variants = bundleItem.selectedVariants;
+
+      if (variants && variants.length > 0) {
+        return `${bundleItem.name} - ${variants
+          .map(
+            (variant) =>
+              `${capitalize(variant.label)} (${capitalize(variant.type)})`
+          )
+          .join(", ")}`;
+      }
+
+      return bundleItem.name;
+    });
+  }
+
+  return null;
+}
 
 type OrderDetailItemsCardProps = {
   items: DetailOrder["items"];
@@ -25,7 +56,7 @@ export function OrderDetailItemsCard({ items }: OrderDetailItemsCardProps) {
             <TableHead>Type</TableHead>
             <TableHead>Qty</TableHead>
             <TableHead>Price</TableHead>
-            <TableHead>Variants</TableHead>
+            <TableHead>Variants/Bundle Items</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -38,24 +69,20 @@ export function OrderDetailItemsCard({ items }: OrderDetailItemsCardProps) {
                 {item.productId}
               </TableCell>
               <TableCell id={`order-detail-item-${item.id}-name`}>
-                {item.snapshotName}
+                {item.snapshot.name}
               </TableCell>
               <TableCell id={`order-detail-item-${item.id}-type`}>
-                {item.snapshotType}
+                {item.snapshot.type}
               </TableCell>
               <TableCell id={`order-detail-item-${item.id}-quantity`}>
                 {item.quantity}
               </TableCell>
               <TableCell id={`order-detail-item-${item.id}-price`}>
-                {formatCurrency(item.snapshotPrice)}
+                {formatCurrency(item.snapshot.price)}
               </TableCell>
               <TableCell>
                 <span id={`order-detail-item-${item.id}-variants`}>
-                  {item.snapshotVariants?.length
-                    ? item.snapshotVariants
-                        .map((variant) => `${variant.label} (${variant.type})`)
-                        .join(", ")
-                    : "-"}
+                  {getItemDetails(item) ?? "-"}
                 </span>
               </TableCell>
             </TableRow>

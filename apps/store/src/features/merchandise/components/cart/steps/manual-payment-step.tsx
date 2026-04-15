@@ -78,8 +78,14 @@ export function ManualPaymentStep() {
                         name={field.name}
                         onBlur={field.handleBlur}
                         onChange={(e) => {
-                          const file = e.target.files?.[0] ?? null;
-                          form.setFieldValue("paymentProof", file);
+                          const files = e.target.files;
+                          if (!files || files.length === 0) {
+                            return;
+                          }
+
+                          const [file] = files;
+
+                          form.setFieldValue("paymentProof", file ?? null);
                         }}
                         type="file"
                       />

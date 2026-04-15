@@ -58,7 +58,7 @@ export const ProductListFilter = ({ products }: { products: Product[] }) => {
         <div className="space-y-6">
           <h3 className="font-semibold text-black text-xl">REGULAR</h3>
           {merchCategoryWithCount.map(({ category, count }, idx) => {
-            if (category === undefined) {
+            if (category === null) {
               return null;
             }
 

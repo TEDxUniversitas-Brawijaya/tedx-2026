@@ -12,7 +12,6 @@ import {
   productIdSchema,
   productTypeSchema,
   productVariantSchema,
-  snapshotVariantSchema,
 } from "./common";
 
 // merch.listProducts
@@ -24,10 +23,10 @@ export const listMerchProductsOutputSchema = z.array(
     type: productTypeSchema,
     name: z.string(),
     price: z.number().int(),
-    imageUrl: z.string().nullable().optional(),
-    category: productCategorySchema.optional(),
-    variants: z.array(productVariantSchema).optional(),
-    bundleItems: z.array(bundleItemSchema).optional(),
+    imageUrl: z.string().nullable(),
+    category: productCategorySchema.nullable(),
+    variants: z.array(productVariantSchema).nullable(),
+    bundleItems: z.array(bundleItemSchema).nullable(),
   })
 );
 
@@ -48,17 +47,17 @@ export const createMerchOrderInputSchema = merchBuyerInfoSchema.extend({
         .optional(), // for bundle items, the selected product IDs (if applicable)
     })
   ),
-  captchaToken: captchaTokenSchema,
   idempotencyKey: idempotencyKeySchema,
+  captchaToken: captchaTokenSchema,
   paymentProof: imageFileSchema.optional(),
 });
 
 export const createMerchOrderOutputSchema = z.object({
   orderId: orderIdSchema,
-  status: z.literal("pending_payment").or(z.literal("paid")),
+  status: orderStatusSchema,
   totalPrice: z.number().int(),
   expiresAt: isoDateStringSchema,
-  qrisUrl: z.url().nullable(),
+  qrisUrl: z.nullable(z.url()),
 });
 
 // merch.getOrderStatus
@@ -67,18 +66,5 @@ export const getMerchOrderStatusInputSchema = z.object({
 });
 
 export const getMerchOrderStatusOutputSchema = z.object({
-  orderId: orderIdSchema,
   status: orderStatusSchema,
-  type: z.literal("merch"),
-  totalPrice: z.number().int(),
-  items: z.array(
-    z.object({
-      snapshotName: z.string(),
-      quantity: z.number().int(),
-      unitPrice: z.number().int(),
-      snapshotVariants: z.array(snapshotVariantSchema).optional(),
-    })
-  ),
-  createdAt: isoDateStringSchema,
-  paidAt: isoDateStringSchema.nullable(),
 });

@@ -2,7 +2,6 @@ import type { R2, R2Folder } from "@tedx-2026/storage";
 import type { File } from "@tedx-2026/types";
 import { AppError } from "../errors";
 import type { BaseContext } from "../types/context";
-import type { EmailService } from "./email";
 
 export type FileServices = {
   getAllFiles: () => Promise<File[]>;
@@ -18,13 +17,14 @@ export type FileServices = {
   deleteFile: (keys: string | string[]) => Promise<void>;
 };
 
-type CreateFileServiceCtx = {
+type CreateFileServicesCtx = {
   r2: R2;
   CDN_DOMAIN: string;
-  email: EmailService;
 } & BaseContext;
 
-export const createFileService = (ctx: CreateFileServiceCtx): FileServices => ({
+export const createFileServices = (
+  ctx: CreateFileServicesCtx
+): FileServices => ({
   getAllFiles: async () => {
     const listResponse = await ctx.r2.list();
     return listResponse.objects.map((obj) => ({
@@ -91,7 +91,6 @@ export const createFileService = (ctx: CreateFileServiceCtx): FileServices => ({
   },
 });
 
-// Helpers
 const getFileURL = (domain: string, key: string) => {
   return `https://${domain}/${key}`;
 };

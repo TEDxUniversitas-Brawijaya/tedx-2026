@@ -52,9 +52,11 @@ export const productsTable = sqliteTable(
             type: "selectable_item";
             items: (
               | {
+                  type: "ticket";
                   productId: string;
                 }
               | {
+                  type: "merchandise";
                   category:
                     | "t-shirt"
                     | "workshirt"

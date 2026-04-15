@@ -1,5 +1,5 @@
 import { trpc } from "@/shared/lib/trpc";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@tedx-2026/ui/components/button";
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { toast } from "sonner";
@@ -24,26 +24,23 @@ export function PaymentStep({ order }: PaymentStepProps) {
 
   const { onNextStep } = useCartStore();
 
-  const orderStatusMutation = useMutation(
-    trpc.merch.getOrderStatus.mutationOptions()
+  const orderStatusQuery = useQuery(
+    trpc.merch.getOrderStatus.queryOptions({ orderId }, { enabled: false })
   );
 
-  const onCheckStatus = () => {
-    orderStatusMutation.mutate(
-      { orderId },
-      {
-        onSuccess: (data) => {
-          if (data.status !== "paid") {
-            return;
-          }
+  const onCheckStatus = async () => {
+    const result = await orderStatusQuery.refetch();
 
-          onNextStep();
-        },
-        onError: () => {
-          toast.error("Gagal memeriksa status pembayaran. Silakan coba lagi.");
-        },
-      }
-    );
+    if (result.error) {
+      toast.error("Gagal memeriksa status pembayaran. Silakan coba lagi.");
+      return;
+    }
+
+    if (!result.data || result.data.status !== "paid") {
+      return;
+    }
+
+    onNextStep();
   };
 
   const durationInSeconds = Math.max(
@@ -96,12 +93,12 @@ export function PaymentStep({ order }: PaymentStepProps) {
       <div className="mt-auto bg-black pt-2.5 pb-2 sm:pb-3">
         <Button
           className="w-full"
-          disabled={orderStatusMutation.isPending}
+          disabled={orderStatusQuery.isFetching}
           onClick={onCheckStatus}
           size="checkout"
           variant="store-primary"
         >
-          {orderStatusMutation.isPending
+          {orderStatusQuery.isFetching
             ? "Memeriksa..."
             : "Cek Status Pembayaran"}
         </Button>

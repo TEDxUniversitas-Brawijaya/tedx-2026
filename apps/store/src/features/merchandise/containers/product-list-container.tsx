@@ -66,9 +66,7 @@ export const ProductListContainer = () => {
   const filteredData = data.filter((product) => {
     // If filter is undefined, show first category by default
     if (filter === undefined && product.type === "merch_regular") {
-      const firstCategory = data.find(
-        (p) => p.category !== undefined
-      )?.category;
+      const firstCategory = data.find((p) => p.category !== null)?.category;
       return product.category === firstCategory;
     }
 

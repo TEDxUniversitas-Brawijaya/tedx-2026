@@ -6,11 +6,13 @@ export type UserServices = {
   getAllUser: () => Promise<User[]>;
 };
 
-type CreateUserServiceCtx = {
+type CreateUserServicesCtx = {
   userQueries: UserQueries;
 } & BaseContext;
 
-export const createUserService = (ctx: CreateUserServiceCtx): UserServices => ({
+export const createUserServices = (
+  ctx: CreateUserServicesCtx
+): UserServices => ({
   getAllUser: async () => {
     const users = await ctx.userQueries.getAllUser();
     return users;

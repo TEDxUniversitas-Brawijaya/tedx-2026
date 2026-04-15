@@ -23,7 +23,6 @@
     "@tedx-2026/kv": "workspace:*",
     "@tedx-2026/logger": "workspace:*",
     "@tedx-2026/storage": "workspace:*",
-    "@tedx-2026/utils": "workspace:*",
     "@trpc/server": "catalog:",
     "hono": "catalog:",
     "superjson": "^2.2.6",

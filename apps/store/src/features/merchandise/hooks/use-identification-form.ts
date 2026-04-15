@@ -16,7 +16,10 @@ export const useIdentificationForm = () => {
       onSubmit: z.object({
         fullName: z.string().min(1, "Nama lengkap harus diisi"),
         email: z.email("Email tidak valid"),
-        phone: z.e164("Nomor telepon harus dalam format (+628123456789)"),
+        phone: z
+          .e164("Nomor telepon harus dalam format (+628123456789)")
+          .min(10)
+          .max(20),
         address: z.string().min(1, "Alamat harus diisi"),
       }),
     },

@@ -34,7 +34,7 @@ export function ProductCard({ product }: ProductCardProps) {
     const defaultBundleProducts = product.bundleItems
       ?.filter((bundleItem) => bundleItem.type === "merchandise")
       ?.map((bundleItem) => {
-        const bundleProduct = bundleItem.products[0];
+        const bundleProduct = bundleItem.products?.[0];
         if (!bundleProduct) {
           throw new Error("Bundle item must have at least one product");
         }
