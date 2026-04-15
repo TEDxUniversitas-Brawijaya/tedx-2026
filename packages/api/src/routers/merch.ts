@@ -32,7 +32,8 @@ const createOrder = publicProcedure
       items: JSON.parse(formData.get("items") as string),
       idempotencyKey: formData.get("idempotencyKey"),
       captchaToken: formData.get("captchaToken"),
-      paymentProof: formData.get("paymentProof"),
+      // paymentProof is optional
+      paymentProof: formData.get("paymentProof") ?? undefined,
     });
 
     const order = await ctx.services.order.createMerchOrder(
