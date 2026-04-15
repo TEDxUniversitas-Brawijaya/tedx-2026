@@ -327,23 +327,27 @@ export const createOrderServices = (
     }
 
     // Check all products exist and active
-    const productIds: string[] = [];
+    const productIds = new Set<string>();
     for (const item of items) {
-      productIds.push(item.productId);
+      productIds.add(item.productId);
 
       // If bundle, also check the bundle products
       if (item.bundleItemProducts) {
         for (const bundleItemProduct of item.bundleItemProducts) {
-          productIds.push(bundleItemProduct.productId);
+          productIds.add(bundleItemProduct.productId);
         }
       }
     }
-    const products = await ctx.productQueries.getProductsByIds(productIds, {
-      isActive: true,
-    });
-    if (products.length !== productIds.length) {
+    const products = await ctx.productQueries.getProductsByIds(
+      Array.from(productIds),
+
+      {
+        isActive: true,
+      }
+    );
+    if (products.length !== productIds.size) {
       const foundProductIds = products.map((p) => p.id);
-      const missingProductIds = productIds.filter(
+      const missingProductIds = Array.from(productIds).filter(
         (id) => !foundProductIds.includes(id)
       );
       throw new AppError(
