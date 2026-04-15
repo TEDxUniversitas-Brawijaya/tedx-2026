@@ -18,6 +18,10 @@ export function createUserQueries(db: DB): UserQueries {
     },
 
     getUsersByIds: async (ids) => {
+      if (ids.length === 0) {
+        return [];
+      }
+
       const users = await db
         .select()
         .from(schema.userTable)

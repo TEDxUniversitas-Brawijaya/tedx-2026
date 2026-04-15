@@ -168,6 +168,10 @@ export const createOrderQueries = (db: DB): OrderQueries => ({
   },
 
   getOrderItemsByOrderIds: async (orderIds) => {
+    if (orderIds.length === 0) {
+      return [];
+    }
+
     return await db.query.orderItemsTable.findMany({
       where: inArray(orderItemsTable.orderId, orderIds),
     });
