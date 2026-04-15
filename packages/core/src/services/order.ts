@@ -443,6 +443,16 @@ export const createOrderServices = (
 
       totalPrice += product.price * item.quantity;
 
+      if (item.variantIds && !product.variants) {
+        throw new AppError(
+          "BAD_REQUEST",
+          "Product does not have variants but variantIds were provided",
+          {
+            details: { productId: item.productId, variantIds: item.variantIds },
+          }
+        );
+      }
+
       // Validate variants if present
       if (item.variantIds && product.variants) {
         validateVariants(item.variantIds, product.variants, item.productId);
