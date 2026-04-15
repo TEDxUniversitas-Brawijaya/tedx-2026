@@ -464,7 +464,8 @@ export const createOrderServices = (
 
       // Validate and map bundle products
       const snapshotBundleProducts = item.bundleItemProducts
-        ? item.bundleItemProducts.map((bundleItemProduct) => {
+        ? // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor this part to reduce complexity
+          item.bundleItemProducts.map((bundleItemProduct) => {
             const bundleProduct = productMap.get(bundleItemProduct.productId);
 
             if (!bundleProduct) {
@@ -475,6 +476,20 @@ export const createOrderServices = (
                   details: {
                     productId: bundleItemProduct.productId,
                     parentProductId: item.productId,
+                  },
+                }
+              );
+            }
+
+            if (bundleItemProduct.variantIds && !bundleProduct.variants) {
+              throw new AppError(
+                "BAD_REQUEST",
+                "Bundle product does not have variants but variantIds were provided",
+                {
+                  details: {
+                    productId: bundleItemProduct.productId,
+                    parentProductId: item.productId,
+                    variantIds: bundleItemProduct.variantIds,
                   },
                 }
               );
