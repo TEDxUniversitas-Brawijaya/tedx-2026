@@ -71,7 +71,7 @@ export const getOrderByIdOutputSchema = z.object({
   }),
 
   totalPrice: z.number().int(),
-  idempotencyKey: z.string().nullable(),
+  idempotencyKey: z.string(),
   expiresAt: isoDateStringSchema.nullable(),
   paidAt: isoDateStringSchema.nullable(),
   createdAt: isoDateStringSchema,
