@@ -457,13 +457,6 @@ export const createOrderServices = (
         ? item.bundleItemProducts.map((bundleItemProduct) => {
             const bundleProduct = productMap.get(bundleItemProduct.productId);
 
-            ctx.logger.info("Mapping bundle product for order snapshot", {
-              bundleItemProductId: bundleItemProduct.productId,
-              parentProductId: item.productId,
-              foundBundleProduct: !!bundleProduct,
-              productMapKeys: Array.from(productMap.keys()),
-            });
-
             if (!bundleProduct) {
               throw new AppError(
                 "BAD_REQUEST",
