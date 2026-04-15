@@ -1,17 +1,12 @@
-﻿// Checkout store: central zustand state for ticket tab, selection, buyer, and order flow.
 import { create } from "zustand";
+import { progressSteps } from "../lib/steps";
+import type { TicketCheckoutStep } from "../types/checkout";
 import type {
   TicketBuyer,
   TicketOrder,
   TicketProduct,
   TicketTab,
 } from "../types/ticket";
-
-export type TicketCheckoutStep =
-  | "selection"
-  | "identification"
-  | "summary"
-  | "payment";
 
 type TicketCheckoutStore = {
   activeTab: TicketTab;
@@ -29,7 +24,12 @@ type TicketCheckoutStore = {
 
   openCheckout: (product: TicketProduct) => void;
   closeCheckout: () => void;
-  setCheckoutStep: (step: TicketCheckoutStep) => void;
+  onNextStep: () => void;
+  onPrevStep: () => void;
+  /**
+   * Directly set the current step. Use with caution, as it does not perform any validation or checks.
+   */
+  setStep: (step: TicketCheckoutStep) => void;
   setQuantity: (qty: number) => void;
   setSelectedBundleItemId: (id: string | undefined) => void;
   setBuyer: (buyer: TicketBuyer) => void;
@@ -72,7 +72,27 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
         selectedBundleItemId: undefined,
         buyer: null,
       }),
-    setCheckoutStep: (step) => set({ checkoutStep: step }),
+    onNextStep: () => {
+      const { checkoutStep, closeCheckout } = get();
+      const nextStep = progressSteps[checkoutStep].next;
+      if (nextStep === null) {
+        closeCheckout();
+        return;
+      }
+
+      set({ checkoutStep: nextStep });
+    },
+    onPrevStep: () => {
+      const { checkoutStep, closeCheckout } = get();
+      const prevStep = progressSteps[checkoutStep].prev;
+      if (prevStep === null) {
+        closeCheckout();
+        return;
+      }
+
+      set({ checkoutStep: prevStep });
+    },
+    setStep: (step) => set({ checkoutStep: step }),
     setQuantity: (qty) => {
       const product = get().selectedProduct;
       const maxByStock =

@@ -1,18 +1,16 @@
-﻿// Ticket product card: shows image, date label, stock state, and checkout trigger.
-import { formatIdrCurrency } from "@/features/merchandise/lib/formatter";
 import { cn } from "@tedx-2026/ui/lib/utils";
+import { formatIdrCurrency } from "../lib/formatter";
+import { useTicketCheckoutStore } from "../stores/use-ticket-checkout-store";
 import type { TicketProduct } from "../types/ticket";
 import { getTicketDateLabel } from "./ticket-date-label";
 
 type TicketProductCardProps = {
   product: TicketProduct;
-  onSelect: (product: TicketProduct) => void;
 };
 
-export const TicketProductCard = ({
-  product,
-  onSelect,
-}: TicketProductCardProps) => {
+export const TicketProductCard = ({ product }: TicketProductCardProps) => {
+  const { openCheckout } = useTicketCheckoutStore();
+
   const isSoldOut = product.stock !== null && product.stock <= 0;
   const isDisabled = !product.isActive || isSoldOut;
 
@@ -33,7 +31,7 @@ export const TicketProductCard = ({
       )}
       disabled={isDisabled}
       id={`ticket-product-card-${product.id}`}
-      onClick={() => onSelect(product)}
+      onClick={() => openCheckout(product)}
       type="button"
     >
       <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-200">

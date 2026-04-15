@@ -1,4 +1,3 @@
-﻿// Bundle options hook: derives selectable bundle choices from a ticket bundle product.
 import { useMemo } from "react";
 import type { TicketProduct } from "../types/ticket";
 
@@ -25,7 +24,7 @@ export const useTicketBundleOptions = (product: TicketProduct | null) => {
         return [
           {
             id: item.productId,
-            label: item.productName,
+            label: item.product.name,
           },
         ];
       }

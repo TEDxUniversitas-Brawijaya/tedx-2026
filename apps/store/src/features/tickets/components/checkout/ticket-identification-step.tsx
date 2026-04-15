@@ -1,4 +1,3 @@
-﻿// Identification step form: captures buyer data using TanStack Form validation.
 import { Button } from "@tedx-2026/ui/components/button";
 import {
   Field,
@@ -8,24 +7,12 @@ import {
 } from "@tedx-2026/ui/components/field";
 import { Input } from "@tedx-2026/ui/components/input";
 import { cn } from "@tedx-2026/ui/lib/utils";
-import { useTicketIdentificationForm } from "../hooks/use-ticket-identification-form";
-import type { TicketBuyer } from "../types/ticket";
+import { useTicketIdentificationForm } from "../../hooks/use-ticket-identification-form";
+import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
 
-type TicketIdentificationStepProps = {
-  buyer: TicketBuyer | null;
-  onBack: () => void;
-  onSubmit: (buyer: TicketBuyer) => void;
-};
-
-export const TicketIdentificationStep = ({
-  buyer,
-  onBack,
-  onSubmit,
-}: TicketIdentificationStepProps) => {
-  const { form } = useTicketIdentificationForm({
-    buyer,
-    onSubmit,
-  });
+export const TicketIdentificationStep = () => {
+  const { onPrevStep } = useTicketCheckoutStore();
+  const form = useTicketIdentificationForm();
 
   return (
     <form
@@ -52,6 +39,7 @@ export const TicketIdentificationStep = ({
                 </FieldLabel>
                 <Input
                   aria-invalid={isInvalid}
+                  autoComplete="name"
                   className={cn(
                     "h-11 rounded-lg border border-white/20 bg-white px-3 font-sans-2 text-black text-sm outline-none focus:ring-2 focus:ring-[#FF1818]",
                     isInvalid && "border-red-500 ring-1 ring-red-500"
@@ -60,6 +48,7 @@ export const TicketIdentificationStep = ({
                   name={field.name}
                   onBlur={field.handleBlur}
                   onChange={(event) => field.handleChange(event.target.value)}
+                  placeholder="Masukkan nama lengkap"
                   value={field.state.value}
                 />
                 {isInvalid && (
@@ -88,6 +77,7 @@ export const TicketIdentificationStep = ({
                 </FieldLabel>
                 <Input
                   aria-invalid={isInvalid}
+                  autoComplete="email"
                   className={cn(
                     "h-11 rounded-lg border border-white/20 bg-white px-3 font-sans-2 text-black text-sm outline-none focus:ring-2 focus:ring-[#FF1818]",
                     isInvalid && "border-red-500 ring-1 ring-red-500"
@@ -96,6 +86,7 @@ export const TicketIdentificationStep = ({
                   name={field.name}
                   onBlur={field.handleBlur}
                   onChange={(event) => field.handleChange(event.target.value)}
+                  placeholder="contoh@email.com"
                   type="email"
                   value={field.state.value}
                 />
@@ -110,7 +101,7 @@ export const TicketIdentificationStep = ({
           }}
         </form.Field>
 
-        <form.Field name="buyerPhone">
+        <form.Field name="phone">
           {(field) => {
             const isInvalid =
               field.state.meta.isTouched && !field.state.meta.isValid;
@@ -125,14 +116,17 @@ export const TicketIdentificationStep = ({
                 </FieldLabel>
                 <Input
                   aria-invalid={isInvalid}
+                  autoComplete="tel"
                   className={cn(
                     "h-11 rounded-lg border border-white/20 bg-white px-3 font-sans-2 text-black text-sm outline-none focus:ring-2 focus:ring-[#FF1818]",
                     isInvalid && "border-red-500 ring-1 ring-red-500"
                   )}
                   id={field.name}
+                  inputMode="tel"
                   name={field.name}
                   onBlur={field.handleBlur}
                   onChange={(event) => field.handleChange(event.target.value)}
+                  placeholder="+62812xxxx"
                   value={field.state.value}
                 />
                 {isInvalid && (
@@ -169,6 +163,7 @@ export const TicketIdentificationStep = ({
                   name={field.name}
                   onBlur={field.handleBlur}
                   onChange={(event) => field.handleChange(event.target.value)}
+                  placeholder="Universitas / Perusahaan"
                   value={field.state.value}
                 />
                 {isInvalid && (
@@ -186,7 +181,7 @@ export const TicketIdentificationStep = ({
       <div className="flex gap-2">
         <Button
           className="flex-1"
-          onClick={onBack}
+          onClick={onPrevStep}
           type="button"
           variant="store-secondary"
         >

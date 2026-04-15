@@ -1,5 +1,58 @@
-﻿// Ticket domain types: defines ticket products, buyer payload, and order response shapes.
 export type TicketTab = "regular" | "bundling";
+
+export type ProductVariant = {
+  id: string;
+  type: string;
+  label: string;
+};
+
+export type MerchProduct = {
+  id: string;
+  name: string;
+  imageUrl: string | null;
+  variants: ProductVariant[] | null;
+};
+
+export type MerchCategory =
+  | "t-shirt"
+  | "workshirt"
+  | "stickers"
+  | "socks"
+  | "keychain"
+  | "hat";
+
+export type BundleItem =
+  | {
+      type: "ticket";
+      productId: string;
+      product: {
+        id: string;
+        name: string;
+      };
+    }
+  | {
+      type: "merchandise";
+      category: MerchCategory;
+      products: MerchProduct[];
+    }
+  | {
+      type: "selectable_item";
+      items: (
+        | {
+            type: "ticket";
+            productId: string;
+            product: {
+              id: string;
+              name: string;
+            };
+          }
+        | {
+            type: "merchandise";
+            category: MerchCategory;
+            products: MerchProduct[];
+          }
+      )[];
+    };
 
 export type TicketProduct = {
   id: string;
@@ -10,47 +63,28 @@ export type TicketProduct = {
   isActive: boolean;
   description: string | null;
   imageUrl: string | null;
-  bundleItems?: Array<
-    | {
-        type: "ticket";
-        productId: string;
-        productName: string;
-      }
-    | {
-        type: "merchandise";
-        category: string;
-        products: Array<{
-          id: string;
-          name: string;
-          imageUrl: string | null;
-          variants?: Array<{ id: string; type: string; label: string }>;
-        }>;
-      }
-    | {
-        type: "selectable_item";
-        items: Array<
-          | { type: "ticket"; productId: string; productName: string }
-          | {
-              type: "merchandise";
-              category: string;
-              products: Array<{
-                id: string;
-                name: string;
-                imageUrl: string | null;
-                variants?: Array<{ id: string; type: string; label: string }>;
-              }>;
-            }
-        >;
-      }
-  >;
+  bundleItems?: BundleItem[];
 };
 
 export type TicketBuyer = {
   buyerName: string;
   buyerEmail: string;
-  buyerPhone: string;
+  phone: string;
   buyerInstansi: string;
 };
+
+export type TicketPaymentMidtrans = {
+  type: "midtrans";
+  qrisUrl: string;
+  midtransOrderId: string;
+};
+
+export type TicketPaymentManual = {
+  type: "manual";
+  uploadUrl: string;
+};
+
+export type TicketPayment = TicketPaymentMidtrans | TicketPaymentManual;
 
 export type TicketOrder = {
   orderId: string;

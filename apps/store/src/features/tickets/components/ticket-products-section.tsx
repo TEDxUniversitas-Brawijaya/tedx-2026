@@ -1,21 +1,17 @@
-﻿// Product section dialog shell: centers header/tabs and renders scrollable ticket cards.
 import { cn } from "@tedx-2026/ui/lib/utils";
+import { useTicketCheckoutStore } from "../stores/use-ticket-checkout-store";
 import type { TicketProduct, TicketTab } from "../types/ticket";
 import { TicketProductCard } from "./ticket-product-card";
 
 type TicketProductsSectionProps = {
-  activeTab: TicketTab;
-  onTabChange: (tab: TicketTab) => void;
   products: TicketProduct[];
-  onSelectProduct: (product: TicketProduct) => void;
 };
 
 export const TicketProductsSection = ({
-  activeTab,
-  onTabChange,
   products,
-  onSelectProduct,
 }: TicketProductsSectionProps) => {
+  const { activeTab, setActiveTab } = useTicketCheckoutStore();
+
   return (
     <section
       className="bg-black/50 px-5 py-16 md:px-16"
@@ -30,32 +26,18 @@ export const TicketProductsSection = ({
 
           <div className="mt-8 flex justify-center">
             <div className="inline-flex rounded-full bg-secondary p-1.5">
-              <button
-                className={cn(
-                  "rounded-full px-6 py-2.5 font-sans-2 text-sm transition-all md:text-base",
-                  activeTab === "regular"
-                    ? "bg-foreground text-background shadow-md"
-                    : "text-muted-foreground hover:text-card-foreground"
-                )}
-                id="ticket-tab-regular"
-                onClick={() => onTabChange("regular")}
-                type="button"
-              >
-                Regular
-              </button>
-              <button
-                className={cn(
-                  "rounded-full px-6 py-2.5 font-sans-2 text-sm transition-all md:text-base",
-                  activeTab === "bundling"
-                    ? "bg-foreground text-background shadow-md"
-                    : "text-muted-foreground hover:text-card-foreground"
-                )}
-                id="ticket-tab-bundling"
-                onClick={() => onTabChange("bundling")}
-                type="button"
-              >
-                Bundling
-              </button>
+              <TabButton
+                activeTab={activeTab}
+                label="Regular"
+                setActiveTab={setActiveTab}
+                tab="regular"
+              />
+              <TabButton
+                activeTab={activeTab}
+                label="Bundling"
+                setActiveTab={setActiveTab}
+                tab="bundling"
+              />
             </div>
           </div>
 
@@ -64,11 +46,7 @@ export const TicketProductsSection = ({
             id={activeTab === "regular" ? "ticket-regular" : "ticket-bundling"}
           >
             {products.map((product) => (
-              <TicketProductCard
-                key={product.id}
-                onSelect={onSelectProduct}
-                product={product}
-              />
+              <TicketProductCard key={product.id} product={product} />
             ))}
           </div>
         </div>
@@ -76,3 +54,29 @@ export const TicketProductsSection = ({
     </section>
   );
 };
+
+const TabButton = ({
+  tab,
+  label,
+  activeTab,
+  setActiveTab,
+}: {
+  tab: TicketTab;
+  label: string;
+  activeTab: TicketTab;
+  setActiveTab: (tab: TicketTab) => void;
+}) => (
+  <button
+    className={cn(
+      "rounded-full px-6 py-2.5 font-sans-2 text-sm transition-all md:text-base",
+      activeTab === tab
+        ? "bg-foreground text-background shadow-md"
+        : "text-muted-foreground hover:text-card-foreground"
+    )}
+    id={`ticket-tab-${tab}`}
+    onClick={() => setActiveTab(tab)}
+    type="button"
+  >
+    {label}
+  </button>
+);

@@ -1,10 +1,11 @@
-﻿// Date label mapper: provides frontend date text fallback by ticket product ID.
 const ticketDateLabelByProductId: Record<string, string> = {
-  prod_ticket_main_event: "Main Event â€¢ 31 Mei 2026",
-  prod_ticket_propa_day1: "Propaganda 3 â€¢ Day 1 â€¢ 29 Mei 2026",
-  prod_ticket_bundle_main_plus_merch_pick: "Main Event Bundle â€¢ 31 Mei 2026",
-  prod_ticket_bundle_vip_waiting: "VIP Bundle â€¢ Coming Soon",
-  prod_ticket_partner_passthrough: "Partner Allocation",
+  prod_tkt_p3d1: "Propaganda 3 • Day 1 • 10 Agustus 2026",
+  prod_tkt_p3d2: "Propaganda 3 • Day 2 • 11 Agustus 2026",
+  prod_tkt_main: "Main Event • 17 Agustus 2026",
+  prod_tkt_b_1: "2 Day Pass Propaganda 3 • 10-11 Agustus 2026",
+  prod_tkt_b_2: "Main Event + Keychain • 17 Agustus 2026",
+  prod_tkt_b_3: "Main Event + Socks • 17 Agustus 2026",
+  prod_tkt_b_4: "Main Event + Stickers • 17 Agustus 2026",
 };
 
 export const getTicketDateLabel = (

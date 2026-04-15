@@ -1,4 +1,3 @@
-﻿// Products container: fetches ticket products and maps tab selection to section props.
 import { trpc } from "@/shared/lib/trpc";
 import { useQuery } from "@tanstack/react-query";
 import { TicketProductsSection } from "../components/ticket-products-section";
@@ -11,7 +10,7 @@ const isBundlingTicket = (product: TicketProduct) =>
   product.type === "ticket_bundle";
 
 export const TicketProductsContainer = () => {
-  const { activeTab, setActiveTab, openCheckout } = useTicketCheckoutStore();
+  const { activeTab } = useTicketCheckoutStore();
   const { data, isLoading, isError } = useQuery(
     trpc.ticket.listProducts.queryOptions({})
   );
@@ -37,12 +36,5 @@ export const TicketProductsContainer = () => {
   const activeProducts =
     activeTab === "regular" ? regularProducts : bundlingProducts;
 
-  return (
-    <TicketProductsSection
-      activeTab={activeTab}
-      onSelectProduct={openCheckout}
-      onTabChange={setActiveTab}
-      products={activeProducts}
-    />
-  );
+  return <TicketProductsSection products={activeProducts} />;
 };

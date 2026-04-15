@@ -1,5 +1,3 @@
-﻿// Order detail dialog: displays final ticket order summary, buyer info, and status.
-import { formatIdrCurrency } from "@/features/merchandise/lib/formatter";
 import { Button } from "@tedx-2026/ui/components/button";
 import {
   Dialog,
@@ -7,33 +5,33 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@tedx-2026/ui/components/dialog";
-import type { TicketBuyer, TicketOrder, TicketProduct } from "../types/ticket";
+import { formatIdrCurrency } from "../lib/formatter";
+import { useTicketCheckoutStore } from "../stores/use-ticket-checkout-store";
 
-type TicketOrderDetailDialogProps = {
-  isOpen: boolean;
-  order: TicketOrder | null;
-  product: TicketProduct | null;
-  quantity: number;
-  selectedBundleItemId?: string;
-  buyer: TicketBuyer | null;
-  onOpenChange: (open: boolean) => void;
-};
+export const TicketOrderDetailDialog = () => {
+  const {
+    isOrderDetailOpen,
+    closeOrderDetail,
+    order,
+    selectedProduct,
+    quantity,
+    selectedBundleItemId,
+    buyer,
+  } = useTicketCheckoutStore();
 
-export const TicketOrderDetailDialog = ({
-  isOpen,
-  order,
-  product,
-  quantity,
-  selectedBundleItemId,
-  buyer,
-  onOpenChange,
-}: TicketOrderDetailDialogProps) => {
-  if (!(order && product && buyer)) {
+  if (!(order && selectedProduct && buyer)) {
     return null;
   }
 
   return (
-    <Dialog onOpenChange={onOpenChange} open={isOpen}>
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          closeOrderDetail();
+        }
+      }}
+      open={isOrderDetailOpen}
+    >
       <DialogContent className="max-w-[90vw] rounded-3xl border-none bg-black p-6 text-white md:max-w-xl">
         <DialogHeader>
           <DialogTitle className="font-serif-2 text-xl">
@@ -53,7 +51,7 @@ export const TicketOrderDetailDialog = ({
           </div>
 
           <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-            <p>Produk: {product.name}</p>
+            <p>Produk: {selectedProduct.name}</p>
             <p>Jumlah: {quantity}</p>
             {selectedBundleItemId && (
               <p>Pilihan bundling: {selectedBundleItemId}</p>
@@ -63,13 +61,13 @@ export const TicketOrderDetailDialog = ({
           <div className="rounded-xl border border-white/10 bg-white/5 p-4">
             <p>Nama: {buyer.buyerName}</p>
             <p>Email: {buyer.buyerEmail}</p>
-            <p>Telepon: {buyer.buyerPhone}</p>
+            <p>Telepon: {buyer.phone}</p>
             <p>Instansi: {buyer.buyerInstansi}</p>
           </div>
 
           <Button
             className="w-full"
-            onClick={() => onOpenChange(false)}
+            onClick={closeOrderDetail}
             variant="store-primary"
           >
             Tutup
