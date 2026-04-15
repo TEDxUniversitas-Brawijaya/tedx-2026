@@ -63,7 +63,7 @@ const baseProcedure = t.procedure.use(async (opts) => {
     error.cause instanceof ZodError
   ) {
     throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
+      code: "BAD_REQUEST",
       message: `${error.cause.issues?.[0]?.path}: ${error.cause.issues?.[0]?.message}`,
       cause: error,
     });
