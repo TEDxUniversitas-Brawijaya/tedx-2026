@@ -565,7 +565,7 @@ export const createOrderServices = (
     }
 
     let qrisUrl: string | null = null;
-    if (paymentMode === "qris") {
+    if (paymentMode === "midtrans") {
       const { data: chargeTransactionResponse, error: chargeTransactionError } =
         await tryCatch(ctx.paymentServices.chargeTransaction());
       if (chargeTransactionError) {
