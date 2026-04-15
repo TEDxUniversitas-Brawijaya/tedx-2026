@@ -40,6 +40,6 @@ export const createOrderOperations = (kv: KV): OrderOperations => ({
 
   getOrderResponse: async (idempotencyKey) => {
     const orderJson = await kv.get(KEYS.order.idempotencyKey(idempotencyKey));
-    return orderJson ? JSON.parse(orderJson) : null;
+    return orderJson;
   },
 });
