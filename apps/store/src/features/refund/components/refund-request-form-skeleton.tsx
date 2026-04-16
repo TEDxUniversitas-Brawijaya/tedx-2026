@@ -1,4 +1,4 @@
-import chandalier from "@/assets/imgs/chandelier-1.png";
+import chandelier from "@/assets/imgs/chandelier-1.png";
 import textureBlack from "@/assets/imgs/texture-black.png";
 
 const SkeletonLine = ({ className }: { className: string }) => (
@@ -26,11 +26,11 @@ export function RefundRequestFormSkeleton() {
       <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-4xl items-center justify-center">
         <div className="relative w-full max-w-107.5 overflow-clip rounded-3xl border border-white/10 bg-[#262626]/90 p-6 text-white shadow-[0_0_65px_rgba(255,149,0,0.25)] backdrop-blur-sm sm:p-7">
           <img
-            alt="chandalier"
+            alt="chandelier"
             aria-hidden
             className="pointer-events-none absolute -top-14 -right-18 w-56 opacity-25"
             height={256}
-            src={chandalier}
+            src={chandelier}
             width={256}
           />
 
