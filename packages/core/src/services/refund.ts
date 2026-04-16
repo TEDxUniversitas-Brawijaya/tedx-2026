@@ -396,23 +396,45 @@ export const createRefundServices = (
       }
 
       const refundId = createNanoIdWithPrefix("ref");
-
-      await ctx.refundQueries.createRefundRequest({
-        id: refundId,
-        orderId: orderData.order.id,
-        status: "requested",
-        reason: input.reason,
-        paymentMethod: input.paymentMethod,
-        paymentProofUrl,
-        bankAccountNumber: input.bankAccountNumber,
-        bankName: input.bankName,
-        bankAccountHolder: input.bankAccountHolder,
-      });
+      const previousOrderStatus = orderData.order.status;
 
       await ctx.orderQueries.updateOrder(orderData.order.id, {
         status: "refund_requested",
       });
 
+      try {
+        await ctx.refundQueries.createRefundRequest({
+          id: refundId,
+          orderId: orderData.order.id,
+          status: "requested",
+          reason: input.reason,
+          paymentMethod: input.paymentMethod,
+          paymentProofUrl,
+          bankAccountNumber: input.bankAccountNumber,
+          bankName: input.bankName,
+          bankAccountHolder: input.bankAccountHolder,
+        });
+      } catch (error: unknown) {
+        try {
+          await ctx.orderQueries.updateOrder(orderData.order.id, {
+            status: previousOrderStatus,
+          });
+        } catch {
+          throw new AppError(
+            "INTERNAL_SERVER_ERROR",
+            "REFUND_REQUEST_STATE_ROLLBACK_FAILED",
+            {
+              details: {
+                orderId: orderData.order.id,
+                refundId,
+                previousOrderStatus,
+              },
+            }
+          );
+        }
+
+        throw error;
+      }
       // TODO: Queue refund confirmation email
 
       return {
