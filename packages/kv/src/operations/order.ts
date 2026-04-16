@@ -14,6 +14,7 @@ export type OrderOperations = {
     expirationTtlSeconds: number
   ) => Promise<void>;
   getOrderResponse: (idempotencyKey: string) => Promise<string | null>;
+  updateStockCache: (productId: string, newStock: number) => Promise<void>;
 };
 
 export const createOrderOperations = (kv: KV): OrderOperations => ({
@@ -41,5 +42,9 @@ export const createOrderOperations = (kv: KV): OrderOperations => ({
   getOrderResponse: async (idempotencyKey) => {
     const orderJson = await kv.get(KEYS.order.idempotencyKey(idempotencyKey));
     return orderJson;
+  },
+
+  updateStockCache: async (productId, newStock) => {
+    await kv.set(KEYS.order.stock(productId), String(newStock));
   },
 });
