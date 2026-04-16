@@ -2,6 +2,7 @@ const orderKeys = {
   buyerCooldown: (email: string) => `buyer_cooldown:${email}`,
   idempotencyKey: (idempotencyKey: string) =>
     `order_idempotency_key:${idempotencyKey}`,
+  stock: (productId: string) => `stock:${productId}`,
 };
 
 const configKeys = {
