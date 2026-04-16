@@ -1,7 +1,9 @@
 import { z } from "zod";
 import {
+  imageFileSchema,
   isoDateStringSchema,
   orderIdSchema,
+  paymentMethodSchema,
   refundIdSchema,
   snapshotVariantSchema,
 } from "./common";
@@ -15,6 +17,7 @@ export const getRefundOrderInfoOutputSchema = z.object({
   orderId: orderIdSchema,
   buyerName: z.string(),
   buyerEmail: z.string().email(),
+  paymentMethod: paymentMethodSchema,
   items: z.array(
     z.object({
       name: z.string(),
@@ -31,10 +34,11 @@ export const getRefundOrderInfoOutputSchema = z.object({
 export const submitRefundRequestInputSchema = z.object({
   refundToken: z.string(),
   reason: z.string().min(1).max(1000),
-  paymentMethod: z.string().min(1).max(255),
+  paymentMethod: paymentMethodSchema,
   bankAccountNumber: z.string().min(1).max(255),
   bankName: z.string().min(1).max(255),
   bankAccountHolder: z.string().min(1).max(255),
+  paymentProof: imageFileSchema.optional(),
 });
 
 export const submitRefundRequestOutputSchema = z.object({
