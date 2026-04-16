@@ -149,7 +149,16 @@ import "@/styles/propaganda-2.css";
       <section class="frame-5">
         <Image src={desk} class="desk-frame-4" alt="desk" />
         <Image src={floor} class="floor-frame-5" alt="Propaganda 2" />
-        <!-- <div class="placeholder-frame-5">placeholder</div> -->
+        <div class="placeholder-frame-5">
+          <video
+            src="https://cdn.tedxuniversitasbrawijaya.com/teasers/propaganda-2b-teaser.mp4"
+            autoplay
+            loop
+            muted
+            playsinline
+            controls
+          ></video>
+        </div>
         <div class="broken-vase-container">
           <div class="broken-vase-wrapper">
             <Image
@@ -231,7 +240,16 @@ import "@/styles/propaganda-2.css";
       <div class="frame-7-track">
         <section class="frame-7">
           <Image src={floor} class="floor-frame-7" alt="Wood Floor" />
-          <!-- <div class="placeholder-frame-7">placeholder</div> -->
+          <div class="placeholder-frame-7">
+            <video
+              src="https://cdn.tedxuniversitasbrawijaya.com/teasers/propaganda-2c-teaser.mp4"
+              autoplay
+              loop
+              muted
+              playsinline
+              controls
+            ></video>
+          </div>
           <Image
             src={silPerson}
             class="sil-person"
@@ -332,10 +350,12 @@ import "@/styles/propaganda-2.css";
   const frame8Scroll = document.querySelector(".frame-8-scroll") as HTMLElement;
   const frame8 = document.querySelector(".frame-8") as HTMLElement;
   const textFrame8 = document.querySelector(".text-frame-8") as HTMLElement;
-
-  // const placeholderFrame5 = document.querySelector(
-  //   ".placeholder-frame-5"
-  // ) as HTMLElement;
+  const placeholderFrame5 = document.querySelector(
+    ".placeholder-frame-5"
+  ) as HTMLElement;
+  const placeholderFrame7 = document.querySelector(
+    ".placeholder-frame-7"
+  ) as HTMLElement;
 
   // Frame 2 animation elements (placeholder hidden)
   const frame2Section = document.querySelector(".frame-2") as HTMLElement;
@@ -353,9 +373,14 @@ import "@/styles/propaganda-2.css";
   if (text4) {
     text4.style.willChange = "opacity";
   }
-  // if (placeholderFrame5) {
-  //   placeholderFrame5.style.willChange = "opacity";
-  // }
+  if (placeholderFrame5) {
+    placeholderFrame5.style.willChange = "opacity";
+    placeholderFrame5.style.opacity = "1";
+  }
+  if (placeholderFrame7) {
+    placeholderFrame7.style.willChange = "opacity";
+    placeholderFrame7.style.opacity = "1";
+  }
   if (text2Content) {
     text2Content.style.willChange = "opacity";
   }
@@ -458,6 +483,12 @@ import "@/styles/propaganda-2.css";
       const rawProgress = maxScroll > 0 ? scrolledPastSticky / maxScroll : 0;
       const brightness = 1 - easeInOutCubic(rawProgress);
       frame5Wrapper.style.filter = `brightness(${brightness})`;
+
+      if (placeholderFrame5) {
+        placeholderFrame5.style.opacity = brightness.toString();
+        placeholderFrame5.style.pointerEvents =
+          brightness > 0.2 ? "auto" : "none";
+      }
     }
   };
 
@@ -574,12 +605,22 @@ import "@/styles/propaganda-2.css";
       if (distancePastTop <= 0) {
         frame8.style.opacity = "0";
         textFrame8.style.opacity = "0";
+        if (placeholderFrame7) {
+          placeholderFrame7.style.opacity = "1";
+          placeholderFrame7.style.pointerEvents = "auto";
+        }
       } else {
         const maxScroll = window.innerHeight * 1.5;
         const rawProgress = Math.min(distancePastTop / maxScroll, 1);
         const opacityProgress = easeInOutCubic(rawProgress);
         frame8.style.opacity = opacityProgress.toString();
         textFrame8.style.opacity = opacityProgress.toString();
+        if (placeholderFrame7) {
+          const frame7Opacity = 1 - opacityProgress;
+          placeholderFrame7.style.opacity = frame7Opacity.toString();
+          placeholderFrame7.style.pointerEvents =
+            frame7Opacity > 0.2 ? "auto" : "none";
+        }
       }
     };
 
