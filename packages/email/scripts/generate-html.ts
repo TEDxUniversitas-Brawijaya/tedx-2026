@@ -27,11 +27,22 @@ const sampleData: { [K in keyof TemplateMap]: TemplateMap[K] } = {
   },
   ticketOrder: {
     name: "Siti Aminah",
-    ticket: {
-      name: "Early Bird Ticket",
-      quantity: 2,
-      price: 150_000,
-      whatsappGroupUrl: "https://chat.whatsapp.com/EXAMPLEGROUPLINK",
+    item: {
+      name: "Bundling 3 (ticket main event & ticket day 1 propaganda 3)",
+      quantity: 1,
+      price: 300_000,
+      tickets: [
+        {
+          eventName: "Main Event",
+          eventDate: "10 Mei 2026",
+          whatsappGroupUrl: "https://chat.whatsapp.com/xxx",
+        },
+        {
+          eventName: "Propa 3 Day 2",
+          eventDate: "11 Mei 2026",
+          whatsappGroupUrl: "https://chat.whatsapp.com/xxx",
+        },
+      ],
     },
     refundUrl: "https://store.tedxuniversitasbrawijaya.com/refund/1234567890",
   },

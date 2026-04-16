@@ -51,18 +51,20 @@ export const footer = (): string => {
 
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
-              <td width="24" valign="middle">
-                <img src="https://img.icons8.com/ios-filled/50/000000/instagram-new.png" width="16" height="16" alt="IG" />
+              <td width="30" valign="middle">
+                <img src="https://tedxuniversitasbrawijaya.com/email/mdi_instagram.png" width="30" height="30" alt="IG" />
               </td>
+              <td width="8"></td>
               <td valign="middle">
                 <span style="font-weight: 600;">@tedxuniversitasbrawijaya</span>
               </td>
             </tr>
             <tr><td height="8"></td></tr>
             <tr>
-              <td width="24" valign="middle">
-                <img src="https://img.icons8.com/ios-filled/50/000000/new-post.png" width="16" height="16" alt="Email" />
+              <td width="30" valign="middle">
+                <img src="https://tedxuniversitasbrawijaya.com/email/ic_baseline-email.png" width="30" height="30" alt="Email" />
               </td>
+              <td width="8"></td>
               <td valign="middle">
                 <span style="font-weight: 600;">tedxub2026@gmail.com</span>
               </td>
@@ -168,7 +170,7 @@ export const detailMerchOrderTable = (
 `;
 };
 
-export const detailTickerOrderTable = (ticket: {
+export const detailTicketOrderTable = (ticket: {
   name: string;
   quantity: number;
   price: number;

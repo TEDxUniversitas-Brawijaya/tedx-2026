@@ -1,4 +1,4 @@
-import { detailMerchOrderTable, detailTickerOrderTable } from "./components";
+import { detailMerchOrderTable, detailTicketOrderTable } from "./components";
 import { createEmailLayout } from "./layout";
 
 export type TemplateMap = {
@@ -13,11 +13,17 @@ export type TemplateMap = {
   };
   ticketOrder: {
     name: string;
-    ticket: {
+    // this is singular since ticket order only has 1 ticket item
+    item: {
       name: string;
       quantity: number;
       price: number;
-      whatsappGroupUrl: string;
+
+      tickets: {
+        eventName: string;
+        eventDate: string;
+        whatsappGroupUrl: string;
+      }[];
     };
     refundUrl: string;
   };
@@ -76,7 +82,7 @@ const renderers: Renderers = {
     });
   },
   ticketOrder: (params) => {
-    const { name, ticket, refundUrl } = params;
+    const { name, item, refundUrl } = params;
 
     const content = `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -115,22 +121,38 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
-              Gabung grup WhatsApp peserta untuk info terbaru, jadwal, dan pengumuman acara mengenai [nama tiket], [day ticket]!
+              Gabung grup WhatsApp peserta untuk info terbaru, jadwal, dan pengumuman acara mengenai ${item.tickets.map((t) => `${t.eventName} (${t.eventDate})`).join(", ")}!
             </span>
           </td>
         </tr>
         <tr><td height="4"></td></tr>
         <tr>
           <td align="left">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+            ${item.tickets
+              .map(
+                (t) => `
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="display: inline-block; margin-right: 8px; margin-bottom: 8px;">
               <tr>
                 <td bgcolor="#0E5454" style="border-radius: 8px;">
-                  <a href="${ticket.whatsappGroupUrl}" target="_blank" style="display: inline-block; padding: 16px 24px; color: #ffffff; text-decoration: none;">
-                    Gabung Grup WhatsApp
+                  <a href="${t.whatsappGroupUrl}" target="_blank" style="display: inline-block; padding: 12px 20px; color: #ffffff; text-decoration: none;">
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td valign="middle">
+                          <img src="https://tedxuniversitasbrawijaya.com/email/ic_baseline-whatsapp.png" width="16" height="16" alt="Whatsapp" />
+                        </td>
+                        <td width="8"></td>
+                        <td valign="middle" style="color: #ffffff; font-size: 14px;">
+                          Gabung Grup WhatsApp ${t.eventName} (${t.eventDate})
+                        </td>
+                      </tr>
+                    </table>
                   </a>
                 </td>
               </tr>
             </table>
+            `
+              )
+              .join("")}
           </td>
         </tr>
         <tr><td height="16"></td></tr>
@@ -153,7 +175,7 @@ const renderers: Renderers = {
 
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
 
-      ${detailTickerOrderTable(ticket)}
+      ${detailTicketOrderTable(item)}
     `;
 
     return createEmailLayout(content, {
