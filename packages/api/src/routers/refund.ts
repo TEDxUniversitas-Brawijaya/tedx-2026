@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import {
   getRefundOrderInfoInputSchema,
   getRefundOrderInfoOutputSchema,
@@ -10,31 +10,30 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 const getOrderInfo = publicProcedure
   .input(getRefundOrderInfoInputSchema)
   .output(getRefundOrderInfoOutputSchema)
-  .query(() => {
-    // TODO: Implement refund.getOrderInfo
-    // - Validate token exists
-    // - Check order status = "paid"
-    // - Check within refund deadline (H-3)
-    // - Check no existing pending refund request
-    // - Return order info for refund form pre-fill
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "refund.getOrderInfo is not implemented yet",
-    });
+  .query(async ({ ctx, input }) => {
+    const orderInfo = await ctx.services.refund.getOrderInfo(input.refundToken);
+
+    return {
+      ...orderInfo,
+      refundDeadline: orderInfo.refundDeadline.toISOString(),
+    };
   });
 
 const submitRequest = publicProcedure
-  .input(submitRefundRequestInputSchema)
+  .input(z.instanceof(FormData))
   .output(submitRefundRequestOutputSchema)
-  .mutation(() => {
-    // TODO: Implement refund.submitRequest
-    // - Validate refund token
-    // - Create refund request with "requested" status
-    // - Return refund ID and confirmation message
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "refund.submitRequest is not implemented yet",
+  .mutation(async ({ ctx, input: formData }) => {
+    const input = submitRefundRequestInputSchema.parse({
+      refundToken: formData.get("refundToken"),
+      reason: formData.get("reason"),
+      paymentMethod: formData.get("paymentMethod"),
+      bankAccountNumber: formData.get("bankAccountNumber"),
+      bankName: formData.get("bankName"),
+      bankAccountHolder: formData.get("bankAccountHolder"),
+      paymentProof: formData.get("paymentProof") ?? undefined,
     });
+
+    return await ctx.services.refund.submitRequest(input);
   });
 
 export const refundRouter = createTRPCRouter({
