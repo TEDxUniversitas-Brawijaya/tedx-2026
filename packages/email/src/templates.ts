@@ -155,7 +155,7 @@ const renderers: Renderers = {
             <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="display: inline-block; margin-right: 8px; margin-bottom: 8px;">
               <tr>
                 <td bgcolor="#0E5454" style="border-radius: 8px;">
-                  <a href="${t.whatsappGroupUrl}" target="_blank" style="display: inline-block; padding: 12px 20px; color: #ffffff; text-decoration: none;">
+                  <a href="${t.whatsappGroupUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 12px 20px; color: #ffffff; text-decoration: none;">
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                       <tr>
                         <td valign="middle">
@@ -182,7 +182,7 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
-              Apabila kamu memiliki kendala dan ingin mengajukan pengembalian dana (refund) tiket, silakan kunjungi laman refund <a href="${refundUrl}" target="_blank" style="color: #DC2625; text-decoration: none; font-weight: 700;">disini</a>.
+              Apabila kamu memiliki kendala dan ingin mengajukan pengembalian dana (refund) tiket, silakan kunjungi laman refund <a href="${refundUrl}" target="_blank" rel="noopener noreferrer" style="color: #DC2625; text-decoration: none; font-weight: 700;">disini</a>.
             </span>
           </td>
         </tr>
@@ -263,7 +263,7 @@ const renderers: Renderers = {
     });
   },
   ticketOrderRejected: (params) => {
-    const { name, orderId, item } = params;
+    const { name, orderId, item, reason } = params;
 
     const content = `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -284,7 +284,7 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
-              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid / tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini ditolak (rejected).
+              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid / tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini ditolak (rejected) karena ${reason}.
             </span>
           </td>
         </tr>
@@ -318,7 +318,7 @@ const renderers: Renderers = {
     `;
 
     return createEmailLayout(content, {
-      preheader: "Terima kasih atas pesanan tiket Anda!",
+      preheader: "Pesanan tiket Anda ditolak",
     });
   },
 };

@@ -56,7 +56,7 @@ export const footer = (): string => {
               </td>
               <td width="8"></td>
               <td valign="middle">
-                <span style="font-weight: 600;">@tedxuniversitasbrawijaya</span>
+                <a href="https://www.instagram.com/tedxuniversitasbrawijaya/" target="_blank" rel="noopener noreferrer" style="font-weight: 600;">@tedxuniversitasbrawijaya</a>
               </td>
             </tr>
             <tr><td height="8"></td></tr>
@@ -66,12 +66,12 @@ export const footer = (): string => {
               </td>
               <td width="8"></td>
               <td valign="middle">
-                <span style="font-weight: 600;">tedxub2026@gmail.com</span>
+                <a href="mailto:tedxub2026@gmail.com" target="_blank" rel="noopener noreferrer" style="font-weight: 600;">tedxub2026@gmail.com</a>
               </td>
             </tr>
           </table>
 
-          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"><table/>
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
 
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
