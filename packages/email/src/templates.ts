@@ -280,7 +280,7 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
-              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid / tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini ditolak (rejected) karena ${reason}.
+              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid / tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini ditolak (rejected) karena <span style="font-weight: 700;">${reason}</span>.
             </span>
           </td>
         </tr>

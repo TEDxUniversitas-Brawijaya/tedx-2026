@@ -56,7 +56,7 @@ export const footer = (): string => {
               </td>
               <td width="8"></td>
               <td valign="middle">
-                <a href="https://www.instagram.com/tedxuniversitasbrawijaya/" target="_blank" rel="noopener noreferrer" style="font-weight: 600;">@tedxuniversitasbrawijaya</a>
+                <a href="https://www.instagram.com/tedxuniversitasbrawijaya/" target="_blank" rel="noopener noreferrer" style="font-weight: 600; text-decoration: none; color: black;">@tedxuniversitasbrawijaya</a>
               </td>
             </tr>
             <tr><td height="8"></td></tr>
@@ -66,7 +66,7 @@ export const footer = (): string => {
               </td>
               <td width="8"></td>
               <td valign="middle">
-                <a href="mailto:tedxub2026@gmail.com" target="_blank" rel="noopener noreferrer" style="font-weight: 600;">tedxub2026@gmail.com</a>
+                <a href="mailto:tedxub2026@gmail.com" target="_blank" rel="noopener noreferrer" style="font-weight: 600; text-decoration: none; color: black;">tedxub2026@gmail.com</a>
               </td>
             </tr>
           </table>
@@ -101,7 +101,13 @@ export const detailMerchOrderTable = (
   }[]
 ) => {
   const rows = items.map((item) => {
-    const price = (item.price * item.quantity).toLocaleString("id-ID", {
+    const price = item.price.toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      maximumFractionDigits: 0,
+    });
+
+    const totalPrice = (item.price * item.quantity).toLocaleString("id-ID", {
       style: "currency",
       currency: "IDR",
       maximumFractionDigits: 0,
@@ -110,13 +116,17 @@ export const detailMerchOrderTable = (
     return `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-bottom: 1px solid #C6C6C6; padding: 12px 0px;">
         <tr>
-          <td width="60%" valign="middle" >
-            <span style="font-weight: 600;">${item.name} (x${item.quantity})</span>
-            <br />
-            <span style="font-weight: 600;">${item.size ? `Size: ${item.size}` : ""}</span>
+          <td width="40%" valign="middle" align="left">
+            <span style="font-size: 16px; text-align: left;">${item.name}${item.size ? ` (size: ${item.size})` : ""}</span>
           </td>
-          <td width="40%" valign="middle" align="right">
-            <span style="font-weight: 600;">${price}</span>
+          <td width="20%" valign="middle" align="center">
+            <span style="font-size: 16px; text-align: center;">${price}</span>
+          </td>
+          <td width="20%" valign="middle" align="center">
+            <span style="font-size: 16px; text-align: center;">${item.quantity}</span>
+          </td>
+          <td width="20%" valign="middle" align="right">
+            <span style="font-size: 16px; text-align: right;">${totalPrice}</span>
           </td>
         </tr>
       </table>
@@ -135,7 +145,16 @@ export const detailMerchOrderTable = (
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F2F2F2; border-radius: 12px; overflow: hidden; padding: 32px 24px 24px 24px;">
       <tr>
         <td>
-          <span style="font-size: 1.5rem">Detail Order (${orderId})</span>
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <td align="left" width="50%" valign="middle">
+                <span style="font-size: 1.5rem">Detail Order</span>
+              </td>
+              <td align="right" width="50%" valign="middle">
+                <span style="font-size: 1rem;">NO. PESANAN ${orderId}</span>
+              </td>
+            </tr>
+          </table>
         </td>
       </tr>
 
@@ -147,6 +166,22 @@ export const detailMerchOrderTable = (
 
       <tr>
         <td width="100%" valign="middle" align="center">
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <td width="40%" valign="middle" align="left">
+                <span style="font-weight: 600; font-size: 18px;">Produk</span>
+              </td>
+              <td width="20%" valign="middle" align="center">
+                <span style="font-weight: 600; font-size: 18px;">Harga Satuan</span>
+              </td>
+              <td width="20%" valign="middle" align="center">
+                <span style="font-weight: 600; font-size: 18px;">Jumlah</span>
+              </td>
+              <td width="20%" valign="middle" align="right">
+                <span style="font-weight: 600; font-size: 18px;">Total Harga</span>
+              </td>
+            </tr>
+          </table>
           ${rows.join("")}
         </td>
       </tr>
@@ -158,7 +193,7 @@ export const detailMerchOrderTable = (
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td width="60%" valign="middle">
-                <span style="font-weight: 600;">Total</span>
+                <span style="font-weight: 600;">Total Harga</span>
               </td>
               <td width="40%" valign="middle" align="right">
                 <span style="font-weight: 600;">${totalPrice}</span>
@@ -195,7 +230,16 @@ export const detailTicketOrderTable = (
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F2F2F2; border-radius: 12px; overflow: hidden; padding: 32px 24px 24px 24px;">
       <tr>
         <td>
-          <span style="font-size: 1.5rem">Detail Order (${orderId})</span>
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <td align="left" width="50%" valign="middle">
+                <span style="font-size: 1.5rem">Detail Order</span>
+              </td>
+              <td align="right" width="50%" valign="middle">
+                <span style="font-size: 1rem;">NO. PESANAN ${orderId}</span>
+              </td>
+            </tr>
+          </table>
         </td>
       </tr>
 
@@ -207,36 +251,38 @@ export const detailTicketOrderTable = (
 
       <tr>
         <td width="100%" valign="middle" align="center">
-          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-bottom: 1px solid #C6C6C6; padding: 12px 0px;">
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
-              <td width="40%" valign="middle" >
-                <span style="font-weight: 600;">Tiket yang Dibeli</span>
+              <td width="40%" valign="middle" align="left">
+                <span style="font-weight: 600; font-size: 18px;">Produk</span>
               </td>
-              <td width="60%" valign="middle" align="right">
-                <span style="font-weight: 600; text-align: right;">${ticket.name}</span>
+              <td width="20%" valign="middle" align="center">
+                <span style="font-weight: 600; font-size: 18px;">Harga Satuan</span>
+              </td>
+              <td width="20%" valign="middle" align="center">
+                <span style="font-weight: 600; font-size: 18px;">Jumlah</span>
+              </td>
+              <td width="20%" valign="middle" align="right">
+                <span style="font-weight: 600; font-size: 18px;">Total Harga</span>
               </td>
             </tr>
           </table>
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-bottom: 1px solid #C6C6C6; padding: 12px 0px;">
-            <tr>
-              <td width="40%" valign="middle" >
-                <span style="font-weight: 600;">Jumlah Tiket</span>
-              </td>
-              <td width="60%" valign="middle" align="right">
-                <span style="font-weight: 600; text-align: right;">${ticket.quantity}</span>
-              </td>
-            </tr>
-          </table>
-          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-bottom: 1px solid #C6C6C6; padding: 12px 0px;">
-            <tr>
-              <td width="40%" valign="middle" >
-                <span style="font-weight: 600;">Harga</span>
-              </td>
-              <td width="60%" valign="middle" align="right">
-                <span style="font-weight: 600; text-align: right;">${price}</span>
-              </td>
-            </tr>
-          </table>
+        <tr>
+          <td width="40%" valign="middle" align="left">
+            <span style="font-size: 16px; text-align: left;">${ticket.name}</span>
+          </td>
+          <td width="20%" valign="middle" align="center">
+            <span style="font-size: 16px; text-align: center;">${price}</span>
+          </td>
+          <td width="20%" valign="middle" align="center">
+            <span style="font-size: 16px; text-align: center;">${ticket.quantity}</span>
+          </td>
+          <td width="20%" valign="middle" align="right">
+            <span style="font-size: 16px; text-align: right;">${totalPrice}</span>
+          </td>
+        </tr>
+      </table>
         </td>
       </tr>
 
@@ -247,7 +293,7 @@ export const detailTicketOrderTable = (
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td width="60%" valign="middle">
-                <span style="font-weight: 600;">Total</span>
+                <span style="font-weight: 600;">Total Harga</span>
               </td>
               <td width="40%" valign="middle" align="right">
                 <span style="font-weight: 600;">${totalPrice}</span>
