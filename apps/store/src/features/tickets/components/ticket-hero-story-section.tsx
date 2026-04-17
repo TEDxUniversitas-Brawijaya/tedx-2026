@@ -10,11 +10,6 @@ import People from "@/assets/imgs/people.png";
 import Stage from "@/assets/imgs/stage.png";
 import "../styles/hero-section.css";
 
-const introText =
-  "Selamat datang dalam perjalanan bertumbuh bersama TEDxUniversitas Brawijaya 2026!";
-const storyText =
-  "Di ruang ini, kamu tidak hanya datang untuk mendengar, tapi juga untuk membawa kisah dari perjalananmu. Cerita tentang tawa, luka, dan harapan yang kamu simpan, kini punya ruang untuk saling melengkapi dengan cerita lainnya. Mari ubah pengalaman pribadimu menjadi bagian dari sebuah rumah, tempat berbagai gagasan bertemu dan makna baru terbentuk.";
-
 export const TicketHeroStorySection = ({
   scrollProgress,
 }: {
@@ -148,7 +143,8 @@ export const TicketHeroStorySection = ({
             style={{ opacity: introOpacity, y: introY }}
           >
             <p className="hero-intro-text" id="ticket-hero-intro-copy">
-              {introText}
+              Selamat datang dalam perjalanan bertumbuh bersama TEDxUniversitas
+              Brawijaya 2026!
             </p>
           </motion.div>
         </div>
@@ -159,7 +155,12 @@ export const TicketHeroStorySection = ({
             style={{ opacity: storyOpacity, y: storyY }}
           >
             <p className="hero-story-text" id="ticket-hero-story-copy">
-              {storyText}
+              Di ruang ini, kamu tidak hanya datang untuk mendengar, tapi juga
+              untuk membawa kisah dari perjalananmu. Cerita tentang tawa, luka,
+              dan harapan yang kamu simpan, kini punya ruang untuk saling
+              melengkapi dengan cerita lainnya. Mari ubah pengalaman pribadimu
+              menjadi bagian dari sebuah rumah, tempat berbagai gagasan bertemu
+              dan makna baru terbentuk.
             </p>
           </motion.div>
         </div>
