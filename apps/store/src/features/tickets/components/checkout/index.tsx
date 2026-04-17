@@ -50,20 +50,36 @@ export const TicketCheckoutModal = () => {
 };
 
 const TicketCheckoutContent = () => {
-  const { checkoutStep, buyer, order } = useTicketCheckoutStore();
+  const {
+    checkoutStep,
+    buyer,
+    order,
+    selectedProduct,
+    quantity,
+    onPrevStep,
+    onNextStep,
+  } = useTicketCheckoutStore();
 
   if (checkoutStep === "identification") {
     return <TicketIdentificationStep />;
   }
 
   if (checkoutStep === "summary") {
-    if (!buyer) {
+    if (!(buyer && selectedProduct)) {
       throw new Error(
         "Trying to access summary step but buyer information is missing"
       );
     }
 
-    return <TicketSummaryStep />;
+    return (
+      <TicketSummaryStep
+        buyer={buyer}
+        onNextStep={onNextStep}
+        onPrevStep={onPrevStep}
+        quantity={quantity}
+        selectedProduct={selectedProduct}
+      />
+    );
   }
 
   if (checkoutStep === "payment") {
