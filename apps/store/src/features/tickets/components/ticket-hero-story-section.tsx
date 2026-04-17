@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useIsMobile } from "@tedx-2026/ui/hooks/use-is-mobile";
 import {
   motion,
   useTransform,
@@ -51,14 +51,7 @@ export const TicketHeroStorySection = ({
     [1, 1, 1, 1, 0, 0]
   );
 
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile();
 
   const stageBottom = useTransform(
     smoothScroll,
