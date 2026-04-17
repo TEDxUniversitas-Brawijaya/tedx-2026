@@ -4,12 +4,8 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useTicketCheckoutStore } from "../stores/use-ticket-checkout-store";
 
-const generateIdempotencyKey = () => {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-    return crypto.randomUUID();
-  }
-
-  return `ticket-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+export const generateIdempotencyKey = () => {
+  return new Date().toISOString();
 };
 
 export const useTicketCreateOrderForm = () => {
