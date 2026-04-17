@@ -3,7 +3,6 @@ import { createEmailLayout } from "./layout";
 
 export type TemplateMap = {
   merchOrder: {
-    name: string;
     orderId: string;
     items: {
       name: string;
@@ -13,7 +12,6 @@ export type TemplateMap = {
     }[];
   };
   ticketOrder: {
-    name: string;
     orderId: string;
     // this is singular since ticket order only has 1 ticket item
     item: {
@@ -30,7 +28,6 @@ export type TemplateMap = {
     refundUrl: string;
   };
   ticketOrderExpired: {
-    name: string;
     orderId: string;
     item: {
       name: string;
@@ -39,7 +36,6 @@ export type TemplateMap = {
     };
   };
   ticketOrderRejected: {
-    name: string;
     orderId: string;
     item: {
       name: string;
@@ -58,13 +54,13 @@ type Renderers = {
 
 const renderers: Renderers = {
   merchOrder: (params) => {
-    const { name, orderId, items } = params;
+    const { orderId, items } = params;
 
     const content = `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
           <td>
-            <span>Halo ${name}!</span>
+            <span>Halo!</span>
           </td>
         </tr>
         <tr><td height="16"></td></tr>
@@ -103,13 +99,13 @@ const renderers: Renderers = {
     });
   },
   ticketOrder: (params) => {
-    const { name, orderId, item, refundUrl } = params;
+    const { orderId, item, refundUrl } = params;
 
     const content = `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
           <td>
-            <span>Halo ${name}!</span>
+            <span>Halo!</span>
           </td>
         </tr>
         <tr><td height="16"></td></tr>
@@ -204,13 +200,13 @@ const renderers: Renderers = {
     });
   },
   ticketOrderExpired: (params) => {
-    const { name, orderId, item } = params;
+    const { orderId, item } = params;
 
     const content = `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
           <td>
-            <span>Halo ${name}!</span>
+            <span>Halo!</span>
           </td>
         </tr>
         <tr><td height="16"></td></tr>
@@ -263,13 +259,13 @@ const renderers: Renderers = {
     });
   },
   ticketOrderRejected: (params) => {
-    const { name, orderId, item, reason } = params;
+    const { orderId, item, reason } = params;
 
     const content = `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
           <td>
-            <span>Halo ${name}!</span>
+            <span>Halo!</span>
           </td>
         </tr>
         <tr><td height="16"></td></tr>
