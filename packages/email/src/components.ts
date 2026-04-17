@@ -185,6 +185,12 @@ export const detailTicketOrderTable = (
     maximumFractionDigits: 0,
   });
 
+  const totalPrice = (ticket.price * ticket.quantity).toLocaleString("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
+  });
+
   return `
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F2F2F2; border-radius: 12px; overflow: hidden; padding: 32px 24px 24px 24px;">
       <tr>
@@ -227,7 +233,7 @@ export const detailTicketOrderTable = (
                 <span style="font-weight: 600;">Harga</span>
               </td>
               <td width="60%" valign="middle" align="right">
-                <span style="font-weight: 600; text-align: right;">${price} (x${ticket.quantity})</span>
+                <span style="font-weight: 600; text-align: right;">${price}</span>
               </td>
             </tr>
           </table>
@@ -244,7 +250,7 @@ export const detailTicketOrderTable = (
                 <span style="font-weight: 600;">Total</span>
               </td>
               <td width="40%" valign="middle" align="right">
-                <span style="font-weight: 600;">${price}</span>
+                <span style="font-weight: 600;">${totalPrice}</span>
               </td>
             </tr>
           </table>
