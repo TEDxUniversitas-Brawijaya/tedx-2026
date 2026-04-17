@@ -81,9 +81,16 @@ export const TicketSelectionStep = () => {
         </div>
       )}
 
-      <Button className="w-full" onClick={onContinue} variant="store-primary">
-        Lanjutkan
-      </Button>
+      <div className="mt-2 border-white/10 border-t pt-4 sm:pt-6">
+        <Button
+          className="w-full"
+          onClick={onContinue}
+          size="checkout"
+          variant="store-primary"
+        >
+          Lanjutkan
+        </Button>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import {
   createTicketOrderInputSchema,
   createTicketOrderOutputSchema,
@@ -9,13 +10,9 @@ import {
 } from "../schemas/ticket";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
-const COOLDOWN_MS = 10 * 60 * 1000;
 const ORDER_EXPIRES_MS = 20 * 60 * 1000;
-const DUMMY_PAYMENT_MODE: "midtrans" | "manual" =
-  process.env.TICKET_DUMMY_PAYMENT_MODE === "manual" ? "manual" : "midtrans";
 
 const usedIdempotencyKeys = new Set<string>();
-const lastOrderAtByEmail = new Map<string, number>();
 
 const generateOrderId = () => {
   const now = new Date();
@@ -64,8 +61,8 @@ const getDummyTicketProducts = () => {
     {
       id: "prod_tkt_b_1",
       type: "ticket_bundle",
-      name: "Bundling 1",
-      description: "2 Day Pass Propaganda 3",
+      name: "Bundling I",
+      description: "Tiket Propa 3 Day 1, Tiket Propa 3 Day 2",
       price: 235_000,
       stock: 50,
       isActive: true,
@@ -86,9 +83,9 @@ const getDummyTicketProducts = () => {
     {
       id: "prod_tkt_b_2",
       type: "ticket_bundle",
-      name: "Bundling 2",
-      description: "Main Event + Merch Keychain",
-      price: 60_000,
+      name: "Bundling II",
+      description: "Tiket Main Event, Tiket Day 1 Propaganda 3",
+      price: 195_000,
       stock: 60,
       isActive: true,
       imageUrl: null,
@@ -99,49 +96,18 @@ const getDummyTicketProducts = () => {
           product: { id: "prod_tkt_main", name: "Main Event" },
         },
         {
-          type: "merchandise",
-          category: "keychain",
-          products: [
-            {
-              id: "prod_m_keychain_v1_a",
-              name: "Keychain v1 A",
-              imageUrl: null,
-              variants: null,
-            },
-            {
-              id: "prod_m_keychain_v1_b",
-              name: "Keychain v1 B",
-              imageUrl: null,
-              variants: null,
-            },
-            {
-              id: "prod_m_keychain_v1_c",
-              name: "Keychain v1 C",
-              imageUrl: null,
-              variants: null,
-            },
-            {
-              id: "prod_m_keychain_v2_a",
-              name: "Keychain v2 A",
-              imageUrl: null,
-              variants: null,
-            },
-            {
-              id: "prod_m_keychain_v2_b",
-              name: "Keychain v2 B",
-              imageUrl: null,
-              variants: null,
-            },
-          ],
+          type: "ticket",
+          productId: "prod_tkt_p3d1",
+          product: { id: "prod_tkt_p3d1", name: "Propaganda 3 Day 1" },
         },
       ],
     },
     {
       id: "prod_tkt_b_3",
       type: "ticket_bundle",
-      name: "Bundling 3",
-      description: "Main Event + Merch Socks",
-      price: 100_000,
+      name: "Bundling III",
+      description: "Tiket Main Event, Tiket Day 2 Propaganda 3",
+      price: 165_000,
       stock: 50,
       isActive: true,
       imageUrl: null,
@@ -152,63 +118,36 @@ const getDummyTicketProducts = () => {
           product: { id: "prod_tkt_main", name: "Main Event" },
         },
         {
-          type: "merchandise",
-          category: "socks",
-          products: [
-            {
-              id: "prod_m_socks_a",
-              name: "Socks A",
-              imageUrl: null,
-              variants: null,
-            },
-            {
-              id: "prod_m_socks_b",
-              name: "Socks B",
-              imageUrl: null,
-              variants: null,
-            },
-            {
-              id: "prod_m_socks_c",
-              name: "Socks C",
-              imageUrl: null,
-              variants: null,
-            },
-          ],
+          type: "ticket",
+          productId: "prod_tkt_p3d2",
+          product: { id: "prod_tkt_p3d2", name: "Propaganda 3 Day 2" },
         },
       ],
     },
     {
       id: "prod_tkt_b_4",
       type: "ticket_bundle",
-      name: "Bundling 4",
-      description: "Main Event + Merch Stickers",
-      price: 95_000,
+      name: "Bundling IV",
+      description: "Tiket Propa 3 Day 1, Tiket Propa 3 Day 2, Tiket Main Event",
+      price: 285_000,
       stock: 40,
       isActive: true,
       imageUrl: null,
       bundleItems: [
         {
           type: "ticket",
-          productId: "prod_tkt_main",
-          product: { id: "prod_tkt_main", name: "Main Event" },
+          productId: "prod_tkt_p3d1",
+          product: { id: "prod_tkt_p3d1", name: "Propaganda 3 Day 1" },
         },
         {
-          type: "merchandise",
-          category: "stickers",
-          products: [
-            {
-              id: "prod_m_sticker_a",
-              name: "Stickers A",
-              imageUrl: null,
-              variants: null,
-            },
-            {
-              id: "prod_m_sticker_b",
-              name: "Stickers B",
-              imageUrl: null,
-              variants: null,
-            },
-          ],
+          type: "ticket",
+          productId: "prod_tkt_p3d2",
+          product: { id: "prod_tkt_p3d2", name: "Propaganda 3 Day 2" },
+        },
+        {
+          type: "ticket",
+          productId: "prod_tkt_main",
+          product: { id: "prod_tkt_main", name: "Main Event" },
         },
       ],
     },
@@ -319,22 +258,6 @@ const assertIdempotencyKey = (idempotencyKey: string) => {
   }
 };
 
-const assertCooldown = (buyerEmail: string, now: number) => {
-  const latestOrderAt = lastOrderAtByEmail.get(buyerEmail);
-
-  // Simulate KV cooldown checks so rapid retries by same email are blocked.
-  if (latestOrderAt !== undefined && now - latestOrderAt < COOLDOWN_MS) {
-    const retryAfterSeconds = Math.ceil(
-      (COOLDOWN_MS - (now - latestOrderAt)) / 1000
-    );
-
-    throw new TRPCError({
-      code: "TOO_MANY_REQUESTS",
-      message: `Cooldown active. Retry after ${retryAfterSeconds} seconds.`,
-    });
-  }
-};
-
 const assertProductIsPurchasable = (
   product: (typeof listTicketProductsOutputSchema)["_output"][number],
   quantity: number
@@ -386,64 +309,8 @@ const assertBundleSelection = (
   }
 };
 
-const assertPaymentProof = (input: CreateTicketOrderInput) => {
-  if (DUMMY_PAYMENT_MODE === "manual" && !input.paymentProof) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "paymentProof is required when payment mode is manual.",
-    });
-  }
-
-  if (DUMMY_PAYMENT_MODE === "midtrans" && input.paymentProof) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "paymentProof is only allowed when payment mode is manual.",
-    });
-  }
-};
-
-const persistDummyOrderGuards = (
-  idempotencyKey: string,
-  buyerEmail: string
-) => {
+const persistDummyOrderGuards = (idempotencyKey: string) => {
   usedIdempotencyKeys.add(idempotencyKey);
-  lastOrderAtByEmail.set(buyerEmail, Date.now());
-};
-
-const buildCreateOrderOutput = (params: {
-  buyerEmail: string;
-  buyerName: string;
-  quantity: number;
-  unitPrice: number;
-}) => {
-  const orderId = generateOrderId();
-  const totalPrice = params.unitPrice * params.quantity;
-  const expiresAt = new Date(Date.now() + ORDER_EXPIRES_MS).toISOString();
-
-  // Shape payment output by active dummy mode while preserving schema union contract.
-  const output =
-    DUMMY_PAYMENT_MODE === "manual"
-      ? {
-          orderId,
-          status: "pending_verification" as const,
-          totalPrice,
-          expiresAt,
-          payment: {
-            uploadUrl: `https://example.com/uploads/tickets/${orderId.toLowerCase()}?buyer=${encodeURIComponent(params.buyerEmail)}`,
-          },
-        }
-      : {
-          orderId,
-          status: "pending_payment" as const,
-          totalPrice,
-          expiresAt,
-          payment: {
-            qrisUrl: "https://example.com/payments/qris-ticket.png",
-            midtransOrderId: `MID-${orderId}-${params.buyerName.slice(0, 3).toUpperCase()}`,
-          },
-        };
-
-  return createTicketOrderOutputSchema.parse(output);
 };
 
 const listProducts = publicProcedure
@@ -464,33 +331,64 @@ const listProducts = publicProcedure
   });
 
 const createOrder = publicProcedure
-  .input(createTicketOrderInputSchema)
+  .input(z.instanceof(FormData))
   .output(createTicketOrderOutputSchema)
-  .mutation(({ input }) => {
+  .mutation(({ input: formData }) => {
+    const input = createTicketOrderInputSchema.parse({
+      buyerName: formData.get("buyerName"),
+      buyerEmail: formData.get("buyerEmail"),
+      phone: formData.get("phone"),
+      buyerInstansi: formData.get("buyerInstansi"),
+      productId: formData.get("productId"),
+      quantity: Number(formData.get("quantity")),
+      selectedBundleItemId: formData.get("selectedBundleItemId") || undefined,
+      captchaToken: formData.get("captchaToken"),
+      idempotencyKey: formData.get("idempotencyKey"),
+      paymentProof: formData.get("paymentProof") ?? undefined,
+    });
+
     const normalizedInput = normalizeCreateOrderInput(input);
-    const now = Date.now();
 
     assertBuyerInfo(normalizedInput);
     assertCaptchaToken(normalizedInput.captchaToken);
     assertIdempotencyKey(normalizedInput.idempotencyKey);
-    assertCooldown(normalizedInput.buyerEmail, now);
 
     const product = getProductByIdOrThrow(input.productId);
     assertProductIsPurchasable(product, input.quantity);
     assertBundleSelection(product, normalizedInput.selectedBundleItemId);
-    assertPaymentProof(input);
 
-    persistDummyOrderGuards(
-      normalizedInput.idempotencyKey,
-      normalizedInput.buyerEmail
-    );
+    // Dynamic payment mode
+    const paymentMode = input.paymentProof ? "manual" : "midtrans";
+    if (paymentMode === "manual" && !input.paymentProof) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "paymentProof is required when payment mode is manual.",
+      });
+    }
 
-    return buildCreateOrderOutput({
-      buyerEmail: normalizedInput.buyerEmail,
-      buyerName: normalizedInput.buyerName,
-      quantity: input.quantity,
-      unitPrice: product.price,
-    });
+    persistDummyOrderGuards(normalizedInput.idempotencyKey);
+
+    const orderId = generateOrderId();
+    const totalPrice = product.price * input.quantity;
+    const expiresAt = new Date(Date.now() + ORDER_EXPIRES_MS).toISOString();
+
+    const output = {
+      orderId,
+      status: "paid" as const,
+      totalPrice,
+      expiresAt,
+      payment:
+        paymentMode === "manual"
+          ? {
+              uploadUrl: `https://example.com/uploads/tickets/${orderId.toLowerCase()}?buyer=${encodeURIComponent(normalizedInput.buyerEmail)}`,
+            }
+          : {
+              qrisUrl: "https://example.com/payments/qris-ticket.png",
+              midtransOrderId: `MID-${orderId}-${normalizedInput.buyerName.slice(0, 3).toUpperCase()}`,
+            },
+    };
+
+    return createTicketOrderOutputSchema.parse(output);
   });
 
 const getOrderStatus = publicProcedure

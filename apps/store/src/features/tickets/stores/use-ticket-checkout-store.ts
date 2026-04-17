@@ -44,7 +44,7 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
     setActiveTab: (tab) => set({ activeTab: tab }),
 
     isCheckoutOpen: false,
-    checkoutStep: "selection",
+    checkoutStep: "identification",
     selectedProduct: null,
     quantity: 1,
     selectedBundleItemId: undefined,
@@ -56,7 +56,7 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
     openCheckout: (product) =>
       set({
         isCheckoutOpen: true,
-        checkoutStep: "selection",
+        checkoutStep: "identification",
         selectedProduct: product,
         quantity: 1,
         selectedBundleItemId: undefined,
@@ -66,7 +66,7 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
     closeCheckout: () =>
       set({
         isCheckoutOpen: false,
-        checkoutStep: "selection",
+        checkoutStep: "identification",
         selectedProduct: null,
         quantity: 1,
         selectedBundleItemId: undefined,

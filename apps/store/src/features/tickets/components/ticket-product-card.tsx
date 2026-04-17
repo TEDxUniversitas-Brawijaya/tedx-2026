@@ -3,6 +3,8 @@ import { formatIdrCurrency } from "../lib/formatter";
 import { useTicketCheckoutStore } from "../stores/use-ticket-checkout-store";
 import type { TicketProduct } from "../types/ticket";
 import { getTicketDateLabel } from "./ticket-date-label";
+import SingleChair from "@/assets/imgs/single-chair.png";
+import DoubleChair from "@/assets/imgs/double-chair.png";
 
 type TicketProductCardProps = {
   product: TicketProduct;
@@ -14,61 +16,50 @@ export const TicketProductCard = ({ product }: TicketProductCardProps) => {
   const isSoldOut = product.stock !== null && product.stock <= 0;
   const isDisabled = !product.isActive || isSoldOut;
 
-  let stockLabel = "Stok: Tidak terbatas";
-  if (product.stock !== null && product.stock <= 0) {
-    stockLabel = "Sold Out";
-  } else if (product.stock !== null) {
-    stockLabel = `Stok tersisa: ${product.stock}`;
-  }
+  const isMainEvent = product.name.toLowerCase().includes("main event");
+  const chairImage = isMainEvent ? DoubleChair : SingleChair;
 
   return (
     <button
       className={cn(
-        "group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-border bg-secondary text-left text-secondary-foreground transition-all",
-        isDisabled
-          ? "cursor-not-allowed opacity-60"
-          : "hover:-translate-y-1 hover:shadow-xl"
+        "product-card-fixed group",
+        isDisabled && "cursor-not-allowed opacity-60"
       )}
       disabled={isDisabled}
       id={`ticket-product-card-${product.id}`}
       onClick={() => openCheckout(product)}
       type="button"
     >
-      <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-200">
-        {product.imageUrl ? (
-          <img
-            alt={product.name}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            height={300}
-            src={product.imageUrl}
-            width={400}
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-muted-foreground text-sm">
-            Gambar belum tersedia
-          </div>
-        )}
+      {/* Background Layer (Chair with Mask) */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <img
+          alt=""
+          className="product-card-chair object-cover object-top opacity-80"
+          height={227}
+          src={chairImage}
+          style={{ height: "227px", width: "481px" }}
+          width={481}
+        />
       </div>
-      <div className="flex flex-1 flex-col gap-1 p-4">
-        <h2 className="font-serif-2 text-card-foreground text-lg leading-tight">
-          {product.name}
-        </h2>
-        <p className="font-sans-2 text-muted-foreground text-sm">
-          {getTicketDateLabel(product.id, product.description)}
-        </p>
-        <p
-          className={cn(
-            "mt-1 font-sans-2 text-xs",
-            isSoldOut || !product.isActive
-              ? "text-red-2"
-              : "text-muted-foreground"
+
+      {/* Content Layer - Bottom Aligned as per Screenshot */}
+      <div className="relative z-20 flex h-full flex-col justify-end p-8 text-left">
+        <div className="flex flex-col gap-1">
+          <h2 className="font-serif-2 text-2xl text-white leading-tight">
+            {product.name}
+          </h2>
+          {product.description && (
+            <p className="font-sans-2 text-sm text-white/80">
+              {product.description}
+            </p>
           )}
-        >
-          {product.isActive ? stockLabel : "Coming Soon"}
-        </p>
-        <p className="mt-auto pt-3 font-sans-2 text-card-foreground text-lg">
-          {formatIdrCurrency(product.price)}
-        </p>
+          <p className="font-sans-2 text-sm text-white/60">
+            {getTicketDateLabel(product.id)}
+          </p>
+          <p className="mt-3 font-sans-2 text-base text-white">
+            {formatIdrCurrency(product.price)}
+          </p>
+        </div>
       </div>
     </button>
   );

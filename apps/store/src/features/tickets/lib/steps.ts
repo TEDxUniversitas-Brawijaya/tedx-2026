@@ -8,13 +8,13 @@ export const progressSteps: {
   };
 } = {
   selection: {
-    idx: 0,
+    idx: -1,
     prev: null,
     next: "identification",
   },
   identification: {
     idx: 1,
-    prev: "selection",
+    prev: null,
     next: "summary",
   },
   summary: {
@@ -25,6 +25,11 @@ export const progressSteps: {
   payment: {
     idx: 3,
     prev: "summary",
+    next: "success",
+  },
+  success: {
+    idx: 4,
+    prev: "payment",
     next: null,
   },
 } as const;
