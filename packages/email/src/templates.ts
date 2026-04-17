@@ -1,45 +1,48 @@
+import { detailMerchOrderTable, detailTicketOrderTable } from "./components";
 import { createEmailLayout } from "./layout";
-import {
-  header,
-  footer,
-  heading,
-  paragraph,
-  button,
-  spacer,
-  section,
-  highlightBox,
-} from "./components";
 
-/**
- * Template parameter types
- * Add new template types here with their required parameters
- */
 export type TemplateMap = {
-  welcome: {
-    recipientName: string;
-    ctaUrl?: string;
+  merchOrder: {
+    orderId: string;
+    items: {
+      name: string;
+      quantity: number;
+      size?: string;
+      price: number;
+    }[];
   };
-  greeting: {
-    name: string;
+  ticketOrder: {
+    orderId: string;
+    // this is singular since ticket order only has 1 ticket item
+    item: {
+      name: string;
+      quantity: number;
+      price: number;
+
+      tickets: {
+        eventName: string;
+        eventDate: string;
+        whatsappGroupUrl: string;
+      }[];
+    };
+    refundUrl: string;
   };
-  order: {
-    name: string;
-    orderId: number;
-    orderTotal?: string;
-    orderDate?: string;
-    trackingUrl?: string;
+  ticketOrderExpired: {
+    orderId: string;
+    item: {
+      name: string;
+      quantity: number;
+      price: number;
+    };
   };
-  passwordReset: {
-    name: string;
-    resetUrl: string;
-    expiryHours?: number;
-  };
-  eventReminder: {
-    name: string;
-    eventName: string;
-    eventDate: string;
-    eventLocation: string;
-    eventUrl?: string;
+  ticketOrderRejected: {
+    orderId: string;
+    item: {
+      name: string;
+      quantity: number;
+      price: number;
+    };
+    reason: string;
   };
 };
 
@@ -49,195 +52,273 @@ type Renderers = {
   [K in TemplatesKey]: (params: TemplateMap[K]) => string;
 };
 
-/**
- * Template renderers
- * Each renderer returns the complete HTML email
- */
 const renderers: Renderers = {
-  welcome: (params) => {
-    const { recipientName, ctaUrl } = params;
+  merchOrder: (params) => {
+    const { orderId, items } = params;
 
     const content = `
-      ${heading({ text: `Welcome to TEDx 2026, ${recipientName}!`, level: 1 })}
-      ${paragraph({
-        text: "We're thrilled to have you join our community of innovators, thinkers, and change-makers.",
-      })}
-      ${paragraph({
-        text: "TEDx 2026 brings together inspiring speakers, thought-provoking ideas, and meaningful connections. Get ready for an unforgettable experience!",
-      })}
-      ${section(
-        highlightBox(
-          `${paragraph({
-            text: "<strong>What to expect:</strong>",
-            muted: false,
-          })}
-          ${paragraph({ text: "• Inspiring talks from world-class speakers", muted: false })}
-          ${paragraph({ text: "• Networking opportunities with like-minded individuals", muted: false })}
-          ${paragraph({ text: "• Exclusive access to TEDx community events", muted: false })}`
-        ),
-        "24px 0"
-      )}
-      ${ctaUrl ? button({ href: ctaUrl, text: "Explore the Event", variant: "primary" }) : ""}
-      ${spacer(24)}
-      ${paragraph({
-        text: "Stay tuned for updates and announcements!",
-        muted: true,
-      })}
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td>
+            <span>Halo!</span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitasBrawijaya 2026!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Pembayaran kamu telah berhasil diproses. Saat ini, pesanan kamu sedang masuk dalam tahap pemrosesan. Mohon kesediaannya menunggu beberapa waktu sampai merchandise-mu siap untuk diambil. Jika ada pertanyaan mengenai detail pesanan atau pengambilan, jangan ragu untuk menghubungi contact person yang tertera pada email ini.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih!
+            </span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
+
+      ${detailMerchOrderTable(orderId, items)}
     `;
 
     return createEmailLayout(content, {
-      preheader: `Welcome to TEDx 2026, ${recipientName}!`,
-      header: header({ title: "TEDx 2026" }),
-      footer: footer({
-        companyName: "TEDx 2026",
-        socialLinks: {
-          facebook: "https://facebook.com/tedx",
-          twitter: "https://twitter.com/tedx",
-          instagram: "https://instagram.com/tedx",
-        },
-      }),
+      preheader: "Terima kasih atas pesanan merchandise Anda!",
     });
   },
-
-  greeting: (params) => {
-    const { name } = params;
+  ticketOrder: (params) => {
+    const { orderId, item, refundUrl } = params;
 
     const content = `
-      ${heading({ text: `Hi ${name}!`, level: 1 })}
-      ${paragraph({
-        text: "Hope you're having a great day. We wanted to reach out and say hello!",
-      })}
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td>
+            <span>Halo!</span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitasBrawijaya 2026!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Pembayaran kamu telah berhasil diproses. Tiket ini adalah pintu masuk-mu menuju ruang tempat berbagai kisah dari perjalanan hidup dipertemukan. Pastikan kamu menyimpan tiket ini dengan aman dan membawanya saat hari penukaran tiket dan/atau Hari-H acara diselenggarakan.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kami sangat menantikan kehadiran dan cerita yang akan kamu bawa. Siapkan dirimu untuk saling mendengar dan membangun makna baru di rumah kita nanti!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr><td style="border-top: 1px solid #ccc;"></td></tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Gabung grup WhatsApp peserta untuk info terbaru, jadwal, dan pengumuman acara mengenai ${item.tickets.map((t) => `${t.eventName} (${t.eventDate})`).join(", ")}!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="4"></td></tr>
+        <tr>
+          <td align="left">
+            ${item.tickets
+              .map(
+                (t) => `
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="display: inline-block; margin-right: 8px; margin-bottom: 8px;">
+              <tr>
+                <td bgcolor="#0E5454" style="border-radius: 8px;">
+                  <a href="${t.whatsappGroupUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 12px 20px; color: #ffffff; text-decoration: none;">
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td valign="middle">
+                          <img src="https://tedxuniversitasbrawijaya.com/email/ic_baseline-whatsapp.png" width="16" height="16" alt="Whatsapp" />
+                        </td>
+                        <td width="8"></td>
+                        <td valign="middle" style="color: #ffffff; font-size: 14px;">
+                          Gabung Grup WhatsApp ${t.eventName} (${t.eventDate})
+                        </td>
+                      </tr>
+                    </table>
+                  </a>
+                </td>
+              </tr>
+            </table>
+            `
+              )
+              .join("")}
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr><td style="border-top: 1px solid #ccc;"></td></tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Apabila kamu memiliki kendala dan ingin mengajukan pengembalian dana (refund) tiket, silakan kunjungi laman refund <a href="${refundUrl}" target="_blank" rel="noopener noreferrer" style="color: #DC2625; text-decoration: none; font-weight: 700;">disini</a>.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>Terima kasih!</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
+
+      ${detailTicketOrderTable(orderId, item)}
     `;
 
     return createEmailLayout(content, {
-      preheader: `Hi ${name}!`,
-      header: header({ title: "TEDx 2026" }),
-      footer: footer({
-        companyName: "TEDx 2026",
-      }),
+      preheader: "Terima kasih atas pesanan tiket Anda!",
     });
   },
-
-  order: (params) => {
-    const { name, orderId, orderTotal, orderDate, trackingUrl } = params;
+  ticketOrderExpired: (params) => {
+    const { orderId, item } = params;
 
     const content = `
-      ${heading({ text: `Order Confirmation #${orderId}`, level: 1 })}
-      ${paragraph({
-        text: `Hi ${name},`,
-      })}
-      ${paragraph({
-        text: "Thank you for your order! We've received your purchase and are processing it now.",
-      })}
-      ${section(
-        highlightBox(
-          `${heading({ text: "Order Details", level: 3 })}
-          ${paragraph({ text: `<strong>Order Number:</strong> #${orderId}`, muted: false })}
-          ${orderDate ? paragraph({ text: `<strong>Order Date:</strong> ${orderDate}`, muted: false }) : ""}
-          ${orderTotal ? paragraph({ text: `<strong>Total:</strong> ${orderTotal}`, muted: false }) : ""}`,
-          { backgroundColor: "#F5F5F5", borderColor: "#6B1414" }
-        ),
-        "24px 0"
-      )}
-      ${trackingUrl ? button({ href: trackingUrl, text: "Track Your Order", variant: "primary" }) : ""}
-      ${spacer(24)}
-      ${paragraph({
-        text: "If you have any questions about your order, please don't hesitate to contact us.",
-        muted: true,
-      })}
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td>
+            <span>Halo!</span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitasBrawijaya 2026!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid / tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini telah kadaluarsa (expired).
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kamu tetap memiliki kesempatan untuk melakukan pemesanan ulang dengan mengikuti prosedur pembayaran yang benar.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Apabila kamu merasa terjadi kesalahan atau memiliki kendala terkait proses pembayaran, silakan hubungi contact person yang tertera di bawah ini.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>Terima kasih atas pengertianmu.</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
+
+      ${detailTicketOrderTable(orderId, item)}
     `;
 
     return createEmailLayout(content, {
-      preheader: `Order #${orderId} confirmed`,
-      header: header({ title: "TEDx 2026" }),
-      footer: footer({
-        companyName: "TEDx 2026",
-        unsubscribeUrl: "https://example.com/unsubscribe",
-      }),
+      preheader: "Pesanan tiket Anda telah kadaluarsa",
     });
   },
-
-  passwordReset: (params) => {
-    const { name, resetUrl, expiryHours = 24 } = params;
+  ticketOrderRejected: (params) => {
+    const { orderId, item, reason } = params;
 
     const content = `
-      ${heading({ text: "Reset Your Password", level: 1 })}
-      ${paragraph({
-        text: `Hi ${name},`,
-      })}
-      ${paragraph({
-        text: "We received a request to reset your password. Click the button below to create a new password.",
-      })}
-      ${spacer(24)}
-      ${button({ href: resetUrl, text: "Reset Password", variant: "primary" })}
-      ${spacer(24)}
-      ${section(
-        highlightBox(
-          paragraph({
-            text: `This link will expire in ${expiryHours} hours. If you didn't request this password reset, you can safely ignore this email.`,
-            muted: false,
-          })
-        ),
-        "0"
-      )}
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td>
+            <span>Halo!</span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitasBrawijaya 2026!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid / tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini ditolak (rejected) karena ${reason}.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kamu tetap memiliki kesempatan untuk melakukan pemesanan ulang dengan mengikuti prosedur pembayaran yang benar.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Apabila kamu merasa terjadi kesalahan atau memiliki kendala terkait proses pembayaran, silakan hubungi contact person yang tertera di bawah ini.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>Terima kasih atas pengertianmu.</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
+
+      ${detailTicketOrderTable(orderId, item)}
     `;
 
     return createEmailLayout(content, {
-      preheader: "Reset your password",
-      header: header({ title: "TEDx 2026" }),
-      footer: footer({
-        companyName: "TEDx 2026",
-      }),
-    });
-  },
-
-  eventReminder: (params) => {
-    const { name, eventName, eventDate, eventLocation, eventUrl } = params;
-
-    const content = `
-      ${heading({ text: `Don't Forget: ${eventName}`, level: 1 })}
-      ${paragraph({
-        text: `Hi ${name},`,
-      })}
-      ${paragraph({
-        text: `This is a friendly reminder about the upcoming ${eventName}. We can't wait to see you there!`,
-      })}
-      ${section(
-        highlightBox(
-          `${heading({ text: "Event Details", level: 3 })}
-          ${paragraph({ text: `<strong>Event:</strong> ${eventName}`, muted: false })}
-          ${paragraph({ text: `<strong>Date:</strong> ${eventDate}`, muted: false })}
-          ${paragraph({ text: `<strong>Location:</strong> ${eventLocation}`, muted: false })}`,
-          { backgroundColor: "#FFF9F0", borderColor: "#D9C366" }
-        ),
-        "24px 0"
-      )}
-      ${eventUrl ? button({ href: eventUrl, text: "View Event Details", variant: "primary" }) : ""}
-      ${spacer(24)}
-      ${paragraph({
-        text: "See you soon!",
-        muted: true,
-      })}
-    `;
-
-    return createEmailLayout(content, {
-      preheader: `Reminder: ${eventName} on ${eventDate}`,
-      header: header({ title: "TEDx 2026" }),
-      footer: footer({
-        companyName: "TEDx 2026",
-        socialLinks: {
-          facebook: "https://facebook.com/tedx",
-          twitter: "https://twitter.com/tedx",
-          instagram: "https://instagram.com/tedx",
-        },
-      }),
+      preheader: "Pesanan tiket Anda ditolak",
     });
   },
 };
 
-/**
- * Creates a complete email template with layout and styling
- */
 export const createTemplate = <K extends TemplatesKey>(
   type: K,
   params: TemplateMap[K]
