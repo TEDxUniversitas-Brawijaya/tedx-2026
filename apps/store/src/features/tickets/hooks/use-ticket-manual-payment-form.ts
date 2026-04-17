@@ -6,10 +6,7 @@ import { z } from "zod";
 import { useTicketCheckoutStore } from "../stores/use-ticket-checkout-store";
 
 export const generateIdempotencyKey = () => {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-    return crypto.randomUUID();
-  }
-  return `ticket-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  return new Date().toISOString();
 };
 
 export const useTicketManualPaymentForm = () => {
