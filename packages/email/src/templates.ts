@@ -4,6 +4,7 @@ import { createEmailLayout } from "./layout";
 export type TemplateMap = {
   merchOrder: {
     name: string;
+    orderId: string;
     items: {
       name: string;
       quantity: number;
@@ -13,6 +14,7 @@ export type TemplateMap = {
   };
   ticketOrder: {
     name: string;
+    orderId: string;
     // this is singular since ticket order only has 1 ticket item
     item: {
       name: string;
@@ -27,6 +29,25 @@ export type TemplateMap = {
     };
     refundUrl: string;
   };
+  ticketOrderExpired: {
+    name: string;
+    orderId: string;
+    item: {
+      name: string;
+      quantity: number;
+      price: number;
+    };
+  };
+  ticketOrderRejected: {
+    name: string;
+    orderId: string;
+    item: {
+      name: string;
+      quantity: number;
+      price: number;
+    };
+    reason: string;
+  };
 };
 
 export type TemplatesKey = keyof TemplateMap;
@@ -37,7 +58,7 @@ type Renderers = {
 
 const renderers: Renderers = {
   merchOrder: (params) => {
-    const { name, items } = params;
+    const { name, orderId, items } = params;
 
     const content = `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -74,7 +95,7 @@ const renderers: Renderers = {
 
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
 
-      ${detailMerchOrderTable(items)}
+      ${detailMerchOrderTable(orderId, items)}
     `;
 
     return createEmailLayout(content, {
@@ -82,7 +103,7 @@ const renderers: Renderers = {
     });
   },
   ticketOrder: (params) => {
-    const { name, item, refundUrl } = params;
+    const { name, orderId, item, refundUrl } = params;
 
     const content = `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -175,7 +196,125 @@ const renderers: Renderers = {
 
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
 
-      ${detailTicketOrderTable(item)}
+      ${detailTicketOrderTable(orderId, item)}
+    `;
+
+    return createEmailLayout(content, {
+      preheader: "Terima kasih atas pesanan tiket Anda!",
+    });
+  },
+  ticketOrderExpired: (params) => {
+    const { name, orderId, item } = params;
+
+    const content = `
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td>
+            <span>Halo ${name}!</span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitasBrawijaya 2026!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid / tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini telah kadaluarsa (expired).
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kamu tetap memiliki kesempatan untuk melakukan pemesanan ulang dengan mengikuti prosedur pembayaran yang benar.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Apabila kamu merasa terjadi kesalahan atau memiliki kendala terkait proses pembayaran, silakan hubungi contact person yang tertera di bawah ini.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>Terima kasih atas pengertianmu.</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
+
+      ${detailTicketOrderTable(orderId, item)}
+    `;
+
+    return createEmailLayout(content, {
+      preheader: "Pesanan tiket Anda telah kadaluarsa",
+    });
+  },
+  ticketOrderRejected: (params) => {
+    const { name, orderId, item } = params;
+
+    const content = `
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td>
+            <span>Halo ${name}!</span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitasBrawijaya 2026!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid / tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini ditolak (rejected).
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kamu tetap memiliki kesempatan untuk melakukan pemesanan ulang dengan mengikuti prosedur pembayaran yang benar.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Apabila kamu merasa terjadi kesalahan atau memiliki kendala terkait proses pembayaran, silakan hubungi contact person yang tertera di bawah ini.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>Terima kasih atas pengertianmu.</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
+
+      ${detailTicketOrderTable(orderId, item)}
     `;
 
     return createEmailLayout(content, {

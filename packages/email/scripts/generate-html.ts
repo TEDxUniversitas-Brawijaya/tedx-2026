@@ -5,6 +5,7 @@ import { createTemplate, type TemplateMap } from "../src/templates";
 const sampleData: { [K in keyof TemplateMap]: TemplateMap[K] } = {
   merchOrder: {
     name: "Budi Santoso",
+    orderId: "TDX-20260410-123456",
     items: [
       {
         name: "T-shirt TEDxUB 2026",
@@ -27,6 +28,7 @@ const sampleData: { [K in keyof TemplateMap]: TemplateMap[K] } = {
   },
   ticketOrder: {
     name: "Siti Aminah",
+    orderId: "TDX-20260410-123456",
     item: {
       name: "Bundling 3 (ticket main event & ticket day 1 propaganda 3)",
       quantity: 1,
@@ -45,6 +47,25 @@ const sampleData: { [K in keyof TemplateMap]: TemplateMap[K] } = {
       ],
     },
     refundUrl: "https://store.tedxuniversitasbrawijaya.com/refund/1234567890",
+  },
+  ticketOrderExpired: {
+    name: "Ahmad Fauzi",
+    orderId: "TDX-20260410-123456",
+    item: {
+      name: "Ticket Propa 3 Day 1",
+      quantity: 1,
+      price: 150_000,
+    },
+  },
+  ticketOrderRejected: {
+    name: "Dewi Lestari",
+    orderId: "TDX-20260410-123456",
+    item: {
+      name: "Ticket Main Event",
+      quantity: 1,
+      price: 200_000,
+    },
+    reason: "Pembayaran tidak valid / tidak terverifikasi",
   },
 };
 

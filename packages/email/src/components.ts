@@ -92,6 +92,7 @@ export const footer = (): string => {
 };
 
 export const detailMerchOrderTable = (
+  orderId: string,
   items: {
     name: string;
     quantity: number;
@@ -134,7 +135,7 @@ export const detailMerchOrderTable = (
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F2F2F2; border-radius: 12px; overflow: hidden; padding: 32px 24px 24px 24px;">
       <tr>
         <td>
-          <span style="font-size: 1.5rem">Detail Order</span>
+          <span style="font-size: 1.5rem">Detail Order (${orderId})</span>
         </td>
       </tr>
 
@@ -170,11 +171,14 @@ export const detailMerchOrderTable = (
 `;
 };
 
-export const detailTicketOrderTable = (ticket: {
-  name: string;
-  quantity: number;
-  price: number;
-}) => {
+export const detailTicketOrderTable = (
+  orderId: string,
+  ticket: {
+    name: string;
+    quantity: number;
+    price: number;
+  }
+) => {
   const price = ticket.price.toLocaleString("id-ID", {
     style: "currency",
     currency: "IDR",
@@ -185,7 +189,7 @@ export const detailTicketOrderTable = (ticket: {
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F2F2F2; border-radius: 12px; overflow: hidden; padding: 32px 24px 24px 24px;">
       <tr>
         <td>
-          <span style="font-size: 1.5rem">Detail Order</span>
+          <span style="font-size: 1.5rem">Detail Order (${orderId})</span>
         </td>
       </tr>
 
