@@ -192,6 +192,7 @@ export function RefundRequestForm({ orderInfo, form }: RefundRequestFormProps) {
 
                 <div className="mt-6 flex items-center justify-end gap-3">
                   <Button
+                    className="rounded-xl py-1 text-black"
                     disabled={form.isSubmitting}
                     onClick={() => setIsConfirmOpen(false)}
                     type="button"
