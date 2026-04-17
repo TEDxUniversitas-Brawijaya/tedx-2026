@@ -5,10 +5,16 @@ import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { toast } from "sonner";
 import { useCountdownSeconds } from "../../hooks/use-countdown-seconds";
 import { formatCountdownClock, formatIdrCurrency } from "../../lib/formatter";
-import type { TicketOrder } from "../../types/ticket";
 
 type TicketPaymentStepProps = {
-  order: TicketOrder;
+  order: {
+    orderId: string;
+    totalPrice: number;
+    expiresAt: string;
+    qrisUrl: string;
+    status: "pending_payment" | "pending_verification";
+    uploadUrl: string | null;
+  };
   closeCheckout: () => void;
   onNextStep: () => void;
 };
@@ -47,9 +53,7 @@ export const TicketPaymentStep = ({
   );
   const timeLeftSeconds = useCountdownSeconds(durationInSeconds);
 
-  const isQrisPayment =
-    order.status === "pending_payment" &&
-    (order.payment as { qrisUrl?: string })?.qrisUrl;
+  const isQrisPayment = order.status === "pending_payment" && order.qrisUrl;
 
   return (
     <div className="flex min-h-0 flex-col overflow-hidden font-sans-2 sm:h-[94vh] sm:max-h-[84vh]">
@@ -91,7 +95,7 @@ export const TicketPaymentStep = ({
                 alt="QRIS"
                 className="mx-auto h-auto w-full object-contain"
                 height={360}
-                src={(order.payment as { qrisUrl: string }).qrisUrl}
+                src={order.qrisUrl}
                 width={360}
               />
             </div>
@@ -100,10 +104,10 @@ export const TicketPaymentStep = ({
               <p className="mb-4 font-sans-2 text-[#E0E0E0] text-sm">
                 Silakan lakukan pembayaran sesuai instruksi.
               </p>
-              {(order.payment as { uploadUrl?: string })?.uploadUrl && (
+              {order.uploadUrl && (
                 <a
                   className="mx-auto block w-full max-w-sm rounded-xl border border-white/20 bg-white/5 p-4 font-sans-2 text-sm text-white hover:bg-white/10"
-                  href={(order.payment as { uploadUrl: string }).uploadUrl}
+                  href={order.uploadUrl}
                   rel="noreferrer"
                   target="_blank"
                 >

@@ -92,11 +92,24 @@ const TicketCheckoutContent = () => {
       throw new Error("Trying to access payment step but didn't find order");
     }
 
+    if (order.qrisUrl === null) {
+      throw new Error(
+        "Trying to access payment step but didn't find qrisUrl in response"
+      );
+    }
+
     return (
       <TicketPaymentStep
         closeCheckout={closeCheckout}
         onNextStep={onNextStep}
-        order={order}
+        order={{
+          orderId: order.orderId,
+          totalPrice: order.totalPrice,
+          expiresAt: order.expiresAt,
+          qrisUrl: order.qrisUrl,
+          status: order.status,
+          uploadUrl: order.uploadUrl,
+        }}
       />
     );
   }

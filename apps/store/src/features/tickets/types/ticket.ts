@@ -91,12 +91,7 @@ export type TicketOrder = {
   status: "pending_payment" | "pending_verification";
   totalPrice: number;
   expiresAt: string;
-  payment:
-    | {
-        qrisUrl: string;
-        midtransOrderId: string;
-      }
-    | {
-        uploadUrl: string;
-      };
+  qrisUrl: string | null;
+  midtransOrderId: string | null;
+  uploadUrl: string | null;
 };

@@ -359,15 +359,18 @@ const createOrder = publicProcedure
           : ("pending_payment" as const),
       totalPrice,
       expiresAt,
-      payment:
+      qrisUrl:
         paymentMode === "manual"
-          ? {
-              uploadUrl: `https://example.com/uploads/tickets/${orderId.toLowerCase()}?buyer=${encodeURIComponent(normalizedInput.buyerEmail)}`,
-            }
-          : {
-              qrisUrl: "https://example.com/payments/qris-ticket.png",
-              midtransOrderId: `MID-${orderId}-${normalizedInput.buyerName.slice(0, 3).toUpperCase()}`,
-            },
+          ? null
+          : "https://example.com/payments/qris-ticket.png",
+      midtransOrderId:
+        paymentMode === "manual"
+          ? null
+          : `MID-${orderId}-${normalizedInput.buyerName.slice(0, 3).toUpperCase()}`,
+      uploadUrl:
+        paymentMode === "manual"
+          ? `https://example.com/uploads/tickets/${orderId.toLowerCase()}?buyer=${encodeURIComponent(normalizedInput.buyerEmail)}`
+          : null,
     };
 
     return createTicketOrderOutputSchema.parse(output);
