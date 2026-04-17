@@ -197,7 +197,6 @@ type NormalizedCreateOrderInput = {
   buyerInstansi: string;
   captchaToken: string;
   idempotencyKey: string;
-  selectedBundleItemId: string | undefined;
 };
 
 const normalizeCreateOrderInput = (
@@ -210,7 +209,6 @@ const normalizeCreateOrderInput = (
     buyerInstansi: input.buyerInstansi.trim(),
     captchaToken: input.captchaToken.trim(),
     idempotencyKey: input.idempotencyKey.trim(),
-    selectedBundleItemId: input.selectedBundleItemId?.trim(),
   };
 };
 
@@ -278,33 +276,15 @@ const assertProductIsPurchasable = (
 };
 
 const assertBundleSelection = (
-  product: (typeof listTicketProductsOutputSchema)["_output"][number],
-  selectedBundleItemId: string | undefined
+  product: (typeof listTicketProductsOutputSchema)["_output"][number]
 ) => {
   const selectableOptionIds = getSelectableBundleOptionIds(product);
 
-  // Selectable bundles require one of predefined option IDs.
-  if (selectableOptionIds.length > 0 && !selectedBundleItemId) {
+  if (selectableOptionIds.length > 0) {
     throw new TRPCError({
       code: "BAD_REQUEST",
-      message: "selectedBundleItemId is required for this bundle product.",
-    });
-  }
-
-  if (selectableOptionIds.length === 0 && selectedBundleItemId) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "selectedBundleItemId is not allowed for this product.",
-    });
-  }
-
-  if (
-    selectedBundleItemId &&
-    !selectableOptionIds.includes(selectedBundleItemId)
-  ) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: `selectedBundleItemId ${selectedBundleItemId} is invalid for this product.`,
+      message:
+        "This product requires bundle selection which is currently disabled.",
     });
   }
 };
@@ -341,7 +321,6 @@ const createOrder = publicProcedure
       buyerInstansi: formData.get("buyerInstansi"),
       productId: formData.get("productId"),
       quantity: Number(formData.get("quantity")),
-      selectedBundleItemId: formData.get("selectedBundleItemId") || undefined,
       captchaToken: formData.get("captchaToken"),
       idempotencyKey: formData.get("idempotencyKey"),
       paymentProof: formData.get("paymentProof") ?? undefined,
@@ -355,7 +334,7 @@ const createOrder = publicProcedure
 
     const product = getProductByIdOrThrow(input.productId);
     assertProductIsPurchasable(product, input.quantity);
-    assertBundleSelection(product, normalizedInput.selectedBundleItemId);
+    assertBundleSelection(product);
 
     // Dynamic payment mode
     const paymentMode = input.paymentProof ? "manual" : "midtrans";
@@ -374,7 +353,10 @@ const createOrder = publicProcedure
 
     const output = {
       orderId,
-      status: "paid" as const,
+      status:
+        paymentMode === "manual"
+          ? ("pending_verification" as const)
+          : ("pending_payment" as const),
       totalPrice,
       expiresAt,
       payment:

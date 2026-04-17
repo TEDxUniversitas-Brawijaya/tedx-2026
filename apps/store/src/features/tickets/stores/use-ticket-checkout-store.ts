@@ -19,7 +19,6 @@ type TicketCheckoutStore = {
 
   buyer: TicketBuyer | null;
   order: TicketOrder | null;
-  isOrderDetailOpen: boolean;
 
   openCheckout: (product: TicketProduct) => void;
   closeCheckout: () => void;
@@ -32,8 +31,6 @@ type TicketCheckoutStore = {
   setQuantity: (qty: number) => void;
   setBuyer: (buyer: TicketBuyer) => void;
   setOrder: (order: TicketOrder) => void;
-  openOrderDetail: () => void;
-  closeOrderDetail: () => void;
 };
 
 export const useTicketCheckoutStore = create<TicketCheckoutStore>(
@@ -48,7 +45,6 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
 
     buyer: null,
     order: null,
-    isOrderDetailOpen: false,
 
     openCheckout: (product) =>
       set({
@@ -97,7 +93,5 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
     },
     setBuyer: (buyer) => set({ buyer }),
     setOrder: (order) => set({ order }),
-    openOrderDetail: () => set({ isOrderDetailOpen: true }),
-    closeOrderDetail: () => set({ isOrderDetailOpen: false }),
   })
 );

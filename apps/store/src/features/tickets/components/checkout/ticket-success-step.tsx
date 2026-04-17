@@ -3,7 +3,7 @@ import { CheckIcon } from "lucide-react";
 import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
 
 export function TicketSuccessStep() {
-  const { closeCheckout, openOrderDetail } = useTicketCheckoutStore();
+  const { closeCheckout } = useTicketCheckoutStore();
 
   return (
     <div className="flex max-h-[80vh] flex-col items-center justify-center py-6 text-center sm:py-12">
@@ -32,14 +32,11 @@ export function TicketSuccessStep() {
       <div className="mt-6 w-full max-w-sm sm:mt-12">
         <Button
           className="w-full"
-          onClick={() => {
-            closeCheckout();
-            openOrderDetail();
-          }}
+          onClick={closeCheckout}
           size="checkout"
           variant="store-primary"
         >
-          Lihat Detail Pesanan
+          Tutup
         </Button>
       </div>
     </div>

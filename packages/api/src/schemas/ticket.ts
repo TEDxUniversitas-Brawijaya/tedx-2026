@@ -43,7 +43,7 @@ export const createTicketOrderInputSchema = buyerInfoSchema.extend({
 
 export const createTicketOrderOutputSchema = z.object({
   orderId: orderIdSchema,
-  status: z.literal("paid"),
+  status: z.enum(["pending_payment", "pending_verification"]),
   totalPrice: z.number().int(),
   expiresAt: isoDateStringSchema,
   payment: z

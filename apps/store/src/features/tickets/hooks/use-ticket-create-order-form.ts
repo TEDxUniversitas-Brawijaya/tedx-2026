@@ -13,14 +13,8 @@ const generateIdempotencyKey = () => {
 };
 
 export const useTicketCreateOrderForm = () => {
-  const {
-    selectedProduct,
-    quantity,
-    selectedBundleItemId,
-    buyer,
-    setOrder,
-    onNextStep,
-  } = useTicketCheckoutStore();
+  const { selectedProduct, quantity, buyer, setOrder, onNextStep } =
+    useTicketCheckoutStore();
 
   const createOrderMutation = useMutation(
     trpc.ticket.createOrder.mutationOptions()
@@ -37,9 +31,6 @@ export const useTicketCreateOrderForm = () => {
       const formData = new FormData();
       formData.append("productId", selectedProduct.id);
       formData.append("quantity", quantity.toString());
-      if (selectedBundleItemId) {
-        formData.append("selectedBundleItemId", selectedBundleItemId);
-      }
       formData.append("buyerName", buyer.buyerName);
       formData.append("buyerEmail", buyer.buyerEmail);
       formData.append("phone", buyer.phone);
