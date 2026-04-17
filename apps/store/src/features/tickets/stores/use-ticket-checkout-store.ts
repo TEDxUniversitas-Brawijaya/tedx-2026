@@ -16,7 +16,6 @@ type TicketCheckoutStore = {
   checkoutStep: TicketCheckoutStep;
   selectedProduct: TicketProduct | null;
   quantity: number;
-  selectedBundleItemId?: string;
 
   buyer: TicketBuyer | null;
   order: TicketOrder | null;
@@ -31,7 +30,6 @@ type TicketCheckoutStore = {
    */
   setStep: (step: TicketCheckoutStep) => void;
   setQuantity: (qty: number) => void;
-  setSelectedBundleItemId: (id: string | undefined) => void;
   setBuyer: (buyer: TicketBuyer) => void;
   setOrder: (order: TicketOrder) => void;
   openOrderDetail: () => void;
@@ -47,7 +45,6 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
     checkoutStep: "identification",
     selectedProduct: null,
     quantity: 1,
-    selectedBundleItemId: undefined,
 
     buyer: null,
     order: null,
@@ -59,7 +56,6 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
         checkoutStep: "identification",
         selectedProduct: product,
         quantity: 1,
-        selectedBundleItemId: undefined,
         buyer: null,
         order: null,
       }),
@@ -69,7 +65,6 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
         checkoutStep: "identification",
         selectedProduct: null,
         quantity: 1,
-        selectedBundleItemId: undefined,
         buyer: null,
       }),
     onNextStep: () => {
@@ -100,7 +95,6 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
       const normalized = Math.max(1, Math.min(qty, Math.max(1, maxByStock)));
       set({ quantity: normalized });
     },
-    setSelectedBundleItemId: (id) => set({ selectedBundleItemId: id }),
     setBuyer: (buyer) => set({ buyer }),
     setOrder: (order) => set({ order }),
     openOrderDetail: () => set({ isOrderDetailOpen: true }),

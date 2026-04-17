@@ -6,7 +6,6 @@ import { TicketCheckoutProgress } from "./ticket-checkout-progress";
 import { TicketIdentificationStep } from "./ticket-identification-step";
 import { TicketManualPaymentStep } from "./ticket-manual-payment-step";
 import { TicketPaymentStep } from "./ticket-payment-step";
-import { TicketSelectionStep } from "./ticket-selection-step";
 import { TicketSuccessStep } from "./ticket-success-step";
 import { TicketSummaryStep } from "./ticket-summary-step";
 
@@ -33,7 +32,7 @@ export const TicketCheckoutModal = () => {
           width={150}
         />
         <div className="relative z-2 w-full p-4 sm:p-8">
-          {checkoutStep !== "selection" && checkoutStep !== "success" && (
+          {checkoutStep !== "success" && (
             <TicketCheckoutProgress
               compact={checkoutStep === "payment"}
               currentStep={checkoutStep}
@@ -51,18 +50,7 @@ export const TicketCheckoutModal = () => {
 };
 
 const TicketCheckoutContent = () => {
-  const { checkoutStep, selectedProduct, buyer, order } =
-    useTicketCheckoutStore();
-
-  if (checkoutStep === "selection") {
-    if (!selectedProduct) {
-      throw new Error(
-        "Trying to access selection step but didn't find active product"
-      );
-    }
-
-    return <TicketSelectionStep />;
-  }
+  const { checkoutStep, buyer, order } = useTicketCheckoutStore();
 
   if (checkoutStep === "identification") {
     return <TicketIdentificationStep />;

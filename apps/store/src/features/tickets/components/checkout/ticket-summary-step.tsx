@@ -1,142 +1,110 @@
 import { Button } from "@tedx-2026/ui/components/button";
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
-import { isManualPayment } from "../../configs/payment";
-import { useTicketCreateOrderForm } from "../../hooks/use-ticket-create-order-form";
 import { formatIdrCurrency } from "../../lib/formatter";
 import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
 
 export const TicketSummaryStep = () => {
-  const {
-    buyer,
-    selectedProduct,
-    quantity,
-    selectedBundleItemId,
-    onPrevStep,
-    setStep,
-  } = useTicketCheckoutStore();
-  const { form, isPending } = useTicketCreateOrderForm();
+  const { buyer, selectedProduct, quantity, onPrevStep, onNextStep } =
+    useTicketCheckoutStore();
 
   if (!(buyer && selectedProduct)) {
     return null;
   }
 
-  const productNameText = `${selectedProduct.name} ${
-    selectedProduct.description ? `\n(${selectedProduct.description})` : ""
-  }`;
-
   return (
-    <div className="flex max-h-[80vh] flex-col gap-y-4 sm:gap-y-6">
+    <div className="flex max-h-[80vh] flex-col">
       <DialogHeader className="text-left">
-        <DialogTitle className="font-normal font-serif-2 text-xl sm:text-2xl">
+        <DialogTitle className="font-normal font-serif-2 text-2xl text-gray-2 sm:text-3xl">
           Quick Summary
         </DialogTitle>
       </DialogHeader>
 
-      <div className="no-scrollbar flex-1 space-y-4 overflow-x-hidden overflow-y-scroll sm:space-y-6">
-        <form
-          className="space-y-6 sm:space-y-8"
-          id="ticket-summary-form"
-          onSubmit={(event) => {
-            event.preventDefault();
-            if (isManualPayment) {
-              setStep("payment");
-            } else {
-              form.handleSubmit();
-            }
-          }}
-        >
-          {/* Informasi Pembelian */}
-          <div className="font-sans-2 text-[#E0E0E0] text-sm">
-            <h4 className="mb-4 font-bold text-sm text-white">
-              Informasi Pembelian
-            </h4>
-            <div className="space-y-4">
-              <div className="flex justify-between gap-4">
-                <span className="w-1/3 shrink-0">Tiket yang Dibeli</span>
-                <span className="w-2/3 whitespace-pre-wrap text-right font-bold text-white">
-                  {productNameText}
-                  {selectedBundleItemId && `\nBundle: ${selectedBundleItemId}`}
-                </span>
-              </div>
-              <div className="h-px w-full bg-white/20" />
-              <div className="flex justify-between gap-4">
-                <span className="w-1/3 shrink-0">Jumlah Tiket</span>
-                <span className="w-2/3 text-right font-bold text-white">
-                  {quantity}
-                </span>
-              </div>
-              <div className="h-px w-full bg-white/20" />
-              <div className="flex justify-between gap-4">
-                <span className="w-1/3 shrink-0">Harga</span>
-                <span className="w-2/3 text-right font-bold text-white">
-                  {formatIdrCurrency(selectedProduct.price)} (x{quantity})
-                </span>
-              </div>
-              <div className="h-px w-full bg-white/20" />
-              <div className="flex justify-between gap-4">
-                <span className="w-1/3 shrink-0">Total</span>
-                <span className="w-2/3 text-right font-bold text-white">
-                  {formatIdrCurrency(selectedProduct.price * quantity)}
-                </span>
-              </div>
+      <div className="no-scrollbar mt-6 flex-1 space-y-8 overflow-x-hidden overflow-y-scroll pr-2">
+        {/* Informasi Pembelian */}
+        <div>
+          <h5 className="mb-4 font-sans-2 text-gray-2 text-xs">
+            Informasi Pembelian
+          </h5>
+          <div className="space-y-4 font-sans-2 text-sm">
+            <div className="flex items-start justify-between gap-4 border-white/10 border-b pb-4">
+              <span className="shrink-0 text-gray-2">Tiket yang Dibeli</span>
+              <span className="max-w-[60%] text-right font-bold text-gray-2">
+                {selectedProduct.name}
+                {selectedProduct.description &&
+                  ` (${selectedProduct.description})`}
+              </span>
+            </div>
+            <div className="flex items-start justify-between gap-4 border-white/10 border-b pb-4">
+              <span className="text-gray-2">Jumlah Tiket</span>
+              <span className="text-right font-bold text-gray-2">
+                {quantity}
+              </span>
+            </div>
+            <div className="flex items-start justify-between gap-4 border-white/10 border-b pb-4">
+              <span className="text-gray-2">Harga</span>
+              <span className="text-right font-bold text-gray-2">
+                {formatIdrCurrency(selectedProduct.price)} (x{quantity})
+              </span>
+            </div>
+            <div className="flex items-start justify-between gap-4 py-2">
+              <span className="text-gray-2">Total</span>
+              <span className="text-right font-bold text-gray-2">
+                {formatIdrCurrency(selectedProduct.price * quantity)}
+              </span>
             </div>
           </div>
+        </div>
 
-          {/* Identitas */}
-          <div className="font-sans-2 text-[#E0E0E0] text-sm">
-            <h4 className="mb-4 font-bold text-sm text-white">Identitas</h4>
-            <div className="space-y-4">
-              <div className="flex justify-between gap-4">
-                <span className="w-1/3 shrink-0">Nama Lengkap</span>
-                <span className="w-2/3 truncate text-right font-bold text-white">
-                  {buyer.buyerName}
-                </span>
-              </div>
-              <div className="h-px w-full bg-white/20" />
-              <div className="flex justify-between gap-4">
-                <span className="w-1/3 shrink-0">Email</span>
-                <span className="w-2/3 truncate text-right font-bold text-white">
-                  {buyer.buyerEmail}
-                </span>
-              </div>
-              <div className="h-px w-full bg-white/20" />
-              <div className="flex justify-between gap-4">
-                <span className="w-1/3 shrink-0">No. Telp</span>
-                <span className="w-2/3 truncate text-right font-bold text-white">
-                  {buyer.phone}
-                </span>
-              </div>
-              <div className="h-px w-full bg-white/20" />
-              <div className="flex justify-between gap-4">
-                <span className="w-1/3 shrink-0">Institusi</span>
-                <span className="w-2/3 truncate text-right font-bold text-white">
-                  {buyer.buyerInstansi}
-                </span>
-              </div>
+        {/* Identitas */}
+        <div>
+          <h5 className="mb-4 font-bold font-sans-2 text-gray-2 text-xs">
+            Identitas
+          </h5>
+          <div className="space-y-4 font-sans-2 text-sm">
+            <div className="flex items-start justify-between border-white/5 border-b pb-4">
+              <span className="text-gray-2">Nama Lengkap</span>
+              <span className="text-right font-bold text-gray-2">
+                {buyer.buyerName}
+              </span>
+            </div>
+            <div className="flex items-start justify-between border-white/5 border-b pb-4">
+              <span className="text-gray-2">Email</span>
+              <span className="max-w-50 truncate text-right font-bold text-gray-2">
+                {buyer.buyerEmail}
+              </span>
+            </div>
+            <div className="flex items-start justify-between border-white/5 border-b pb-4">
+              <span className="text-gray-2">No. Telp</span>
+              <span className="text-right font-bold text-gray-2">
+                {buyer.phone}
+              </span>
+            </div>
+            <div className="flex items-start justify-between pt-2">
+              <span className="shrink-0 text-gray-2">Institusi</span>
+              <span className="max-w-62.5 pl-4 text-right font-bold text-gray-2">
+                {buyer.buyerInstansi}
+              </span>
             </div>
           </div>
-        </form>
+        </div>
       </div>
 
-      <div className="flex gap-2 border-white/10 border-t pt-4 sm:gap-4 sm:pt-6">
+      <div className="mt-8 flex gap-4">
         <Button
           className="flex-1"
           onClick={onPrevStep}
           size="checkout"
-          type="button"
           variant="store-secondary"
         >
           Kembali
         </Button>
         <Button
           className="flex-1"
-          disabled={isPending}
-          form="ticket-summary-form"
+          onClick={onNextStep}
           size="checkout"
-          type="submit"
           variant="store-primary"
         >
-          {isPending ? "Memproses..." : "Lanjutkan"}
+          Lanjutkan
         </Button>
       </div>
     </div>

@@ -7,11 +7,6 @@ export const progressSteps: {
     next: TicketCheckoutStep | null;
   };
 } = {
-  selection: {
-    idx: -1,
-    prev: null,
-    next: "identification",
-  },
   identification: {
     idx: 1,
     prev: null,

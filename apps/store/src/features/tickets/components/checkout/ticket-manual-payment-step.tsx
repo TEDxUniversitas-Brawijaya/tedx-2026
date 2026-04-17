@@ -44,7 +44,7 @@ export function TicketManualPaymentStep() {
             Bukti Pembayaran<span className="text-[#FF1818]">*</span>
           </span>
 
-          <div className="flex h-12 items-center overflow-hidden rounded-xl border border-white/10 bg-white text-black transition-colors focus-within:ring-1 focus-within:ring-[#FF1818] sm:h-14">
+          <div className="flex h-11 items-center overflow-hidden rounded-lg border border-white/10 bg-white text-black sm:h-12">
             <label
               className="flex h-full cursor-pointer items-center border-black/10 border-r px-4 text-neutral-500 text-sm hover:bg-neutral-50"
               htmlFor={fileInputId}
