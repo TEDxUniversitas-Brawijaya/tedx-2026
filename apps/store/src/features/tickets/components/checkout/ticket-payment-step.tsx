@@ -5,14 +5,22 @@ import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { toast } from "sonner";
 import { useCountdownSeconds } from "../../hooks/use-countdown-seconds";
 import { formatCountdownClock, formatIdrCurrency } from "../../lib/formatter";
-import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
+import type { TicketOrder } from "../../types/ticket";
 
-export const TicketPaymentStep = () => {
-  const { order, closeCheckout, onNextStep } = useTicketCheckoutStore();
+type TicketPaymentStepProps = {
+  order: TicketOrder;
+  closeCheckout: () => void;
+  onNextStep: () => void;
+};
 
+export const TicketPaymentStep = ({
+  order,
+  closeCheckout,
+  onNextStep,
+}: TicketPaymentStepProps) => {
   const orderStatusQuery = useQuery(
     trpc.ticket.getOrderStatus.queryOptions(
-      { orderId: order?.orderId ?? "" },
+      { orderId: order.orderId },
       { enabled: false }
     )
   );
@@ -33,17 +41,11 @@ export const TicketPaymentStep = () => {
     onNextStep();
   };
 
-  const durationInSeconds = order
-    ? Math.max(
-        0,
-        Math.floor((new Date(order.expiresAt).getTime() - Date.now()) / 1000)
-      )
-    : 0;
+  const durationInSeconds = Math.max(
+    0,
+    Math.floor((new Date(order.expiresAt).getTime() - Date.now()) / 1000)
+  );
   const timeLeftSeconds = useCountdownSeconds(durationInSeconds);
-
-  if (!order) {
-    return null;
-  }
 
   const isQrisPayment =
     order.status === "pending_payment" &&

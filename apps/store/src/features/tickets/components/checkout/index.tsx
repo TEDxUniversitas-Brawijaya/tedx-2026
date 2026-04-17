@@ -58,6 +58,7 @@ const TicketCheckoutContent = () => {
     quantity,
     onPrevStep,
     onNextStep,
+    closeCheckout,
   } = useTicketCheckoutStore();
 
   if (checkoutStep === "identification") {
@@ -91,7 +92,13 @@ const TicketCheckoutContent = () => {
       throw new Error("Trying to access payment step but didn't find order");
     }
 
-    return <TicketPaymentStep />;
+    return (
+      <TicketPaymentStep
+        closeCheckout={closeCheckout}
+        onNextStep={onNextStep}
+        order={order}
+      />
+    );
   }
 
   if (checkoutStep === "success") {
