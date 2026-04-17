@@ -64,6 +64,21 @@ const configData: InsertConfig[] = [
     description: "Propaganda 3 Day 2",
   },
   { key: "event_date_main", value: "2026-08-17", description: "Main Event" },
+  {
+    key: "whatsapp_group_propa3_day1",
+    value: "https://chat.whatsapp.com/xxx",
+    description: "WhatsApp group link for Propaganda 3 Day 1 attendees",
+  },
+  {
+    key: "whatsapp_group_propa3_day2",
+    value: "https://chat.whatsapp.com/xxx",
+    description: "WhatsApp group link for Propaganda 3 Day 2 attendees",
+  },
+  {
+    key: "whatsapp_group_main",
+    value: "https://chat.whatsapp.com/xxx",
+    description: "WhatsApp group link for Main Event attendees",
+  },
 ];
 
 // TODO: Add imageUrl
