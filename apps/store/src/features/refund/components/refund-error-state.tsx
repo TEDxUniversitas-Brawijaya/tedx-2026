@@ -46,7 +46,7 @@ export function RefundErrorState({ code, message }: RefundErrorStateProps) {
       className="mx-auto grid min-h-screen place-content-center bg-center bg-cover px-4 py-16 sm:px-6 lg:px-8"
       style={{ backgroundImage: `url(${bg})` }}
     >
-      <div className="rounded-2xl border border-white/20 bg-black/50 p-8 text-white shadow-xl">
+      <div className="rounded-2xl border border-white/20 bg-black p-8 text-white shadow-xl">
         <h1 className="font-serif-2 text-3xl">{content.title}</h1>
         <p className="mt-4 font-sans-2 text-gray-2">{content.description}</p>
       </div>

@@ -31,14 +31,14 @@ const getErrorCode = (message: string): RefundErrorCode => {
 };
 
 export function RefundPageContainer({ refundToken }: RefundPageContainerProps) {
-  const [hasAcceptedPolicy, setHasAcceptedPolicy] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const orderInfoQuery = useQuery({
     ...trpc.refund.getOrderInfo.queryOptions({
       refundToken,
     }),
-    enabled: hasAcceptedPolicy,
+    enabled: isDialogOpen,
   });
 
   const form = useRefundRequestForm({
@@ -49,25 +49,21 @@ export function RefundPageContainer({ refundToken }: RefundPageContainerProps) {
     },
   });
 
-  if (!hasAcceptedPolicy) {
-    return <RefundPolicyScreen onContinue={() => setHasAcceptedPolicy(true)} />;
-  }
-
-  if (orderInfoQuery.isLoading) {
-    return <RefundRequestFormSkeleton />;
-  }
-
-  if (orderInfoQuery.error) {
-    const errorMessage = orderInfoQuery.error.message;
+  if (isDialogOpen && !hasSubmitted && orderInfoQuery.error) {
     return (
       <RefundErrorState
-        code={getErrorCode(errorMessage)}
-        message={errorMessage}
+        code={getErrorCode(orderInfoQuery.error.message)}
+        message={orderInfoQuery.error.message}
       />
     );
   }
 
-  if (!orderInfoQuery.data) {
+  if (
+    isDialogOpen &&
+    !hasSubmitted &&
+    !orderInfoQuery.data &&
+    !orderInfoQuery.isLoading
+  ) {
     return (
       <RefundErrorState
         code="UNKNOWN"
@@ -76,9 +72,30 @@ export function RefundPageContainer({ refundToken }: RefundPageContainerProps) {
     );
   }
 
-  if (hasSubmitted) {
-    return <RefundSuccessState />;
-  }
+  return (
+    <>
+      <RefundPolicyScreen
+        onContinue={() => {
+          setHasSubmitted(false);
+          setIsDialogOpen(true);
+        }}
+      />
 
-  return <RefundRequestForm form={form} orderInfo={orderInfoQuery.data} />;
+      {isDialogOpen && !hasSubmitted && orderInfoQuery.isLoading ? (
+        <RefundRequestFormSkeleton />
+      ) : null}
+
+      {isDialogOpen && !hasSubmitted && orderInfoQuery.data ? (
+        <RefundRequestForm
+          form={form}
+          onClose={() => setIsDialogOpen(false)}
+          orderInfo={orderInfoQuery.data}
+        />
+      ) : null}
+
+      {isDialogOpen && hasSubmitted ? (
+        <RefundSuccessState onClose={() => setIsDialogOpen(false)} />
+      ) : null}
+    </>
+  );
 }
