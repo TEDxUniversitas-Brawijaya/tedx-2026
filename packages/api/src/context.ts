@@ -84,7 +84,9 @@ export const createContext = async ({
     superadminEmails: env.SUPERADMIN_EMAILS,
   });
 
-  const session = await auth.api.getSession(fetchCreateContextFnOptions.req);
+  const session = await auth.api.getSession({
+    headers: fetchCreateContextFnOptions.req.headers,
+  });
 
   const orderOperations = createOrderOperations(kv);
   const configOperations = createConfigOperations(kv);
