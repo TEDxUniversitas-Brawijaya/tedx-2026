@@ -690,28 +690,6 @@ export const createOrderServices = (
         status: "refunded",
       });
 
-      if (order.type === "ticket") {
-        const items = await ctx.orderQueries.getOrderItemsByOrderId(orderId);
-
-        await Promise.all(
-          items.map(async (item) => {
-            const updatedStock = await ctx.orderQueries.releaseStock(
-              item.productId,
-              item.quantity
-            );
-
-            if (updatedStock !== null) {
-              ctx.waitUntil(
-                ctx.orderOperations.updateStockCache(
-                  item.productId,
-                  updatedStock
-                )
-              );
-            }
-          })
-        );
-      }
-
       // TODO: Queue refund confirmation email
 
       return;

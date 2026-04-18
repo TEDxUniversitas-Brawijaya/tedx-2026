@@ -1,6 +1,5 @@
 import { and, asc, desc, eq, inArray, like, or, sql } from "drizzle-orm";
 import type { DB } from "../db";
-import { productsTable } from "../schemas/products";
 import {
   orderItemsTable,
   ordersTable,
@@ -50,11 +49,6 @@ export type OrderQueries = {
   getOrderWithItemsByRefundToken: (
     refundToken: SelectOrder["refundToken"]
   ) => Promise<{ order: SelectOrder; items: SelectOrderItem[] } | null>;
-
-  releaseStock: (
-    productId: SelectOrderItem["productId"],
-    quantity: number
-  ) => Promise<number | null>;
 
   expirePendingPaymentOrders: () => Promise<Pick<SelectOrder, "buyerEmail">[]>;
   expirePendingVerificationOrders: () => Promise<
@@ -203,20 +197,6 @@ export const createOrderQueries = (db: DB): OrderQueries => ({
       order,
       items,
     };
-  },
-
-  releaseStock: async (productId, quantity) => {
-    const [updatedProduct] = await db
-      .update(productsTable)
-      .set({
-        stock: sql`coalesce(${productsTable.stock}, 0) + ${quantity}`,
-      })
-      .where(eq(productsTable.id, productId))
-      .returning({
-        stock: productsTable.stock,
-      });
-
-    return updatedProduct?.stock ?? null;
   },
 
   expirePendingPaymentOrders: async () => {
