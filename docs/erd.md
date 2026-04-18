@@ -39,17 +39,20 @@ See [here](https://mermaid.live/edit#pako:eNqFVE2P2jAQ_Ssjn6BKECFAIIdK_Ti0qlDVrt
 
 ## **Config Examples**
 
-|                               |                        |                                          |
-| :---------------------------: | :--------------------: | :--------------------------------------: |
-|            **Key**            |        **Value**       |              **Description**             |
-|         `payment_mode`        | `midtrans` or `manual` |    Active payment method (system-wide)   |
-|   `merch_preorder_deadline`   | `2026-07-01T23:59:59Z` |        When merch pre-order closes       |
-| `refund_deadline_days_before` |           `3`          | How many days before event refunds close |
-|   `payment_timeout_minutes`   |          `20`          |           Order expiry timeout           |
-|       `cooldown_minutes`      |          `10`          |            Per-buyer cooldown            |
-|    `event_date_propa3_day1`   |      `2026-08-10`      |            Propa 3 Day 1 date            |
-|    `event_date_propa3_day2`   |      `2026-08-11`      |            Propa 3 Day 2 date            |
-|       `event_date_main`       |      `2026-08-17`      |              Main Event date             |
+|                                |                                   |                                          |
+| :----------------------------: | :-------------------------------: | :--------------------------------------: |
+|             **Key**            |              **Value**            |              **Description**             |
+|         `payment_mode`         |       `midtrans` or `manual`      |    Active payment method (system-wide)   |
+|    `merch_preorder_deadline`   |       `2026-07-01T23:59:59Z`      |        When merch pre-order closes       |
+|  `refund_deadline_days_before` |                 `3`               | How many days before event refunds close |
+|    `payment_timeout_minutes`   |                `20`               |           Order expiry timeout           |
+|       `cooldown_minutes`       |                `10`               |            Per-buyer cooldown            |
+|    `event_date_propa3_day1`    |            `2026-08-10`           |            Propa 3 Day 1 date            |
+|    `event_date_propa3_day2`    |            `2026-08-11`           |            Propa 3 Day 2 date            |
+|        `event_date_main`       |            `2026-08-17`           |              Main Event date             |
+|  `whatsapp_group_propa3_day1`  |  `https://chat.whatsapp.com/xxx`  |     Propa 3 Day 1 WhatsApp group URL     |
+|  `whatsapp_group_propa3_day2`  |  `https://chat.whatsapp.com/xxx`  |     Propa 3 Day 2 WhatsApp group URL     |
+|     `whatsapp_group_main`      |  `https://chat.whatsapp.com/xxx`  |       Main Event WhatsApp group URL      |
 
 ## **Key Design Decisions**
 
