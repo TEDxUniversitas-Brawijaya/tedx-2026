@@ -14,27 +14,28 @@ function getItemDetails(item: DetailOrder["items"][number]) {
   if (item.snapshot.variants && item.snapshot.variants.length > 0) {
     return item.snapshot.variants
       .map(
-        (variant) =>
-          `${capitalize(variant.label)} (${capitalize(variant.type)})`
+        (variant) => `${capitalize(variant.type)}: ${capitalize(variant.label)}`
       )
       .join(", ");
   }
 
   if (item.snapshot.bundleProducts && item.snapshot.bundleProducts.length > 0) {
-    return item.snapshot.bundleProducts.map((bundleItem) => {
-      const variants = bundleItem.selectedVariants;
+    return item.snapshot.bundleProducts
+      .map((bundleItem) => {
+        const variants = bundleItem.selectedVariants;
 
-      if (variants && variants.length > 0) {
-        return `${bundleItem.name} - ${variants
-          .map(
-            (variant) =>
-              `${capitalize(variant.label)} (${capitalize(variant.type)})`
-          )
-          .join(", ")}`;
-      }
+        if (variants && variants.length > 0) {
+          return `${bundleItem.name} ${variants
+            .map(
+              (variant) =>
+                `(${capitalize(variant.type)}: ${capitalize(variant.label)})`
+            )
+            .join(", ")}`;
+        }
 
-      return bundleItem.name;
-    });
+        return bundleItem.name;
+      })
+      .join("; ");
   }
 
   return null;
