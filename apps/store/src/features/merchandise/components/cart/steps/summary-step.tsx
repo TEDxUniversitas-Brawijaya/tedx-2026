@@ -180,11 +180,9 @@ export function SummaryStep({ buyer }: SummaryStepProps) {
         {isManualPayment ? null : (
           <div className="flex justify-center">
             <Turnstile
-              onError={(error) => {
+              onError={() => {
                 setCaptchaToken(null);
-                toast.error("Verifikasi CAPTCHA gagal. Silakan coba lagi.", {
-                  description: error,
-                });
+                toast.error("Verifikasi CAPTCHA gagal. Silakan coba lagi.");
               }}
               onExpire={() => setCaptchaToken(null)}
               onSuccess={(token) => setCaptchaToken(token)}
