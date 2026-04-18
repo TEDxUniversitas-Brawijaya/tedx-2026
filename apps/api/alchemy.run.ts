@@ -89,7 +89,8 @@ export const worker = await Worker("api", {
       persist: true,
     },
   },
-  domains: app.stage === "prod" ? ["api.ahargunyllib.dev"] : undefined,
+  domains:
+    app.stage === "prod" ? ["api.tedxuniversitasbrawijaya.com"] : undefined,
   dev: {
     port: 3000,
   },
