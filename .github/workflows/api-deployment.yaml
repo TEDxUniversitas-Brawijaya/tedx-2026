@@ -73,6 +73,7 @@ jobs:
           SENDER_NAME: ${{ secrets.SENDER_NAME }}
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SUPERADMIN_EMAILS: ${{ secrets.SUPERADMIN_EMAILS }}
+          TURNSTILE_SECRET_KEY: ${{ secrets.TURNSTILE_SECRET_KEY }}
           PULL_REQUEST: ${{ github.event.number }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
