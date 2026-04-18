@@ -5,16 +5,11 @@ import {
   refundRequestsTable,
   type SelectRefundRequest,
 } from "../schemas/refunds";
-import type { SelectOrder, SelectOrderItem } from "../schemas/orders";
 
 export type RefundQueries = {
   getRefundRequestByOrderId: (
     orderId: SelectRefundRequest["orderId"]
   ) => Promise<SelectRefundRequest | null>;
-  getOrderByRefundToken: (token: string) => Promise<{
-    order: SelectOrder;
-    items: SelectOrderItem[];
-  } | null>;
   createRefundRequest: (
     data: InsertRefundRequest
   ) => Promise<SelectRefundRequest>;
@@ -33,24 +28,6 @@ export const createRefundQueries = (db: DB): RefundQueries => ({
     });
 
     return refundRequest ?? null;
-  },
-
-  getOrderByRefundToken: async (token) => {
-    const order = await db.query.ordersTable.findFirst({
-      where: (ordersTable, { eq }) => eq(ordersTable.refundToken, token),
-      with: {
-        orderItems: true,
-      },
-    });
-
-    if (!order) {
-      return null;
-    }
-
-    return {
-      order,
-      items: order.orderItems,
-    };
   },
 
   createRefundRequest: async (data) => {

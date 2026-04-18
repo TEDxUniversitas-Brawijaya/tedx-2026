@@ -184,18 +184,18 @@ export const createOrderQueries = (db: DB): OrderQueries => ({
   getOrderWithItemsByRefundToken: async (refundToken) => {
     const order = await db.query.ordersTable.findFirst({
       where: eq(ordersTable.refundToken, refundToken),
+      with: {
+        orderItems: true,
+      },
     });
+
     if (!order) {
       return null;
     }
 
-    const items = await db.query.orderItemsTable.findMany({
-      where: eq(orderItemsTable.orderId, order.id),
-    });
-
     return {
       order,
-      items,
+      items: order.orderItems,
     };
   },
 
