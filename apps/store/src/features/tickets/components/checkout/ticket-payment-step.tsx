@@ -6,7 +6,6 @@ import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { toast } from "sonner";
 import { useCountdownSeconds } from "../../hooks/use-countdown-seconds";
 import { formatCountdownClock, formatIdrCurrency } from "../../lib/formatter";
-
 import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
 
 export const TicketPaymentStep = () => {
@@ -55,16 +54,16 @@ export const TicketPaymentStep = () => {
 
   return (
     <div className="flex min-h-0 flex-col overflow-hidden font-sans-2 sm:h-[94vh] sm:max-h-[84vh]">
-      <DialogHeader className="text-left">
-        <DialogTitle className="font-serif-2 text-lg sm:text-xl">
-          Payment
-        </DialogTitle>
-      </DialogHeader>
-
       <div
         className="no-scrollbar mt-3 min-h-0 flex-1 space-y-2.5 overflow-x-hidden overflow-y-scroll pr-1"
         id="ticket-checkout-payment"
       >
+        <DialogHeader className="text-left">
+          <DialogTitle className="font-serif-2 text-lg sm:text-xl">
+            Payment
+          </DialogTitle>
+        </DialogHeader>
+
         <div className="flex items-center justify-between border-white/20 border-b pb-3">
           <span className="font-sans-2 text-[#E0E0E0] text-sm">Total</span>
           <span className="font-bold font-sans-2 text-base text-white sm:text-lg">
