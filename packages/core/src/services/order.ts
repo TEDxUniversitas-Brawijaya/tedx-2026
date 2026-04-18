@@ -39,6 +39,10 @@ export type OrderServices = {
     orderId: Order["id"]
   ) => Promise<Order & { items: OrderItem[] }>;
 
+  getRefundByOrderId: (
+    orderId: Order["id"]
+  ) => Promise<Awaited<ReturnType<RefundQueries["getRefundRequestByOrderId"]>>>;
+
   getOrderStatus: (orderId: Order["id"]) => Promise<Order["status"]>;
 
   verifyPayment: (
@@ -221,6 +225,11 @@ export const createOrderServices = (
     // TODO: optimize with better queries if needed, cache results, etc
 
     return orderWithDetails;
+  },
+
+  getRefundByOrderId: async (orderId) => {
+    const refund = await ctx.refundQueries.getRefundRequestByOrderId(orderId);
+    return refund;
   },
 
   getOrderStatus: async (orderId) => {

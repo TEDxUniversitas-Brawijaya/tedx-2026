@@ -44,12 +44,7 @@ const getById = protectedProcedure
   .output(getOrderByIdOutputSchema)
   .query(async ({ ctx, input }) => {
     const order = await ctx.services.order.getOrderById(input.orderId);
-    const refund = await ctx.db.query.refundRequestsTable.findFirst({
-      where: (refundRequestsTable, { eq }) =>
-        eq(refundRequestsTable.orderId, input.orderId),
-      orderBy: (refundRequestsTable, { desc }) =>
-        desc(refundRequestsTable.createdAt),
-    });
+    const refund = await ctx.services.order.getRefundByOrderId(input.orderId);
 
     return {
       ...order,

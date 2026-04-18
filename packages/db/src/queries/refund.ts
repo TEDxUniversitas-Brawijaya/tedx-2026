@@ -28,6 +28,8 @@ export const createRefundQueries = (db: DB): RefundQueries => ({
   getRefundRequestByOrderId: async (orderId) => {
     const refundRequest = await db.query.refundRequestsTable.findFirst({
       where: eq(refundRequestsTable.orderId, orderId),
+      orderBy: (refundRequestsTable, { desc }) =>
+        desc(refundRequestsTable.createdAt),
     });
 
     return refundRequest ?? null;
