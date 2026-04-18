@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { TicketProductsSection } from "../components/ticket-products-section";
 import { useTicketCheckoutStore } from "../stores/use-ticket-checkout-store";
 import type { TicketProduct } from "../types/ticket";
+import { TicketCheckoutModal } from "../components/checkout";
 
 const isRegularTicket = (product: TicketProduct) =>
   product.type === "ticket_regular";
@@ -38,9 +39,12 @@ export const TicketProductsContainer = ({
     activeTab === "regular" ? regularProducts : bundlingProducts;
 
   return (
-    <TicketProductsSection
-      products={activeProducts}
-      scrollProgress={scrollProgress}
-    />
+    <>
+      <TicketProductsSection
+        products={activeProducts}
+        scrollProgress={scrollProgress}
+      />
+      <TicketCheckoutModal />
+    </>
   );
 };
