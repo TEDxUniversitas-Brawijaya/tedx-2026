@@ -12,7 +12,7 @@ export const TicketsHero = () => {
 
   return (
     <div
-      className="relative h-[500vh]"
+      className="relative h-[550vh]"
       id="ticket-master-wrapper"
       ref={containerRef}
     >

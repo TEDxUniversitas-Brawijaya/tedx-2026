@@ -25,9 +25,8 @@ export const TicketProductsSection = ({
   const [isAtEnd, setIsAtEnd] = useState(false);
 
   useMotionValueEvent(scrollProgress, "change", (v) => {
-    // We use 0.9 as the threshold to ensure the section is locked
-    // before the user reaches the footer.
-    const isDone = v >= 0.9;
+    // Lock the grid scroll once we reach the "good view"
+    const isDone = v >= 0.85;
     if (isDone !== isAtEnd) {
       setIsAtEnd(isDone);
     }
@@ -35,27 +34,27 @@ export const TicketProductsSection = ({
 
   const opacity = useTransform(scrollProgress, (v: number) => {
     const clamped = Math.max(0, Math.min(1, v));
-    if (clamped <= 0.8) {
+    if (clamped <= 0.7) {
       return 0;
     }
-    if (clamped >= 0.9) {
+    if (clamped >= 0.85) {
       return 1;
     }
-    return (clamped - 0.8) / 0.1;
+    return (clamped - 0.7) / 0.15;
   });
 
   const translateY = useTransform(scrollProgress, (v: number) => {
     const clamped = Math.max(0, Math.min(1, v));
-    if (clamped <= 0.8) {
+    if (clamped <= 0.7) {
       return "100vh";
     }
 
     const finalOffset = 0;
-    if (clamped >= 0.9) {
+    if (clamped >= 0.85) {
       return `${finalOffset}vh`;
     }
 
-    const t = (clamped - 0.8) / 0.1;
+    const t = (clamped - 0.7) / 0.15;
     return `${(100 - finalOffset) * (1 - t) + finalOffset}vh`;
   });
 
@@ -71,25 +70,27 @@ export const TicketProductsSection = ({
         style={{ y: translateY }}
       >
         <div className="product-section-content">
-          <h2 className="product-section-title">
-            Dapatkan tiket-mu di sini dan ambil bagian untuk menciptakan ruang
-            bertumbuh kita bersama.
-          </h2>
+          <div className="product-section-header">
+            <h2 className="product-section-title">
+              Dapatkan tiket-mu di sini dan ambil bagian untuk menciptakan ruang
+              bertumbuh kita bersama.
+            </h2>
 
-          <div className="product-section-tabs-container">
-            <div className="product-section-tabs-wrapper">
-              <TabButton
-                activeTab={activeTab}
-                label="Regular"
-                setActiveTab={setActiveTab}
-                tab="regular"
-              />
-              <TabButton
-                activeTab={activeTab}
-                label="Bundling"
-                setActiveTab={setActiveTab}
-                tab="bundling"
-              />
+            <div className="product-section-tabs-container">
+              <div className="product-section-tabs-wrapper">
+                <TabButton
+                  activeTab={activeTab}
+                  label="Regular"
+                  setActiveTab={setActiveTab}
+                  tab="regular"
+                />
+                <TabButton
+                  activeTab={activeTab}
+                  label="Bundling"
+                  setActiveTab={setActiveTab}
+                  tab="bundling"
+                />
+              </div>
             </div>
           </div>
 
