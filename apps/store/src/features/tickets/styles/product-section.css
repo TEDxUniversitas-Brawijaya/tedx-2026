@@ -34,7 +34,7 @@
   max-height: 85dvh;
   width: 100%;
   max-width: 500px;
-  overflow-y: auto;
+  overflow-y: hidden;
   color: hsl(var(--card-foreground));
   pointer-events: auto;
   scrollbar-width: none;
@@ -42,6 +42,11 @@
   border: none !important;
   box-shadow: none !important;
   backdrop-filter: none !important;
+  padding-bottom: 20dvh;
+}
+
+.product-section-container.is-scrollable {
+  overflow-y: auto;
 }
 
 .product-section-container::-webkit-scrollbar {
