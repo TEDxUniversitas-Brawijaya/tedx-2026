@@ -602,7 +602,10 @@ export const createOrderServices = (
     }
 
     const expiresAt = new Date(
-      Date.now() + Number.parseInt(paymentTimeoutMinutes, 10) * 60 * 1000
+      Date.now() + paymentMode === "manual"
+        ? // For manual payments, the expiration is for verification, which can take longer, so we set a longer timeout (e.g. 24 hours) to accommodate that
+          24 * 60 * 60 * 1000
+        : Number.parseInt(paymentTimeoutMinutes, 10) * 60 * 1000
     );
 
     const orderStatus =
