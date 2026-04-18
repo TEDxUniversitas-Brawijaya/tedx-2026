@@ -45,7 +45,7 @@ export type OrderServices = {
   verifyPayment: (
     orderId: Order["id"],
     action: "approve" | "reject",
-    reason: NonNullable<Order["rejectionReason"]>,
+    reason: Order["rejectionReason"],
     verifierId: Order["verifiedBy"]
   ) => Promise<void>;
 
@@ -283,7 +283,7 @@ export const createOrderServices = (
           "merchOrderRejected",
           {
             orderId: order.id,
-            reason,
+            reason: reason ?? "Not specified",
             items,
           }
         );
