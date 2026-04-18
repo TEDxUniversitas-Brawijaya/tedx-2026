@@ -73,7 +73,7 @@ export const merchBuyerInfoSchema = z.object({
   fullName: z.string().min(1, "Nama lengkap wajib diisi").max(255),
   email: z.string().email("Format email tidak valid"),
   phone: z
-    .string()
+    .e164()
     .min(10, "Nomor telepon minimal 10 digit")
     .max(20, "Nomor telepon maksimal 20 digit"),
   address: z.string().min(1, "Alamat wajib diisi"),
