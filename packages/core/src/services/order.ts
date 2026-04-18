@@ -74,7 +74,7 @@ export type OrderServices = {
   processRefund: (
     orderId: Order["id"],
     action: "approve" | "reject",
-    reason: NonNullable<Order["rejectionReason"]> | undefined,
+    reason: NonNullable<Order["rejectionReason"]>,
     processorId: Order["verifiedBy"]
   ) => Promise<{
     refundStatus: "approved" | "rejected";
