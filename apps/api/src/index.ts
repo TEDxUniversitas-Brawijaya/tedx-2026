@@ -101,6 +101,7 @@ app.use(
           SENDER_NAME: c.env.SENDER_NAME,
           SENDER_EMAIL: c.env.SENDER_EMAIL,
           SUPERADMIN_EMAILS: c.env.SUPERADMIN_EMAILS.split(","),
+          TURNSTILE_SECRET_KEY: c.env.TURNSTILE_SECRET_KEY,
         },
         fetchCreateContextFnOptions: opts,
         logger: customLogger,

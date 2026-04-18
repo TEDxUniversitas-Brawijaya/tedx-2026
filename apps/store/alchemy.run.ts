@@ -18,6 +18,8 @@ const worker = await Vite("store", {
   name: `tedx-2026-store-${app.stage}`,
   bindings: {
     VITE_PUBLIC_API_URL: process.env.API_URL || "http://localhost:3000",
+    VITE_PUBLIC_TURNSTILE_SITE_KEY:
+      process.env.VITE_PUBLIC_TURNSTILE_SITE_KEY || "",
   },
   domains:
     app.stage === "prod" ? ["store.tedxuniversitasbrawijaya.com"] : undefined,

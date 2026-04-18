@@ -1,5 +1,6 @@
 import { createAuth, type Session } from "@tedx-2026/auth";
 import {
+  createCaptchaServices,
   createConfigServices,
   createEmailServices,
   createFileServices,
@@ -46,6 +47,7 @@ type CreateContextOptions = {
     SENDER_NAME: string;
     SENDER_EMAIL: string;
     SUPERADMIN_EMAILS: string[];
+    TURNSTILE_SECRET_KEY: string;
   };
   fetchCreateContextFnOptions: FetchCreateContextFnOptions;
   logger: LoggerType;
@@ -134,10 +136,17 @@ export const createContext = async ({
     productQueries,
   });
 
+  const captchaServices = createCaptchaServices({
+    ...baseContext,
+    logger: logger.child({ service: "captcha" }),
+    turnstileSecretKey: env.TURNSTILE_SECRET_KEY,
+  });
+
   const orderServices = createOrderServices({
     ...baseContext,
     logger: logger.child({ service: "order" }),
 
+    captchaServices,
     configServices,
     fileServices,
     paymentServices,

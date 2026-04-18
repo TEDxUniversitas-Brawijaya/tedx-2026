@@ -1,3 +1,4 @@
+export { createCaptchaServices, type CaptchaServices } from "./captcha";
 export { createConfigServices, type ConfigServices } from "./config";
 export { createEmailServices, type EmailServices } from "./email";
 export { createFileServices, type FileServices } from "./file";

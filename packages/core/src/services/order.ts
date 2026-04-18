@@ -9,6 +9,7 @@ import {
 import { AppError } from "../errors";
 import { generateOrderId } from "../lib/generator";
 import type { BaseContext } from "../types";
+import type { CaptchaServices } from "./captcha";
 import type { ConfigServices } from "./config";
 import type { EmailServices } from "./email";
 import type { FileServices } from "./file";
@@ -78,6 +79,7 @@ export type OrderServices = {
 };
 
 type CreateOrderServicesCtx = {
+  captchaServices: CaptchaServices;
   configServices: ConfigServices;
   fileServices: FileServices;
   paymentServices: PaymentServices;
@@ -268,7 +270,7 @@ export const createOrderServices = (
       buyer,
       idempotencyKey,
       paymentProof: proofImage,
-      // captchaToken,
+      captchaToken,
     } = order;
     const existingOrderResponse =
       await ctx.orderOperations.getOrderResponse(idempotencyKey);
@@ -315,7 +317,8 @@ export const createOrderServices = (
       });
     }
 
-    // TODO: Captcha verification
+    // CAPTCHA verification
+    await ctx.captchaServices.verifyTurnstile(captchaToken);
 
     // No cooldown on merch orders for now, but we can enable it in the future if needed
 
