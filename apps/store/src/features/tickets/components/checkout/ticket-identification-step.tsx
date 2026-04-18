@@ -19,10 +19,18 @@ import {
 } from "@tedx-2026/ui/components/select";
 import { useTicketIdentificationForm } from "../../hooks/use-ticket-identification-form";
 import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
+import type { TicketProduct } from "../../types/ticket";
 
-export const TicketIdentificationStep = () => {
-  const { onPrevStep, selectedProduct, quantity, setQuantity } =
-    useTicketCheckoutStore();
+type TicketIdentificationStepProps = {
+  selectedProduct: TicketProduct | null;
+  quantity: number;
+};
+
+export const TicketIdentificationStep = ({
+  selectedProduct,
+  quantity,
+}: TicketIdentificationStepProps) => {
+  const { onPrevStep, setQuantity } = useTicketCheckoutStore();
   const form = useTicketIdentificationForm();
 
   const maxQty =

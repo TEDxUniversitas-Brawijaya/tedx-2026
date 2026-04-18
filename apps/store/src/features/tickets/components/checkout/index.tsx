@@ -50,14 +50,26 @@ export const TicketCheckoutModal = () => {
 };
 
 const TicketCheckoutContent = () => {
-  const { checkoutStep, order } = useTicketCheckoutStore();
+  const { checkoutStep, order, buyer, selectedProduct, quantity } =
+    useTicketCheckoutStore();
 
   if (checkoutStep === "identification") {
-    return <TicketIdentificationStep />;
+    return (
+      <TicketIdentificationStep
+        quantity={quantity}
+        selectedProduct={selectedProduct}
+      />
+    );
   }
 
   if (checkoutStep === "summary") {
-    return <TicketSummaryStep />;
+    return (
+      <TicketSummaryStep
+        buyer={buyer}
+        quantity={quantity}
+        selectedProduct={selectedProduct}
+      />
+    );
   }
 
   if (checkoutStep === "payment") {
@@ -69,7 +81,7 @@ const TicketCheckoutContent = () => {
       return null;
     }
 
-    return <TicketPaymentStep />;
+    return <TicketPaymentStep order={order} />;
   }
 
   if (checkoutStep === "success") {

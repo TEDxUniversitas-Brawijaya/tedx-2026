@@ -6,10 +6,20 @@ import { trpc } from "@/shared/lib/trpc";
 import { formatIdrCurrency } from "../../lib/formatter";
 import { isManualPayment } from "../../configs/payment";
 import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
+import type { TicketBuyer, TicketProduct } from "../../types/ticket";
 
-export const TicketSummaryStep = () => {
-  const { buyer, selectedProduct, quantity, onPrevStep, onNextStep, setOrder } =
-    useTicketCheckoutStore();
+type TicketSummaryStepProps = {
+  buyer: TicketBuyer | null;
+  selectedProduct: TicketProduct | null;
+  quantity: number;
+};
+
+export const TicketSummaryStep = ({
+  buyer,
+  selectedProduct,
+  quantity,
+}: TicketSummaryStepProps) => {
+  const { onPrevStep, onNextStep, setOrder } = useTicketCheckoutStore();
 
   const createOrderMutation = useMutation(
     trpc.ticket.createOrder.mutationOptions()

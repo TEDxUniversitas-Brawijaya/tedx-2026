@@ -7,9 +7,14 @@ import { toast } from "sonner";
 import { useCountdownSeconds } from "../../hooks/use-countdown-seconds";
 import { formatCountdownClock, formatIdrCurrency } from "../../lib/formatter";
 import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
+import type { TicketOrder } from "../../types/ticket";
 
-export const TicketPaymentStep = () => {
-  const { onNextStep, closeCheckout, order } = useTicketCheckoutStore();
+type TicketPaymentStepProps = {
+  order: TicketOrder;
+};
+
+export const TicketPaymentStep = ({ order }: TicketPaymentStepProps) => {
+  const { onNextStep, closeCheckout } = useTicketCheckoutStore();
 
   const orderStatusQuery = useQuery(
     trpc.ticket.getOrderStatus.queryOptions(
@@ -29,10 +34,6 @@ export const TicketPaymentStep = () => {
   }, [order?.expiresAt]);
 
   const timeLeftSeconds = useCountdownSeconds(durationInSeconds);
-
-  if (!order) {
-    return null;
-  }
 
   const onCheckStatus = async () => {
     const result = await orderStatusQuery.refetch();
