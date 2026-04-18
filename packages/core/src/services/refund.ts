@@ -98,350 +98,356 @@ const parseConfigDate = (raw: string): Date => {
   return parsed;
 };
 
-export const createRefundServices = (
+const getRequiredConfig = async (
+  ctx: CreateRefundServicesCtx,
+  key: string
+): Promise<string> => {
+  const value = await ctx.configServices.getConfig(key);
+  if (!value) {
+    throw new AppError(
+      "INTERNAL_SERVER_ERROR",
+      "Missing required refund configuration",
+      {
+        details: { key },
+      }
+    );
+  }
+
+  return value;
+};
+
+const getRefundDeadlineDaysBefore = async (
   ctx: CreateRefundServicesCtx
-): RefundServices => {
-  const getRequiredConfig = async (key: string): Promise<string> => {
-    const value = await ctx.configServices.getConfig(key);
-    if (!value) {
-      throw new AppError(
-        "INTERNAL_SERVER_ERROR",
-        "Missing required refund configuration",
-        {
-          details: { key },
-        }
-      );
+): Promise<number> => {
+  const refundDeadlineDaysBeforeRaw = await getRequiredConfig(
+    ctx,
+    "refund_deadline_days_before"
+  );
+  const refundDeadlineDaysBefore = Number.parseInt(
+    refundDeadlineDaysBeforeRaw,
+    10
+  );
+
+  if (Number.isNaN(refundDeadlineDaysBefore) || refundDeadlineDaysBefore < 0) {
+    throw new AppError(
+      "INTERNAL_SERVER_ERROR",
+      "Invalid refund deadline configuration"
+    );
+  }
+
+  return refundDeadlineDaysBefore;
+};
+
+const getEventDateByKey = async (
+  ctx: CreateRefundServicesCtx
+): Promise<Record<EventDateConfigKey, Date>> => {
+  const configValues = await Promise.all(
+    EVENT_DATE_CONFIG_KEYS.map(async (configKey) => {
+      const value = await getRequiredConfig(ctx, configKey);
+      return {
+        configKey,
+        date: parseConfigDate(value),
+      };
+    })
+  );
+
+  return Object.fromEntries(
+    configValues.map((item) => [item.configKey, item.date])
+  ) as Record<EventDateConfigKey, Date>;
+};
+
+const getEventKeysFromOrderItems = (orderData: RefundOrderData) => {
+  const candidateEventKeys = new Set<EventDateConfigKey>();
+  const referencedProductIds = new Set<string>();
+
+  for (const item of orderData.items) {
+    referencedProductIds.add(item.productId);
+
+    const itemEventKey = getEventKeyFromText(item.snapshotName);
+    if (itemEventKey) {
+      candidateEventKeys.add(itemEventKey);
     }
 
-    return value;
-  };
-
-  const getRefundDeadlineDaysBefore = async (): Promise<number> => {
-    const refundDeadlineDaysBeforeRaw = await getRequiredConfig(
-      "refund_deadline_days_before"
-    );
-    const refundDeadlineDaysBefore = Number.parseInt(
-      refundDeadlineDaysBeforeRaw,
-      10
-    );
-
-    if (
-      Number.isNaN(refundDeadlineDaysBefore) ||
-      refundDeadlineDaysBefore < 0
-    ) {
-      throw new AppError(
-        "INTERNAL_SERVER_ERROR",
-        "Invalid refund deadline configuration"
-      );
-    }
-
-    return refundDeadlineDaysBefore;
-  };
-
-  const getEventDateByKey = async (): Promise<
-    Record<EventDateConfigKey, Date>
-  > => {
-    const configValues = await Promise.all(
-      EVENT_DATE_CONFIG_KEYS.map(async (configKey) => {
-        const value = await getRequiredConfig(configKey);
-        return {
-          configKey,
-          date: parseConfigDate(value),
-        };
-      })
-    );
-
-    return Object.fromEntries(
-      configValues.map((item) => [item.configKey, item.date])
-    ) as Record<EventDateConfigKey, Date>;
-  };
-
-  const getEventKeysFromOrderItems = (orderData: RefundOrderData) => {
-    const candidateEventKeys = new Set<EventDateConfigKey>();
-    const referencedProductIds = new Set<string>();
-
-    for (const item of orderData.items) {
-      referencedProductIds.add(item.productId);
-
-      const itemEventKey = getEventKeyFromText(item.snapshotName);
-      if (itemEventKey) {
-        candidateEventKeys.add(itemEventKey);
-      }
-
-      for (const bundleProduct of item.snapshotBundleProducts ?? []) {
-        const bundleEventKey = getEventKeyFromText(bundleProduct.name);
-        if (bundleEventKey) {
-          candidateEventKeys.add(bundleEventKey);
-        }
+    for (const bundleProduct of item.snapshotBundleProducts ?? []) {
+      const bundleEventKey = getEventKeyFromText(bundleProduct.name);
+      if (bundleEventKey) {
+        candidateEventKeys.add(bundleEventKey);
       }
     }
-
-    return {
-      candidateEventKeys,
-      referencedProductIds,
-    };
-  };
-
-  const getBundledTicketProductIds = (
-    products: Awaited<ReturnType<ProductQueries["getProductsByIds"]>>
-  ): string[] => {
-    const bundledTicketProductIds = new Set<string>();
-
-    for (const product of products) {
-      if (!product.bundleItems) {
-        continue;
-      }
-
-      for (const bundleItem of product.bundleItems) {
-        if (bundleItem.type === "ticket") {
-          bundledTicketProductIds.add(bundleItem.productId);
-        }
-      }
-    }
-
-    return Array.from(bundledTicketProductIds);
-  };
-
-  const getEventKeysFromBundledTickets = async (
-    productIds: string[]
-  ): Promise<Set<EventDateConfigKey>> => {
-    const bundledTicketEventKeys = new Set<EventDateConfigKey>();
-
-    if (productIds.length === 0) {
-      return bundledTicketEventKeys;
-    }
-
-    const products = await ctx.productQueries.getProductsByIds(productIds);
-
-    const bundledTicketProductIds = getBundledTicketProductIds(products);
-
-    if (bundledTicketProductIds.length === 0) {
-      return bundledTicketEventKeys;
-    }
-
-    const bundledTicketProducts = await ctx.productQueries.getProductsByIds(
-      bundledTicketProductIds
-    );
-
-    for (const ticketProduct of bundledTicketProducts) {
-      const eventKey = getEventKeyFromText(ticketProduct.name);
-      if (eventKey) {
-        bundledTicketEventKeys.add(eventKey);
-      }
-    }
-
-    return bundledTicketEventKeys;
-  };
-
-  const getTicketCandidateEventDates = async (
-    orderData: RefundOrderData,
-    eventDateByKey: Record<EventDateConfigKey, Date>
-  ): Promise<Date[]> => {
-    const { candidateEventKeys, referencedProductIds } =
-      getEventKeysFromOrderItems(orderData);
-
-    const bundledTicketEventKeys = await getEventKeysFromBundledTickets(
-      Array.from(referencedProductIds)
-    );
-
-    for (const eventKey of bundledTicketEventKeys) {
-      candidateEventKeys.add(eventKey);
-    }
-
-    if (candidateEventKeys.size === 0) {
-      return Object.values(eventDateByKey);
-    }
-
-    return Array.from(candidateEventKeys).map(
-      (eventKey) => eventDateByKey[eventKey]
-    );
-  };
-
-  const getRefundDeadline = async (
-    orderData: RefundOrderData
-  ): Promise<Date> => {
-    const refundDeadlineDaysBefore = await getRefundDeadlineDaysBefore();
-    const eventDateByKey = await getEventDateByKey();
-
-    const candidateEventDates =
-      orderData.order.type === "ticket"
-        ? await getTicketCandidateEventDates(orderData, eventDateByKey)
-        : [eventDateByKey.event_date_main];
-
-    const earliestEventDate = new Date(
-      Math.min(...candidateEventDates.map((date) => date.getTime()))
-    );
-
-    const refundDeadline = new Date(earliestEventDate);
-    refundDeadline.setUTCDate(
-      refundDeadline.getUTCDate() - refundDeadlineDaysBefore
-    );
-    refundDeadline.setUTCHours(23 - JAKARTA_UTC_OFFSET_HOURS, 59, 59, 999);
-
-    return refundDeadline;
-  };
-
-  const assertRefundableOrder = async (
-    refundToken: string
-  ): Promise<RefundOrderData & { refundDeadline: Date }> => {
-    const orderData =
-      await ctx.orderQueries.getOrderWithItemsByRefundToken(refundToken);
-
-    if (!orderData) {
-      throw new AppError("BAD_REQUEST", "INVALID_REFUND_TOKEN", {
-        details: { refundToken },
-      });
-    }
-
-    if (orderData.order.status === "refund_requested") {
-      throw new AppError("BAD_REQUEST", "REFUND_ALREADY_REQUESTED", {
-        details: { orderId: orderData.order.id },
-      });
-    }
-
-    if (orderData.order.status !== "paid") {
-      throw new AppError("BAD_REQUEST", "ORDER_NOT_REFUNDABLE", {
-        details: {
-          orderId: orderData.order.id,
-          status: orderData.order.status,
-        },
-      });
-    }
-
-    const refundRequest = await ctx.refundQueries.getRefundRequestByOrderId(
-      orderData.order.id
-    );
-
-    if (refundRequest?.status === "requested") {
-      throw new AppError("BAD_REQUEST", "REFUND_ALREADY_REQUESTED", {
-        details: {
-          orderId: orderData.order.id,
-          refundId: refundRequest.id,
-        },
-      });
-    }
-
-    const refundDeadline = await getRefundDeadline(orderData);
-    const now = new Date();
-
-    if (now.getTime() > refundDeadline.getTime()) {
-      throw new AppError("BAD_REQUEST", "REFUND_DEADLINE_PASSED", {
-        details: {
-          orderId: orderData.order.id,
-          refundDeadline: refundDeadline.toISOString(),
-          now: now.toISOString(),
-        },
-      });
-    }
-
-    return {
-      ...orderData,
-      refundDeadline,
-    };
-  };
+  }
 
   return {
-    getOrderInfo: async (refundToken) => {
-      const orderData = await assertRefundableOrder(refundToken);
+    candidateEventKeys,
+    referencedProductIds,
+  };
+};
 
-      return {
+const getBundledTicketProductIds = (
+  products: Awaited<ReturnType<ProductQueries["getProductsByIds"]>>
+): string[] => {
+  const bundledTicketProductIds = new Set<string>();
+
+  for (const product of products) {
+    if (!product.bundleItems) {
+      continue;
+    }
+
+    for (const bundleItem of product.bundleItems) {
+      if (bundleItem.type === "ticket") {
+        bundledTicketProductIds.add(bundleItem.productId);
+      }
+    }
+  }
+
+  return Array.from(bundledTicketProductIds);
+};
+
+const getEventKeysFromBundledTickets = async (
+  ctx: CreateRefundServicesCtx,
+  productIds: string[]
+): Promise<Set<EventDateConfigKey>> => {
+  const bundledTicketEventKeys = new Set<EventDateConfigKey>();
+
+  if (productIds.length === 0) {
+    return bundledTicketEventKeys;
+  }
+
+  const products = await ctx.productQueries.getProductsByIds(productIds);
+
+  const bundledTicketProductIds = getBundledTicketProductIds(products);
+
+  if (bundledTicketProductIds.length === 0) {
+    return bundledTicketEventKeys;
+  }
+
+  const bundledTicketProducts = await ctx.productQueries.getProductsByIds(
+    bundledTicketProductIds
+  );
+
+  for (const ticketProduct of bundledTicketProducts) {
+    const eventKey = getEventKeyFromText(ticketProduct.name);
+    if (eventKey) {
+      bundledTicketEventKeys.add(eventKey);
+    }
+  }
+
+  return bundledTicketEventKeys;
+};
+
+const getTicketCandidateEventDates = async (
+  ctx: CreateRefundServicesCtx,
+  orderData: RefundOrderData,
+  eventDateByKey: Record<EventDateConfigKey, Date>
+): Promise<Date[]> => {
+  const { candidateEventKeys, referencedProductIds } =
+    getEventKeysFromOrderItems(orderData);
+
+  const bundledTicketEventKeys = await getEventKeysFromBundledTickets(
+    ctx,
+    Array.from(referencedProductIds)
+  );
+
+  for (const eventKey of bundledTicketEventKeys) {
+    candidateEventKeys.add(eventKey);
+  }
+
+  if (candidateEventKeys.size === 0) {
+    return Object.values(eventDateByKey);
+  }
+
+  return Array.from(candidateEventKeys).map(
+    (eventKey) => eventDateByKey[eventKey]
+  );
+};
+
+const getRefundDeadline = async (
+  ctx: CreateRefundServicesCtx,
+  orderData: RefundOrderData
+): Promise<Date> => {
+  const refundDeadlineDaysBefore = await getRefundDeadlineDaysBefore(ctx);
+  const eventDateByKey = await getEventDateByKey(ctx);
+
+  const candidateEventDates =
+    orderData.order.type === "ticket"
+      ? await getTicketCandidateEventDates(ctx, orderData, eventDateByKey)
+      : [eventDateByKey.event_date_main];
+
+  const earliestEventDate = new Date(
+    Math.min(...candidateEventDates.map((date) => date.getTime()))
+  );
+
+  const refundDeadline = new Date(earliestEventDate);
+  refundDeadline.setUTCDate(
+    refundDeadline.getUTCDate() - refundDeadlineDaysBefore
+  );
+  refundDeadline.setUTCHours(23 - JAKARTA_UTC_OFFSET_HOURS, 59, 59, 999);
+
+  return refundDeadline;
+};
+
+const assertRefundableOrder = async (
+  ctx: CreateRefundServicesCtx,
+  refundToken: string
+): Promise<RefundOrderData & { refundDeadline: Date }> => {
+  const orderData =
+    await ctx.orderQueries.getOrderWithItemsByRefundToken(refundToken);
+
+  if (!orderData) {
+    throw new AppError("BAD_REQUEST", "INVALID_REFUND_TOKEN", {
+      details: { refundToken },
+    });
+  }
+
+  if (orderData.order.status === "refund_requested") {
+    throw new AppError("BAD_REQUEST", "REFUND_ALREADY_REQUESTED", {
+      details: { orderId: orderData.order.id },
+    });
+  }
+
+  if (orderData.order.status !== "paid") {
+    throw new AppError("BAD_REQUEST", "ORDER_NOT_REFUNDABLE", {
+      details: {
         orderId: orderData.order.id,
-        buyerName: orderData.order.buyerName,
-        buyerEmail: orderData.order.buyerEmail,
-        paymentMethod: orderData.order.paymentMethod,
-        items: orderData.items.map((item) => ({
-          name: item.snapshotName,
-          quantity: item.quantity,
-          unitPrice: item.snapshotPrice,
-          snapshotVariants: item.snapshotVariants ?? undefined,
-        })),
-        totalPrice: orderData.order.totalPrice,
-        refundDeadline: orderData.refundDeadline,
-      };
-    },
+        status: orderData.order.status,
+      },
+    });
+  }
 
-    submitRequest: async (input) => {
-      const orderData = await assertRefundableOrder(input.refundToken);
+  const refundRequest = await ctx.refundQueries.getRefundRequestByOrderId(
+    orderData.order.id
+  );
 
-      if (input.paymentMethod !== orderData.order.paymentMethod) {
-        throw new AppError("BAD_REQUEST", "PAYMENT_METHOD_MISMATCH", {
+  if (refundRequest?.status === "requested") {
+    throw new AppError("BAD_REQUEST", "REFUND_ALREADY_REQUESTED", {
+      details: {
+        orderId: orderData.order.id,
+        refundId: refundRequest.id,
+      },
+    });
+  }
+
+  const refundDeadline = await getRefundDeadline(ctx, orderData);
+  const now = new Date();
+
+  if (now.getTime() > refundDeadline.getTime()) {
+    throw new AppError("BAD_REQUEST", "REFUND_DEADLINE_PASSED", {
+      details: {
+        orderId: orderData.order.id,
+        refundDeadline: refundDeadline.toISOString(),
+        now: now.toISOString(),
+      },
+    });
+  }
+
+  return {
+    ...orderData,
+    refundDeadline,
+  };
+};
+
+export const createRefundServices = (
+  ctx: CreateRefundServicesCtx
+): RefundServices => ({
+  getOrderInfo: async (refundToken) => {
+    const orderData = await assertRefundableOrder(ctx, refundToken);
+
+    return {
+      orderId: orderData.order.id,
+      buyerName: orderData.order.buyerName,
+      buyerEmail: orderData.order.buyerEmail,
+      paymentMethod: orderData.order.paymentMethod,
+      items: orderData.items.map((item) => ({
+        name: item.snapshotName,
+        quantity: item.quantity,
+        unitPrice: item.snapshotPrice,
+        snapshotVariants: item.snapshotVariants ?? undefined,
+      })),
+      totalPrice: orderData.order.totalPrice,
+      refundDeadline: orderData.refundDeadline,
+    };
+  },
+
+  submitRequest: async (input) => {
+    const orderData = await assertRefundableOrder(ctx, input.refundToken);
+
+    if (input.paymentMethod !== orderData.order.paymentMethod) {
+      throw new AppError("BAD_REQUEST", "PAYMENT_METHOD_MISMATCH", {
+        details: {
+          orderId: orderData.order.id,
+          expected: orderData.order.paymentMethod,
+          received: input.paymentMethod,
+        },
+      });
+    }
+
+    let paymentProofUrl: string | null = null;
+
+    if (orderData.order.paymentMethod === "manual") {
+      if (!input.paymentProof) {
+        throw new AppError("BAD_REQUEST", "PAYMENT_PROOF_REQUIRED", {
           details: {
             orderId: orderData.order.id,
-            expected: orderData.order.paymentMethod,
-            received: input.paymentMethod,
           },
         });
       }
 
-      let paymentProofUrl: string | null = null;
+      const uploadedProof = await ctx.fileServices.uploadFile(
+        `${orderData.order.id}-${Date.now()}-${input.paymentProof.name}`,
+        await input.paymentProof.arrayBuffer(),
+        "refund-proofs",
+        {
+          maxSizeMB: 5,
+        }
+      );
+      paymentProofUrl = uploadedProof.url;
+    }
 
-      if (orderData.order.paymentMethod === "manual") {
-        if (!input.paymentProof) {
-          throw new AppError("BAD_REQUEST", "PAYMENT_PROOF_REQUIRED", {
+    const refundId = createNanoIdWithPrefix("ref");
+    const previousOrderStatus = orderData.order.status;
+
+    await ctx.orderQueries.updateOrder(orderData.order.id, {
+      status: "refund_requested",
+    });
+
+    try {
+      await ctx.refundQueries.createRefundRequest({
+        id: refundId,
+        orderId: orderData.order.id,
+        status: "requested",
+        reason: input.reason,
+        paymentMethod: input.paymentMethod,
+        paymentProofUrl,
+        bankAccountNumber: input.bankAccountNumber,
+        bankName: input.bankName,
+        bankAccountHolder: input.bankAccountHolder,
+      });
+    } catch (error: unknown) {
+      try {
+        await ctx.orderQueries.updateOrder(orderData.order.id, {
+          status: previousOrderStatus,
+        });
+      } catch {
+        throw new AppError(
+          "INTERNAL_SERVER_ERROR",
+          "REFUND_REQUEST_STATE_ROLLBACK_FAILED",
+          {
             details: {
               orderId: orderData.order.id,
+              refundId,
+              previousOrderStatus,
             },
-          });
-        }
-
-        const uploadedProof = await ctx.fileServices.uploadFile(
-          `${orderData.order.id}-${Date.now()}-${input.paymentProof.name}`,
-          await input.paymentProof.arrayBuffer(),
-          "refund-proofs",
-          {
-            maxSizeMB: 5,
           }
         );
-        paymentProofUrl = uploadedProof.url;
       }
 
-      const refundId = createNanoIdWithPrefix("ref");
-      const previousOrderStatus = orderData.order.status;
+      throw error;
+    }
+    // TODO: Queue refund confirmation email
 
-      await ctx.orderQueries.updateOrder(orderData.order.id, {
-        status: "refund_requested",
-      });
-
-      try {
-        await ctx.refundQueries.createRefundRequest({
-          id: refundId,
-          orderId: orderData.order.id,
-          status: "requested",
-          reason: input.reason,
-          paymentMethod: input.paymentMethod,
-          paymentProofUrl,
-          bankAccountNumber: input.bankAccountNumber,
-          bankName: input.bankName,
-          bankAccountHolder: input.bankAccountHolder,
-        });
-      } catch (error: unknown) {
-        try {
-          await ctx.orderQueries.updateOrder(orderData.order.id, {
-            status: previousOrderStatus,
-          });
-        } catch {
-          throw new AppError(
-            "INTERNAL_SERVER_ERROR",
-            "REFUND_REQUEST_STATE_ROLLBACK_FAILED",
-            {
-              details: {
-                orderId: orderData.order.id,
-                refundId,
-                previousOrderStatus,
-              },
-            }
-          );
-        }
-
-        throw error;
-      }
-      // TODO: Queue refund confirmation email
-
-      return {
-        refundId,
-        status: "requested",
-        message: "Refund request submitted",
-      };
-    },
-  };
-};
+    return {
+      refundId,
+      status: "requested",
+      message: "Refund request submitted",
+    };
+  },
+});
