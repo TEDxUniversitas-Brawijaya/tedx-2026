@@ -1,6 +1,6 @@
 import { trpc } from "@/shared/lib/trpc";
+import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
 import { toast } from "sonner";
 import type { RefundOrderInfo, RefundSubmitResponse } from "../types";
 
@@ -19,64 +19,48 @@ export const useRefundRequestForm = ({
     trpc.refund.submitRequest.mutationOptions()
   );
 
-  const [reason, setReason] = useState("");
-  const [bankAccountNumber, setBankAccountNumber] = useState("");
-  const [bankName, setBankName] = useState("");
-  const [bankAccountHolder, setBankAccountHolder] = useState("");
-  const [paymentProof, setPaymentProof] = useState<File | null>(null);
-
   const isManualPayment = paymentMethod === "manual";
 
-  const isSubmitDisabled =
-    submitRequestMutation.isPending ||
-    reason.trim().length === 0 ||
-    bankAccountNumber.trim().length === 0 ||
-    bankName.trim().length === 0 ||
-    bankAccountHolder.trim().length === 0 ||
-    (isManualPayment && paymentProof === null);
+  const form = useForm({
+    defaultValues: {
+      reason: "",
+      bankAccountNumber: "",
+      bankName: "",
+      bankAccountHolder: "",
+      paymentProof: null as File | null,
+    },
+    onSubmit: async ({ value }) => {
+      if (isManualPayment && value.paymentProof === null) {
+        toast.error("Payment proof is required for manual payment");
+        return;
+      }
 
-  const submitRequest = async () => {
-    if (isManualPayment && paymentProof === null) {
-      toast.error("Payment proof is required for manual payment");
-      return;
-    }
+      const formData = new FormData();
+      formData.append("refundToken", refundToken);
+      formData.append("reason", value.reason);
+      formData.append("paymentMethod", paymentMethod);
+      formData.append("bankAccountNumber", value.bankAccountNumber);
+      formData.append("bankName", value.bankName);
+      formData.append("bankAccountHolder", value.bankAccountHolder);
 
-    const formData = new FormData();
-    formData.append("refundToken", refundToken);
-    formData.append("reason", reason);
-    formData.append("paymentMethod", paymentMethod);
-    formData.append("bankAccountNumber", bankAccountNumber);
-    formData.append("bankName", bankName);
-    formData.append("bankAccountHolder", bankAccountHolder);
+      if (value.paymentProof) {
+        formData.append("paymentProof", value.paymentProof);
+      }
 
-    if (paymentProof) {
-      formData.append("paymentProof", paymentProof);
-    }
-
-    await submitRequestMutation.mutateAsync(formData, {
-      onSuccess,
-      onError: (error) => {
-        toast.error("Failed to submit refund request", {
-          description: error.message,
-        });
-      },
-    });
-  };
+      await submitRequestMutation.mutateAsync(formData, {
+        onSuccess,
+        onError: (error) => {
+          toast.error("Failed to submit refund request", {
+            description: error.message,
+          });
+        },
+      });
+    },
+  });
 
   return {
-    reason,
-    setReason,
-    bankAccountNumber,
-    setBankAccountNumber,
-    bankName,
-    setBankName,
-    bankAccountHolder,
-    setBankAccountHolder,
-    paymentProof,
-    setPaymentProof,
+    form,
     isManualPayment,
-    isSubmitDisabled,
     isSubmitting: submitRequestMutation.isPending,
-    submitRequest,
   };
 };
