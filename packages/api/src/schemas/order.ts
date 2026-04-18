@@ -154,11 +154,10 @@ export const verifyPaymentOutputSchema = z.object({
 export const processRefundInputSchema = z.object({
   orderId: orderIdSchema,
   action: z.enum(["approve", "reject"]),
-  reason: z.string().min(1).max(1000).optional(),
+  reason: z.string().min(1).max(1000),
 });
 
 export const processRefundOutputSchema = z.object({
   orderId: orderIdSchema,
   refundStatus: refundStatusSchema,
-  message: z.string(),
 });
