@@ -1,6 +1,11 @@
 import type { OrderQueries, ProductQueries, UserQueries } from "@tedx-2026/db";
 import type { OrderOperations } from "@tedx-2026/kv";
-import type { Order, OrderItem, User } from "@tedx-2026/types";
+import type {
+  File as CustomFile,
+  Order,
+  OrderItem,
+  User,
+} from "@tedx-2026/types";
 import {
   createNanoIdWithPrefix,
   createUUIDv7,
@@ -541,7 +546,7 @@ export const createOrderServices = (
     }
     const refundToken = createUUIDv7();
 
-    let proofImageUrl: string | null = null;
+    let uploadedProofImage: CustomFile | null = null;
     if (paymentMode === "manual" && proofImage) {
       const uploadedProof = await ctx.fileServices.uploadFile(
         `${orderId}-${proofImage.name}`,
@@ -551,7 +556,7 @@ export const createOrderServices = (
           maxSizeMB: 5,
         }
       );
-      proofImageUrl = uploadedProof.url;
+      uploadedProofImage = uploadedProof;
     }
 
     const expiresAt = new Date(
@@ -571,7 +576,7 @@ export const createOrderServices = (
           buyerCollege: buyer.college,
           totalPrice,
           paymentMethod: paymentMode as Order["paymentMethod"],
-          proofImageUrl,
+          proofImageUrl: uploadedProofImage ? uploadedProofImage.url : null,
           status: orderStatus,
           type: "merch",
           idempotencyKey,
@@ -583,6 +588,10 @@ export const createOrderServices = (
     );
 
     if (createOrderError) {
+      if (uploadedProofImage) {
+        // Rollback uploaded proof image if order creation failed
+        await ctx.fileServices.deleteFile(uploadedProofImage.key);
+      }
       throw new AppError(
         "INTERNAL_SERVER_ERROR",
         "Failed to create order, please try again later",
