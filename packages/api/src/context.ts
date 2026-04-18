@@ -27,6 +27,7 @@ import {
   createConfigOperations,
   createKV,
   createOrderOperations,
+  createProductOperations,
   type KVNamespaceType,
 } from "@tedx-2026/kv";
 import type { LoggerType } from "@tedx-2026/logger";
@@ -87,6 +88,7 @@ export const createContext = async ({
 
   const orderOperations = createOrderOperations(kv);
   const configOperations = createConfigOperations(kv);
+  const productOperations = createProductOperations(kv);
 
   const userQueries = createUserQueries(db);
   const orderQueries = createOrderQueries(db);
@@ -134,6 +136,7 @@ export const createContext = async ({
     ...baseContext,
     logger: logger.child({ service: "product" }),
     productQueries,
+    productOperations,
   });
 
   const captchaServices = createCaptchaServices({

@@ -348,9 +348,8 @@ export const createOrderServices = (
     }
     const products = await ctx.productQueries.getProductsByIds(
       Array.from(productIds),
-
       {
-        isActive: true,
+        status: "active",
       }
     );
     if (products.length !== productIds.size) {

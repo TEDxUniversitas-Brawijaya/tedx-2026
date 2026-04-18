@@ -200,6 +200,9 @@
     },
     "packages/kv": {
       "name": "@tedx-2026/kv",
+      "dependencies": {
+        "@tedx-2026/utils": "workspace:*",
+      },
       "devDependencies": {
         "@tedx-2026/tsconfig": "workspace:*",
         "@tedx-2026/types": "workspace:*",

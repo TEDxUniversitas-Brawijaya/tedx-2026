@@ -5,43 +5,47 @@ import type { SelectProduct } from "../schemas/products";
 
 export type ProductQueries = {
   getProducts: (opts?: {
-    isActive?: boolean;
+    status?: "active" | "inactive" | "all";
     types?: SelectProduct["type"][];
   }) => Promise<SelectProduct[]>;
   getProductsByIds: (
     productIds: SelectProduct["id"][],
-    opts?: { isActive?: boolean }
+    opts?: { status?: "active" | "inactive" | "all" }
   ) => Promise<SelectProduct[]>;
 };
 
 export const createProductQueries = (db: DB): ProductQueries => ({
   getProducts: async (opts) => {
-    const { isActive, types } = opts || {};
+    const { status, types } = opts || {};
+
+    const whereClause = and(
+      status && status !== "all"
+        ? eq(schema.productsTable.isActive, status === "active")
+        : undefined,
+      types && types.length > 0
+        ? inArray(schema.productsTable.type, types)
+        : undefined
+    );
 
     return await db.query.productsTable.findMany({
-      where: and(
-        isActive !== undefined
-          ? eq(schema.productsTable.isActive, isActive)
-          : undefined,
-        types !== undefined && types.length > 0
-          ? inArray(schema.productsTable.type, types)
-          : undefined
-      ),
+      where: whereClause,
     });
   },
   getProductsByIds: async (productIds, opts) => {
-    const { isActive } = opts || {};
+    const { status } = opts || {};
     if (productIds.length === 0) {
       return [];
     }
 
+    const whereClause = and(
+      inArray(schema.productsTable.id, productIds),
+      status && status !== "all"
+        ? eq(schema.productsTable.isActive, status === "active")
+        : undefined
+    );
+
     return await db.query.productsTable.findMany({
-      where: and(
-        inArray(schema.productsTable.id, productIds),
-        isActive !== undefined
-          ? eq(schema.productsTable.isActive, isActive)
-          : undefined
-      ),
+      where: whereClause,
     });
   },
 });

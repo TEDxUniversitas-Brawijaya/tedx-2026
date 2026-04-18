@@ -14,6 +14,9 @@
   "scripts": {
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@tedx-2026/utils": "workspace:*"
+  },
   "devDependencies": {
     "@tedx-2026/tsconfig": "workspace:*",
     "@tedx-2026/types": "workspace:*",

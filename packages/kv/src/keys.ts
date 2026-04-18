@@ -8,7 +8,13 @@ const configKeys = {
   key: (key: string) => `config:${key}`,
 };
 
+const productKeys = {
+  merchs: (status: "all" | "active" | "inactive") =>
+    `products:merchs:${status}`,
+};
+
 export const KEYS = {
   order: orderKeys,
   config: configKeys,
+  product: productKeys,
 } as const;
