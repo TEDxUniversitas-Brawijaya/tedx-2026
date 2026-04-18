@@ -24,9 +24,7 @@ type TicketCheckoutStore = {
   closeCheckout: () => void;
   onNextStep: () => void;
   onPrevStep: () => void;
-  /**
-   * Directly set the current step. Use with caution, as it does not perform any validation or checks.
-   */
+
   setStep: (step: TicketCheckoutStep) => void;
   setQuantity: (qty: number) => void;
   setBuyer: (buyer: TicketBuyer) => void;

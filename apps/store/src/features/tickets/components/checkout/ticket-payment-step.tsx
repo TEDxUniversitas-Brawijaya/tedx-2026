@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { trpc } from "@/shared/lib/trpc";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@tedx-2026/ui/components/button";
@@ -6,30 +7,33 @@ import { toast } from "sonner";
 import { useCountdownSeconds } from "../../hooks/use-countdown-seconds";
 import { formatCountdownClock, formatIdrCurrency } from "../../lib/formatter";
 
-type TicketPaymentStepProps = {
-  order: {
-    orderId: string;
-    totalPrice: number;
-    expiresAt: string;
-    qrisUrl: string;
-    status: "pending_payment" | "pending_verification";
-    uploadUrl: string | null;
-  };
-  closeCheckout: () => void;
-  onNextStep: () => void;
-};
+import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
 
-export const TicketPaymentStep = ({
-  order,
-  closeCheckout,
-  onNextStep,
-}: TicketPaymentStepProps) => {
+export const TicketPaymentStep = () => {
+  const { onNextStep, closeCheckout, order } = useTicketCheckoutStore();
+
   const orderStatusQuery = useQuery(
     trpc.ticket.getOrderStatus.queryOptions(
-      { orderId: order.orderId },
-      { enabled: false }
+      { orderId: order?.orderId ?? "" },
+      { enabled: !!order }
     )
   );
+
+  const durationInSeconds = useMemo(() => {
+    if (!order?.expiresAt) {
+      return 0;
+    }
+    return Math.max(
+      0,
+      Math.floor((new Date(order.expiresAt).getTime() - Date.now()) / 1000)
+    );
+  }, [order?.expiresAt]);
+
+  const timeLeftSeconds = useCountdownSeconds(durationInSeconds);
+
+  if (!order) {
+    return null;
+  }
 
   const onCheckStatus = async () => {
     const result = await orderStatusQuery.refetch();
@@ -46,12 +50,6 @@ export const TicketPaymentStep = ({
 
     onNextStep();
   };
-
-  const durationInSeconds = Math.max(
-    0,
-    Math.floor((new Date(order.expiresAt).getTime() - Date.now()) / 1000)
-  );
-  const timeLeftSeconds = useCountdownSeconds(durationInSeconds);
 
   const isQrisPayment = order.status === "pending_payment" && order.qrisUrl;
 
@@ -95,7 +93,7 @@ export const TicketPaymentStep = ({
                 alt="QRIS"
                 className="mx-auto h-auto w-full object-contain"
                 height={360}
-                src={order.qrisUrl}
+                src={order.qrisUrl ?? undefined}
                 width={360}
               />
             </div>

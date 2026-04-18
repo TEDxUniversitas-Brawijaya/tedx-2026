@@ -50,37 +50,14 @@ export const TicketCheckoutModal = () => {
 };
 
 const TicketCheckoutContent = () => {
-  const {
-    checkoutStep,
-    buyer,
-    order,
-    selectedProduct,
-    quantity,
-    onPrevStep,
-    onNextStep,
-    closeCheckout,
-  } = useTicketCheckoutStore();
+  const { checkoutStep, order } = useTicketCheckoutStore();
 
   if (checkoutStep === "identification") {
     return <TicketIdentificationStep />;
   }
 
   if (checkoutStep === "summary") {
-    if (!(buyer && selectedProduct)) {
-      throw new Error(
-        "Trying to access summary step but buyer information is missing"
-      );
-    }
-
-    return (
-      <TicketSummaryStep
-        buyer={buyer}
-        onNextStep={onNextStep}
-        onPrevStep={onPrevStep}
-        quantity={quantity}
-        selectedProduct={selectedProduct}
-      />
-    );
+    return <TicketSummaryStep />;
   }
 
   if (checkoutStep === "payment") {
@@ -88,30 +65,11 @@ const TicketCheckoutContent = () => {
       return <TicketManualPaymentStep />;
     }
 
-    if (!order) {
-      throw new Error("Trying to access payment step but didn't find order");
+    if (!order || order.qrisUrl === null) {
+      return null;
     }
 
-    if (order.qrisUrl === null) {
-      throw new Error(
-        "Trying to access payment step but didn't find qrisUrl in response"
-      );
-    }
-
-    return (
-      <TicketPaymentStep
-        closeCheckout={closeCheckout}
-        onNextStep={onNextStep}
-        order={{
-          orderId: order.orderId,
-          totalPrice: order.totalPrice,
-          expiresAt: order.expiresAt,
-          qrisUrl: order.qrisUrl,
-          status: order.status,
-          uploadUrl: order.uploadUrl,
-        }}
-      />
-    );
+    return <TicketPaymentStep />;
   }
 
   if (checkoutStep === "success") {

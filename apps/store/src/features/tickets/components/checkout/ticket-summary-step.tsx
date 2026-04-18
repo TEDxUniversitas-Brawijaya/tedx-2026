@@ -2,30 +2,16 @@ import { Button } from "@tedx-2026/ui/components/button";
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { formatIdrCurrency } from "../../lib/formatter";
 
-type TicketSummaryStepProps = {
-  buyer: {
-    buyerName: string;
-    buyerEmail: string;
-    phone: string;
-    buyerInstansi: string;
-  };
-  selectedProduct: {
-    name: string;
-    description: string | null;
-    price: number;
-  };
-  quantity: number;
-  onPrevStep: () => void;
-  onNextStep: () => void;
-};
+import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
 
-export const TicketSummaryStep = ({
-  buyer,
-  selectedProduct,
-  quantity,
-  onPrevStep,
-  onNextStep,
-}: TicketSummaryStepProps) => {
+export const TicketSummaryStep = () => {
+  const { buyer, selectedProduct, quantity, onPrevStep, onNextStep } =
+    useTicketCheckoutStore();
+
+  if (!(buyer && selectedProduct)) {
+    return null;
+  }
+
   return (
     <div className="flex max-h-[80vh] flex-col">
       <DialogHeader className="text-left">
