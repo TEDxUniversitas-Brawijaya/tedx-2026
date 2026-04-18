@@ -80,9 +80,7 @@ export type OrderServices = {
     action: "approve" | "reject",
     reason: NonNullable<Order["rejectionReason"]>,
     processorId: Order["verifiedBy"]
-  ) => Promise<{
-    refundStatus: "approved" | "rejected";
-  }>;
+  ) => Promise<void>;
 
   expirePendingPaymentOrders: () => Promise<void>;
   expirePendingVerificationOrders: () => Promise<void>;
@@ -711,9 +709,7 @@ export const createOrderServices = (
 
       // TODO: Queue refund confirmation email
 
-      return {
-        refundStatus: "approved",
-      };
+      return;
     }
 
     if (!reason) {
@@ -739,9 +735,7 @@ export const createOrderServices = (
     });
     // TODO: Queue refund confirmation email
 
-    return {
-      refundStatus: "rejected",
-    };
+    return;
   },
 
   expirePendingPaymentOrders: async () => {

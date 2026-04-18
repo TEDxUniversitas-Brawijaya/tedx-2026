@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server";
 import {
   getOrderByIdInputSchema,
   getOrderByIdOutputSchema,
@@ -71,28 +70,25 @@ const getById = protectedProcedure
 const verifyPayment = protectedProcedure
   .input(verifyPaymentInputSchema)
   .output(verifyPaymentOutputSchema)
-  .mutation(() => {
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "Payment verification is not implemented yet.",
-    });
+  .mutation(async ({ ctx, input }) => {
+    await ctx.services.order.verifyPayment(
+      input.orderId,
+      input.action,
+      input.reason ?? "",
+      ctx.session.user.id
+    );
   });
 
 const processRefund = protectedProcedure
   .input(processRefundInputSchema)
   .output(processRefundOutputSchema)
   .mutation(async ({ ctx, input }) => {
-    const result = await ctx.services.order.processRefund(
+    await ctx.services.order.processRefund(
       input.orderId,
       input.action,
       input.reason,
       ctx.session.user.id
     );
-
-    return {
-      orderId: input.orderId,
-      refundStatus: result.refundStatus,
-    };
   });
 
 export const orderRouter = createTRPCRouter({

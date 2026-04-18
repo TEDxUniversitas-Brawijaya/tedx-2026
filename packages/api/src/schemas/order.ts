@@ -144,11 +144,7 @@ export const verifyPaymentInputSchema = z.object({
   reason: z.string().min(1).max(1000).optional(),
 });
 
-export const verifyPaymentOutputSchema = z.object({
-  orderId: orderIdSchema,
-  status: orderStatusSchema,
-  message: z.string(),
-});
+export const verifyPaymentOutputSchema = z.void();
 
 // admin.order.processRefund
 export const processRefundInputSchema = z.object({
@@ -157,7 +153,4 @@ export const processRefundInputSchema = z.object({
   reason: z.string().min(1).max(1000),
 });
 
-export const processRefundOutputSchema = z.object({
-  orderId: orderIdSchema,
-  refundStatus: refundStatusSchema,
-});
+export const processRefundOutputSchema = z.void();
