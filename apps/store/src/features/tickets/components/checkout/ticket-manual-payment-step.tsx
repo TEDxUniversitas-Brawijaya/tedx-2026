@@ -24,7 +24,7 @@ export function TicketManualPaymentStep() {
         </DialogTitle>
       </DialogHeader>
 
-      <div className="mt-1 min-h-0 flex-1 space-y-2 overflow-y-auto pr-1 pb-3 [scrollbar-color:rgba(224,224,224,0.35)_transparent] [scrollbar-width:thin] sm:space-y-2.5 sm:pr-2 sm:pb-4 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/30 hover:[&::-webkit-scrollbar-thumb]:bg-white/45 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1">
+      <div className="no-scrollbar mt-1 min-h-0 flex-1 space-y-2 overflow-y-auto pr-1 pb-3">
         <div className="flex justify-center pt-0.5 pb-0 sm:pt-1 sm:pb-0.5">
           <div className="relative w-full max-w-44 overflow-hidden rounded-2xl bg-white p-2 shadow-2xl sm:max-w-52 sm:p-2.5">
             <img

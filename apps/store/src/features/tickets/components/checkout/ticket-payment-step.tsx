@@ -64,7 +64,7 @@ export const TicketPaymentStep = ({
       </DialogHeader>
 
       <div
-        className="mt-3 min-h-0 flex-1 space-y-2.5 overflow-x-hidden overflow-y-scroll pr-1 [scrollbar-color:rgba(224,224,224,0.35)_transparent] [scrollbar-width:thin] sm:space-y-3 sm:pr-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/30 hover:[&::-webkit-scrollbar-thumb]:bg-white/45 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1 [@media(max-height:900px)]:overflow-y-auto"
+        className="no-scrollbar mt-3 min-h-0 flex-1 space-y-2.5 overflow-x-hidden overflow-y-scroll pr-1"
         id="ticket-checkout-payment"
       >
         <div className="flex items-center justify-between border-white/20 border-b pb-3">
