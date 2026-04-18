@@ -8,11 +8,20 @@ import type {
 import { createNanoIdWithPrefix } from "@tedx-2026/utils";
 import { AppError } from "../errors";
 import type { BaseContext } from "../types";
-import type { SubmitRefundRequestInput } from "@tedx-2026/types";
 
 type RefundOrderData = NonNullable<
   Awaited<ReturnType<OrderQueries["getOrderWithItemsByRefundToken"]>>
 >;
+
+type SubmitRefundRequestInput = {
+  refundToken: string;
+  reason: string;
+  paymentMethod: "midtrans" | "manual";
+  bankAccountNumber: string;
+  bankName: string;
+  bankAccountHolder: string;
+  paymentProof?: File | null;
+};
 
 export type RefundServices = {
   getOrderInfo: (refundToken: string) => Promise<{
