@@ -7,9 +7,28 @@ export type TemplateMap = {
     items: {
       name: string;
       quantity: number;
-      size?: string;
+      variants?: { label: string; value: string }[];
       price: number;
     }[];
+  };
+  merchOrderExpired: {
+    orderId: string;
+    items: {
+      name: string;
+      quantity: number;
+      variants?: { label: string; value: string }[];
+      price: number;
+    }[];
+  };
+  merchOrderRejected: {
+    orderId: string;
+    items: {
+      name: string;
+      quantity: number;
+      variants?: { label: string; value: string }[];
+      price: number;
+    }[];
+    reason: string;
   };
   ticketOrder: {
     orderId: string;
@@ -96,6 +115,124 @@ const renderers: Renderers = {
 
     return createEmailLayout(content, {
       preheader: "Terima kasih atas pesanan merchandise Anda!",
+    });
+  },
+  merchOrderExpired: (params) => {
+    const { orderId, items } = params;
+
+    const content = `
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td>
+            <span>Halo!</span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitasBrawijaya 2026!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini telah kadaluarsa (expired).
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kamu tetap memiliki kesempatan untuk melakukan pemesanan ulang dengan mengikuti prosedur pembayaran yang benar.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Apabila kamu merasa terjadi kesalahan atau memiliki kendala terkait proses pembayaran, silakan hubungi contact person yang tertera di bawah ini.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>Terima kasih atas pengertianmu.</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
+
+      ${detailMerchOrderTable(orderId, items)}
+    `;
+
+    return createEmailLayout(content, {
+      preheader: "Pesanan merchandise Anda telah kadaluarsa",
+    });
+  },
+  merchOrderRejected: (params) => {
+    const { orderId, items, reason } = params;
+
+    const content = `
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td>
+            <span>Halo!</span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitasBrawijaya 2026!
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid. Oleh karena itu, status pesanan kamu saat ini ditolak (rejected) karena <span style="font-weight: 700;">${reason}</span>.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Kamu tetap memiliki kesempatan untuk melakukan pemesanan ulang dengan mengikuti prosedur pembayaran yang benar.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Apabila kamu merasa terjadi kesalahan atau memiliki kendala terkait proses pembayaran, silakan hubungi contact person yang tertera di bawah ini.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>Terima kasih atas pengertianmu.</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
+
+      ${detailMerchOrderTable(orderId, items)}
+    `;
+
+    return createEmailLayout(content, {
+      preheader: "Pesanan merchandise Anda telah kadaluarsa",
     });
   },
   ticketOrder: (params) => {
@@ -221,7 +358,7 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
-              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid / tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini telah kadaluarsa (expired).
+              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini telah kadaluarsa (expired).
             </span>
           </td>
         </tr>
@@ -280,7 +417,7 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
-              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid / tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini ditolak (rejected) karena <span style="font-weight: 700;">${reason}</span>.
+              Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid. Oleh karena itu, status pesanan kamu saat ini ditolak (rejected) karena <span style="font-weight: 700;">${reason}</span>.
             </span>
           </td>
         </tr>

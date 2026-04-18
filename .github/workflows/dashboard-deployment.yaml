@@ -1,6 +1,15 @@
 name: Dashboard Deployment
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/dashboard/**"
+      - "packages/**"
+      - "package.json"
+      - "bun.lock"
+      - "!**/*.md"
+      - "!**/README*"
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
@@ -18,7 +27,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  STAGE: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || (github.ref == 'refs/heads/main' && 'prod' || github.ref_name) }}
+  STAGE: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || github.ref == 'refs/heads/main' && 'prod' }}
 
 jobs:
   deploy:
@@ -49,6 +58,15 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Set API URL
+        id: api-url
+        run: |
+          if [ "${{ env.STAGE }}" = "prod" ]; then
+            echo "url=https://api.tedxuniversitasbrawijaya.com" >> $GITHUB_OUTPUT
+          else
+            echo "url=https://tedx-2026-api-pr-${{ github.event.number }}.ahargunyllib.workers.dev" >> $GITHUB_OUTPUT
+          fi
+
       - name: Deploy
         working-directory: apps/dashboard
         run: bunx alchemy deploy --stage ${{ env.STAGE }}
@@ -57,11 +75,11 @@ jobs:
           ALCHEMY_STATE_TOKEN: ${{ secrets.ALCHEMY_STATE_TOKEN }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          VITE_PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.VITE_PUBLIC_TURNSTILE_SITE_KEY }}
           PULL_REQUEST: ${{ github.event.number }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # TODO: This should ideally be read from the deployed environment rather than constructed here, to avoid mismatches in URL construction logic between deploy and destroy steps
-          API_URL: https://tedx-2026-api-pr-${{ github.event.number }}.ahargunyllib.workers.dev
+          API_URL: ${{ steps.api-url.outputs.url }}
           NODE_ENV: production
 
   cleanup:

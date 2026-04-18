@@ -1,7 +1,9 @@
 import { trpc } from "@/shared/lib/trpc";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@tedx-2026/ui/components/button";
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { isManualPayment } from "../../../configs/payment";
 import { formatIdrCurrency } from "../../../lib/formatter";
@@ -23,11 +25,20 @@ export function SummaryStep({ buyer }: SummaryStepProps) {
     trpc.merch.createOrder.mutationOptions()
   );
 
+  const turnstileRef = useRef<TurnstileInstance>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [idempotencyKey] = useState(() => crypto.randomUUID());
+
   const totalPrice = getTotalPrice();
 
   const onSubmit = () => {
     if (isManualPayment) {
       setStep("payment");
+      return;
+    }
+
+    if (!captchaToken) {
+      toast.error("Mohon selesaikan verifikasi CAPTCHA terlebih dahulu.");
       return;
     }
 
@@ -50,16 +61,22 @@ export function SummaryStep({ buyer }: SummaryStepProps) {
         }))
       )
     );
-    formData.append("captchaToken", "TODO");
-    formData.append("idempotencyKey", new Date().toISOString());
+    formData.append("captchaToken", captchaToken);
+    formData.append("idempotencyKey", idempotencyKey);
 
     createOrderMutation.mutate(formData, {
       onSuccess: (data) => {
         setOrder(data);
         onNextStep();
       },
-      onError: () => {
-        toast.error("Gagal membuat pesanan. Silakan coba lagi.");
+      onError: (error) => {
+        // Reset CAPTCHA on error
+        turnstileRef.current?.reset();
+        setCaptchaToken(null);
+
+        toast.error(
+          error.message || "Gagal membuat pesanan. Silakan coba lagi."
+        );
       },
     });
   };
@@ -158,6 +175,25 @@ export function SummaryStep({ buyer }: SummaryStepProps) {
             </div>
           </div>
         </div>
+
+        {/* CAPTCHA Widget on this step only show on midtrans, captch for manual payment will show on manual payment step */}
+        {isManualPayment ? null : (
+          <div className="flex justify-center">
+            <Turnstile
+              onError={() => {
+                setCaptchaToken(null);
+                toast.error("Verifikasi CAPTCHA gagal. Silakan coba lagi.");
+              }}
+              onExpire={() => setCaptchaToken(null)}
+              onSuccess={(token) => setCaptchaToken(token)}
+              options={{
+                theme: "light",
+              }}
+              ref={turnstileRef}
+              siteKey={import.meta.env.VITE_PUBLIC_TURNSTILE_SITE_KEY}
+            />
+          </div>
+        )}
       </div>
 
       <div className="sticky bottom-0 z-10 mt-4 border-white/10 border-t bg-black pt-4 font-sans-2 sm:mt-6 sm:pt-6">
@@ -170,7 +206,10 @@ export function SummaryStep({ buyer }: SummaryStepProps) {
           </div>
           <Button
             className="w-1/2"
-            disabled={createOrderMutation.isPending}
+            disabled={
+              createOrderMutation.isPending ||
+              !(captchaToken || isManualPayment)
+            }
             onClick={onSubmit}
             size="checkout"
             type="button"

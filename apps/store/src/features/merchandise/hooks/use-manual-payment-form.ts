@@ -1,12 +1,18 @@
 import { trpc } from "@/shared/lib/trpc";
+import type { TurnstileInstance } from "@marsidev/react-turnstile";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useCartStore } from "../stores/use-cart-store";
 
 export const useManualPaymentForm = () => {
   const { onNextStep, items, buyer, setOrder } = useCartStore();
+
+  const turnstileRef = useRef<TurnstileInstance>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [idempotencyKey] = useState(() => crypto.randomUUID());
 
   const createOrderMutation = useMutation(
     trpc.merch.createOrder.mutationOptions()
@@ -35,6 +41,11 @@ export const useManualPaymentForm = () => {
         throw new Error("Buyer information is missing");
       }
 
+      if (!captchaToken) {
+        toast.error("Mohon selesaikan verifikasi CAPTCHA terlebih dahulu.");
+        return;
+      }
+
       const formData = new FormData();
       formData.append("fullName", buyer.fullName);
       formData.append("email", buyer.email);
@@ -54,8 +65,8 @@ export const useManualPaymentForm = () => {
           }))
         )
       );
-      formData.append("captchaToken", "TODO");
-      formData.append("idempotencyKey", new Date().toISOString());
+      formData.append("captchaToken", captchaToken);
+      formData.append("idempotencyKey", idempotencyKey);
       if (value.paymentProof) {
         formData.append("paymentProof", value.paymentProof);
       }
@@ -66,6 +77,10 @@ export const useManualPaymentForm = () => {
           onNextStep();
         },
         onError: (error) => {
+          // Reset CAPTCHA on error
+          turnstileRef.current?.reset();
+          setCaptchaToken(null);
+
           toast.error("Gagal membuat pesanan. Silakan coba lagi.", {
             description: error.message,
           });
@@ -77,5 +92,8 @@ export const useManualPaymentForm = () => {
   return {
     ...form,
     handleSubmit: form.handleSubmit,
+    turnstileRef,
+    captchaToken,
+    setCaptchaToken,
   };
 };

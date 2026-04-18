@@ -5,6 +5,7 @@ export {
   type ErrorMetadata,
 } from "./errors";
 export {
+  createCaptchaServices,
   createConfigServices,
   createEmailServices,
   createFileServices,
@@ -13,6 +14,7 @@ export {
   createProductServices,
   createRefundServices,
   createUserServices,
+  type CaptchaServices,
   type ConfigServices,
   type EmailServices,
   type FileServices,

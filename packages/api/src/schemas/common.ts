@@ -144,7 +144,7 @@ export const snapshotVariantSchema = z.object({
 });
 
 // Common ID schemas with validation
-export const orderIdSchema = z.string().regex(/^TDX-\d{6}-[A-Z0-9]{5}$/);
+export const orderIdSchema = z.string();
 export const productIdSchema = z.string().startsWith("prod_");
 export const orderItemIdSchema = z.string().startsWith("oi_");
 export const ticketIdSchema = z.string().startsWith("tkt_");

@@ -74,7 +74,7 @@ const verifyPayment = protectedProcedure
     await ctx.services.order.verifyPayment(
       input.orderId,
       input.action,
-      input.reason ?? "",
+      input.reason ?? null,
       ctx.session.user.id
     );
   });

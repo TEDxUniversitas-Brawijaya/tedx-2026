@@ -47,7 +47,7 @@ export function IdentificationStep() {
                         className="text-[#E0E0E0] text-sm sm:text-xs"
                         htmlFor={field.name}
                       >
-                        Nama Lengkap
+                        Nama Lengkap<span className="text-red-2">*</span>
                       </FieldLabel>
                       <Input
                         aria-invalid={isInvalid}
@@ -84,7 +84,7 @@ export function IdentificationStep() {
                         className="text-[#E0E0E0] text-sm sm:text-xs"
                         htmlFor={field.name}
                       >
-                        Email
+                        Email<span className="text-red-2">*</span>
                       </FieldLabel>
                       <Input
                         aria-invalid={isInvalid}
@@ -122,7 +122,7 @@ export function IdentificationStep() {
                         className="text-[#E0E0E0] text-sm sm:text-xs"
                         htmlFor={field.name}
                       >
-                        Nomor Telepon
+                        Nomor Telepon<span className="text-red-2">*</span>
                       </FieldLabel>
                       <Input
                         aria-invalid={isInvalid}
@@ -160,7 +160,7 @@ export function IdentificationStep() {
                         className="text-[#E0E0E0] text-sm sm:text-xs"
                         htmlFor={field.name}
                       >
-                        Alamat
+                        Alamat<span className="text-red-2">*</span>
                       </FieldLabel>
                       <Textarea
                         aria-invalid={isInvalid}
