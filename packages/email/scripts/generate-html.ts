@@ -24,6 +24,28 @@ const sampleData: { [K in keyof TemplateMap]: TemplateMap[K] } = {
       },
     ],
   },
+  merchOrderExpired: {
+    orderId: "TDX-20260410-123456",
+    items: [
+      {
+        name: "T-shirt TEDxUB 2026",
+        quantity: 1,
+        variants: [{ label: "Size", value: "L" }],
+        price: 120_000,
+      },
+    ],
+  },
+  merchOrderRejected: {
+    orderId: "TDX-20260410-123456",
+    items: [
+      {
+        name: "Topi TEDxUB",
+        quantity: 1,
+        price: 50_000,
+      },
+    ],
+    reason: "Pembayaran tidak valid / tidak terverifikasi",
+  },
   ticketOrder: {
     orderId: "TDX-20260410-123456",
     item: {
