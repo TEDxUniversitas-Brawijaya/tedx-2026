@@ -75,8 +75,7 @@ app.on(["POST", "GET"], "/auth/*", (c) => {
   return auth.handler(c.req.raw);
 });
 
-app.get("/", (c) => c.text("Hello World"));
-app.get("/health", (c) => c.json({ status: "ok" }));
+app.get("/", (c) => c.json({ message: "Welcome to the TEDx 2026 API!" }));
 
 app.use(
   "/trpc/*",
