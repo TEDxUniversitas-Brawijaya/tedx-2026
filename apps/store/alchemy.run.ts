@@ -19,7 +19,7 @@ const worker = await Vite("store", {
   bindings: {
     VITE_PUBLIC_API_URL: process.env.API_URL || "http://localhost:3000",
     VITE_PUBLIC_TURNSTILE_SITE_KEY:
-      process.env.VITE_PUBLIC_TURNSTILE_SITE_KEY || "",
+      process.env.VITE_PUBLIC_TURNSTILE_SITE_KEY || "1x00000000000000000000AA",
   },
   domains:
     app.stage === "prod" ? ["store.tedxuniversitasbrawijaya.com"] : undefined,
