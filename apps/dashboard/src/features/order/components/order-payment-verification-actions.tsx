@@ -1,3 +1,9 @@
+import { IconAlertCircle } from "@tabler/icons-react";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@tedx-2026/ui/components/alert";
 import { Button } from "@tedx-2026/ui/components/button";
 import {
   Field,
@@ -52,6 +58,15 @@ export function OrderPaymentVerificationActions({
           }}
         </form.Field>
       </FieldGroup>
+      <Alert>
+        <IconAlertCircle />
+        <AlertTitle>Warning</AlertTitle>
+        <AlertDescription>
+          Be careful, when rejecting or approving payment, the user will be
+          notified about the action taken. Make sure to provide a valid reason
+          when rejecting payment. <strong>THIS ACTION CANNOT BE UNDONE.</strong>
+        </AlertDescription>
+      </Alert>
       <Field
         className="flex flex-row items-center gap-2"
         orientation="horizontal"
