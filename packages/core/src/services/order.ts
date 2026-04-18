@@ -251,12 +251,53 @@ export const createOrderServices = (
       );
     }
 
+    const sendEmail = async (action: "approve" | "reject") => {
+      const orderItems = await ctx.orderQueries.getOrderItemsByOrderId(orderId);
+
+      const items = orderItems.map((item) => ({
+        name: item.snapshotName,
+        price: item.snapshotPrice,
+        quantity: item.quantity,
+        variants: item.snapshotVariants
+          ? item.snapshotVariants.map((v) => ({
+              label: v.label,
+              value: v.type,
+            }))
+          : [],
+      }));
+
+      if (action === "approve") {
+        await ctx.emailServices.sendEmail(
+          order.buyerEmail,
+          "Payment Approved",
+          "merchOrder",
+          {
+            orderId: order.id,
+            items,
+          }
+        );
+      } else {
+        await ctx.emailServices.sendEmail(
+          order.buyerEmail,
+          "Payment Rejected",
+          "merchOrderRejected",
+          {
+            orderId: order.id,
+            reason,
+            items,
+          }
+        );
+      }
+    };
+
     if (action === "approve") {
       await ctx.orderQueries.updateOrder(orderId, {
         status: "paid",
         verifiedBy: verifierId,
         verifiedAt: new Date().toISOString(),
       });
+
+      ctx.waitUntil(sendEmail("approve"));
     } else {
       await ctx.orderQueries.updateOrder(orderId, {
         status: "rejected",
@@ -264,6 +305,8 @@ export const createOrderServices = (
         verifiedAt: new Date().toISOString(),
         rejectionReason: reason,
       });
+
+      ctx.waitUntil(sendEmail("reject"));
     }
 
     // TODO: Invalidate cache if any, send confirmation email based on action
