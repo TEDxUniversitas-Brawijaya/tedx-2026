@@ -55,6 +55,7 @@ export const useRefundActionForm = (orderId: string) => {
       {
         action: "approve",
         orderId,
+        reason: "",
       },
       {
         onError: (error) => {
