@@ -1,10 +1,12 @@
+import { Turnstile } from "@marsidev/react-turnstile";
+import { useStore } from "@tanstack/react-form";
 import { Button } from "@tedx-2026/ui/components/button";
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { Field, FieldError, FieldGroup } from "@tedx-2026/ui/components/field";
 import { useId } from "react";
+import { toast } from "sonner";
 import { useManualPaymentForm } from "../../../hooks/use-manual-payment-form";
 import { useCartStore } from "../../../stores/use-cart-store";
-import { useStore } from "@tanstack/react-form";
 
 export function ManualPaymentStep() {
   const { onPrevStep } = useCartStore();
@@ -36,9 +38,7 @@ export function ManualPaymentStep() {
             />
           </div>
         </div>
-      </div>
 
-      <div className="mt-auto space-y-3 bg-black pt-2.5 pb-2 sm:pb-3">
         <div className="space-y-2">
           <span className="block font-sans-2 text-sm text-white">
             Bukti Pembayaran<span className="text-red-2">*</span>
@@ -103,6 +103,25 @@ export function ManualPaymentStep() {
           </form>
         </div>
 
+        {/* CAPTCHA Widget */}
+        <div className="flex justify-center py-2">
+          <Turnstile
+            onError={() => {
+              form.setCaptchaToken(null);
+              toast.error("Verifikasi CAPTCHA gagal. Silakan coba lagi.");
+            }}
+            onExpire={() => form.setCaptchaToken(null)}
+            onSuccess={(token) => form.setCaptchaToken(token)}
+            options={{
+              theme: "light",
+            }}
+            ref={form.turnstileRef}
+            siteKey={import.meta.env.VITE_PUBLIC_TURNSTILE_SITE_KEY}
+          />
+        </div>
+      </div>
+
+      <div className="mt-auto space-y-3 bg-black pt-2.5 pb-2 sm:pb-3">
         <div className="flex gap-2 sm:gap-3">
           <Button
             className="flex-1"
@@ -117,7 +136,7 @@ export function ManualPaymentStep() {
             {(field) => (
               <Button
                 className="flex-1"
-                disabled={field.isSubmitting}
+                disabled={field.isSubmitting || !form.captchaToken}
                 form="order-form"
                 size="checkout"
                 type="submit"

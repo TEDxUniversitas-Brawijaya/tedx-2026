@@ -63,11 +63,13 @@ const getById = protectedProcedure
 const verifyPayment = protectedProcedure
   .input(verifyPaymentInputSchema)
   .output(verifyPaymentOutputSchema)
-  .mutation(() => {
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "Payment verification is not implemented yet.",
-    });
+  .mutation(async ({ ctx, input }) => {
+    await ctx.services.order.verifyPayment(
+      input.orderId,
+      input.action,
+      input.reason ?? null,
+      ctx.session.user.id
+    );
   });
 
 const processRefund = protectedProcedure

@@ -1,21 +1,35 @@
 import type { ProductQueries } from "@tedx-2026/db";
+import type { ProductOperations } from "@tedx-2026/kv";
 import type { Product } from "@tedx-2026/types";
 import type { BaseContext } from "../types";
 
 export type ProductServices = {
-  getMerchProducts: (opts?: { isActive?: boolean }) => Promise<Product[]>;
+  getMerchProducts: (opts?: {
+    status?: "active" | "inactive" | "all";
+  }) => Promise<Product[]>;
 };
 
 type CreateProductServicesCtx = {
   productQueries: ProductQueries;
+  productOperations: ProductOperations;
 } & BaseContext;
 
 export const createProductServices = (
   ctx: CreateProductServicesCtx
 ): ProductServices => ({
   getMerchProducts: async (opts) => {
+    // Use status directly for cache key, default to "all"
+    const { status = "all" } = opts || {};
+
+    // Check cache first
+    const cachedProducts = await ctx.productOperations.getProducts(status);
+    if (cachedProducts) {
+      return cachedProducts;
+    }
+
+    // On cache miss, fetch from DB
     const products = await ctx.productQueries.getProducts({
-      ...opts,
+      status,
       // we pass this because bundle merch products doesnt have ticket products
       types: ["merch_regular", "merch_bundle"],
     });
@@ -124,7 +138,8 @@ export const createProductServices = (
       };
     });
 
-    // TOOD: cache the response
+    // Cache the response for 10 minutes (600 seconds)
+    ctx.waitUntil(ctx.productOperations.setProducts(status, response, 60 * 10));
 
     return response;
   },

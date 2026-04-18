@@ -1,6 +1,11 @@
 import type { OrderQueries, ProductQueries, UserQueries } from "@tedx-2026/db";
 import type { OrderOperations } from "@tedx-2026/kv";
-import type { Order, OrderItem, User } from "@tedx-2026/types";
+import type {
+  File as CustomFile,
+  Order,
+  OrderItem,
+  User,
+} from "@tedx-2026/types";
 import {
   createNanoIdWithPrefix,
   createUUIDv7,
@@ -9,6 +14,7 @@ import {
 import { AppError } from "../errors";
 import { generateOrderId } from "../lib/generator";
 import type { BaseContext } from "../types";
+import type { CaptchaServices } from "./captcha";
 import type { ConfigServices } from "./config";
 import type { EmailServices } from "./email";
 import type { FileServices } from "./file";
@@ -39,7 +45,7 @@ export type OrderServices = {
   verifyPayment: (
     orderId: Order["id"],
     action: "approve" | "reject",
-    reason: NonNullable<Order["rejectionReason"]>,
+    reason: Order["rejectionReason"],
     verifierId: Order["verifiedBy"]
   ) => Promise<void>;
 
@@ -78,6 +84,7 @@ export type OrderServices = {
 };
 
 type CreateOrderServicesCtx = {
+  captchaServices: CaptchaServices;
   configServices: ConfigServices;
   fileServices: FileServices;
   paymentServices: PaymentServices;
@@ -244,12 +251,53 @@ export const createOrderServices = (
       );
     }
 
+    const sendEmail = async (action: "approve" | "reject") => {
+      const orderItems = await ctx.orderQueries.getOrderItemsByOrderId(orderId);
+
+      const items = orderItems.map((item) => ({
+        name: item.snapshotName,
+        price: item.snapshotPrice,
+        quantity: item.quantity,
+        variants: item.snapshotVariants
+          ? item.snapshotVariants.map((v) => ({
+              label: v.label,
+              value: v.type,
+            }))
+          : [],
+      }));
+
+      if (action === "approve") {
+        await ctx.emailServices.sendEmail(
+          order.buyerEmail,
+          "Payment Approved",
+          "merchOrder",
+          {
+            orderId: order.id,
+            items,
+          }
+        );
+      } else {
+        await ctx.emailServices.sendEmail(
+          order.buyerEmail,
+          "Payment Rejected",
+          "merchOrderRejected",
+          {
+            orderId: order.id,
+            reason: reason ?? "Not specified",
+            items,
+          }
+        );
+      }
+    };
+
     if (action === "approve") {
       await ctx.orderQueries.updateOrder(orderId, {
         status: "paid",
         verifiedBy: verifierId,
         verifiedAt: new Date().toISOString(),
       });
+
+      ctx.waitUntil(sendEmail("approve"));
     } else {
       await ctx.orderQueries.updateOrder(orderId, {
         status: "rejected",
@@ -257,6 +305,8 @@ export const createOrderServices = (
         verifiedAt: new Date().toISOString(),
         rejectionReason: reason,
       });
+
+      ctx.waitUntil(sendEmail("reject"));
     }
 
     // TODO: Invalidate cache if any, send confirmation email based on action
@@ -268,7 +318,7 @@ export const createOrderServices = (
       buyer,
       idempotencyKey,
       paymentProof: proofImage,
-      // captchaToken,
+      captchaToken,
     } = order;
     const existingOrderResponse =
       await ctx.orderOperations.getOrderResponse(idempotencyKey);
@@ -315,7 +365,8 @@ export const createOrderServices = (
       });
     }
 
-    // TODO: Captcha verification
+    // CAPTCHA verification
+    await ctx.captchaServices.verifyTurnstile(captchaToken);
 
     // No cooldown on merch orders for now, but we can enable it in the future if needed
 
@@ -340,9 +391,8 @@ export const createOrderServices = (
     }
     const products = await ctx.productQueries.getProductsByIds(
       Array.from(productIds),
-
       {
-        isActive: true,
+        status: "active",
       }
     );
     if (products.length !== productIds.size) {
@@ -538,7 +588,7 @@ export const createOrderServices = (
     }
     const refundToken = createUUIDv7();
 
-    let proofImageUrl: string | null = null;
+    let uploadedProofImage: CustomFile | null = null;
     if (paymentMode === "manual" && proofImage) {
       const uploadedProof = await ctx.fileServices.uploadFile(
         `${orderId}-${proofImage.name}`,
@@ -548,15 +598,20 @@ export const createOrderServices = (
           maxSizeMB: 5,
         }
       );
-      proofImageUrl = uploadedProof.url;
+      uploadedProofImage = uploadedProof;
     }
 
     const expiresAt = new Date(
-      Date.now() + Number.parseInt(paymentTimeoutMinutes, 10) * 60 * 1000
+      Date.now() + paymentMode === "manual"
+        ? // For manual payments, the expiration is for verification, which can take longer, so we set a longer timeout (e.g. 24 hours) to accommodate that
+          24 * 60 * 60 * 1000
+        : Number.parseInt(paymentTimeoutMinutes, 10) * 60 * 1000
     );
 
     const orderStatus =
       paymentMode === "manual" ? "pending_verification" : "pending_payment";
+
+    const paidAt = paymentMode === "manual" ? new Date().toISOString() : null;
 
     const { error: createOrderError } = await tryCatch(
       ctx.orderQueries.createOrder(
@@ -568,11 +623,12 @@ export const createOrderServices = (
           buyerCollege: buyer.college,
           totalPrice,
           paymentMethod: paymentMode as Order["paymentMethod"],
-          proofImageUrl,
+          proofImageUrl: uploadedProofImage ? uploadedProofImage.url : null,
           status: orderStatus,
           type: "merch",
           idempotencyKey,
           expiresAt: expiresAt.toISOString(),
+          paidAt,
           refundToken,
         },
         orderItems
@@ -580,6 +636,10 @@ export const createOrderServices = (
     );
 
     if (createOrderError) {
+      if (uploadedProofImage) {
+        // Rollback uploaded proof image if order creation failed
+        await ctx.fileServices.deleteFile(uploadedProofImage.key);
+      }
       throw new AppError(
         "INTERNAL_SERVER_ERROR",
         "Failed to create order, please try again later",

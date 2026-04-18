@@ -9,13 +9,12 @@ const sampleData: { [K in keyof TemplateMap]: TemplateMap[K] } = {
       {
         name: "T-shirt TEDxUB 2026",
         quantity: 2,
-        size: "M",
+        variants: [{ label: "Size", value: "M" }],
         price: 240_000,
       },
       {
         name: "Topi TEDxUB",
         quantity: 1,
-        size: "Free Size",
         price: 50_000,
       },
       {
@@ -24,6 +23,28 @@ const sampleData: { [K in keyof TemplateMap]: TemplateMap[K] } = {
         price: 45_000,
       },
     ],
+  },
+  merchOrderExpired: {
+    orderId: "TDX-20260410-123456",
+    items: [
+      {
+        name: "T-shirt TEDxUB 2026",
+        quantity: 1,
+        variants: [{ label: "Size", value: "L" }],
+        price: 120_000,
+      },
+    ],
+  },
+  merchOrderRejected: {
+    orderId: "TDX-20260410-123456",
+    items: [
+      {
+        name: "Topi TEDxUB",
+        quantity: 1,
+        price: 50_000,
+      },
+    ],
+    reason: "Pembayaran tidak valid / tidak terverifikasi",
   },
   ticketOrder: {
     orderId: "TDX-20260410-123456",

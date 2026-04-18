@@ -96,7 +96,7 @@ export const detailMerchOrderTable = (
   items: {
     name: string;
     quantity: number;
-    size?: string;
+    variants?: { label: string; value: string }[];
     price: number;
   }[]
 ) => {
@@ -117,7 +117,7 @@ export const detailMerchOrderTable = (
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-bottom: 1px solid #C6C6C6; padding: 12px 0px;">
         <tr>
           <td width="40%" valign="middle" align="left">
-            <span style="font-size: 16px; text-align: left;">${item.name}${item.size ? ` (size: ${item.size})` : ""}</span>
+            <span style="font-size: 16px; text-align: left;">${item.name} ${item.variants ? `(${item.variants.map((v) => `${v.label}: ${v.value}`).join(", ")})` : ""}</span>
           </td>
           <td width="20%" valign="middle" align="center">
             <span style="font-size: 16px; text-align: center;">${price}</span>

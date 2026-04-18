@@ -41,15 +41,15 @@ export function OrderDetailPaymentInfoCard({
           {order.status}
         </Badge>
       </p>
-      <p id="order-detail-midtrans-order-id">
+      {/* <p id="order-detail-midtrans-order-id">
         <span className="font-medium" id="order-detail-midtrans-order-id-label">
           Midtrans Order ID:
         </span>{" "}
         {order.midtransOrderId ?? "-"}
-      </p>
+      </p> */}
       <p id="order-detail-paid-at">
         <span className="font-medium" id="order-detail-paid-at-label">
-          Paid:
+          Paid At:
         </span>{" "}
         {formatDate(order.paidAt)}
       </p>
@@ -59,12 +59,12 @@ export function OrderDetailPaymentInfoCard({
         </span>{" "}
         {formatCurrency(order.totalPrice)}
       </p>
-      <p id="order-detail-idempotency-key">
+      {/* <p id="order-detail-idempotency-key">
         <span className="font-medium" id="order-detail-idempotency-key-label">
           Idempotency Key:
         </span>{" "}
         {order.idempotencyKey ?? "-"}
-      </p>
+      </p> */}
       <p id="order-detail-proof-image-url">
         <span className="font-medium" id="order-detail-proof-image-url-label">
           Payment Proof:
@@ -84,19 +84,19 @@ export function OrderDetailPaymentInfoCard({
       </p>
       <p id="order-detail-created-at">
         <span className="font-medium" id="order-detail-created-at-label">
-          Created:
+          Created At:
         </span>{" "}
         {formatDate(order.createdAt)}
       </p>
       <p id="order-detail-updated-at">
         <span className="font-medium" id="order-detail-updated-at-label">
-          Updated:
+          Updated At:
         </span>{" "}
         {formatDate(order.updatedAt)}
       </p>
       <p id="order-detail-expires-at">
         <span className="font-medium" id="order-detail-expires-at-label">
-          Expires:
+          Expires At:
         </span>{" "}
         {formatDate(order.expiresAt)}
       </p>
@@ -104,7 +104,7 @@ export function OrderDetailPaymentInfoCard({
         <span className="font-medium" id="order-detail-verified-by-label">
           Verified By:
         </span>{" "}
-        {order.verifiedBy ?? "-"}
+        {order.verifiedByUser?.name ?? "-"}
       </p>
       <p id="order-detail-verified-at">
         <span className="font-medium" id="order-detail-verified-at-label">
@@ -118,12 +118,12 @@ export function OrderDetailPaymentInfoCard({
         </span>{" "}
         {order.rejectionReason ?? "-"}
       </p>
-      <p id="order-detail-refund-token">
+      {/* <p id="order-detail-refund-token">
         <span className="font-medium" id="order-detail-refund-token-label">
           Refund Token:
         </span>{" "}
         {order.refundToken ?? "-"}
-      </p>
+      </p> */}
       <p id="order-detail-picked-up-at">
         <span className="font-medium" id="order-detail-picked-up-at-label">
           Picked Up At:
@@ -134,7 +134,7 @@ export function OrderDetailPaymentInfoCard({
         <span className="font-medium" id="order-detail-picked-up-by-label">
           Picked Up By:
         </span>{" "}
-        {order.pickedUpBy ?? "-"}
+        {order.pickedUpByUser?.name ?? "-"}
       </p>
     </div>
   );

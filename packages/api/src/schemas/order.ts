@@ -80,11 +80,23 @@ export const getOrderByIdOutputSchema = z.object({
   midtransOrderId: z.string().nullable(),
   proofImageUrl: z.string().url().nullable(),
   verifiedBy: userIdSchema.nullable(),
+  verifiedByUser: z
+    .object({
+      id: userIdSchema,
+      name: z.string(),
+    })
+    .nullable(),
   verifiedAt: isoDateStringSchema.nullable(),
   rejectionReason: z.string().nullable(),
   refundToken: z.string().nullable(),
   pickedUpAt: isoDateStringSchema.nullable(),
   pickedUpBy: userIdSchema.nullable(),
+  pickedUpByUser: z
+    .object({
+      id: userIdSchema,
+      name: z.string(),
+    })
+    .nullable(),
   items: z.array(
     z.object({
       id: z.string(),
@@ -144,11 +156,7 @@ export const verifyPaymentInputSchema = z.object({
   reason: z.string().min(1).max(1000).optional(),
 });
 
-export const verifyPaymentOutputSchema = z.object({
-  orderId: orderIdSchema,
-  status: orderStatusSchema,
-  message: z.string(),
-});
+export const verifyPaymentOutputSchema = z.void();
 
 // admin.order.processRefund
 export const processRefundInputSchema = z.object({

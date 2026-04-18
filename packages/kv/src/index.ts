@@ -6,6 +6,8 @@ export {
 export {
   createConfigOperations,
   createOrderOperations,
+  createProductOperations,
   type ConfigOperations,
   type OrderOperations,
+  type ProductOperations,
 } from "./operations";

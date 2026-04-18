@@ -70,6 +70,7 @@ export const worker = await Worker("api", {
     SENDER_NAME: alchemy.secret(process.env.SENDER_NAME),
     SENDER_EMAIL: alchemy.secret(process.env.SENDER_EMAIL),
     SUPERADMIN_EMAILS: alchemy.secret(process.env.SUPERADMIN_EMAILS),
+    TURNSTILE_SECRET_KEY: alchemy.secret(process.env.TURNSTILE_SECRET_KEY),
   },
   bundle: {
     external: ["bun:sqlite", "@libsql/client"],

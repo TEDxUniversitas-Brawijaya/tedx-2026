@@ -32,11 +32,19 @@ export type DetailOrder = Order & {
   midtransOrderId: string | null;
   proofImageUrl: string | null;
   verifiedBy: string | null;
+  verifiedByUser: {
+    id: string;
+    name: string;
+  } | null;
   verifiedAt: string | null;
   rejectionReason: string | null;
   refundToken: string | null;
   pickedUpAt: string | null;
   pickedUpBy: string | null;
+  pickedUpByUser: {
+    id: string;
+    name: string;
+  } | null;
   items: {
     id: string;
     productId: string;

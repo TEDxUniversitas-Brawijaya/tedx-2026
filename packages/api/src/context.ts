@@ -1,5 +1,6 @@
 import { createAuth, type Session } from "@tedx-2026/auth";
 import {
+  createCaptchaServices,
   createConfigServices,
   createEmailServices,
   createFileServices,
@@ -26,6 +27,7 @@ import {
   createConfigOperations,
   createKV,
   createOrderOperations,
+  createProductOperations,
   type KVNamespaceType,
 } from "@tedx-2026/kv";
 import type { LoggerType } from "@tedx-2026/logger";
@@ -46,6 +48,7 @@ type CreateContextOptions = {
     SENDER_NAME: string;
     SENDER_EMAIL: string;
     SUPERADMIN_EMAILS: string[];
+    TURNSTILE_SECRET_KEY: string;
   };
   fetchCreateContextFnOptions: FetchCreateContextFnOptions;
   logger: LoggerType;
@@ -85,6 +88,7 @@ export const createContext = async ({
 
   const orderOperations = createOrderOperations(kv);
   const configOperations = createConfigOperations(kv);
+  const productOperations = createProductOperations(kv);
 
   const userQueries = createUserQueries(db);
   const orderQueries = createOrderQueries(db);
@@ -132,12 +136,20 @@ export const createContext = async ({
     ...baseContext,
     logger: logger.child({ service: "product" }),
     productQueries,
+    productOperations,
+  });
+
+  const captchaServices = createCaptchaServices({
+    ...baseContext,
+    logger: logger.child({ service: "captcha" }),
+    turnstileSecretKey: env.TURNSTILE_SECRET_KEY,
   });
 
   const orderServices = createOrderServices({
     ...baseContext,
     logger: logger.child({ service: "order" }),
 
+    captchaServices,
     configServices,
     fileServices,
     paymentServices,
