@@ -608,6 +608,8 @@ export const createOrderServices = (
     const orderStatus =
       paymentMode === "manual" ? "pending_verification" : "pending_payment";
 
+    const paidAt = paymentMode === "manual" ? new Date().toISOString() : null;
+
     const { error: createOrderError } = await tryCatch(
       ctx.orderQueries.createOrder(
         {
@@ -623,6 +625,7 @@ export const createOrderServices = (
           type: "merch",
           idempotencyKey,
           expiresAt: expiresAt.toISOString(),
+          paidAt,
           refundToken,
         },
         orderItems
