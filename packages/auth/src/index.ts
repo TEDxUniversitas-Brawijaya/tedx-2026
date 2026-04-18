@@ -105,13 +105,6 @@ export const createAuth = (
         sameSite: "none",
         httpOnly: true,
       },
-      crossSubDomainCookies: {
-        enabled: true,
-        domain:
-          process.env.NODE_ENV === "production"
-            ? "tedxuniversitasbrawijaya.com"
-            : undefined,
-      },
       database: {
         generateId: () => createUUIDv7(),
       },
