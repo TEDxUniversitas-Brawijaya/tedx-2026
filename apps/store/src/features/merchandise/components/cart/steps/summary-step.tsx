@@ -32,13 +32,13 @@ export function SummaryStep({ buyer }: SummaryStepProps) {
   const totalPrice = getTotalPrice();
 
   const onSubmit = () => {
-    if (!captchaToken) {
-      toast.error("Mohon selesaikan verifikasi CAPTCHA terlebih dahulu.");
+    if (isManualPayment) {
+      setStep("payment");
       return;
     }
 
-    if (isManualPayment) {
-      setStep("payment");
+    if (!captchaToken) {
+      toast.error("Mohon selesaikan verifikasi CAPTCHA terlebih dahulu.");
       return;
     }
 
@@ -176,22 +176,26 @@ export function SummaryStep({ buyer }: SummaryStepProps) {
           </div>
         </div>
 
-        {/* CAPTCHA Widget */}
-        <div className="flex justify-center">
-          <Turnstile
-            onError={() => {
-              setCaptchaToken(null);
-              toast.error("Verifikasi CAPTCHA gagal. Silakan coba lagi.");
-            }}
-            onExpire={() => setCaptchaToken(null)}
-            onSuccess={(token) => setCaptchaToken(token)}
-            options={{
-              theme: "light",
-            }}
-            ref={turnstileRef}
-            siteKey={import.meta.env.VITE_PUBLIC_TURNSTILE_SITE_KEY}
-          />
-        </div>
+        {/* CAPTCHA Widget on this step only show on midtrans, captch for manual payment will show on manual payment step */}
+        {isManualPayment ? null : (
+          <div className="flex justify-center">
+            <Turnstile
+              onError={(error) => {
+                setCaptchaToken(null);
+                toast.error("Verifikasi CAPTCHA gagal. Silakan coba lagi.", {
+                  description: error,
+                });
+              }}
+              onExpire={() => setCaptchaToken(null)}
+              onSuccess={(token) => setCaptchaToken(token)}
+              options={{
+                theme: "light",
+              }}
+              ref={turnstileRef}
+              siteKey={import.meta.env.VITE_PUBLIC_TURNSTILE_SITE_KEY}
+            />
+          </div>
+        )}
       </div>
 
       <div className="sticky bottom-0 z-10 mt-4 border-white/10 border-t bg-black pt-4 font-sans-2 sm:mt-6 sm:pt-6">
@@ -204,7 +208,10 @@ export function SummaryStep({ buyer }: SummaryStepProps) {
           </div>
           <Button
             className="w-1/2"
-            disabled={createOrderMutation.isPending || !captchaToken}
+            disabled={
+              createOrderMutation.isPending ||
+              !(captchaToken || isManualPayment)
+            }
             onClick={onSubmit}
             size="checkout"
             type="button"
