@@ -97,10 +97,6 @@ const processRefund = protectedProcedure
     return {
       orderId: input.orderId,
       refundStatus: result.refundStatus,
-      message:
-        result.refundStatus === "approved"
-          ? "Refund approved"
-          : "Refund rejected",
     };
   });
 
