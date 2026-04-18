@@ -10,28 +10,22 @@ import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
 import type { TicketOrder } from "../../types/ticket";
 
 type TicketPaymentStepProps = {
-  order: TicketOrder;
+  order: TicketOrder & { qrisUrl: string };
 };
 
 export const TicketPaymentStep = ({ order }: TicketPaymentStepProps) => {
   const { onNextStep, closeCheckout } = useTicketCheckoutStore();
 
   const orderStatusQuery = useQuery(
-    trpc.ticket.getOrderStatus.queryOptions(
-      { orderId: order?.orderId ?? "" },
-      { enabled: !!order }
-    )
+    trpc.ticket.getOrderStatus.queryOptions({ orderId: order.orderId })
   );
 
   const durationInSeconds = useMemo(() => {
-    if (!order?.expiresAt) {
-      return 0;
-    }
     return Math.max(
       0,
       Math.floor((new Date(order.expiresAt).getTime() - Date.now()) / 1000)
     );
-  }, [order?.expiresAt]);
+  }, [order.expiresAt]);
 
   const timeLeftSeconds = useCountdownSeconds(durationInSeconds);
 
@@ -93,7 +87,7 @@ export const TicketPaymentStep = ({ order }: TicketPaymentStepProps) => {
                 alt="QRIS"
                 className="mx-auto h-auto w-full object-contain"
                 height={360}
-                src={order.qrisUrl ?? undefined}
+                src={order.qrisUrl}
                 width={360}
               />
             </div>

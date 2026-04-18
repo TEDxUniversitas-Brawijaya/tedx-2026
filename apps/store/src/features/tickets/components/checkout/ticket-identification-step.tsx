@@ -22,7 +22,7 @@ import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
 import type { TicketProduct } from "../../types/ticket";
 
 type TicketIdentificationStepProps = {
-  selectedProduct: TicketProduct | null;
+  selectedProduct: TicketProduct;
   quantity: number;
 };
 
@@ -34,9 +34,9 @@ export const TicketIdentificationStep = ({
   const form = useTicketIdentificationForm();
 
   const maxQty =
-    selectedProduct?.stock === null
+    selectedProduct.stock === null
       ? 5
-      : Math.min(5, Math.max(1, selectedProduct?.stock || 1));
+      : Math.min(5, Math.max(1, selectedProduct.stock || 1));
 
   return (
     <div className="flex max-h-[80vh] flex-col gap-y-4 sm:gap-y-6">
@@ -45,8 +45,8 @@ export const TicketIdentificationStep = ({
           Form Data Diri
         </DialogTitle>
         <p className="mt-1 font-light font-sans-2 text-[#E0E0E0]/60 text-xs italic">
-          Note : kamu memilih {selectedProduct?.name?.toLowerCase()}{" "}
-          {selectedProduct?.description
+          Note : kamu memilih {selectedProduct.name.toLowerCase()}{" "}
+          {selectedProduct.description
             ? `(${selectedProduct.description})`
             : ""}
         </p>

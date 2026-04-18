@@ -9,8 +9,8 @@ import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
 import type { TicketBuyer, TicketProduct } from "../../types/ticket";
 
 type TicketSummaryStepProps = {
-  buyer: TicketBuyer | null;
-  selectedProduct: TicketProduct | null;
+  buyer: TicketBuyer;
+  selectedProduct: TicketProduct;
   quantity: number;
 };
 
@@ -24,10 +24,6 @@ export const TicketSummaryStep = ({
   const createOrderMutation = useMutation(
     trpc.ticket.createOrder.mutationOptions()
   );
-
-  if (!(buyer && selectedProduct)) {
-    return null;
-  }
 
   const onSubmit = async () => {
     if (isManualPayment) {

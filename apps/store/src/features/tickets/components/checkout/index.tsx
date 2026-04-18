@@ -54,6 +54,12 @@ const TicketCheckoutContent = () => {
     useTicketCheckoutStore();
 
   if (checkoutStep === "identification") {
+    if (!selectedProduct) {
+      throw new Error(
+        "Trying to access identification step but didn't find active product"
+      );
+    }
+
     return (
       <TicketIdentificationStep
         quantity={quantity}
@@ -63,6 +69,12 @@ const TicketCheckoutContent = () => {
   }
 
   if (checkoutStep === "summary") {
+    if (!(buyer && selectedProduct)) {
+      throw new Error(
+        "Trying to access summary step but buyer or product information is missing"
+      );
+    }
+
     return (
       <TicketSummaryStep
         buyer={buyer}
@@ -77,11 +89,26 @@ const TicketCheckoutContent = () => {
       return <TicketManualPaymentStep />;
     }
 
-    if (!order || order.qrisUrl === null) {
-      return null;
+    if (!order) {
+      throw new Error(
+        "Trying to access regular payment step but didn't find order"
+      );
     }
 
-    return <TicketPaymentStep order={order} />;
+    if (order.qrisUrl === null) {
+      throw new Error(
+        "Trying to access regular payment step but didn't find qrisUrl in response"
+      );
+    }
+
+    return (
+      <TicketPaymentStep
+        order={{
+          ...order,
+          qrisUrl: order.qrisUrl,
+        }}
+      />
+    );
   }
 
   if (checkoutStep === "success") {
