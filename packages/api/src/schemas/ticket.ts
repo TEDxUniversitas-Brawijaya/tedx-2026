@@ -43,19 +43,12 @@ export const createTicketOrderInputSchema = buyerInfoSchema.extend({
 
 export const createTicketOrderOutputSchema = z.object({
   orderId: orderIdSchema,
-  status: z.literal("pending_payment").or(z.literal("pending_verification")),
+  status: z.enum(["pending_payment", "pending_verification"]),
   totalPrice: z.number().int(),
   expiresAt: isoDateStringSchema,
-  payment: z
-    .object({
-      qrisUrl: z.string().url(),
-      midtransOrderId: z.string(),
-    })
-    .or(
-      z.object({
-        uploadUrl: z.string().url(),
-      })
-    ),
+  qrisUrl: z.string().url().nullable(),
+  midtransOrderId: z.string().nullable(),
+  uploadUrl: z.string().url().nullable(),
 });
 
 // ticket.getOrderStatus

@@ -1,9 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ComingSoon } from "../shared/components/coming-soon";
+import { TicketsHero } from "@/features/tickets/components/tickets-hero";
+
+import { Footer } from "../shared/components/footer";
+import { Navbar } from "../shared/components/navbar";
+
 export const Route = createFileRoute("/tickets")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <ComingSoon />;
+  return (
+    <main>
+      <Navbar />
+      <TicketsHero />
+      <Footer />
+    </main>
+  );
 }

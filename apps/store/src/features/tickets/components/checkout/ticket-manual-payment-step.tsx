@@ -1,17 +1,15 @@
-import { Turnstile } from "@marsidev/react-turnstile";
-import { useStore } from "@tanstack/react-form";
 import { Button } from "@tedx-2026/ui/components/button";
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { Field, FieldError, FieldGroup } from "@tedx-2026/ui/components/field";
+import { useStore } from "@tanstack/react-form";
 import { useId } from "react";
-import { toast } from "sonner";
-import { useManualPaymentForm } from "../../../hooks/use-manual-payment-form";
-import { useCartStore } from "../../../stores/use-cart-store";
+import { useTicketManualPaymentForm } from "../../hooks/use-ticket-manual-payment-form";
+import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
 
-export function ManualPaymentStep() {
-  const { onPrevStep } = useCartStore();
+export function TicketManualPaymentStep() {
+  const { setStep } = useTicketCheckoutStore();
   const fileInputId = useId();
-  const form = useManualPaymentForm();
+  const form = useTicketManualPaymentForm();
 
   const paymentProof = useStore(
     form.store,
@@ -38,26 +36,28 @@ export function ManualPaymentStep() {
             />
           </div>
         </div>
+      </div>
 
+      <div className="mt-auto space-y-3 bg-black pt-2.5 pb-2 sm:pb-3">
         <div className="space-y-2">
           <span className="block font-sans-2 text-sm text-white">
-            Bukti Pembayaran<span className="text-red-2">*</span>
+            Bukti Pembayaran<span className="text-[#FF1818]">*</span>
           </span>
 
-          <div className="flex h-11 items-center overflow-hidden rounded-lg border border-gray-2/40 bg-white text-black">
+          <div className="flex h-11 items-center overflow-hidden rounded-lg border border-white/10 bg-white text-black sm:h-12">
             <label
-              className="flex h-full cursor-pointer items-center border-gray-300 border-r px-4 text-gray-500 text-sm"
+              className="flex h-full cursor-pointer items-center border-black/10 border-r px-4 text-neutral-500 text-sm hover:bg-neutral-50"
               htmlFor={fileInputId}
             >
               Upload
             </label>
-            <span className="overflow-hidden text-ellipsis whitespace-nowrap px-4 text-gray-500 text-sm">
+            <span className="overflow-hidden text-ellipsis whitespace-nowrap px-4 text-black text-sm">
               {paymentProof?.name ?? "Belum ada file"}
             </span>
           </div>
 
           <form
-            id="order-form"
+            id="ticket-order-form"
             onSubmit={(e) => {
               e.preventDefault();
               form.handleSubmit();
@@ -84,14 +84,13 @@ export function ManualPaymentStep() {
                           }
 
                           const [file] = files;
-
                           form.setFieldValue("paymentProof", file ?? null);
                         }}
                         type="file"
                       />
                       {isInvalid && (
                         <FieldError
-                          className="pl-1 text-[10px]"
+                          className="pl-1 text-[#FF1818] text-xs"
                           errors={field.state.meta.errors}
                         />
                       )}
@@ -103,29 +102,10 @@ export function ManualPaymentStep() {
           </form>
         </div>
 
-        {/* CAPTCHA Widget */}
-        <div className="flex justify-center py-2">
-          <Turnstile
-            onError={() => {
-              form.setCaptchaToken(null);
-              toast.error("Verifikasi CAPTCHA gagal. Silakan coba lagi.");
-            }}
-            onExpire={() => form.setCaptchaToken(null)}
-            onSuccess={(token) => form.setCaptchaToken(token)}
-            options={{
-              theme: "light",
-            }}
-            ref={form.turnstileRef}
-            siteKey={import.meta.env.VITE_PUBLIC_TURNSTILE_SITE_KEY}
-          />
-        </div>
-      </div>
-
-      <div className="mt-auto space-y-3 bg-black pt-2.5 pb-2 sm:pb-3">
         <div className="flex gap-2 sm:gap-3">
           <Button
             className="flex-1"
-            onClick={onPrevStep}
+            onClick={() => setStep("summary")}
             size="checkout"
             variant="store-secondary"
           >
@@ -133,16 +113,18 @@ export function ManualPaymentStep() {
           </Button>
 
           <form.Subscribe>
-            {(field) => (
+            {() => (
               <Button
                 className="flex-1"
-                disabled={field.isSubmitting || !form.captchaToken}
-                form="order-form"
+                disabled={form.isSubmitting}
+                form="ticket-order-form"
                 size="checkout"
                 type="submit"
                 variant="store-primary"
               >
-                Upload Bukti Pembayaran
+                {form.isSubmitting
+                  ? "Mengupload..."
+                  : "Upload Bukti Pembayaran"}
               </Button>
             )}
           </form.Subscribe>

@@ -1,0 +1,236 @@
+.product-card-chair {
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.77) 31%,
+    rgba(0, 0, 0, 0.4) 75%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.77) 31%,
+    rgba(0, 0, 0, 0.4) 75%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* --- BASE STYLES (Mobile First) --- */
+
+.product-section-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 15dvh 0.75rem 0;
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.product-section-container {
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 85dvh;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: hsl(var(--card-foreground));
+  pointer-events: auto;
+  scrollbar-width: none;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.product-section-container.is-scrollable {
+  /* Container itself no longer scrolls */
+  overflow-y: hidden;
+}
+
+.product-section-container::-webkit-scrollbar {
+  display: none;
+}
+
+.product-section-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 0 0.5rem 0;
+}
+
+.product-section-header {
+  flex-shrink: 0;
+  padding-bottom: 2rem;
+}
+
+.product-section-title {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 90dvw;
+  text-align: center;
+  font-family: var(--font-serif-2);
+  font-size: 2.5dvh;
+  color: white;
+  line-height: 1.2;
+}
+
+.product-section-tabs-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.product-section-tabs-wrapper {
+  display: inline-flex;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 5px;
+  gap: 4px;
+}
+
+.product-section-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+  overflow-y: hidden;
+  flex: 1;
+  scrollbar-width: none;
+  padding-bottom: 25dvh;
+}
+
+.product-section-container.is-scrollable .product-section-grid {
+  overflow-y: auto;
+}
+
+.product-section-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.product-card-fixed {
+  width: 341px;
+  max-width: 100%;
+  height: 333px;
+  flex: none;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background-color: #1d1a1b;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.product-card-overlay {
+  display: none;
+}
+
+.product-card-fixed:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 25px -5px rgb(0 0 0 / 10%),
+    0 8px 10px -6px rgb(0 0 0 / 10%);
+}
+
+.product-tab-button {
+  border-radius: 9999px;
+  padding: 0.5rem 1.75rem;
+  font-family: var(--font-sans-2);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.product-tab-button.active {
+  background-color: #0c0101;
+  color: #ffffff;
+}
+
+.product-tab-button:not(.active) {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.product-tab-button:not(.active):hover {
+  color: #ffffff;
+}
+
+/* --- TABLET (iPad Air/Pro Portrait) --- */
+
+@media (min-width: 768px) {
+  .product-section-wrapper {
+    align-items: flex-start;
+    padding: 15dvh 2rem 0;
+  }
+
+  .product-section-container {
+    max-height: 90dvh;
+    width: 90dvw;
+    max-width: 900px;
+  }
+
+  .product-section-content {
+    padding: 2.5rem 2.5rem 0;
+  }
+
+  .product-section-title {
+    font-size: 1.75rem;
+  }
+
+  .product-section-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .product-card-fixed {
+    width: 341px;
+  }
+
+  /* Center the last card if it's alone in the second row */
+  .product-section-grid > *:last-child:nth-child(odd) {
+    grid-column: span 2;
+  }
+}
+
+/* --- DESKTOP (Large Screens & iPad Pro Landscape) --- */
+
+@media (min-width: 1025px) {
+  .product-section-wrapper {
+    align-items: flex-start;
+    padding: 12dvh 4rem 0;
+  }
+
+  .product-section-container {
+    max-height: 100dvh;
+    width: 85dvw;
+    max-width: 85dvw;
+  }
+
+  .product-section-title {
+    font-size: 2.25rem;
+    max-width: 70dvw;
+  }
+
+  .product-section-grid {
+    gap: 24px;
+  }
+
+  .product-card-fixed {
+    width: 485px;
+  }
+}
