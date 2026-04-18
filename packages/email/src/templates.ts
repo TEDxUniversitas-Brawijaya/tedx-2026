@@ -7,7 +7,7 @@ export type TemplateMap = {
     items: {
       name: string;
       quantity: number;
-      size?: string;
+      variants?: { label: string; value: string }[];
       price: number;
     }[];
   };

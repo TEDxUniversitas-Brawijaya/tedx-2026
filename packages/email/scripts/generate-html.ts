@@ -9,13 +9,12 @@ const sampleData: { [K in keyof TemplateMap]: TemplateMap[K] } = {
       {
         name: "T-shirt TEDxUB 2026",
         quantity: 2,
-        size: "M",
+        variants: [{ label: "Size", value: "M" }],
         price: 240_000,
       },
       {
         name: "Topi TEDxUB",
         quantity: 1,
-        size: "Free Size",
         price: 50_000,
       },
       {
