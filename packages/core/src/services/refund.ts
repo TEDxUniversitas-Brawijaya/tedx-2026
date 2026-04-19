@@ -8,6 +8,7 @@ import type {
 import { createNanoIdWithPrefix } from "@tedx-2026/utils";
 import { AppError } from "../errors";
 import type { BaseContext } from "../types";
+import type { Order } from "@tedx-2026/types";
 
 type RefundOrderData = NonNullable<
   Awaited<ReturnType<OrderQueries["getOrderWithItemsByRefundToken"]>>
@@ -43,6 +44,9 @@ export type RefundServices = {
     status: "requested";
     message: string;
   }>;
+  getRefundByOrderId: (
+    orderId: Order["id"]
+  ) => Promise<Awaited<ReturnType<RefundQueries["getRefundRequestByOrderId"]>>>;
 };
 
 type CreateRefundServicesCtx = {
@@ -374,6 +378,10 @@ export const createRefundServices = (
       totalPrice: orderData.order.totalPrice,
       refundDeadline: orderData.refundDeadline,
     };
+  },
+  getRefundByOrderId: async (orderId) => {
+    const refund = await ctx.refundQueries.getRefundRequestByOrderId(orderId);
+    return refund;
   },
 
   submitRequest: async (input) => {

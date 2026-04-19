@@ -43,7 +43,7 @@ const getById = protectedProcedure
   .output(getOrderByIdOutputSchema)
   .query(async ({ ctx, input }) => {
     const order = await ctx.services.order.getOrderById(input.orderId);
-    const refund = await ctx.services.order.getRefundByOrderId(input.orderId);
+    const refund = await ctx.services.refund.getRefundByOrderId(input.orderId);
 
     return {
       ...order,
