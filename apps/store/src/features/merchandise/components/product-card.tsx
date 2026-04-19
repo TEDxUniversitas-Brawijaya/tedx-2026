@@ -32,8 +32,37 @@ export function ProductCard({ product }: ProductCardProps) {
       }));
 
     const defaultBundleProducts = product.bundleItems
-      ?.filter((bundleItem) => bundleItem.type === "merchandise")
+      ?.filter(
+        (bundleItem) =>
+          bundleItem.type === "merchandise" ||
+          bundleItem.type === "merchandise_product"
+      )
       ?.map((bundleItem) => {
+        if (bundleItem.type === "merchandise_product") {
+          const variantSet = new Set<string>();
+          const selectedVariants = bundleItem.product.variants
+            ?.filter((v) => {
+              if (variantSet.has(v.type)) {
+                return false;
+              }
+
+              variantSet.add(v.type);
+
+              return true;
+            })
+            .map((v) => ({
+              id: v.id,
+              label: v.label,
+              type: v.type,
+            }));
+
+          return {
+            ...bundleItem.product,
+            category: null, // The category is not provided for merchandise_product type, so we set it to null
+            selectedVariants,
+          };
+        }
+
         const bundleProduct = bundleItem.products?.[0];
         if (!bundleProduct) {
           throw new Error("Bundle item must have at least one product");
