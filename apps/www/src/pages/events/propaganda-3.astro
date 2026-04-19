@@ -1,8 +1,387 @@
 ---
-import ComingSoon from "@/components/coming-soon.astro";
+import { Image } from "astro:assets";
 import Layout from "@/components/layout.astro";
+import Navbar from "@/components/navbar.astro";
+import PaperTexture1 from "@/assets/imgs/paper-texture-1.png";
+import Seesaw from "@/assets/imgs/seesaw.png";
+import Playground from "@/assets/imgs/playground.png";
+import Grass from "@/assets/imgs/grass.png";
+import BouquetStand from "@/assets/imgs/bouquet-stand.png";
+import FlowerPot1 from "@/assets/imgs/flower-pot-1.png";
+import FlowerPot2 from "@/assets/imgs/flower-pot-2.png";
 ---
 
 <Layout>
-  <ComingSoon />
+  <Navbar />
+  <section id="section-one">
+    <div class="section-one-wrapper">
+      <div class="horizontal-scroll">
+        <div class="background-container-wrapper">
+          <div class="background-container">
+            <Image src={Seesaw} alt="Seesaw" class="seesaw" />
+            <Image src={Playground} alt="Playground" class="playground" />
+            <Image src={Grass} alt="Grass" class="grass" />
+            <Image
+              src={BouquetStand}
+              alt="Bouquet Stand"
+              class="bouquet-stand"
+            />
+            <Image src={FlowerPot1} alt="Flower Pot 1" class="flower-pot-1" />
+            <Image src={FlowerPot2} alt="Flower Pot 2" class="flower-pot-2" />
+          </div>
+        </div>
+        <div class="first-screen">
+          <div class="text-container">
+            <h2>Bingkai Kasih</h2>
+            <p>
+              Bingkai Kasih akan mengeksplorasi interaksi penuh empati yang
+              merupakan pilar penting dalam konsep keluarga. Ruang ini tidak
+              hanya mempertemukan individu, tetapi juga merawat rasa memiliki
+              yang memperkuat hubungan antarsesama. Setiap keterlibatan menjadi
+              wujud nyata bahwa kebersamaan dapat dibangun melalui tindakan
+              sederhana yang penuh makna.
+            </p>
+          </div>
+        </div>
+        <div class="second-screen">
+          <div class="text-container">
+            <p>
+              Kegiatan yang akan dilakukan adalah membuat bento, menghias kue
+              mangkuk, dan merangkai bunga. Pelaksanaan kegiatan akan dikemas
+              secara hangat, dan pada akhirnya akan memberikan kesan yang dalam
+              kepada partisipan sebagai sebuah keluarga tanpa ikatan darah.
+              Harapannya dengan dilaksanakan kegiatan ini dapat memantik apa
+              arti keluarga menurut masing-masing individu.
+            </p>
+          </div>
+        </div>
+        <div class="third-screen">
+          <div class="text-container">
+            <h2>DAY 1: MERANGKAI BUNGA</h2>
+            <p>
+              Bunga sering menjadi simbol kasih—keindahan yang tumbuh dari
+              perhatian kecil dan kehangatan yang tulus. Melalui kegiatan
+              merangkai bunga, para partisipan diajak untuk menata keindahan
+              warna dan bentuk bunga dengan tangan mereka sendiri, seakan
+              menghadirkan kembali kenangan tentang kasih yang pernah mereka
+              berikan kepada keluarga, sahabat, dan orang-orang di sepanjang
+              perjalanan hidupnya. Dari rangkaian sederhana itu, kita diingatkan
+              bahwa kasih tidak pernah benar-benar hilang, ia tetap hidup dan
+              mekar dalam kenangan.
+            </p>
+          </div>
+        </div>
+        <div class="fourth-screen">
+          <div class="text-container">
+            <h2>DAY 2: MEMBUAT BENTO</h2>
+            <p>
+              Membuat bento menjadi ruang sederhana bagi partisipan untuk
+              merangkai makna pulang melalui bekal yang mereka susun bersama.
+              Kotak bento yang membingkai hidangan di dalamnya menjadi seperti
+              dinding rumah yang menghadirkan rasa aman. Sementara nasi, lauk,
+              dan sayur yang menemani di sampingnya menggambarkan berbagai
+              kehadiran yang saling melengkapi dan membuat sebuah rumah terasa
+              lebih hidup. Dari susunan sederhana itu, membuat bento menjadi
+              seperti menata tempat untuk berpulang—ruang hangat di mana setiap
+              unsur di dalamnya saling menjaga dan memberi rasa untuk kembali.
+            </p>
+          </div>
+        </div>
+      </div>
+      <Image src={PaperTexture1} alt="Paper Texture" class="paper-texture-1" />
+    </div>
+  </section>
 </Layout>
+
+<style>
+  #section-one {
+    position: relative;
+    height: 600dvh;
+  }
+
+  #section-one .section-one-wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    background-color: var(--color-white);
+  }
+
+  #section-one .horizontal-scroll {
+    --translate-x: 0px;
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100dvh;
+    transform: translate3d(var(--translate-x), 0, 0);
+    will-change: transform;
+  }
+
+  #section-one .background-container-wrapper {
+    position: absolute;
+    inset: 0;
+    width: 280dvw;
+    height: 100dvh;
+    z-index: 1;
+  }
+
+  #section-one .background-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  #section-one .first-screen,
+  #section-one .second-screen,
+  #section-one .third-screen,
+  #section-one .fourth-screen {
+    position: relative;
+    width: 100dvw;
+    height: 100dvh;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10dvw;
+    z-index: 3;
+  }
+
+  #section-one .first-screen h2,
+  #section-one .third-screen h2,
+  #section-one .fourth-screen h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-l);
+    color: var(--color-black);
+  }
+
+  #section-one .first-screen p,
+  #section-one .second-screen p,
+  #section-one .third-screen p,
+  #section-one .fourth-screen p {
+    font-family: var(--font-sans);
+    font-size: var(--text-s);
+    color: var(--color-black);
+  }
+
+  #section-one .text-container {
+    position: relative;
+    z-index: 4;
+    max-width: 70ch;
+    display: grid;
+    gap: 1rem;
+    text-align: center;
+    text-wrap-style: pretty;
+    padding: 1rem 1.25rem;
+  }
+  .paper-texture-1 {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100dvw;
+    max-width: none;
+    height: 100dvh;
+    overflow: hidden;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    opacity: 0.45;
+    filter: contrast(1.15) saturate(0.92);
+    aspect-ratio: 1.78 / 1;
+    transform: translate(-50%, 0%);
+    z-index: 5;
+  }
+
+  .seesaw {
+    position: absolute;
+    left: 8%;
+    bottom: -5%;
+    scale: 0.3;
+    width: auto;
+    max-width: none;
+    height: 36dvh;
+    object-fit: contain;
+    object-position: center;
+    z-index: 2;
+  }
+
+  .playground {
+    position: absolute;
+    left: -3%;
+    bottom: -15%;
+    scale: 0.5;
+    width: auto;
+    max-width: none;
+    height: 78dvh;
+    object-fit: contain;
+    object-position: center;
+    z-index: 2;
+  }
+
+  .grass {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: auto;
+    height: 16dvh;
+    max-width: none;
+    object-fit: contain;
+    object-position: left bottom;
+    z-index: 1;
+  }
+  .bouquet-stand {
+    position: absolute;
+    left: 30%;
+    bottom: 0%;
+    width: auto;
+    height: 45dvh;
+    max-width: none;
+    object-fit: contain;
+    object-position: center;
+    z-index: 2;
+  }
+  .flower-pot-1 {
+    position: absolute;
+    left: 45%;
+    bottom: 0%;
+    width: auto;
+    height: 20dvh;
+    max-width: none;
+    object-fit: contain;
+    object-position: center;
+    z-index: 2;
+  }
+
+  .flower-pot-2 {
+    position: absolute;
+    left: 50%;
+    bottom: 5%;
+    width: auto;
+    height: 20dvh;
+    max-width: none;
+    object-fit: contain;
+    object-position: center;
+    z-index: 2;
+  }
+
+  @media (min-width: 1024px) {
+    #section-one .first-screen h2,
+    #section-one .third-screen h2 {
+      font-size: var(--text-xl);
+    }
+    #section-one .first-screen p,
+    #section-one .second-screen p,
+    #section-one .third-screen p {
+      font-size: var(--text-m);
+    }
+    .seesaw,
+    .playground {
+      scale: 1;
+    }
+
+    .grass {
+      height: 22dvh;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const sectionOne = document.getElementById("section-one");
+    const horizontalScroll =
+      sectionOne?.querySelector<HTMLElement>(".horizontal-scroll");
+    const backgroundContainerWrapper = sectionOne?.querySelector<HTMLElement>(
+      ".background-container-wrapper"
+    );
+    const grass = sectionOne?.querySelector<HTMLImageElement>(".grass");
+    const screenPanels = sectionOne
+      ? Array.from(
+          sectionOne.querySelectorAll<HTMLElement>(
+            ".first-screen, .second-screen, .third-screen"
+          )
+        )
+      : [];
+
+    if (!(sectionOne && horizontalScroll && backgroundContainerWrapper)) {
+      return;
+    }
+
+    const easeInOutCubic = (t: number): number => {
+      return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+    };
+
+    const syncTrackWidth = () => {
+      const grassWidth = grass?.offsetWidth ?? 0;
+      const panelsWidth = screenPanels.reduce(
+        (totalWidth, panel) => totalWidth + panel.offsetWidth,
+        0
+      );
+      const trackWidth = Math.max(grassWidth, panelsWidth, window.innerWidth);
+
+      horizontalScroll.style.width = `${trackWidth}px`;
+      backgroundContainerWrapper.style.width = `${trackWidth}px`;
+
+      return trackWidth;
+    };
+
+    const updateHorizontalScroll = () => {
+      const sectionRect = sectionOne.getBoundingClientRect();
+      const sectionHeight = sectionOne.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      const maxVerticalScroll = sectionHeight - viewportHeight;
+      const trackWidth = syncTrackWidth();
+
+      if (maxVerticalScroll <= 0) {
+        horizontalScroll.style.setProperty("--translate-x", "0px");
+        return;
+      }
+
+      const scrollProgress = Math.max(
+        0,
+        Math.min(1, -sectionRect.top / maxVerticalScroll)
+      );
+
+      const easedProgress = easeInOutCubic(scrollProgress);
+      const maxHorizontalTranslate = Math.max(
+        trackWidth - window.innerWidth,
+        0
+      );
+
+      horizontalScroll.style.setProperty(
+        "--translate-x",
+        `${-maxHorizontalTranslate * easedProgress}px`
+      );
+    };
+
+    let scrollRafId: number | null = null;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (scrollRafId !== null) {
+          return;
+        }
+        scrollRafId = requestAnimationFrame(() => {
+          updateHorizontalScroll();
+          scrollRafId = null;
+        });
+      },
+      { passive: true }
+    );
+
+    let resizeRafId: number | null = null;
+    window.addEventListener("resize", () => {
+      if (resizeRafId !== null) {
+        cancelAnimationFrame(resizeRafId);
+      }
+      resizeRafId = requestAnimationFrame(() => {
+        updateHorizontalScroll();
+        resizeRafId = null;
+      });
+    });
+
+    if (grass && !grass.complete) {
+      grass.addEventListener("load", updateHorizontalScroll, { once: true });
+    }
+
+    updateHorizontalScroll();
+  })();
+</script>
