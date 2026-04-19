@@ -6,7 +6,7 @@ export const header = (): string => {
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="position: relative;">
             <tr>
               <td class="header-padding" valign="middle" align="left" style="padding: 20px 48px; position: relative; z-index: 2;">
-                <img src="https://tedxuniversitasbrawijaya.com/email/logo.png" alt="Logo TEDxUniversitasBrawijaya" width="228" height="60" style="display: block; width: 228px; max-width: 100%; height: 60px;" />
+                <img src="https://tedxuniversitasbrawijaya.com/email/logo.png" alt="Logo TEDxUniversitasBrawijaya" width="228" height="60" style="display: block; width: 228px; max-width: 100%; height: 60px; aspect-ratio: 3.78 / 1; object-fit: contain;" />
               </td>
               <td valign="top" align="right" style="padding: 0; position: absolute; bottom: 0; right: 0; z-index: 1;">
                 <img src="https://tedxuniversitasbrawijaya.com/email/chandelier-1.png" alt="Chandelier" width="165" height="162" style="display: block; width: 165px; max-width: 100%; height: 162px;" />
@@ -23,7 +23,7 @@ export const footer = (): string => {
   return `
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
       <tr>
-        <td class="footer-padding" style="padding: 16px 52px 80px 52px;">
+        <td class="footer-padding" style="padding: 16px 52px 80px 52px; background-color: #FFFDF7;">
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td width="24" valign="middle">
