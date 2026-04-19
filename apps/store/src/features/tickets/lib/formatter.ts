@@ -2,8 +2,7 @@ export const formatIdrCurrency = (amount: number) =>
   amount.toLocaleString("id-ID", {
     style: "currency",
     currency: "IDR",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
   });
 
 export const formatCountdownClock = (seconds: number) => {

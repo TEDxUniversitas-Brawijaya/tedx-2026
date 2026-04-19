@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@tedx-2026/ui/components/button";
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import {
@@ -36,7 +34,7 @@ export const TicketIdentificationStep = ({
   const maxQty =
     selectedProduct.stock === null
       ? 5
-      : Math.min(5, Math.max(1, selectedProduct.stock || 1));
+      : Math.min(5, Math.max(1, selectedProduct.stock));
 
   return (
     <div className="flex max-h-[80vh] flex-col gap-y-4 sm:gap-y-6">

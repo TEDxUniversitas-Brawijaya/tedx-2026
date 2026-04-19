@@ -8,6 +8,7 @@ import {
 import PaperTexture from "@/assets/imgs/paper-texture-1.png";
 import People from "@/assets/imgs/people.png";
 import Stage from "@/assets/imgs/stage.png";
+
 import "../styles/hero-section.css";
 
 export const TicketHeroStorySection = ({

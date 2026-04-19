@@ -1,50 +1,35 @@
-import type { MotionValue } from "motion/react";
 import { trpc } from "@/shared/lib/trpc";
 import { useQuery } from "@tanstack/react-query";
-import { TicketProductsSection } from "../components/ticket-products-section";
+import { TicketProductCard } from "../components/ticket-product-card";
 import { useTicketCheckoutStore } from "../stores/use-ticket-checkout-store";
-import type { TicketProduct } from "../types/ticket";
-import { TicketCheckoutModal } from "../components/checkout";
 
-const isRegularTicket = (product: TicketProduct) =>
-  product.type === "ticket_regular";
-const isBundlingTicket = (product: TicketProduct) =>
-  product.type === "ticket_bundle";
-
-export const TicketProductsContainer = ({
-  scrollProgress,
-}: {
-  scrollProgress: MotionValue<number>;
-}) => {
+export const TicketProductsContainer = () => {
   const { activeTab } = useTicketCheckoutStore();
   const { data, isLoading, isError } = useQuery(
     trpc.ticket.listProducts.queryOptions({})
   );
 
   if (isLoading) {
-    return <div className="bg-transparent" />;
+    // TODO: Add skeleton loader here
+    return null;
   }
 
   if (isError || !data) {
     return (
-      <section className="bg-transparent px-5 py-16 md:px-16">
-        <p className="font-sans-2 text-neutral-600">Gagal memuat tiket.</p>
+      <section className="px-5 py-16 md:px-16">
+        <p className="text-center font-sans-2 text-white">
+          Gagal memuat produk. Coba refresh halaman.
+        </p>
       </section>
     );
   }
 
-  const regularProducts = data.filter(isRegularTicket);
-  const bundlingProducts = data.filter(isBundlingTicket);
   const activeProducts =
-    activeTab === "regular" ? regularProducts : bundlingProducts;
+    activeTab === "regular"
+      ? data.filter((p) => p.type === "ticket_regular")
+      : data.filter((p) => p.type === "ticket_bundle");
 
-  return (
-    <>
-      <TicketProductsSection
-        products={activeProducts}
-        scrollProgress={scrollProgress}
-      />
-      <TicketCheckoutModal />
-    </>
-  );
+  return activeProducts.map((product) => (
+    <TicketProductCard key={product.id} product={product} />
+  ));
 };

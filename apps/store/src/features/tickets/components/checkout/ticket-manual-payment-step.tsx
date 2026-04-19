@@ -1,8 +1,10 @@
+import { Turnstile } from "@marsidev/react-turnstile";
+import { useStore } from "@tanstack/react-form";
 import { Button } from "@tedx-2026/ui/components/button";
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { Field, FieldError, FieldGroup } from "@tedx-2026/ui/components/field";
-import { useStore } from "@tanstack/react-form";
 import { useId } from "react";
+import { toast } from "sonner";
 import { useTicketManualPaymentForm } from "../../hooks/use-ticket-manual-payment-form";
 import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
 
@@ -100,6 +102,23 @@ export function TicketManualPaymentStep() {
               </form.Field>
             </FieldGroup>
           </form>
+
+          {/* CAPTCHA Widget */}
+          <div className="flex justify-center py-2">
+            <Turnstile
+              onError={() => {
+                form.setCaptchaToken(null);
+                toast.error("Verifikasi CAPTCHA gagal. Silakan coba lagi.");
+              }}
+              onExpire={() => form.setCaptchaToken(null)}
+              onSuccess={(token) => form.setCaptchaToken(token)}
+              options={{
+                theme: "light",
+              }}
+              ref={form.turnstileRef}
+              siteKey={import.meta.env.VITE_PUBLIC_TURNSTILE_SITE_KEY}
+            />
+          </div>
         </div>
 
         <div className="flex gap-2 sm:gap-3">
@@ -113,18 +132,16 @@ export function TicketManualPaymentStep() {
           </Button>
 
           <form.Subscribe>
-            {() => (
+            {(field) => (
               <Button
                 className="flex-1"
-                disabled={form.isSubmitting}
+                disabled={field.isSubmitting || !form.captchaToken}
                 form="ticket-order-form"
                 size="checkout"
                 type="submit"
                 variant="store-primary"
               >
-                {form.isSubmitting
-                  ? "Mengupload..."
-                  : "Upload Bukti Pembayaran"}
+                Upload Bukti Pembayaran
               </Button>
             )}
           </form.Subscribe>

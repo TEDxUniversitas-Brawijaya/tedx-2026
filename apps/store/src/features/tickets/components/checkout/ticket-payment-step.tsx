@@ -1,8 +1,8 @@
-import { useMemo } from "react";
 import { trpc } from "@/shared/lib/trpc";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@tedx-2026/ui/components/button";
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
+import { useMemo } from "react";
 import { toast } from "sonner";
 import { useCountdownSeconds } from "../../hooks/use-countdown-seconds";
 import { formatCountdownClock, formatIdrCurrency } from "../../lib/formatter";
@@ -14,10 +14,15 @@ type TicketPaymentStepProps = {
 };
 
 export const TicketPaymentStep = ({ order }: TicketPaymentStepProps) => {
-  const { onNextStep, closeCheckout } = useTicketCheckoutStore();
+  const { onNextStep } = useTicketCheckoutStore();
 
   const orderStatusQuery = useQuery(
-    trpc.ticket.getOrderStatus.queryOptions({ orderId: order.orderId })
+    trpc.ticket.getOrderStatus.queryOptions(
+      {
+        orderId: order.orderId,
+      },
+      { enabled: false }
+    )
   );
 
   const durationInSeconds = useMemo(() => {
@@ -44,8 +49,6 @@ export const TicketPaymentStep = ({ order }: TicketPaymentStepProps) => {
 
     onNextStep();
   };
-
-  const isQrisPayment = order.status === "pending_payment" && order.qrisUrl;
 
   return (
     <div className="flex min-h-0 flex-col overflow-hidden font-sans-2 sm:h-[94vh] sm:max-h-[84vh]">
@@ -81,59 +84,30 @@ export const TicketPaymentStep = ({ order }: TicketPaymentStepProps) => {
         )}
 
         <div className="flex justify-center pt-1 pb-0 sm:pt-1.5 sm:pb-0.5">
-          {isQrisPayment ? (
-            <div className="relative w-full max-w-44 overflow-hidden rounded-2xl bg-white p-2 shadow-2xl sm:max-w-52 sm:p-2.5">
-              <img
-                alt="QRIS"
-                className="mx-auto h-auto w-full object-contain"
-                height={360}
-                src={order.qrisUrl}
-                width={360}
-              />
-            </div>
-          ) : (
-            <div className="w-full text-center">
-              <p className="mb-4 font-sans-2 text-[#E0E0E0] text-sm">
-                Silakan lakukan pembayaran sesuai instruksi.
-              </p>
-              {order.uploadUrl && (
-                <a
-                  className="mx-auto block w-full max-w-sm rounded-xl border border-white/20 bg-white/5 p-4 font-sans-2 text-sm text-white hover:bg-white/10"
-                  href={order.uploadUrl}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Buka link upload bukti bayar
-                </a>
-              )}
-            </div>
-          )}
+          <div className="relative w-full max-w-44 overflow-hidden rounded-2xl bg-white p-2 shadow-2xl sm:max-w-52 sm:p-2.5">
+            <img
+              alt="QRIS"
+              className="mx-auto h-auto w-full object-contain"
+              height={360}
+              src={order.qrisUrl}
+              width={360}
+            />
+          </div>
         </div>
       </div>
 
       <div className="mt-auto bg-black pt-2.5 pb-2 sm:pb-3">
-        {order.status === "pending_payment" ? (
-          <Button
-            className="w-full"
-            disabled={orderStatusQuery.isFetching}
-            onClick={onCheckStatus}
-            size="checkout"
-            variant="store-primary"
-          >
-            {orderStatusQuery.isFetching
-              ? "Memeriksa..."
-              : "Cek Status Pembayaran"}
-          </Button>
-        ) : (
-          <Button
-            className="w-full"
-            onClick={closeCheckout}
-            size="checkout"
-            variant="store-primary"
-          >
-            Tutup
-          </Button>
-        )}
+        <Button
+          className="w-full"
+          disabled={orderStatusQuery.isFetching}
+          onClick={onCheckStatus}
+          size="checkout"
+          variant="store-primary"
+        >
+          {orderStatusQuery.isFetching
+            ? "Memeriksa..."
+            : "Cek Status Pembayaran"}
+        </Button>
       </div>
     </div>
   );

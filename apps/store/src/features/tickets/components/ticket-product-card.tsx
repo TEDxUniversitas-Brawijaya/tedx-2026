@@ -1,10 +1,9 @@
+import DoubleChair from "@/assets/imgs/double-chair.png";
+import SingleChair from "@/assets/imgs/single-chair.png";
 import { cn } from "@tedx-2026/ui/lib/utils";
 import { formatIdrCurrency } from "../lib/formatter";
 import { useTicketCheckoutStore } from "../stores/use-ticket-checkout-store";
 import type { TicketProduct } from "../types/ticket";
-import { getTicketDateLabel } from "./ticket-date-label";
-import SingleChair from "@/assets/imgs/single-chair.png";
-import DoubleChair from "@/assets/imgs/double-chair.png";
 
 type TicketProductCardProps = {
   product: TicketProduct;
@@ -53,9 +52,6 @@ export const TicketProductCard = ({ product }: TicketProductCardProps) => {
               {product.description}
             </p>
           )}
-          <p className="font-sans-2 text-sm text-white/60">
-            {getTicketDateLabel(product.id)}
-          </p>
           <p className="mt-3 font-sans-2 text-base text-white">
             {formatIdrCurrency(product.price)}
           </p>

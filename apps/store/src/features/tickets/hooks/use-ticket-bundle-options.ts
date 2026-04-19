@@ -6,6 +6,7 @@ export type TicketBundleOption = {
   label: string;
 };
 
+// What is this
 export const useTicketBundleOptions = (product: TicketProduct | null) => {
   return useMemo(() => {
     if (!product?.bundleItems) {

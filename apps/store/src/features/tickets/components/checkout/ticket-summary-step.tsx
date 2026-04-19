@@ -1,10 +1,12 @@
+import { trpc } from "@/shared/lib/trpc";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@tedx-2026/ui/components/button";
 import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { trpc } from "@/shared/lib/trpc";
-import { formatIdrCurrency } from "../../lib/formatter";
 import { isManualPayment } from "../../configs/payment";
+import { formatIdrCurrency } from "../../lib/formatter";
 import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
 import type { TicketBuyer, TicketProduct } from "../../types/ticket";
 
@@ -25,9 +27,18 @@ export const TicketSummaryStep = ({
     trpc.ticket.createOrder.mutationOptions()
   );
 
+  const turnstileRef = useRef<TurnstileInstance>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [idempotencyKey] = useState(() => crypto.randomUUID());
+
   const onSubmit = async () => {
     if (isManualPayment) {
       onNextStep();
+      return;
+    }
+
+    if (!captchaToken) {
+      toast.error("Mohon selesaikan verifikasi CAPTCHA terlebih dahulu.");
       return;
     }
 
@@ -38,8 +49,8 @@ export const TicketSummaryStep = ({
     formData.append("buyerEmail", buyer.buyerEmail);
     formData.append("phone", buyer.phone);
     formData.append("buyerInstansi", buyer.buyerInstansi);
-    formData.append("captchaToken", "dummy-captcha-token");
-    formData.append("idempotencyKey", new Date().toISOString());
+    formData.append("captchaToken", captchaToken);
+    formData.append("idempotencyKey", idempotencyKey);
 
     await createOrderMutation.mutateAsync(formData, {
       onSuccess: (response) => {
@@ -47,6 +58,10 @@ export const TicketSummaryStep = ({
         onNextStep();
       },
       onError: (error) => {
+        // Reset CAPTCHA on error
+        turnstileRef.current?.reset();
+        setCaptchaToken(null);
+
         toast.error(error.message || "Gagal membuat pesanan.");
       },
     });
@@ -128,6 +143,25 @@ export const TicketSummaryStep = ({
             </div>
           </div>
         </div>
+
+        {/* CAPTCHA Widget on this step only show on midtrans, captch for manual payment will show on manual payment step */}
+        {isManualPayment ? null : (
+          <div className="flex justify-center">
+            <Turnstile
+              onError={() => {
+                setCaptchaToken(null);
+                toast.error("Verifikasi CAPTCHA gagal. Silakan coba lagi.");
+              }}
+              onExpire={() => setCaptchaToken(null)}
+              onSuccess={(token) => setCaptchaToken(token)}
+              options={{
+                theme: "light",
+              }}
+              ref={turnstileRef}
+              siteKey={import.meta.env.VITE_PUBLIC_TURNSTILE_SITE_KEY}
+            />
+          </div>
+        )}
       </div>
 
       <div className="mt-8 flex gap-4">
@@ -142,7 +176,9 @@ export const TicketSummaryStep = ({
         </Button>
         <Button
           className="flex-1"
-          disabled={createOrderMutation.isPending}
+          disabled={
+            createOrderMutation.isPending || !(captchaToken || isManualPayment)
+          }
           onClick={onSubmit}
           size="checkout"
           variant="store-primary"

@@ -52,6 +52,11 @@ export type BundleItem =
             products: MerchProduct[];
           }
       )[];
+    }
+  | {
+      type: "merchandise_product";
+      productId: string;
+      product: MerchProduct;
     };
 
 export type TicketProduct = {
