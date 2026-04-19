@@ -42,8 +42,10 @@ const getById = protectedProcedure
   .input(getOrderByIdInputSchema)
   .output(getOrderByIdOutputSchema)
   .query(async ({ ctx, input }) => {
-    const order = await ctx.services.order.getOrderById(input.orderId);
-    const refund = await ctx.services.refund.getRefundByOrderId(input.orderId);
+    const [order, refund] = await Promise.all([
+      ctx.services.order.getOrderById(input.orderId),
+      ctx.services.refund.getRefundByOrderId(input.orderId),
+    ]);
 
     return {
       ...order,
@@ -86,7 +88,7 @@ const processRefund = protectedProcedure
     await ctx.services.order.processRefund(
       input.orderId,
       input.action,
-      input.reason,
+      input.reason ?? "",
       ctx.session.user.id
     );
   });
