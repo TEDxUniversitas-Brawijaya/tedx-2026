@@ -18,7 +18,7 @@ export const productsTable = sqliteTable(
     name: t.text().notNull(),
     description: t.text(),
     price: t.integer().notNull(), // IDR, no decimals
-    stock: t.integer(), // tickets only; null for merch (pre-order)
+    stock: t.integer(), // tickets only; null for merch (pre-order) and ticket bundles (stock is managed at the product level)
     isActive: t.integer({ mode: "boolean" }).default(true).notNull(), // active means visible on the storefront and can be purchased
     imageUrl: t.text(),
     category: t.text({
@@ -66,6 +66,10 @@ export const productsTable = sqliteTable(
                     | "hat";
                 }
             )[];
+          }
+        | {
+            type: "merchandise_product";
+            productId: string;
           }
       )[]
     >(),

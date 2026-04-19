@@ -10,7 +10,7 @@ export type CartItem = Product & {
   quantity: number;
   selectedVariants?: ProductVariant[];
   selectedBundleProducts?: (MerchProduct & {
-    category: MerchCategory;
+    category: MerchCategory | null; // null means it comes from a merchandise_product type bundle item, which doesn't have a category
     selectedVariants?: ProductVariant[];
   })[];
 };

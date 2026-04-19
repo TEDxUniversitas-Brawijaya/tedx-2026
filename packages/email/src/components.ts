@@ -2,13 +2,13 @@ export const header = (): string => {
   return `
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
       <tr>
-        <td style="background-color: #242424;">
+        <td class="header-bg" style="background-color: #242424;">
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="position: relative;">
             <tr>
-              <td valign="middle" align="left" style="padding: 20px 48px;">
-                <img src="https://tedxuniversitasbrawijaya.com/email/logo.png" alt="Logo TEDxUniversitasBrawijaya" width="228" height="60" style="display: block; width: 228px; max-width: 100%; height: 60px;" />
+              <td class="header-padding" valign="middle" align="left" style="padding: 20px 48px; position: relative; z-index: 2;">
+                <img src="https://tedxuniversitasbrawijaya.com/email/logo.png" alt="Logo TEDxUniversitasBrawijaya" width="228" height="60" style="display: block; width: 228px; max-width: 100%; height: 60px; aspect-ratio: 3.78 / 1; object-fit: contain;" />
               </td>
-              <td valign="top" align="right" style="padding: 0; position: absolute; bottom: 0; right: 0;">
+              <td valign="top" align="right" style="padding: 0; position: absolute; bottom: 0; right: 0; z-index: 1;">
                 <img src="https://tedxuniversitasbrawijaya.com/email/chandelier-1.png" alt="Chandelier" width="165" height="162" style="display: block; width: 165px; max-width: 100%; height: 162px;" />
               </td>
             </tr>
@@ -23,7 +23,7 @@ export const footer = (): string => {
   return `
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
       <tr>
-        <td style="padding: 16px 52px 80px 52px;">
+        <td class="footer-padding" style="padding: 16px 52px 80px 52px; background-color: #FFFDF7;">
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td width="24" valign="middle">
@@ -117,16 +117,16 @@ export const detailMerchOrderTable = (
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-bottom: 1px solid #C6C6C6; padding: 12px 0px;">
         <tr>
           <td width="40%" valign="middle" align="left">
-            <span style="font-size: 16px; text-align: left;">${item.name} ${item.variants ? `(${item.variants.map((v) => `${v.label}: ${v.value}`).join(", ")})` : ""}</span>
+            <span class="table-content" style="font-size: 16px; text-align: left;">${item.name} ${item.variants ? `(${item.variants.map((v) => `${v.label}: ${v.value}`).join(", ")})` : ""}</span>
           </td>
           <td width="20%" valign="middle" align="center">
-            <span style="font-size: 16px; text-align: center;">${price}</span>
+            <span class="table-content" style="font-size: 16px; text-align: center;">${price}</span>
           </td>
           <td width="20%" valign="middle" align="center">
-            <span style="font-size: 16px; text-align: center;">${item.quantity}</span>
+            <span class="table-content" style="font-size: 16px; text-align: center;">${item.quantity}</span>
           </td>
           <td width="20%" valign="middle" align="right">
-            <span style="font-size: 16px; text-align: right;">${totalPrice}</span>
+            <span class="table-content" style="font-size: 16px; text-align: right;">${totalPrice}</span>
           </td>
         </tr>
       </table>
@@ -142,16 +142,16 @@ export const detailMerchOrderTable = (
     });
 
   return `
-    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F2F2F2; border-radius: 12px; overflow: hidden; padding: 32px 24px 24px 24px;">
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" class="detail-box" style="background-color: #F2F2F2; border-radius: 12px; overflow: hidden; padding: 32px 24px 24px 24px;">
       <tr>
         <td>
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td align="left" width="50%" valign="middle">
-                <span style="font-size: 1.5rem">Detail Order</span>
+                <span class="detail-title" style="font-size: 1.5rem">Detail Order</span>
               </td>
               <td align="right" width="50%" valign="middle">
-                <span style="font-size: 1rem;">NO. PESANAN ${orderId}</span>
+                <span class="order-number" style="font-size: 1rem;">NO. PESANAN ${orderId}</span>
               </td>
             </tr>
           </table>
@@ -169,16 +169,16 @@ export const detailMerchOrderTable = (
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td width="40%" valign="middle" align="left">
-                <span style="font-weight: 600; font-size: 18px;">Produk</span>
+                <span class="table-header" style="font-weight: 600; font-size: 18px;">Produk</span>
               </td>
               <td width="20%" valign="middle" align="center">
-                <span style="font-weight: 600; font-size: 18px;">Harga Satuan</span>
+                <span class="table-header" style="font-weight: 600; font-size: 18px;">Harga Satuan</span>
               </td>
               <td width="20%" valign="middle" align="center">
-                <span style="font-weight: 600; font-size: 18px;">Jumlah</span>
+                <span class="table-header" style="font-weight: 600; font-size: 18px;">Jumlah</span>
               </td>
               <td width="20%" valign="middle" align="right">
-                <span style="font-weight: 600; font-size: 18px;">Total Harga</span>
+                <span class="table-header" style="font-weight: 600; font-size: 18px;">Total Harga</span>
               </td>
             </tr>
           </table>
@@ -227,16 +227,16 @@ export const detailTicketOrderTable = (
   });
 
   return `
-    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F2F2F2; border-radius: 12px; overflow: hidden; padding: 32px 24px 24px 24px;">
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" class="detail-box" style="background-color: #F2F2F2; border-radius: 12px; overflow: hidden; padding: 32px 24px 24px 24px;">
       <tr>
         <td>
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td align="left" width="50%" valign="middle">
-                <span style="font-size: 1.5rem">Detail Order</span>
+                <span class="detail-title" style="font-size: 1.5rem">Detail Order</span>
               </td>
               <td align="right" width="50%" valign="middle">
-                <span style="font-size: 1rem;">NO. PESANAN ${orderId}</span>
+                <span class="order-number" style="font-size: 1rem;">NO. PESANAN ${orderId}</span>
               </td>
             </tr>
           </table>
@@ -254,32 +254,32 @@ export const detailTicketOrderTable = (
         <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td width="40%" valign="middle" align="left">
-                <span style="font-weight: 600; font-size: 18px;">Produk</span>
+                <span class="table-header" style="font-weight: 600; font-size: 18px;">Produk</span>
               </td>
               <td width="20%" valign="middle" align="center">
-                <span style="font-weight: 600; font-size: 18px;">Harga Satuan</span>
+                <span class="table-header" style="font-weight: 600; font-size: 18px;">Harga Satuan</span>
               </td>
               <td width="20%" valign="middle" align="center">
-                <span style="font-weight: 600; font-size: 18px;">Jumlah</span>
+                <span class="table-header" style="font-weight: 600; font-size: 18px;">Jumlah</span>
               </td>
               <td width="20%" valign="middle" align="right">
-                <span style="font-weight: 600; font-size: 18px;">Total Harga</span>
+                <span class="table-header" style="font-weight: 600; font-size: 18px;">Total Harga</span>
               </td>
             </tr>
           </table>
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-bottom: 1px solid #C6C6C6; padding: 12px 0px;">
         <tr>
           <td width="40%" valign="middle" align="left">
-            <span style="font-size: 16px; text-align: left;">${ticket.name}</span>
+            <span class="table-content" style="font-size: 16px; text-align: left;">${ticket.name}</span>
           </td>
           <td width="20%" valign="middle" align="center">
-            <span style="font-size: 16px; text-align: center;">${price}</span>
+            <span class="table-content" style="font-size: 16px; text-align: center;">${price}</span>
           </td>
           <td width="20%" valign="middle" align="center">
-            <span style="font-size: 16px; text-align: center;">${ticket.quantity}</span>
+            <span class="table-content" style="font-size: 16px; text-align: center;">${ticket.quantity}</span>
           </td>
           <td width="20%" valign="middle" align="right">
-            <span style="font-size: 16px; text-align: right;">${totalPrice}</span>
+            <span class="table-content" style="font-size: 16px; text-align: right;">${totalPrice}</span>
           </td>
         </tr>
       </table>

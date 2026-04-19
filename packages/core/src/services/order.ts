@@ -398,7 +398,7 @@ export const createOrderServices = (
     const products = await ctx.productQueries.getProductsByIds(
       Array.from(productIds),
       {
-        status: "active",
+        status: "all",
       }
     );
     if (products.length !== productIds.size) {
@@ -499,6 +499,28 @@ export const createOrderServices = (
       const product = productMap.get(item.productId);
       if (!product) {
         continue;
+      }
+
+      if (!product.isActive) {
+        throw new AppError("BAD_REQUEST", "Some products are not active", {
+          details: {
+            productId: item.productId,
+            buyer,
+          },
+        });
+      }
+
+      if (product.price <= 0) {
+        throw new AppError(
+          "BAD_REQUEST",
+          "Some products are not available for purchase",
+          {
+            details: {
+              productId: item.productId,
+              buyer,
+            },
+          }
+        );
       }
 
       totalPrice += product.price * item.quantity;

@@ -31,17 +31,19 @@ const cdn = await R2Bucket("cdn", {
   domains:
     app.stage === "prod" ? ["cdn.tedxuniversitasbrawijaya.com"] : undefined,
   adopt: true,
-  devDomain: true,
+  devDomain: app.stage !== "prod",
   dev: {
-    remote: true,
+    remote: app.stage !== "prod",
   },
   cors: [
     {
       allowed: {
         origins: [
-          "https://*.tedxuniversitasbrawijaya.com",
-          "https://*.ahargunyllib.workers.dev",
+          "https://store.tedxuniversitasbrawijaya.com",
+          "https://dash.tedxuniversitasbrawijaya.com",
+          "https://tedxuniversitasbrawijaya.com",
           "http://localhost:5173",
+          "http://localhost:5174",
         ],
         methods: ["GET"],
         headers: ["*"],

@@ -14,7 +14,7 @@ const listProducts = publicProcedure
   .output(listMerchProductsOutputSchema)
   .query(async ({ ctx }) => {
     const products = await ctx.services.product.getMerchProducts({
-      status: "active",
+      status: "all",
     });
     return products;
   });

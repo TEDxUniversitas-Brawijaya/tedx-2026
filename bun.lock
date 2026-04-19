@@ -187,6 +187,7 @@
       },
       "devDependencies": {
         "@tedx-2026/tsconfig": "workspace:*",
+        "@tedx-2026/utils": "workspace:*",
         "drizzle-kit": "^0.31.10",
         "typescript": "catalog:",
       },

@@ -133,6 +133,20 @@ export const createProductServices = (
             };
           }
 
+          if (bundleItem.type === "merchandise_product") {
+            const product = productMapById.get(bundleItem.productId);
+            if (!product) {
+              throw new Error(
+                `Product with id ${bundleItem.productId} not found for merchandise_product bundle item`
+              );
+            }
+
+            return {
+              ...bundleItem,
+              product,
+            };
+          }
+
           throw new Error(`Unknown bundle item type: ${bundleItem}`);
         }),
       };

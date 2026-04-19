@@ -50,6 +50,11 @@ export type BundleItem =
             products: MerchProduct[];
           }
       )[];
+    }
+  | {
+      type: "merchandise_product";
+      productId: string;
+      product: MerchProduct;
     };
 
 export type Product = {
@@ -58,6 +63,7 @@ export type Product = {
   name: string;
   price: number;
   imageUrl: string | null;
+  isActive: boolean;
   variants: ProductVariant[] | null;
   category: MerchCategory | null;
   bundleItems: BundleItem[] | null;
