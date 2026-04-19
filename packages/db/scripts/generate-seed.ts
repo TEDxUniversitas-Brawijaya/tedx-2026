@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/style/noNonNullAssertion: TODO */
+import { createNanoIdWithPrefix } from "@tedx-2026/utils";
 import type { SQLiteTable } from "drizzle-orm/sqlite-core";
 import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -81,33 +83,32 @@ const configData: InsertConfig[] = [
   },
 ];
 
-// TODO: Add imageUrl
-const productsData: InsertProduct[] = [
-  // -- Ticket Regular --
+const regularProductData: InsertProduct[] = [
+  //#region Ticket
   {
-    id: "prod_tkt_p3d1",
+    id: createNanoIdWithPrefix("prod"),
     type: "ticket_regular",
     name: "Propaganda 3 Day 1",
     description: "Propaganda 3 - Day 1",
     price: 135_000,
-    stock: 100, // TODO
+    stock: 23,
     isActive: true,
     createdAt: now,
     updatedAt: now,
   },
   {
-    id: "prod_tkt_p3d2",
+    id: createNanoIdWithPrefix("prod"),
     type: "ticket_regular",
     name: "Propaganda 3 Day 2",
     description: "Propaganda 3 - Day 2",
-    price: 105_000, // TODO
-    stock: 100, // TODO
+    price: 105_000,
+    stock: 25,
     isActive: true,
     createdAt: now,
     updatedAt: now,
   },
   {
-    id: "prod_tkt_main",
+    id: createNanoIdWithPrefix("prod"),
     type: "ticket_regular",
     name: "Main Event",
     description: "Main Event",
@@ -117,34 +118,417 @@ const productsData: InsertProduct[] = [
     createdAt: now,
     updatedAt: now,
   },
+  //#endregion Ticket
 
-  // -- Ticket Bundle --
+  //#region Merchandise
   {
-    id: "prod_tkt_b_1",
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "T-shirt A",
+    description: "Ideas Change Everything",
+    price: 75_000,
+    isActive: true,
+    category: "t-shirt",
+    variants: [
+      // TODO
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+    ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/t-shirt/tshirt-1.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "T-shirt B",
+    description: "Curating Moment: Home is where the heart is.",
+    price: 75_000,
+    isActive: true,
+    category: "t-shirt",
+    variants: [
+      // TODO
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+    ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/t-shirt/tshirt-2.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "T-shirt C",
+    description: "Rooted Together at Home",
+    price: 75_000,
+    isActive: true,
+    category: "t-shirt",
+    variants: [
+      // TODO
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+    ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/t-shirt/tshirt-3.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Work Shirt A",
+    description: "Sometimes, home is where you feel whole",
+    price: 180_000,
+    isActive: true,
+    category: "workshirt",
+    variants: [
+      // TODO
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+    ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/workshirt/workshirt-1.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Work Shirt B",
+    description: "TEDxUniversitas Brawijaya",
+    price: 180_000,
+    isActive: true,
+    category: "workshirt",
+    variants: [
+      // TODO
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+    ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/workshirt/workshirt-2.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Work Shirt C",
+    description: "A House of My Own",
+    price: 180_000,
+    isActive: true,
+    category: "workshirt",
+    variants: [
+      // TODO
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+    ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/workshirt/workshirt-3.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Work Shirt D",
+    description: "TEDxUniversitas Brawijaya: Ideas Change Everything",
+    price: 180_000,
+    isActive: true,
+    category: "workshirt",
+    variants: [
+      // TODO
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
+      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+    ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/workshirt/workshirt-4.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Topi A",
+    description: "TEDx",
+    category: "hat",
+    price: 50_000, // TODO
+    isActive: false, // Price will be determined after sales start
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/hat/topi-1.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Topi B",
+    description: "TEDxUB",
+    category: "hat",
+    price: 50_000, // TODO
+    isActive: false, // Price will be determined after sales start
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/hat/topi-2.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Topi C",
+    description: "TEDxUniversitas Brawijaya",
+    category: "hat",
+    price: 50_000, // TODO
+    isActive: false, // Price will be determined after sales start
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/hat/topi-3.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Socks A",
+    description: "Home is where the heart is.",
+    category: "socks",
+    price: 18_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/socks/sock-1.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Socks B",
+    description: "TEDxUniversitas Brawijaya",
+    category: "socks",
+    price: 18_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/socks/sock-2.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Socks C",
+    description: "X",
+    category: "socks",
+    price: 18_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/socks/sock-3.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Keychain v1",
+    category: "keychain",
+    description: "Keychain v1",
+    price: 23_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/keychain/keychain-v1.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Keychain v2 A",
+    category: "keychain",
+    description: "Keychain v2 A",
+    price: 15_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/keychain/keychain-v2-a.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Keychain v2 B",
+    category: "keychain",
+    description: "Keychain v2 B",
+    price: 15_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/keychain/keychain-v2-b.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Keychain v2 C",
+    category: "keychain",
+    description: "Keychain v2 C",
+    price: 15_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/keychain/keychain-v2-c.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Keychain v2 D",
+    category: "keychain",
+    description: "Keychain v2 D",
+    price: 15_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/keychain/keychain-v2-d.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Keychain v2 E",
+    category: "keychain",
+    description: "Keychain v2 E",
+    price: 15_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/keychain/keychain-v2-e.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Keychain v2 F",
+    category: "keychain",
+    description: "Keychain v2 F",
+    price: 15_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/keychain/keychain-v2-f.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Keychain v2 G",
+    category: "keychain",
+    description: "Keychain v2 G",
+    price: 15_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/keychain/keychain-v2-g.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Keychain v2 H",
+    category: "keychain",
+    description: "Keychain v2 H",
+    price: 15_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/keychain/keychain-v2-h.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Stickers A",
+    category: "stickers",
+    description: "Stickers A",
+    price: 10_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/stickers/sticker-1.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: createNanoIdWithPrefix("prod"),
+    type: "merch_regular",
+    name: "Stickers B",
+    category: "stickers",
+    description: "Stickers B",
+    price: 10_000,
+    isActive: true,
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/stickers/sticker-2.png",
+    createdAt: now,
+    updatedAt: now,
+  },
+  //#endregion Merchandise
+];
+
+const bundlingProductsData: InsertProduct[] = [
+  //#region Ticket
+  {
+    id: createNanoIdWithPrefix("prod"),
     type: "ticket_bundle",
     name: "Bundling 1",
     description: "2 Day Pass Propaganda 3",
     price: 235_000,
-    stock: 50, // TODO
+    stock: null,
     isActive: true,
     bundleItems: [
-      { productId: "prod_tkt_p3d1", type: "ticket" },
-      { productId: "prod_tkt_p3d2", type: "ticket" },
+      {
+        productId: regularProductData.find(
+          (p) => p.name === "Propaganda 3 Day 1"
+        )!.id,
+        type: "ticket",
+      },
+      {
+        productId: regularProductData.find(
+          (p) => p.name === "Propaganda 3 Day 2"
+        )!.id,
+        type: "ticket",
+      },
     ],
     createdAt: now,
     updatedAt: now,
   },
   {
-    id: "prod_tkt_b_2",
+    id: createNanoIdWithPrefix("prod"),
     type: "ticket_bundle",
     name: "Bundling 2",
-    description: "Main Event + Merch Keychain",
-    price: 60_000, // TODO
-    stock: 60, // TODO
-    isActive: true,
+    description: "Main Event + Merch Keychain v1",
+    price: 0, // TODO
+    stock: null,
+    isActive: false, // TODO
     bundleItems: [
-      { productId: "prod_tkt_main", type: "ticket" },
-      { category: "keychain", type: "merchandise" },
+      {
+        productId: regularProductData.find((p) => p.name === "Main Event")!.id,
+        type: "ticket",
+      },
+      {
+        productId: regularProductData.find((p) => p.name === "Keychain v1")!.id,
+        type: "merchandise_product",
+      },
     ],
     createdAt: now,
     updatedAt: now,
@@ -154,11 +538,14 @@ const productsData: InsertProduct[] = [
     type: "ticket_bundle",
     name: "Bundling 3",
     description: "Main Event + Merch Socks",
-    price: 100_000, // TODO
-    stock: 50, // TODO
-    isActive: true,
+    price: 0, // TODO
+    stock: null,
+    isActive: false,
     bundleItems: [
-      { productId: "prod_tkt_main", type: "ticket" },
+      {
+        productId: regularProductData.find((p) => p.name === "Main Event")!.id,
+        type: "ticket",
+      },
       { category: "socks", type: "merchandise" },
     ],
     createdAt: now,
@@ -169,13 +556,13 @@ const productsData: InsertProduct[] = [
     type: "ticket_bundle",
     name: "Bundling 4",
     description: "Main Event + Merch Stickers",
-    price: 95_000, // TODO
-    stock: 40, // TODO
-    isActive: true,
+    price: 0, // TODO
+    stock: null, // TODO
+    isActive: false,
     bundleItems: [
       {
         type: "ticket",
-        productId: "prod_tkt_main",
+        productId: regularProductData.find((p) => p.name === "Main Event")!.id,
       },
       {
         type: "merchandise",
@@ -185,328 +572,43 @@ const productsData: InsertProduct[] = [
     createdAt: now,
     updatedAt: now,
   },
-
-  // -- Merch Regular --
-  {
-    id: "prod_m_tshirt_a",
-    type: "merch_regular",
-    name: "T-shirt A",
-    description: "2026 T-shirt A",
-    price: 75_000,
-    isActive: true,
-    category: "t-shirt",
-    variants: [
-      // TODO
-      { id: "var_ts_s", type: "size", label: "S" },
-      { id: "var_ts_m", type: "size", label: "M" },
-      { id: "var_ts_l", type: "size", label: "L" },
-      { id: "var_ts_xl", type: "size", label: "XL" },
-    ],
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_tshirt_b",
-    type: "merch_regular",
-    name: "T-shirt B",
-    description: "2026 T-shirt B",
-    price: 75_000,
-    isActive: true,
-    category: "t-shirt",
-    variants: [
-      // TODO
-      { id: "var_ts_s", type: "size", label: "S" },
-      { id: "var_ts_m", type: "size", label: "M" },
-      { id: "var_ts_l", type: "size", label: "L" },
-      { id: "var_ts_xl", type: "size", label: "XL" },
-    ],
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_tshirt_c",
-    type: "merch_regular",
-    name: "T-shirt C",
-    description: "2026 T-shirt C",
-    price: 75_000,
-    isActive: true,
-    category: "t-shirt",
-    variants: [
-      // TODO
-      { id: "var_ts_s", type: "size", label: "S" },
-      { id: "var_ts_m", type: "size", label: "M" },
-      { id: "var_ts_l", type: "size", label: "L" },
-      { id: "var_ts_xl", type: "size", label: "XL" },
-    ],
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_workshirt_black_a",
-    type: "merch_regular",
-    name: "Work Shirt Black A",
-    description: "Work Shirt Black A",
-    price: 180_000,
-    isActive: true,
-    category: "workshirt",
-    variants: [
-      // TODO
-      { id: "var_ws_s", type: "size", label: "S" },
-      { id: "var_ws_m", type: "size", label: "M" },
-      { id: "var_ws_l", type: "size", label: "L" },
-      { id: "var_ws_xl", type: "size", label: "XL" },
-    ],
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_workshirt_black_b",
-    type: "merch_regular",
-    name: "Work Shirt Black B",
-    description: "Work Shirt Black B",
-    price: 180_000,
-    isActive: true,
-    category: "workshirt",
-    variants: [
-      // TODO
-      { id: "var_ws_s", type: "size", label: "S" },
-      { id: "var_ws_m", type: "size", label: "M" },
-      { id: "var_ws_l", type: "size", label: "L" },
-      { id: "var_ws_xl", type: "size", label: "XL" },
-    ],
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_workshirt_maroon_a",
-    type: "merch_regular",
-    name: "Work Shirt Maroon A",
-    description: "Work Shirt Maroon A",
-    price: 180_000,
-    isActive: true,
-    category: "workshirt",
-    variants: [
-      // TODO
-      { id: "var_ws_s", type: "size", label: "S" },
-      { id: "var_ws_m", type: "size", label: "M" },
-      { id: "var_ws_l", type: "size", label: "L" },
-      { id: "var_ws_xl", type: "size", label: "XL" },
-    ],
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_workshirt_maroon_b",
-    type: "merch_regular",
-    name: "Work Shirt Maroon B",
-    description: "Work Shirt Maroon B",
-    price: 180_000,
-    isActive: true,
-    category: "workshirt",
-    variants: [
-      // TODO
-      { id: "var_ws_s", type: "size", label: "S" },
-      { id: "var_ws_m", type: "size", label: "M" },
-      { id: "var_ws_l", type: "size", label: "L" },
-      { id: "var_ws_xl", type: "size", label: "XL" },
-    ],
-    createdAt: now,
-    updatedAt: now,
-  },
-  // Commented since in figma there's only 2 maroon workshirts
-  // {
-  //   id: "prod_m_workshirt_maroon_c",
-  //   type: "merch_regular",
-  //   name: "Work Shirt Maroon C",
-  //   description: "Work Shirt Maroon C",
-  //   price: 180_000,
-  //   isActive: true,
-  //   category: "workshirt",
-  //   variants: [
-  //     // TODO
-  //     { id: "var_ws_s", type: "size", label: "S" },
-  //     { id: "var_ws_m", type: "size", label: "M" },
-  //     { id: "var_ws_l", type: "size", label: "L" },
-  //     { id: "var_ws_xl", type: "size", label: "XL" },
-  //   ],
-  //   createdAt: now,
-  //   updatedAt: now,
-  // },
-  {
-    id: "prod_m_topi_a",
-    type: "merch_regular",
-    name: "Topi A",
-    description: "Topi A",
-    category: "hat",
-    price: 50_000, // TODO
-    isActive: false, // Price will be determined after sales start
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_topi_b",
-    type: "merch_regular",
-    name: "Topi B",
-    description: "Topi B",
-    category: "hat",
-    price: 50_000, // TODO
-    isActive: false, // Price will be determined after sales start
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_topi_c",
-    type: "merch_regular",
-    name: "Topi C",
-    description: "Topi C",
-    category: "hat",
-    price: 50_000, // TODO
-    isActive: false, // Price will be determined after sales start
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_socks_a",
-    type: "merch_regular",
-    name: "Socks A",
-    description: "Socks A",
-    category: "socks",
-    price: 18_000,
-    isActive: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_socks_b",
-    type: "merch_regular",
-    name: "Socks B",
-    description: "Socks B",
-    category: "socks",
-    price: 18_000,
-    isActive: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_socks_c",
-    type: "merch_regular",
-    name: "Socks C",
-    description: "Socks C",
-    category: "socks",
-    price: 18_000,
-    isActive: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_keychain_v1_a",
-    type: "merch_regular",
-    name: "Keychain v1 A",
-    category: "keychain",
-    description: "Keychain v1 A",
-    price: 23_000,
-    isActive: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_keychain_v1_b",
-    type: "merch_regular",
-    name: "Keychain v1 B",
-    category: "keychain",
-    description: "Keychain v1 B",
-    price: 23_000,
-    isActive: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_keychain_v1_c",
-    type: "merch_regular",
-    name: "Keychain v1 C",
-    category: "keychain",
-    description: "Keychain v1 C",
-    price: 23_000,
-    isActive: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_keychain_v2_a",
-    type: "merch_regular",
-    name: "Keychain v2 A",
-    category: "keychain",
-    description: "Keychain v2 A",
-    price: 15_000,
-    isActive: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_keychain_v2_b",
-    type: "merch_regular",
-    name: "Keychain v2 B",
-    category: "keychain",
-    description: "Keychain v2 B",
-    price: 15_000,
-    isActive: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_sticker_a",
-    type: "merch_regular",
-    name: "Stickers A",
-    category: "stickers",
-    description: "Sticker A",
-    price: 10_000,
-    isActive: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "prod_m_sticker_b",
-    type: "merch_regular",
-    name: "Stickers B",
-    category: "stickers",
-    description: "Sticker B",
-    price: 10_000,
-    isActive: true,
-    createdAt: now,
-    updatedAt: now,
-  },
+  //#endregion Ticket
 
   // -- Merch Bundle --
   {
-    id: "prod_mb_a",
+    id: createNanoIdWithPrefix("prod"),
     type: "merch_bundle",
     name: "Bundling A",
     description: "T-Shirt + Topi",
-    price: 155_000, // TODO
+    price: 0, // TODO
     isActive: false,
     bundleItems: [
       { category: "t-shirt", type: "merchandise" },
       { category: "hat", type: "merchandise" },
     ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/bundling/bundling-a.png",
     createdAt: now,
     updatedAt: now,
   },
   {
-    id: "prod_mb_b",
+    id: createNanoIdWithPrefix("prod"),
     type: "merch_bundle",
     name: "Bundling B",
     description: "Workshirt + Topi",
-    price: 185_000, // TODO
+    price: 0, // TODO
     isActive: false,
     bundleItems: [
       { category: "workshirt", type: "merchandise" },
       { category: "hat", type: "merchandise" },
     ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/bundling/bundling-b.png",
     createdAt: now,
     updatedAt: now,
   },
   {
-    id: "prod_mb_c",
+    id: createNanoIdWithPrefix("prod"),
     type: "merch_bundle",
     name: "Bundling C",
     description: "T-Shirt + Socks",
@@ -516,11 +618,13 @@ const productsData: InsertProduct[] = [
       { category: "t-shirt", type: "merchandise" },
       { category: "socks", type: "merchandise" },
     ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/bundling/bundling-c.png",
     createdAt: now,
     updatedAt: now,
   },
   {
-    id: "prod_mb_d",
+    id: createNanoIdWithPrefix("prod"),
     type: "merch_bundle",
     name: "Bundling D",
     description: "Workshirt + Socks",
@@ -530,39 +634,45 @@ const productsData: InsertProduct[] = [
       { category: "workshirt", type: "merchandise" },
       { category: "socks", type: "merchandise" },
     ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/bundling/bundling-d.png",
     createdAt: now,
     updatedAt: now,
   },
   {
-    id: "prod_mb_e",
+    id: createNanoIdWithPrefix("prod"),
     type: "merch_bundle",
     name: "Bundling E",
     description: "Topi + Keychain",
-    price: 70_000, // TODO
+    price: 0, // TODO
     isActive: false,
     bundleItems: [
       { category: "hat", type: "merchandise" },
       { category: "keychain", type: "merchandise" },
     ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/bundling/bundling-e.png",
     createdAt: now,
     updatedAt: now,
   },
   {
-    id: "prod_mb_f",
+    id: createNanoIdWithPrefix("prod"),
     type: "merch_bundle",
     name: "Bundling F",
     description: "Topi + Stickers",
-    price: 70_000, // TODO
+    price: 0, // TODO
     isActive: false,
     bundleItems: [
       { category: "hat", type: "merchandise" },
       { category: "stickers", type: "merchandise" },
     ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/bundling/bundling-f.png",
     createdAt: now,
     updatedAt: now,
   },
   {
-    id: "prod_mb_G",
+    id: createNanoIdWithPrefix("prod"),
     type: "merch_bundle",
     name: "Bundling G",
     description: "Socks + Keychain v1 + Stickers",
@@ -570,9 +680,14 @@ const productsData: InsertProduct[] = [
     isActive: true,
     bundleItems: [
       { category: "socks", type: "merchandise" },
-      { productId: "prod_m_keychain_v1_a", type: "merchandise_product" },
+      {
+        productId: regularProductData.find((p) => p.name === "Keychain v1")!.id,
+        type: "merchandise_product",
+      },
       { category: "stickers", type: "merchandise" },
     ],
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/bundling/bundling-g.png",
     createdAt: now,
     updatedAt: now,
   },
@@ -653,7 +768,12 @@ async function generateSeedSQL(): Promise<void> {
   sections.push("");
 
   sections.push("-- Products");
-  sections.push(generateInsert(db, productsTable, productsData));
+  sections.push(
+    generateInsert(db, productsTable, [
+      ...regularProductData,
+      ...bundlingProductsData,
+    ])
+  );
   sections.push("");
 
   sections.push("-- Orders");
