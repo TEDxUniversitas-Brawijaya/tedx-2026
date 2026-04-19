@@ -17,6 +17,7 @@
     "seed": "bun run scripts/generate-seed.ts"
   },
   "devDependencies": {
+    "@tedx-2026/utils": "workspace:*",
     "@tedx-2026/tsconfig": "workspace:*",
     "drizzle-kit": "^0.31.10",
     "typescript": "catalog:"

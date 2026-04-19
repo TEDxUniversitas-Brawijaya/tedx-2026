@@ -27,6 +27,7 @@ export const listMerchProductsOutputSchema = z.array(
     category: productCategorySchema.nullable(),
     variants: z.array(productVariantSchema).nullable(),
     bundleItems: z.array(bundleItemSchema).nullable(),
+    isActive: z.boolean(),
   })
 );
 

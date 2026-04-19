@@ -135,6 +135,16 @@ export const bundleItemSchema = z.union([
       ])
     ),
   }),
+  z.object({
+    type: z.literal("merchandise_product"),
+    productId: z.string(),
+    product: z.object({
+      id: z.string(),
+      name: z.string(),
+      imageUrl: z.string().nullable(),
+      variants: z.array(productVariantSchema).nullable(),
+    }),
+  }),
 ]);
 
 // Snapshot variant (for order items)

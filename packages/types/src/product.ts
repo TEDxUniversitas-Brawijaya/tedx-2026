@@ -78,6 +78,22 @@ export type Product = {
                 }
             )[];
           }
+        | {
+            type: "merchandise_product";
+            productId: string;
+            product: {
+              id: string;
+              name: string;
+              imageUrl: string | null;
+              variants:
+                | {
+                    id: string; // e.g. var_x
+                    type: string; // e.g. size, color
+                    label: string; // e.g. M, Red
+                  }[]
+                | null;
+            };
+          }
       )[]
     | null;
   createdAt: Date;
