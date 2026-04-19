@@ -132,16 +132,19 @@ export function ProductCard({ product }: ProductCardProps) {
             <span className="truncate font-bold text-2xl text-black md:text-3xl">
               {name}
             </span>
-            <button
-              className="cursor-pointer text-black transition-transform hover:scale-110 active:scale-95"
-              onClick={onAddToCart}
-              type="button"
-            >
-              <PlusIcon className="size-8" />
-            </button>
+            {product.isActive && product.price > 0 && (
+              <button
+                className="cursor-pointer text-black transition-transform hover:scale-110 active:scale-95"
+                disabled={!product.isActive || product.price <= 0}
+                onClick={onAddToCart}
+                type="button"
+              >
+                <PlusIcon className="size-8" />
+              </button>
+            )}
           </div>
           <span className="text-[#8E8E8E] text-sm md:text-xl">
-            {formatIdrCurrency(price)}
+            {price <= 0 ? "TBA" : formatIdrCurrency(price)}
           </span>
         </div>
       </div>

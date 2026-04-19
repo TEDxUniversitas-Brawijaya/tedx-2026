@@ -63,6 +63,7 @@ export type Product = {
   name: string;
   price: number;
   imageUrl: string | null;
+  isActive: boolean;
   variants: ProductVariant[] | null;
   category: MerchCategory | null;
   bundleItems: BundleItem[] | null;
