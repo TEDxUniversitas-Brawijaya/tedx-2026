@@ -1,4 +1,9 @@
-import type { OrderQueries, ProductQueries, UserQueries } from "@tedx-2026/db";
+import type {
+  OrderQueries,
+  ProductQueries,
+  RefundQueries,
+  UserQueries,
+} from "@tedx-2026/db";
 import type { OrderOperations } from "@tedx-2026/kv";
 import type {
   File as CustomFile,
@@ -91,6 +96,7 @@ type CreateOrderServicesCtx = {
   emailServices: EmailServices;
 
   orderQueries: OrderQueries;
+  refundQueries: RefundQueries;
   userQueries: UserQueries;
   productQueries: ProductQueries;
 
@@ -715,6 +721,7 @@ export const createOrderServices = (
     return response;
   },
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor this function to reduce complexity
   processRefund: async (orderId, action, reason, processorId) => {
     const order = await ctx.orderQueries.getOrderById(orderId);
     if (!order) {
@@ -730,15 +737,47 @@ export const createOrderServices = (
       );
     }
 
+    const refundRequest =
+      await ctx.refundQueries.getRefundRequestByOrderId(orderId);
+
+    if (!refundRequest || refundRequest.status !== "requested") {
+      throw new AppError("BAD_REQUEST", "Refund request not found", {
+        details: {
+          orderId,
+          refundStatus: refundRequest?.status,
+        },
+      });
+    }
+
+    const processedAt = new Date().toISOString();
+
     if (action === "approve") {
+      await ctx.refundQueries.updateRefundRequest(refundRequest.id, {
+        status: "approved",
+        processedBy: processorId,
+        processedAt,
+        rejectionReason: null,
+      });
+
       await ctx.orderQueries.updateOrder(orderId, {
         status: "refunded",
-        verifiedBy: processorId,
-        verifiedAt: new Date().toISOString(),
       });
-      // TODO: Invalidate cache if any, send confirmation email based on action
+
+      // TODO: Queue refund confirmation email
+
       return;
     }
+
+    if (!reason) {
+      throw new AppError("BAD_REQUEST", "Rejection reason is required");
+    }
+
+    await ctx.refundQueries.updateRefundRequest(refundRequest.id, {
+      status: "rejected",
+      processedBy: processorId,
+      processedAt,
+      rejectionReason: reason,
+    });
 
     ctx.logger.info("Refund rejected", {
       orderId,
@@ -750,7 +789,7 @@ export const createOrderServices = (
     await ctx.orderQueries.updateOrder(orderId, {
       status: "paid",
     });
-    // TODO: Invalidate cache if any, send rejection email based on action
+    // TODO: Queue refund confirmation email
 
     return;
   },

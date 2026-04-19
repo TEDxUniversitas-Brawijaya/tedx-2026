@@ -7,10 +7,12 @@ import {
   createOrderServices,
   createPaymentServices,
   createProductServices,
+  createRefundServices,
   createUserServices,
   type FileServices,
   type OrderServices,
   type ProductServices,
+  type RefundServices,
   type UserServices,
 } from "@tedx-2026/core";
 import {
@@ -18,6 +20,7 @@ import {
   createDB,
   createOrderQueries,
   createProductQueries,
+  createRefundQueries,
   createUserQueries,
   type D1Database,
   type DB,
@@ -96,6 +99,7 @@ export const createContext = async ({
   const orderQueries = createOrderQueries(db);
   const configQueries = createConfigQueries(db);
   const productQueries = createProductQueries(db);
+  const refundQueries = createRefundQueries(db);
 
   const configServices = createConfigServices({
     ...baseContext,
@@ -158,10 +162,23 @@ export const createContext = async ({
     emailServices,
 
     orderQueries,
+    refundQueries,
     userQueries,
     productQueries,
 
     orderOperations,
+  });
+
+  const refundServices = createRefundServices({
+    ...baseContext,
+    logger: logger.child({ service: "refund" }),
+
+    configServices,
+    fileServices,
+
+    orderQueries,
+    refundQueries,
+    productQueries,
   });
 
   return {
@@ -174,6 +191,7 @@ export const createContext = async ({
       user: userServices,
       file: fileServices,
       order: orderServices,
+      refund: refundServices,
       product: productServices,
     },
   };
@@ -187,6 +205,7 @@ export type Context = {
     user: UserServices;
     file: FileServices;
     order: OrderServices;
+    refund: RefundServices;
     product: ProductServices;
   };
   waitUntil: (promise: Promise<unknown>) => void;

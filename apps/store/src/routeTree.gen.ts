@@ -13,6 +13,7 @@ import { Route as TicketsRouteImport } from './routes/tickets'
 import { Route as MerchandiseRouteImport } from './routes/merchandise'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RefundRefundTokenRouteImport } from './routes/refund.$refundToken'
 
 const TicketsRoute = TicketsRouteImport.update({
   id: '/tickets',
@@ -34,18 +35,25 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RefundRefundTokenRoute = RefundRefundTokenRouteImport.update({
+  id: '/refund/$refundToken',
+  path: '/refund/$refundToken',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/merchandise': typeof MerchandiseRoute
   '/tickets': typeof TicketsRoute
+  '/refund/$refundToken': typeof RefundRefundTokenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/merchandise': typeof MerchandiseRoute
   '/tickets': typeof TicketsRoute
+  '/refund/$refundToken': typeof RefundRefundTokenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,25 @@ export interface FileRoutesById {
   '/analytics': typeof AnalyticsRoute
   '/merchandise': typeof MerchandiseRoute
   '/tickets': typeof TicketsRoute
+  '/refund/$refundToken': typeof RefundRefundTokenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analytics' | '/merchandise' | '/tickets'
+  fullPaths:
+    | '/'
+    | '/analytics'
+    | '/merchandise'
+    | '/tickets'
+    | '/refund/$refundToken'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analytics' | '/merchandise' | '/tickets'
-  id: '__root__' | '/' | '/analytics' | '/merchandise' | '/tickets'
+  to: '/' | '/analytics' | '/merchandise' | '/tickets' | '/refund/$refundToken'
+  id:
+    | '__root__'
+    | '/'
+    | '/analytics'
+    | '/merchandise'
+    | '/tickets'
+    | '/refund/$refundToken'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +87,7 @@ export interface RootRouteChildren {
   AnalyticsRoute: typeof AnalyticsRoute
   MerchandiseRoute: typeof MerchandiseRoute
   TicketsRoute: typeof TicketsRoute
+  RefundRefundTokenRoute: typeof RefundRefundTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +120,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/refund/$refundToken': {
+      id: '/refund/$refundToken'
+      path: '/refund/$refundToken'
+      fullPath: '/refund/$refundToken'
+      preLoaderRoute: typeof RefundRefundTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +135,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnalyticsRoute: AnalyticsRoute,
   MerchandiseRoute: MerchandiseRoute,
   TicketsRoute: TicketsRoute,
+  RefundRefundTokenRoute: RefundRefundTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
