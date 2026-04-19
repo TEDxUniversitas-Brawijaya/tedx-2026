@@ -1,7 +1,10 @@
 import chandelier from "@/assets/imgs/chandelier-1.png";
-import textureBlack from "@/assets/imgs/texture-black.png";
 import { trpc } from "@/shared/lib/trpc";
-import { Dialog, DialogContent } from "@tedx-2026/ui/components/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogOverlay,
+} from "@tedx-2026/ui/components/dialog";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useRefundRequestForm } from "../hooks/use-refund-request-form";
@@ -47,25 +50,11 @@ export function RefundDialog({
       }}
       open={isOpen}
     >
+      <DialogOverlay className="bg-black/20 supports-backdrop-filter:backdrop-blur-none!" />
       <DialogContent
-        className="relative max-h-[92vh] w-[calc(100%-2rem)] max-w-107.5 overflow-y-auto overflow-x-hidden rounded-3xl border border-white/10 bg-[#262626]/90 p-6 text-white shadow-[0_0_65px_rgba(255,149,0,0.25)] backdrop-blur-sm *:data-[slot=dialog-close]:z-20 *:data-[slot=dialog-close]:bg-transparent *:data-[slot=dialog-close]:text-white sm:max-w-107.5 sm:p-7 md:w-full"
+        className="max-h-[92vh] w-[calc(100%-2rem)] max-w-107.5 overflow-y-auto overflow-x-hidden rounded-3xl border border-white/10 bg-[#262626]/90 p-6 text-white shadow-[0_0_65px_rgba(255,149,0,0.45)] backdrop-blur-sm *:data-[slot=dialog-close]:z-20 *:data-[slot=dialog-close]:bg-transparent *:data-[slot=dialog-close]:text-white sm:max-w-107.5 sm:p-7 md:w-full"
         showCloseButton={false}
       >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage: `url(${textureBlack})`,
-            backgroundPosition: "center",
-            backgroundRepeat: "repeat",
-            backgroundSize: "cover",
-          }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,102,20,0.08)_5%,rgba(0,0,0,0.95)_70%)]"
-        />
-
         <img
           alt="chandelier"
           aria-hidden

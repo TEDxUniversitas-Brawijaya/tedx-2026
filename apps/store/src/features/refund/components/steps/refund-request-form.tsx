@@ -208,7 +208,7 @@ export function RefundRequestForm({
 
             <DialogFooter className="mt-6 flex items-center justify-end gap-3 sm:flex-row sm:justify-end">
               <Button
-                className="rounded-xl py-1 text-black"
+                className="rounded-xl py-1 text-white"
                 disabled={isSubmitting}
                 onClick={() => setIsConfirmOpen(false)}
                 type="button"

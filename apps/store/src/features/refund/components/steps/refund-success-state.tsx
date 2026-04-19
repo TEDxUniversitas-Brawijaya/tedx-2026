@@ -6,35 +6,34 @@ type RefundSuccessStateProps = {
 
 export function RefundSuccessState({ onClose }: RefundSuccessStateProps) {
   return (
-    <div className="flex min-h-105 flex-col items-center justify-center text-center">
+    <div className="flex min-h-110 flex-col items-center justify-center space-y-9 text-center">
       <p className="text-7xl leading-none">
         <svg
-          aria-label="Success Icon"
           fill="none"
-          height="45"
-          role="img"
+          height="55"
           viewBox="0 0 75 55"
-          width="65"
+          width="75"
           xmlns="http://www.w3.org/2000/svg"
         >
+          <title>checklist</title>
           <path
-            d="M32.8462 55.0003L0 26.2309C1.19658 24.3506 2.39316 22.4702 3.58974 20.5899C12.5641 28.6241 21.5385 36.6583 30.5128 44.6925L69.8291 0L74.188 5.47L32.8462 55.0003Z"
+            d="M25.8875 54.6135L0 28.726L6.47188 22.2542L25.8875 41.6698L67.5573 0L74.0292 6.47188L25.8875 54.6135Z"
             fill="white"
           />
         </svg>
       </p>
 
-      <h2 className="mt-8 font-serif-2 text-[26px] text-white/50 leading-[0.8]">
-        REFUND DIPROSES
+      <h2 className="font-serif-2 text-[26px] text-white leading-[0.8]">
+        Terima Kasih
       </h2>
 
-      <p className="mt-6 max-w-sm font-sans-2 text-gray-300 text-sm italic">
-        Silahkan cek email yang kamu gunakan secara berkala untuk update info
-        pembatalan ya! Jika mengalami kendala silahkan hubungi instagram kami.
+      <p className="max-w-sm font-sans-2 text-gray-300 text-sm italic">
+        Pengajuan pengembalian dana kamu sedang kami proses. Silakan menunggu
+        informasi selanjutnya melalui email TEDxUniversitasBrawijaya.
       </p>
 
       <Button
-        className="mt-8 w-full rounded-lg"
+        className="w-full rounded-lg"
         onClick={onClose}
         variant="store-primary"
       >
