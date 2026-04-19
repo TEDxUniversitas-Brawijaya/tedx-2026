@@ -17,6 +17,8 @@ export const createEmailLayout = (
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="x-apple-disable-message-reformatting" />
   <meta name="format-detection" content="telephone=no,address=no,email=no,date=no" />
+  <meta name="color-scheme" content="light only" />
+  <meta name="supported-color-schemes" content="light" />
 
   <!--[if !mso]><!-->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -51,6 +53,48 @@ export const createEmailLayout = (
       color: #242424;
       background-color: #FFFDF7;
     }
+
+    /* Force light mode - override dark mode preferences */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #FFFDF7 !important;
+        color: #242424 !important;
+      }
+      .header-bg {
+        background-color: #242424 !important;
+      }
+      .detail-box {
+        background-color: #F2F2F2 !important;
+      }
+    }
+
+    /* Responsive padding and font sizes for mobile devices */
+    @media only screen and (max-width: 600px) {
+      .header-padding {
+        padding: 16px 20px !important;
+      }
+      .content-padding {
+        padding: 24px 20px 0 20px !important;
+      }
+      .footer-padding {
+        padding: 16px 20px 40px 20px !important;
+      }
+      .detail-box {
+        padding: 20px 16px !important;
+      }
+      .detail-title {
+        font-size: 1.25rem !important;
+      }
+      .order-number {
+        font-size: 0.875rem !important;
+      }
+      .table-header {
+        font-size: 14px !important;
+      }
+      .table-content {
+        font-size: 14px !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -63,7 +107,7 @@ export const createEmailLayout = (
       </td>
     </tr>
     <tr>
-      <td style="padding: 40px 52px 0px 52px;">
+      <td class="content-padding" style="padding: 40px 52px 0px 52px;">
         ${content}
       </td>
     </tr>
