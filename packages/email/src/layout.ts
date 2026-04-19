@@ -54,20 +54,6 @@ export const createEmailLayout = (
       background-color: #FFFDF7;
     }
 
-    /* Force light mode - override dark mode preferences */
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #FFFDF7 !important;
-        color: #242424 !important;
-      }
-      .header-bg {
-        background-color: #242424 !important;
-      }
-      .detail-box {
-        background-color: #F2F2F2 !important;
-      }
-    }
-
     /* Responsive padding and font sizes for mobile devices */
     @media only screen and (max-width: 600px) {
       .header-padding {
@@ -107,7 +93,7 @@ export const createEmailLayout = (
       </td>
     </tr>
     <tr>
-      <td class="content-padding" style="padding: 40px 52px 0px 52px;">
+      <td class="content-padding" style="padding: 40px 52px 0px 52px; background-color: #FFFDF7;">
         ${content}
       </td>
     </tr>
