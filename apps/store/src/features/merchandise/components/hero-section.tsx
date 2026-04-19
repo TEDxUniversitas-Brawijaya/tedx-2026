@@ -2,19 +2,14 @@ import { useIsMobile } from "@tedx-2026/ui/hooks/use-is-mobile";
 import { useMemo } from "react";
 import { useMerchScroll } from "../hooks/use-merch-scroll";
 
-const desktopPoints = [-0.08, 0, 0.1, 0.22, 0.4, 0.65, 1, 1.4] as const;
-
 const heroImages = [
-  "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&q=80&w=800",
+  "https://cdn.tedxuniversitasbrawijaya.com/merchandise/keychain/keychain-v1.png",
+  "https://cdn.tedxuniversitasbrawijaya.com/merchandise/workshirt/workshirt-2.png",
+  "https://cdn.tedxuniversitasbrawijaya.com/merchandise/socks/sock-3.png",
+  "https://cdn.tedxuniversitasbrawijaya.com/merchandise/hat/topi-2.png",
+  "https://cdn.tedxuniversitasbrawijaya.com/merchandise/t-shirt/tshirt-1.png",
+  "https://cdn.tedxuniversitasbrawijaya.com/merchandise/stickers/sticker-1.png",
 ];
-
-const FALLBACK_HERO_IMAGE =
-  "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=800";
 
 export const HeroSection = () => {
   const isMobile = useIsMobile();
@@ -28,9 +23,9 @@ export const HeroSection = () => {
 
     const activePoints = isMobile
       ? ([-0.8, 0, 0.8, 1.6, 2.4, 3.2, 4] as const)
-      : desktopPoints;
+      : ([-0.08, 0, 0.1, 0.22, 0.4, 0.65, 1] as const);
 
-    const cardCount = isMobile ? 6 : 7;
+    const cardCount = 6;
     const pointsCount = activePoints.length;
     const globalProgress = rawProgress % cardCount;
 
@@ -74,7 +69,7 @@ export const HeroSection = () => {
 
       return {
         id: index,
-        imageUrl: heroImages[index % heroImages.length] ?? FALLBACK_HERO_IMAGE,
+        imageUrl: heroImages[index % heroImages.length],
         isVisible,
         width: Math.max(width, 1),
         x,
@@ -115,8 +110,8 @@ export const HeroSection = () => {
                 }}
               >
                 <img
-                  alt="Merchandise product displaying local culture"
-                  className="h-full w-full object-cover"
+                  alt={`Merchandise product displaying ${card.id}`}
+                  className="h-full w-full object-cover text-black"
                   decoding="async"
                   draggable={false}
                   height={800}

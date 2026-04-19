@@ -6,30 +6,48 @@ export const CATEGORIES = [
     title: "T-SHIRT",
     prev: "BUNDLING",
     next: "WORKSHIRT",
-    imageUrl: "",
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/showcase/shirt-showcase.png",
   },
   {
     id: "workshirt",
     title: "WORKSHIRT",
     prev: "T-SHIRT",
     next: "HAT",
-    imageUrl: "",
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/showcase/workshirt-showcase.png",
   },
-  { id: "hat", title: "HAT", prev: "WORKSHIRT", next: "SOCKS", imageUrl: "" },
-  { id: "socks", title: "SOCKS", prev: "HAT", next: "STICKERS", imageUrl: "" },
+  {
+    id: "hat",
+    title: "HAT",
+    prev: "WORKSHIRT",
+    next: "SOCKS",
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/showcase/hat-showcase.png",
+  },
+  {
+    id: "socks",
+    title: "SOCKS",
+    prev: "HAT",
+    next: "STICKERS",
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/showcase/socks-showcase.png",
+  },
   {
     id: "stickers",
     title: "STICKERS",
     prev: "SOCKS",
     next: "BUNDLING",
-    imageUrl: "",
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/showcase/sticker-showcase.png",
   },
   {
     id: "bundling",
     title: "BUNDLING",
     prev: "STICKERS",
     next: "T-SHIRT",
-    imageUrl: "",
+    imageUrl:
+      "https://cdn.tedxuniversitasbrawijaya.com/merchandise/showcase/bundling-showcase.png",
   },
 ] as const;
 
