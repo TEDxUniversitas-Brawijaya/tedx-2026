@@ -10,7 +10,6 @@ import { useState } from "react";
 import { useRefundRequestForm } from "../hooks/use-refund-request-form";
 import { RefundRequestForm } from "./steps/refund-request-form";
 import { RefundRequestFormSkeleton } from "./steps/refund-request-form-skeleton";
-import { RefundSuccessState } from "./steps/refund-success-state";
 
 export function RefundDialog({
   refundToken,
@@ -66,16 +65,13 @@ export function RefundDialog({
 
         <div className="relative z-2">
           {orderInfoQuery.isLoading && <RefundRequestFormSkeleton />}
-          {!(hasSubmitted || orderInfoQuery.isLoading) &&
-            orderInfoQuery.data && (
-              <RefundRequestForm
-                form={form}
-                onClose={() => onOpenChange(false)}
-                orderInfo={orderInfoQuery.data}
-              />
-            )}
-          {hasSubmitted && (
-            <RefundSuccessState onClose={() => onOpenChange(false)} />
+          {!orderInfoQuery.isLoading && orderInfoQuery.data && (
+            <RefundRequestForm
+              form={form}
+              isSuccess={hasSubmitted}
+              onClose={() => onOpenChange(false)}
+              orderInfo={orderInfoQuery.data}
+            />
           )}
         </div>
       </DialogContent>
