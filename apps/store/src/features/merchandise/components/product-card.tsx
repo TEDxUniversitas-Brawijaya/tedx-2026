@@ -114,7 +114,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {imageUrl ? (
           <img
             alt={name}
-            className="h-full w-full object-cover opacity-45 transition-all duration-300"
+            className="h-full w-full object-cover transition-all duration-300"
             height={400}
             loading="lazy"
             src={imageUrl}
@@ -132,16 +132,14 @@ export function ProductCard({ product }: ProductCardProps) {
             <span className="truncate font-bold text-2xl text-black md:text-3xl">
               {name}
             </span>
-            {product.isActive && product.price > 0 && (
-              <button
-                className="cursor-pointer text-black transition-transform hover:scale-110 active:scale-95"
-                disabled={!product.isActive || product.price <= 0}
-                onClick={onAddToCart}
-                type="button"
-              >
-                <PlusIcon className="size-8" />
-              </button>
-            )}
+            <button
+              className="cursor-pointer text-black transition-transform hover:scale-110 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+              disabled={!product.isActive || product.price <= 0}
+              onClick={onAddToCart}
+              type="button"
+            >
+              <PlusIcon className="size-8" />
+            </button>
           </div>
           <span className="text-[#8E8E8E] text-sm md:text-xl">
             {price <= 0 ? "TBA" : formatIdrCurrency(price)}
