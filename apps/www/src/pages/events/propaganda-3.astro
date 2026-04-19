@@ -105,12 +105,13 @@ import Picnic from "@/assets/imgs/picnic.png";
               >
                 Baca Guidebook
               </button>
-              <button
-                type="button"
+
+              <a
+                href="https://store.tedxuniversitasbrawijaya.com/tickets"
                 class="guidebook-button guidebook-button-ticket"
               >
                 Buy ticket Pre Event
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -138,19 +139,19 @@ import Picnic from "@/assets/imgs/picnic.png";
   }
 
   #section-one .horizontal-scroll {
-    --translate-x: 0dvw;
+    --translate-x: 0px;
     position: relative;
     display: flex;
     width: 100%;
     height: 100dvh;
-    transform: translate(var(--translate-x), 0%);
+    transform: translate3d(var(--translate-x), 0, 0);
     will-change: transform;
   }
 
   #section-one .background-container-wrapper {
     position: absolute;
     inset: 0;
-    width: 980dvw;
+    width: calc((var(--max-horizontal-scroll-vw) + 100) * 1dvw);
     height: 100dvh;
     z-index: 1;
   }
@@ -174,7 +175,6 @@ import Picnic from "@/assets/imgs/picnic.png";
     z-index: 3;
   }
 
-  #section-one .second-screen,
   #section-one .third-screen,
   #section-one .fourth-screen,
   #section-one .fifth-screen {
@@ -203,7 +203,6 @@ import Picnic from "@/assets/imgs/picnic.png";
   }
 
   #section-one .first-screen p,
-  #section-one .second-screen p,
   #section-one .third-screen p,
   #section-one .fourth-screen p {
     font-family: var(--font-sans);
@@ -228,10 +227,10 @@ import Picnic from "@/assets/imgs/picnic.png";
     padding-left: 10dvw;
   }
   #section-one .third-screen {
-    transform: translateX(135dvw);
+    transform: translateX(40dvw);
   }
   #section-one .fourth-screen {
-    transform: translateX(228dvw);
+    transform: translateX(250dvw);
   }
   #section-one .fifth-screen {
     padding-inline: clamp(1rem, 7dvw, 5rem);
@@ -265,6 +264,9 @@ import Picnic from "@/assets/imgs/picnic.png";
   }
 
   #section-one .guidebook-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 70%;
     border: none;
     border-radius: 8px;
@@ -275,6 +277,8 @@ import Picnic from "@/assets/imgs/picnic.png";
     cursor: pointer;
     padding: 0.9rem 0.5rem;
     transition: transform 180ms ease;
+    text-align: center;
+    text-decoration: none;
   }
 
   #section-one .guidebook-button:hover {
@@ -313,9 +317,7 @@ import Picnic from "@/assets/imgs/picnic.png";
   .picnic {
     z-index: 2;
   }
-  .grass {
-    z-index: 1;
-  }
+
   .seesaw {
     position: absolute;
     left: 8%;
@@ -326,8 +328,8 @@ import Picnic from "@/assets/imgs/picnic.png";
 
   .playground {
     position: absolute;
-    left: 0%;
-    bottom: 0%;
+    left: 0;
+    bottom: 0;
     height: auto;
     width: clamp(305px, 40dvw, 470px);
     object-fit: contain;
@@ -338,9 +340,9 @@ import Picnic from "@/assets/imgs/picnic.png";
     position: absolute;
     left: 0;
     bottom: 0;
-    max-width: none;
     width: clamp(2400px, 700dvw, 4900px);
     height: auto;
+    z-index: 1;
   }
   .bouquet-stand {
     position: absolute;
@@ -367,7 +369,7 @@ import Picnic from "@/assets/imgs/picnic.png";
 
   .tree {
     position: absolute;
-    left: 45%;
+    left: 60%;
     bottom: 7%;
     width: clamp(280px, 100dvw, 500px);
     height: auto;
@@ -375,10 +377,10 @@ import Picnic from "@/assets/imgs/picnic.png";
 
   .picnic {
     position: absolute;
-    left: 55%;
+    left: 73%;
     bottom: 5%;
     height: auto;
-    width: clamp(300px, 10dvw, 500px);
+    width: clamp(300px, 30dvw, 500px);
   }
 
   @keyframes guidebook-float {
@@ -393,12 +395,67 @@ import Picnic from "@/assets/imgs/picnic.png";
     }
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) and (max-width: 1199px) {
+    #section-one {
+      --max-horizontal-scroll-vw: 415;
+    }
+    #section-one .first-screen {
+      width: 180dvw;
+      gap: 2.5rem;
+    }
+
+    #section-one .first-screen .text-container:first-child {
+      margin-right: 10dvw;
+      margin-left: 5dvw;
+    }
+
+    #section-one .third-screen {
+      transform: translateX(10dvw);
+    }
+    #section-one .fourth-screen {
+      transform: translateX(90dvw);
+    }
+    #section-one .fifth-screen {
+      transform: translateX(clamp(80dvw, 90dvw, 100dvw));
+    }
+
+    .seesaw {
+      left: 9%;
+      bottom: 7%;
+      width: clamp(174px, 25dvw, 269px);
+    }
+    .playground {
+      left: 1%;
+      bottom: 2%;
+      width: clamp(305px, 40dvw, 470px);
+    }
+    .bouquet-stand {
+      left: 32%;
+      bottom: 3%;
+      width: clamp(369px, 55dvw, 631px);
+    }
+    .flower-pot-1 {
+      left: 43%;
+      bottom: 7%;
+      width: clamp(129px, 20dvw, 200px);
+    }
+    .flower-pot-2 {
+      left: 48%;
+      bottom: 6%;
+      width: clamp(108px, 15dvw, 200px);
+    }
+    .tree {
+      width: clamp(200px, 100dvw, 400px);
+    }
+    .picnic {
+      left: 74%;
+      width: clamp(300px, 50dvw, 500px);
+    }
+  }
+
+  @media (min-width: 1200px) {
     #section-one {
       --max-horizontal-scroll-vw: 200;
-    }
-    #section-one .background-container-wrapper {
-      width: 275dvw;
     }
     #section-one .first-screen {
       flex-direction: column;
@@ -410,7 +467,6 @@ import Picnic from "@/assets/imgs/picnic.png";
       font-size: var(--text-xl);
     }
     #section-one .first-screen p,
-    #section-one .second-screen p,
     #section-one .third-screen p,
     #section-one .fourth-screen p {
       font-size: var(--text-m);
@@ -431,11 +487,11 @@ import Picnic from "@/assets/imgs/picnic.png";
     }
     #section-one .third-screen {
       width: 63dvw;
-      transform: translateX(25dvw);
+      transform: translateX(30dvw);
     }
     #section-one .fourth-screen {
       width: 64dvw;
-      transform: translateX(40dvw);
+      transform: translateX(45dvw);
     }
     #section-one .fifth-screen {
       padding-inline: clamp(1rem, 7dvw, 5rem);
@@ -463,11 +519,11 @@ import Picnic from "@/assets/imgs/picnic.png";
       bottom: 7%;
     }
     .tree {
-      left: 56%;
-      bottom: 14%;
+      left: 54%;
+      bottom: 10%;
     }
     .picnic {
-      left: 73%;
+      left: 66%;
       bottom: 5%;
     }
   }
@@ -477,74 +533,28 @@ import Picnic from "@/assets/imgs/picnic.png";
   (() => {
     const sectionOne = document.getElementById("section-one");
     const horizontalScroll = document.getElementById("horizontal-scroll");
+    const backgroundContainerWrapper = sectionOne?.querySelector<HTMLElement>(
+      ".background-container-wrapper"
+    );
 
-    if (!(sectionOne && horizontalScroll)) {
+    if (!(sectionOne && horizontalScroll && backgroundContainerWrapper)) {
       return;
-    }
-
-    function transform(
-      x: number,
-      input: number[],
-      output: number[],
-      easing: (t: number) => number = (t) => t
-    ) {
-      const firstInput = input[0];
-      const lastInput = input.at(-1);
-      const lastOutput = output.at(-1);
-
-      if (
-        !(
-          firstInput !== undefined &&
-          lastInput !== undefined &&
-          lastOutput !== undefined
-        )
-      ) {
-        return 0;
-      }
-
-      const clampedX = Math.max(firstInput, Math.min(lastInput, x));
-
-      for (let i = 0; i < input.length - 1; i++) {
-        const currentInput = input[i];
-        const nextInput = input[i + 1];
-
-        const currentOutput = output[i];
-        const nextOutput = output[i + 1];
-
-        if (
-          !(
-            currentInput !== undefined &&
-            nextInput !== undefined &&
-            currentOutput !== undefined &&
-            nextOutput !== undefined
-          )
-        ) {
-          continue;
-        }
-
-        if (clampedX >= currentInput && clampedX <= nextInput) {
-          const localProgress =
-            (clampedX - currentInput) / (nextInput - currentInput);
-          const easedProgress = easing(localProgress);
-
-          return currentOutput + easedProgress * (nextOutput - currentOutput);
-        }
-      }
-
-      return lastOutput;
     }
 
     const easeInOutCubic = (t: number): number => {
       return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
     };
 
-    const getMaxHorizontalScrollVw = () => {
-      const value = Number.parseFloat(
-        getComputedStyle(sectionOne).getPropertyValue(
-          "--max-horizontal-scroll-vw"
-        )
-      );
-      return Number.isFinite(value) ? Math.max(value, 0) : 0;
+    const getMaxHorizontalTranslatePx = () => {
+      const trackWidth =
+        backgroundContainerWrapper.getBoundingClientRect().width + 500;
+      const viewportWidth = sectionOne.clientWidth || window.innerWidth;
+
+      if (!(Number.isFinite(trackWidth) && Number.isFinite(viewportWidth))) {
+        return 0;
+      }
+
+      return Math.max(trackWidth - viewportWidth, 0);
     };
 
     const updateHorizontalScroll = () => {
@@ -554,7 +564,7 @@ import Picnic from "@/assets/imgs/picnic.png";
       const maxVerticalScroll = sectionHeight - viewportHeight;
 
       if (maxVerticalScroll <= 0) {
-        horizontalScroll.style.setProperty("--translate-x", "0dvw");
+        horizontalScroll.style.setProperty("--translate-x", "0px");
         return;
       }
 
@@ -563,16 +573,12 @@ import Picnic from "@/assets/imgs/picnic.png";
         Math.min(1, -sectionRect.top / maxVerticalScroll)
       );
 
-      const maxHorizontalScrollVw = getMaxHorizontalScrollVw();
-      const horizontalScrollX = transform(
-        scrollProgress,
-        [0, 1],
-        [0, -maxHorizontalScrollVw],
-        easeInOutCubic
-      );
+      const maxHorizontalTranslatePx = getMaxHorizontalTranslatePx();
+      const horizontalScrollX =
+        -maxHorizontalTranslatePx * easeInOutCubic(scrollProgress);
       horizontalScroll.style.setProperty(
         "--translate-x",
-        `${horizontalScrollX}dvw`
+        `${horizontalScrollX}px`
       );
     };
 
