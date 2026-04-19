@@ -86,7 +86,7 @@ const configData: InsertConfig[] = [
 const regularProductData: InsertProduct[] = [
   //#region Ticket
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "ticket_regular",
     name: "Propaganda 3 Day 1",
     description: "Propaganda 3 - Day 1",
@@ -97,7 +97,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "ticket_regular",
     name: "Propaganda 3 Day 2",
     description: "Propaganda 3 - Day 2",
@@ -108,7 +108,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "ticket_regular",
     name: "Main Event",
     description: "Main Event",
@@ -122,7 +122,7 @@ const regularProductData: InsertProduct[] = [
 
   //#region Merchandise
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "T-shirt A",
     description: "Ideas Change Everything",
@@ -131,10 +131,14 @@ const regularProductData: InsertProduct[] = [
     category: "t-shirt",
     variants: [
       // TODO
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XL",
+      },
     ],
     imageUrl:
       "https://cdn.tedxuniversitasbrawijaya.com/merchandise/t-shirt/tshirt-1.png",
@@ -142,7 +146,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "T-shirt B",
     description: "Curating Moment: Home is where the heart is.",
@@ -151,10 +155,14 @@ const regularProductData: InsertProduct[] = [
     category: "t-shirt",
     variants: [
       // TODO
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XL",
+      },
     ],
     imageUrl:
       "https://cdn.tedxuniversitasbrawijaya.com/merchandise/t-shirt/tshirt-2.png",
@@ -162,7 +170,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "T-shirt C",
     description: "Rooted Together at Home",
@@ -171,10 +179,14 @@ const regularProductData: InsertProduct[] = [
     category: "t-shirt",
     variants: [
       // TODO
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XL",
+      },
     ],
     imageUrl:
       "https://cdn.tedxuniversitasbrawijaya.com/merchandise/t-shirt/tshirt-3.png",
@@ -182,7 +194,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Work Shirt A",
     description: "Sometimes, home is where you feel whole",
@@ -191,10 +203,14 @@ const regularProductData: InsertProduct[] = [
     category: "workshirt",
     variants: [
       // TODO
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XL",
+      },
     ],
     imageUrl:
       "https://cdn.tedxuniversitasbrawijaya.com/merchandise/workshirt/workshirt-1.png",
@@ -202,7 +218,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Work Shirt B",
     description: "TEDxUniversitas Brawijaya",
@@ -211,10 +227,14 @@ const regularProductData: InsertProduct[] = [
     category: "workshirt",
     variants: [
       // TODO
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XL",
+      },
     ],
     imageUrl:
       "https://cdn.tedxuniversitasbrawijaya.com/merchandise/workshirt/workshirt-2.png",
@@ -222,7 +242,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Work Shirt C",
     description: "A House of My Own",
@@ -231,10 +251,14 @@ const regularProductData: InsertProduct[] = [
     category: "workshirt",
     variants: [
       // TODO
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XL",
+      },
     ],
     imageUrl:
       "https://cdn.tedxuniversitasbrawijaya.com/merchandise/workshirt/workshirt-3.png",
@@ -242,7 +266,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Work Shirt D",
     description: "TEDxUniversitas Brawijaya: Ideas Change Everything",
@@ -251,10 +275,14 @@ const regularProductData: InsertProduct[] = [
     category: "workshirt",
     variants: [
       // TODO
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "S" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "M" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "L" },
-      { id: createNanoIdWithPrefix("var"), type: "size", label: "XL" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
+      { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XL",
+      },
     ],
     imageUrl:
       "https://cdn.tedxuniversitasbrawijaya.com/merchandise/workshirt/workshirt-4.png",
@@ -262,7 +290,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Topi A",
     description: "TEDx",
@@ -275,7 +303,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Topi B",
     description: "TEDxUB",
@@ -288,7 +316,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Topi C",
     description: "TEDxUniversitas Brawijaya",
@@ -301,7 +329,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Socks A",
     description: "Home is where the heart is.",
@@ -314,7 +342,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Socks B",
     description: "TEDxUniversitas Brawijaya",
@@ -327,7 +355,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Socks C",
     description: "X",
@@ -340,7 +368,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Keychain v1",
     category: "keychain",
@@ -353,7 +381,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Keychain v2 A",
     category: "keychain",
@@ -366,7 +394,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Keychain v2 B",
     category: "keychain",
@@ -379,7 +407,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Keychain v2 C",
     category: "keychain",
@@ -392,7 +420,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Keychain v2 D",
     category: "keychain",
@@ -405,7 +433,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Keychain v2 E",
     category: "keychain",
@@ -418,7 +446,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Keychain v2 F",
     category: "keychain",
@@ -431,7 +459,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Keychain v2 G",
     category: "keychain",
@@ -444,7 +472,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Keychain v2 H",
     category: "keychain",
@@ -457,7 +485,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Stickers A",
     category: "stickers",
@@ -470,7 +498,7 @@ const regularProductData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_regular",
     name: "Stickers B",
     category: "stickers",
@@ -488,7 +516,7 @@ const regularProductData: InsertProduct[] = [
 const bundlingProductsData: InsertProduct[] = [
   //#region Ticket
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "ticket_bundle",
     name: "Bundling 1",
     description: "2 Day Pass Propaganda 3",
@@ -513,7 +541,7 @@ const bundlingProductsData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "ticket_bundle",
     name: "Bundling 2",
     description: "Main Event + Merch Keychain v1",
@@ -534,7 +562,7 @@ const bundlingProductsData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: "prod_tkt_b_3",
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "ticket_bundle",
     name: "Bundling 3",
     description: "Main Event + Merch Socks",
@@ -552,7 +580,7 @@ const bundlingProductsData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: "prod_tkt_b_4",
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "ticket_bundle",
     name: "Bundling 4",
     description: "Main Event + Merch Stickers",
@@ -576,7 +604,7 @@ const bundlingProductsData: InsertProduct[] = [
 
   // -- Merch Bundle --
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_bundle",
     name: "Bundling A",
     description: "T-Shirt + Topi",
@@ -592,7 +620,7 @@ const bundlingProductsData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_bundle",
     name: "Bundling B",
     description: "Workshirt + Topi",
@@ -608,7 +636,7 @@ const bundlingProductsData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_bundle",
     name: "Bundling C",
     description: "T-Shirt + Socks",
@@ -624,7 +652,7 @@ const bundlingProductsData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_bundle",
     name: "Bundling D",
     description: "Workshirt + Socks",
@@ -640,7 +668,7 @@ const bundlingProductsData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_bundle",
     name: "Bundling E",
     description: "Topi + Keychain",
@@ -656,7 +684,7 @@ const bundlingProductsData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_bundle",
     name: "Bundling F",
     description: "Topi + Stickers",
@@ -672,7 +700,7 @@ const bundlingProductsData: InsertProduct[] = [
     updatedAt: now,
   },
   {
-    id: createNanoIdWithPrefix("prod"),
+    id: createNanoIdWithPrefix("prod", 21, true),
     type: "merch_bundle",
     name: "Bundling G",
     description: "Socks + Keychain v1 + Stickers",
