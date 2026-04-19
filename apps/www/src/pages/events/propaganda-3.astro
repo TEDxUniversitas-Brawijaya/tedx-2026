@@ -18,7 +18,7 @@ import Picnic from "@/assets/imgs/picnic.png";
   <Navbar />
   <section id="section-one">
     <div class="section-one-wrapper">
-      <div class="horizontal-scroll">
+      <div id="horizontal-scroll" class="horizontal-scroll">
         <div class="background-container-wrapper">
           <div class="background-container">
             <Image src={Seesaw} alt="Seesaw" class="seesaw" />
@@ -47,8 +47,6 @@ import Picnic from "@/assets/imgs/picnic.png";
               sederhana yang penuh makna.
             </p>
           </div>
-        </div>
-        <div class="second-screen">
           <div class="text-container">
             <p>
               Kegiatan yang akan dilakukan adalah membuat bento, menghias kue
@@ -60,7 +58,6 @@ import Picnic from "@/assets/imgs/picnic.png";
             </p>
           </div>
         </div>
-        <div class="screen-break second-third-break" aria-hidden="true"></div>
         <div class="third-screen">
           <div class="text-container">
             <h2>DAY 1: MERANGKAI BUNGA</h2>
@@ -77,7 +74,6 @@ import Picnic from "@/assets/imgs/picnic.png";
             </p>
           </div>
         </div>
-        <div class="screen-break third-fourth-break" aria-hidden="true"></div>
         <div class="fourth-screen">
           <div class="text-container">
             <h2>DAY 2: MEMBUAT BENTO</h2>
@@ -128,6 +124,7 @@ import Picnic from "@/assets/imgs/picnic.png";
   #section-one {
     position: relative;
     height: 700dvh;
+    --max-horizontal-scroll-vw: 650;
   }
 
   #section-one .section-one-wrapper {
@@ -141,19 +138,19 @@ import Picnic from "@/assets/imgs/picnic.png";
   }
 
   #section-one .horizontal-scroll {
-    --translate-x: 0px;
+    --translate-x: 0dvw;
     position: relative;
     display: flex;
     width: 100%;
     height: 100dvh;
-    transform: translate3d(var(--translate-x), 0, 0);
+    transform: translate(var(--translate-x), 0%);
     will-change: transform;
   }
 
   #section-one .background-container-wrapper {
     position: absolute;
     inset: 0;
-    width: 280dvw;
+    width: 980dvw;
     height: 100dvh;
     z-index: 1;
   }
@@ -163,7 +160,20 @@ import Picnic from "@/assets/imgs/picnic.png";
     width: 100%;
     height: 100%;
   }
-  #section-one .first-screen,
+
+  #section-one .first-screen {
+    position: relative;
+    width: 200dvw;
+    height: 100dvh;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 5rem;
+    z-index: 3;
+  }
+
   #section-one .second-screen,
   #section-one .third-screen,
   #section-one .fourth-screen,
@@ -204,32 +214,28 @@ import Picnic from "@/assets/imgs/picnic.png";
   #section-one .text-container {
     position: relative;
     z-index: 4;
-    max-width: 70ch;
     display: grid;
     gap: 1rem;
     text-align: center;
-    text-wrap-style: pretty;
-    padding: 1rem 1.25rem;
+    padding: 1rem 0.2rem;
     transform: translateY(-10dvh);
   }
 
-  #section-one .screen-break {
-    position: relative;
-    width: 100dvw;
-    height: 100dvh;
-    flex-shrink: 0;
-    z-index: 3;
+  #section-one .first-screen .text-container {
+    width: 50%;
   }
-
+  #section-one .first-screen .text-container:first-child {
+    padding-left: 10dvw;
+  }
   #section-one .third-screen {
-    transform: translateX(25dvw);
+    transform: translateX(135dvw);
   }
   #section-one .fourth-screen {
-    transform: translateX(40dvw);
+    transform: translateX(228dvw);
   }
   #section-one .fifth-screen {
     padding-inline: clamp(1rem, 7dvw, 5rem);
-    transform: translateX(60dvw);
+    transform: translateX(250dvw);
   }
 
   #section-one .guidebook-content {
@@ -298,100 +304,81 @@ import Picnic from "@/assets/imgs/picnic.png";
     transform: translate(-50%, 0%);
     z-index: 5;
   }
-
+  .seesaw,
+  .playground,
+  .bouquet-stand,
+  .flower-pot-1,
+  .flower-pot-2,
+  .tree,
+  .picnic {
+    z-index: 2;
+  }
+  .grass {
+    z-index: 1;
+  }
   .seesaw {
     position: absolute;
-    left: 5%;
-    bottom: -5%;
-    scale: 0.3;
-    width: auto;
-    max-width: none;
-    height: 36dvh;
-    object-fit: contain;
-    object-position: center;
-    z-index: 2;
+    left: 8%;
+    bottom: 6%;
+    width: clamp(174px, 25dvw, 269px);
+    height: auto;
   }
 
   .playground {
     position: absolute;
-    left: -6%;
-    bottom: -16%;
-    scale: 0.5;
-    width: auto;
-    max-width: none;
-    height: 78dvh;
+    left: 0%;
+    bottom: 0%;
+    height: auto;
+    width: clamp(305px, 40dvw, 470px);
     object-fit: contain;
     object-position: center;
-    z-index: 2;
   }
 
   .grass {
     position: absolute;
     left: 0;
     bottom: 0;
-    width: auto;
-    height: 16dvh;
     max-width: none;
-    object-fit: contain;
-    object-position: left bottom;
-    z-index: 1;
+    width: clamp(2400px, 700dvw, 4900px);
+    height: auto;
   }
   .bouquet-stand {
     position: absolute;
-    left: 30%;
+    left: 25%;
     bottom: 0%;
-    width: auto;
-    height: 45dvh;
-    max-width: none;
-    object-fit: contain;
-    object-position: center;
-    z-index: 2;
+    height: auto;
+    width: clamp(369px, 55dvw, 631px);
   }
   .flower-pot-1 {
     position: absolute;
-    left: 45%;
-    bottom: 0%;
-    width: auto;
-    height: 20dvh;
-    max-width: none;
-    object-fit: contain;
-    object-position: center;
-    z-index: 2;
+    left: 35%;
+    bottom: 5%;
+    height: auto;
+    width: clamp(129px, 20dvw, 200px);
   }
 
   .flower-pot-2 {
     position: absolute;
-    left: 50%;
+    left: 40%;
     bottom: 5%;
-    width: auto;
-    height: 20dvh;
-    max-width: none;
-    object-fit: contain;
-    object-position: center;
-    z-index: 2;
+    height: auto;
+    width: clamp(108px, 20dvw, 200px);
   }
 
   .tree {
     position: absolute;
-    left: 60%;
-    bottom: 10%;
-    width: auto;
-    height: 55dvh;
-    max-width: none;
-    object-fit: contain;
-    object-position: center;
+    left: 45%;
+    bottom: 7%;
+    width: clamp(280px, 100dvw, 500px);
+    height: auto;
   }
 
   .picnic {
     position: absolute;
-    left: 73%;
-    bottom: 3%;
-    width: auto;
-    height: 20dvh;
-    max-width: none;
-    object-fit: contain;
-    object-position: center;
-    z-index: 5;
+    left: 55%;
+    bottom: 5%;
+    height: auto;
+    width: clamp(300px, 10dvw, 500px);
   }
 
   @keyframes guidebook-float {
@@ -407,6 +394,16 @@ import Picnic from "@/assets/imgs/picnic.png";
   }
 
   @media (min-width: 1024px) {
+    #section-one {
+      --max-horizontal-scroll-vw: 200;
+    }
+    #section-one .background-container-wrapper {
+      width: 275dvw;
+    }
+    #section-one .first-screen {
+      flex-direction: column;
+      gap: 0;
+    }
     #section-one .first-screen h2,
     #section-one .third-screen h2,
     #section-one .fourth-screen h2 {
@@ -420,15 +417,58 @@ import Picnic from "@/assets/imgs/picnic.png";
     }
 
     #section-one .guidebook-actions {
-      grid-template-columns: 1fr 1fr;
-    }
-    .seesaw,
-    .playground {
-      scale: 1;
+      flex-direction: row;
     }
 
-    .grass {
-      height: 22dvh;
+    #section-one .first-screen .text-container:first-child {
+      padding: 0;
+    }
+    #section-one .first-screen {
+      justify-content: center;
+      align-items: end;
+      width: 75dvw;
+      transform: translateY(10dvh);
+    }
+    #section-one .third-screen {
+      width: 63dvw;
+      transform: translateX(25dvw);
+    }
+    #section-one .fourth-screen {
+      width: 64dvw;
+      transform: translateX(40dvw);
+    }
+    #section-one .fifth-screen {
+      padding-inline: clamp(1rem, 7dvw, 5rem);
+      transform: translateX(15dvw);
+    }
+
+    .seesaw {
+      left: 11%;
+      bottom: 8%;
+    }
+    .playground {
+      left: 3%;
+      bottom: 6%;
+    }
+    .bouquet-stand {
+      left: 30%;
+      bottom: 5%;
+    }
+    .flower-pot-1 {
+      left: 42%;
+      bottom: 5%;
+    }
+    .flower-pot-2 {
+      left: 46%;
+      bottom: 7%;
+    }
+    .tree {
+      left: 56%;
+      bottom: 14%;
+    }
+    .picnic {
+      left: 73%;
+      bottom: 5%;
     }
   }
 </style>
@@ -436,42 +476,75 @@ import Picnic from "@/assets/imgs/picnic.png";
 <script>
   (() => {
     const sectionOne = document.getElementById("section-one");
-    const horizontalScroll =
-      sectionOne?.querySelector<HTMLElement>(".horizontal-scroll");
-    const backgroundContainerWrapper = sectionOne?.querySelector<HTMLElement>(
-      ".background-container-wrapper"
-    );
-    const grass = sectionOne?.querySelector<HTMLImageElement>(".grass");
-    const screenPanels = sectionOne
-      ? Array.from(
-          sectionOne.querySelectorAll<HTMLElement>(
-            ".first-screen, .second-screen, .screen-break, .third-screen, .fourth-screen, .fifth-screen"
-          )
-        )
-      : [];
+    const horizontalScroll = document.getElementById("horizontal-scroll");
 
-    if (!(sectionOne && horizontalScroll && backgroundContainerWrapper)) {
+    if (!(sectionOne && horizontalScroll)) {
       return;
+    }
+
+    function transform(
+      x: number,
+      input: number[],
+      output: number[],
+      easing: (t: number) => number = (t) => t
+    ) {
+      const firstInput = input[0];
+      const lastInput = input.at(-1);
+      const lastOutput = output.at(-1);
+
+      if (
+        !(
+          firstInput !== undefined &&
+          lastInput !== undefined &&
+          lastOutput !== undefined
+        )
+      ) {
+        return 0;
+      }
+
+      const clampedX = Math.max(firstInput, Math.min(lastInput, x));
+
+      for (let i = 0; i < input.length - 1; i++) {
+        const currentInput = input[i];
+        const nextInput = input[i + 1];
+
+        const currentOutput = output[i];
+        const nextOutput = output[i + 1];
+
+        if (
+          !(
+            currentInput !== undefined &&
+            nextInput !== undefined &&
+            currentOutput !== undefined &&
+            nextOutput !== undefined
+          )
+        ) {
+          continue;
+        }
+
+        if (clampedX >= currentInput && clampedX <= nextInput) {
+          const localProgress =
+            (clampedX - currentInput) / (nextInput - currentInput);
+          const easedProgress = easing(localProgress);
+
+          return currentOutput + easedProgress * (nextOutput - currentOutput);
+        }
+      }
+
+      return lastOutput;
     }
 
     const easeInOutCubic = (t: number): number => {
       return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
     };
 
-    const syncTrackWidth = () => {
-      const grassWidth = grass?.offsetWidth ?? 0;
-      const panelsWidth = screenPanels.reduce(
-        (totalWidth, panel) => totalWidth + panel.offsetWidth,
-        0
+    const getMaxHorizontalScrollVw = () => {
+      const value = Number.parseFloat(
+        getComputedStyle(sectionOne).getPropertyValue(
+          "--max-horizontal-scroll-vw"
+        )
       );
-      const extraScrollWidth = window.innerWidth * 0.45;
-      const trackWidth =
-        Math.max(grassWidth, panelsWidth, window.innerWidth) + extraScrollWidth;
-
-      horizontalScroll.style.width = `${trackWidth}px`;
-      backgroundContainerWrapper.style.width = `${trackWidth}px`;
-
-      return trackWidth;
+      return Number.isFinite(value) ? Math.max(value, 0) : 0;
     };
 
     const updateHorizontalScroll = () => {
@@ -479,10 +552,9 @@ import Picnic from "@/assets/imgs/picnic.png";
       const sectionHeight = sectionOne.offsetHeight;
       const viewportHeight = window.innerHeight;
       const maxVerticalScroll = sectionHeight - viewportHeight;
-      const trackWidth = syncTrackWidth();
 
       if (maxVerticalScroll <= 0) {
-        horizontalScroll.style.setProperty("--translate-x", "0px");
+        horizontalScroll.style.setProperty("--translate-x", "0dvw");
         return;
       }
 
@@ -491,15 +563,16 @@ import Picnic from "@/assets/imgs/picnic.png";
         Math.min(1, -sectionRect.top / maxVerticalScroll)
       );
 
-      const easedProgress = easeInOutCubic(scrollProgress);
-      const maxHorizontalTranslate = Math.max(
-        trackWidth - window.innerWidth,
-        0
+      const maxHorizontalScrollVw = getMaxHorizontalScrollVw();
+      const horizontalScrollX = transform(
+        scrollProgress,
+        [0, 1],
+        [0, -maxHorizontalScrollVw],
+        easeInOutCubic
       );
-
       horizontalScroll.style.setProperty(
         "--translate-x",
-        `${-maxHorizontalTranslate * easedProgress}px`
+        `${horizontalScrollX}dvw`
       );
     };
 
@@ -528,10 +601,6 @@ import Picnic from "@/assets/imgs/picnic.png";
         resizeRafId = null;
       });
     });
-
-    if (grass && !grass.complete) {
-      grass.addEventListener("load", updateHorizontalScroll, { once: true });
-    }
 
     updateHorizontalScroll();
   })();
