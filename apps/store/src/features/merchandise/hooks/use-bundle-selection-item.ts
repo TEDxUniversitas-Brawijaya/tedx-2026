@@ -100,10 +100,43 @@ export function useBundleSelectionItem(selectedItem: CartItem) {
     }));
   };
 
+  const onBundleItemVariantChange = (
+    productId: string,
+    variantType: string,
+    variant: ProductVariant
+  ) => {
+    const newSelectedBundleProducts = item.selectedBundleProducts?.map(
+      (bundleProduct) => {
+        if (bundleProduct.id !== productId) {
+          return bundleProduct;
+        }
+
+        const newSelectedVariants = bundleProduct.selectedVariants?.map((v) => {
+          if (v.type !== variantType) {
+            return v;
+          }
+
+          return variant;
+        });
+
+        return {
+          ...bundleProduct,
+          selectedVariants: newSelectedVariants,
+        };
+      }
+    );
+
+    setItem((prev) => ({
+      ...prev,
+      selectedBundleProducts: newSelectedBundleProducts,
+    }));
+  };
+
   return {
     item,
     onAddItem,
     onBundleProductSelect,
     onBundleVariantChange,
+    onBundleItemVariantChange,
   };
 }

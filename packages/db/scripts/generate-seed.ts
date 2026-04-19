@@ -570,7 +570,7 @@ const productsData: InsertProduct[] = [
     isActive: true,
     bundleItems: [
       { category: "socks", type: "merchandise" },
-      { category: "keychain", type: "merchandise" },
+      { productId: "prod_m_keychain_v1_a", type: "merchandise_product" },
       { category: "stickers", type: "merchandise" },
     ],
     createdAt: now,

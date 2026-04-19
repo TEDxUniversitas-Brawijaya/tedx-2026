@@ -67,6 +67,10 @@ export const productsTable = sqliteTable(
                 }
             )[];
           }
+        | {
+            type: "merchandise_product";
+            productId: string;
+          }
       )[]
     >(),
     createdAt: t
