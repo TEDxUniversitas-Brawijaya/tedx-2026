@@ -77,6 +77,27 @@ export type OrderServices = {
     qrisUrl: string | null;
   }>;
 
+  createTicketOrder(
+    order: Pick<Order, "buyer"> & {
+      paymentProof: File | null;
+      idempotencyKey: string;
+      captchaToken: string;
+    },
+    item: Pick<OrderItem, "productId" | "quantity"> & {
+      bundleItemProducts?: {
+        // for bundle items, the selected product IDs (if applicable)
+        productId: string;
+        variantIds?: string[];
+      }[];
+    }
+  ): Promise<{
+    orderId: Order["id"];
+    status: Order["status"];
+    totalPrice: Order["totalPrice"];
+    expiresAt: Order["expiresAt"];
+    qrisUrl: string | null;
+  }>;
+
   processRefund: (
     orderId: Order["id"],
     action: "approve" | "reject",
@@ -722,6 +743,484 @@ export const createOrderServices = (
   },
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor this function to reduce complexity
+  createTicketOrder: async (order, item) => {
+    const {
+      buyer,
+      idempotencyKey,
+      paymentProof: proofImage,
+      captchaToken,
+    } = order;
+    const existingOrderResponse =
+      await ctx.orderOperations.getOrderResponse(idempotencyKey);
+    if (existingOrderResponse) {
+      const parsed = JSON.parse(existingOrderResponse);
+      return {
+        orderId: parsed.orderId,
+        status: parsed.status,
+        totalPrice: parsed.totalPrice,
+        expiresAt: new Date(parsed.expiresAt),
+        qrisUrl: parsed.qrisUrl,
+      };
+    }
+
+    const [
+      paymentMode,
+      paymentTimeoutMinutes,
+      cooldownMinutes,
+      eventDatePropa3Day1,
+      eventDatePropa3Day2,
+      eventDateMain,
+    ] = await Promise.all([
+      ctx.configServices.getConfig("payment_mode"),
+      ctx.configServices.getConfig("payment_timeout_minutes"),
+      ctx.configServices.getConfig("cooldown_minutes"),
+      ctx.configServices.getConfig("event_date_propa3_day1"),
+      ctx.configServices.getConfig("event_date_propa3_day2"),
+      ctx.configServices.getConfig("event_date_main"),
+    ]);
+    if (
+      cooldownMinutes === null ||
+      paymentMode === null ||
+      paymentTimeoutMinutes === null ||
+      cooldownMinutes === null ||
+      eventDatePropa3Day1 === null ||
+      eventDatePropa3Day2 === null ||
+      eventDateMain === null
+    ) {
+      throw new AppError(
+        "INTERNAL_SERVER_ERROR",
+        "Missing required configuration values"
+      );
+    }
+
+    // Cooldown check
+    const hasCooldown = await ctx.orderOperations.getBuyerCooldown(buyer.email);
+    if (hasCooldown) {
+      throw new AppError(
+        "BAD_REQUEST",
+        `You are on cooldown. Please wait for ${cooldownMinutes} minutes before placing another order.`
+      );
+    }
+
+    // CAPTCHA verification
+    await ctx.captchaServices.verifyTurnstile(captchaToken);
+
+    if (paymentMode === "manual" && proofImage === null) {
+      throw new AppError(
+        "BAD_REQUEST",
+        "Payment proof image is required for manual payment"
+      );
+    }
+
+    // Check all products exist and active
+    const productIds = new Set<string>();
+    productIds.add(item.productId);
+
+    // If bundle, also check the bundle products
+    if (item.bundleItemProducts) {
+      for (const bundleItemProduct of item.bundleItemProducts) {
+        productIds.add(bundleItemProduct.productId);
+      }
+    }
+    const products = await ctx.productQueries.getProductsByIds(
+      Array.from(productIds),
+      {
+        status: "all",
+      }
+    );
+    if (products.length !== productIds.size) {
+      const foundProductIds = products.map((p) => p.id);
+      const missingProductIds = Array.from(productIds).filter(
+        (id) => !foundProductIds.includes(id)
+      );
+      throw new AppError(
+        "BAD_REQUEST",
+        "Some products are not found or not active",
+        {
+          details: {
+            missingProductIds,
+            // Passing buyer here because why can buyer order inactive product?
+            buyer,
+          },
+        }
+      );
+    }
+
+    // Validate variants against product variants
+    const validateVariants = (
+      variantIds: string[],
+      productVariants: {
+        id: string;
+        label: string;
+        type: string;
+      }[],
+      productId: string,
+      parentProductId?: string
+    ) => {
+      const availableVariantIds = productVariants.map((v) => v.id);
+      const invalidVariantIds = variantIds.filter(
+        (variantId) => !availableVariantIds.includes(variantId)
+      );
+
+      if (invalidVariantIds.length > 0) {
+        const errorMessage = parentProductId
+          ? "Some variants are invalid for a bundle product"
+          : "Some variants are invalid for a product";
+
+        throw new AppError("BAD_REQUEST", errorMessage, {
+          details: {
+            productId,
+            ...(parentProductId && { parentProductId }),
+            invalidVariantIds,
+          },
+        });
+      }
+    };
+
+    // Map selected variants to snapshot format
+    const mapSnapshotVariants = (
+      variantIds: string[] | undefined,
+      productVariants: {
+        id: string;
+        label: string;
+        type: string;
+      }[]
+    ) => {
+      if (!variantIds) {
+        return null;
+      }
+
+      return productVariants
+        ?.filter((v) => variantIds.includes(v.id))
+        .map((v) => ({
+          label: v.label,
+          type: v.type,
+        }));
+    };
+
+    // Create product map for O(1) lookups
+    const productMap = new Map(products.map((p) => [p.id, p]));
+
+    const orderId = generateOrderId();
+    let totalPrice = 0;
+    const orderItems: {
+      orderId: string;
+      productId: string;
+      id: string;
+      quantity: number;
+      snapshotName: string;
+      snapshotPrice: number;
+      snapshotType: string;
+      snapshotBundleProducts:
+        | {
+            name: string;
+            category: string | null;
+            selectedVariants: { label: string; type: string }[] | null;
+          }[]
+        | null;
+    }[] = [];
+
+    // Validate and build order items in single pass
+    const product = productMap.get(item.productId);
+    if (!product) {
+      throw new AppError(
+        "BAD_REQUEST",
+        "Some products are not found or not active",
+        {
+          details: {
+            productId: item.productId,
+            buyer,
+          },
+        }
+      );
+    }
+
+    if (!product.isActive) {
+      throw new AppError("BAD_REQUEST", "Some products are not active", {
+        details: {
+          productId: item.productId,
+          buyer,
+        },
+      });
+    }
+
+    // TODO: hacky way to get event date based on product name, we should have a better way to model this in the future
+    const getEventDate = (productName: string) => {
+      if (productName.toLowerCase().includes("propaganda 3 day 1")) {
+        return new Date(eventDatePropa3Day1);
+      }
+
+      if (productName.toLowerCase().includes("propaganda 3 day 2")) {
+        return new Date(eventDatePropa3Day2);
+      }
+
+      if (productName.toLowerCase().includes("main event")) {
+        return new Date(eventDateMain);
+      }
+      return null;
+    };
+
+    const eventDate = getEventDate(product.name);
+
+    const eventHasPassed = eventDate ? new Date() > eventDate : false;
+    if (eventHasPassed) {
+      throw new AppError(
+        "BAD_REQUEST",
+        "The event date for this ticket has passed, you cannot purchase this ticket",
+        {
+          details: {
+            productId: item.productId,
+            buyer,
+            eventDate: eventDate ? eventDate.toISOString() : null,
+          },
+        }
+      );
+    }
+
+    // Check stock availability
+    if (product.stock && product.stock < item.quantity) {
+      throw new AppError(
+        "BAD_REQUEST",
+        "Some products do not have enough stock",
+        {
+          details: {
+            productId: item.productId,
+            buyer,
+            stock: product.stock,
+          },
+        }
+      );
+    }
+
+    // If the product is a bundle, we also need to check the stock of the bundle items to ensure the bundle can be fulfilled
+    if (product.bundleItems) {
+      // we need to find the minimum event stock among the bundle items to determine the stock of the bundle product
+      const stock = Math.min(
+        ...product.bundleItems.map((bundleItem) => {
+          // if bundle item is not a ticket, we can ignore the stock because it doesnt affect the stock of the bundle product
+          if (bundleItem.type !== "ticket") {
+            return Number.POSITIVE_INFINITY;
+          }
+
+          const product = productMap.get(bundleItem.productId);
+          if (!product?.stock) {
+            throw new Error(
+              `Product with id ${bundleItem.productId} not found or has no stock for bundle item`
+            );
+          }
+
+          return product.stock;
+        })
+      );
+
+      if (stock < item.quantity) {
+        throw new AppError(
+          "BAD_REQUEST",
+          "Some products in the bundle do not have enough stock",
+          {
+            details: {
+              productId: item.productId,
+              buyer,
+              stock,
+            },
+          }
+        );
+      }
+    }
+
+    if (product.price <= 0) {
+      throw new AppError(
+        "BAD_REQUEST",
+        "Some products are not available for purchase",
+        {
+          details: {
+            productId: item.productId,
+            buyer,
+          },
+        }
+      );
+    }
+
+    totalPrice += product.price * item.quantity;
+
+    // Validate and map bundle products
+    const snapshotBundleProducts = item.bundleItemProducts
+      ? item.bundleItemProducts.map((bundleItemProduct) => {
+          const bundleProduct = productMap.get(bundleItemProduct.productId);
+
+          if (!bundleProduct) {
+            throw new AppError(
+              "BAD_REQUEST",
+              "Some bundle products are not found or not active",
+              {
+                details: {
+                  productId: bundleItemProduct.productId,
+                  parentProductId: item.productId,
+                },
+              }
+            );
+          }
+
+          if (bundleItemProduct.variantIds && !bundleProduct.variants) {
+            throw new AppError(
+              "BAD_REQUEST",
+              "Bundle product does not have variants but variantIds were provided",
+              {
+                details: {
+                  productId: bundleItemProduct.productId,
+                  parentProductId: item.productId,
+                  variantIds: bundleItemProduct.variantIds,
+                },
+              }
+            );
+          }
+
+          if (bundleItemProduct.variantIds && bundleProduct.variants) {
+            validateVariants(
+              bundleItemProduct.variantIds,
+              bundleProduct.variants,
+              bundleItemProduct.productId,
+              item.productId
+            );
+          }
+
+          const selectedVariants = bundleProduct.variants
+            ? mapSnapshotVariants(
+                bundleItemProduct.variantIds,
+                bundleProduct.variants
+              )
+            : null;
+
+          return {
+            name: bundleProduct.name,
+            category: bundleProduct.category,
+            selectedVariants,
+          };
+        })
+      : null;
+
+    // Build order item
+    orderItems.push({
+      orderId,
+      productId: item.productId,
+      id: createNanoIdWithPrefix("oi"),
+      quantity: item.quantity,
+      snapshotName: product.name,
+      snapshotPrice: product.price,
+      snapshotType: product.type,
+      snapshotBundleProducts,
+    });
+    const refundToken = createUUIDv7();
+
+    let uploadedProofImage: CustomFile | null = null;
+    if (paymentMode === "manual" && proofImage) {
+      const uploadedProof = await ctx.fileServices.uploadFile(
+        `${orderId}-${proofImage.name}`,
+        await proofImage.arrayBuffer(),
+        "payment-proofs/merchandise",
+        {
+          maxSizeMB: 5,
+        }
+      );
+      uploadedProofImage = uploadedProof;
+    }
+
+    const expiresAt = new Date(
+      Date.now() + paymentMode === "manual"
+        ? // For manual payments, the expiration is for verification, which can take longer, so we set a longer timeout (e.g. 24 hours) to accommodate that
+          24 * 60 * 60 * 1000
+        : Number.parseInt(paymentTimeoutMinutes, 10) * 60 * 1000
+    );
+
+    const orderStatus =
+      paymentMode === "manual" ? "pending_verification" : "pending_payment";
+
+    const paidAt = paymentMode === "manual" ? new Date().toISOString() : null;
+
+    const { error: createOrderError } = await tryCatch(
+      ctx.orderQueries.createOrder(
+        {
+          id: orderId,
+          buyerName: buyer.name,
+          buyerEmail: buyer.email,
+          buyerPhone: buyer.phone,
+          buyerCollege: buyer.college,
+          totalPrice,
+          paymentMethod: paymentMode as Order["paymentMethod"],
+          proofImageUrl: uploadedProofImage ? uploadedProofImage.url : null,
+          status: orderStatus,
+          type: "merch",
+          idempotencyKey,
+          expiresAt: expiresAt.toISOString(),
+          paidAt,
+          refundToken,
+        },
+        orderItems
+      )
+    );
+
+    if (createOrderError) {
+      if (uploadedProofImage) {
+        // Rollback uploaded proof image if order creation failed
+        await ctx.fileServices.deleteFile(uploadedProofImage.key);
+      }
+      throw new AppError(
+        "INTERNAL_SERVER_ERROR",
+        "Failed to create order, please try again later",
+        {
+          cause: createOrderError,
+          details: {
+            buyer,
+            item,
+          },
+        }
+      );
+    }
+
+    let qrisUrl: string | null = null;
+    if (paymentMode === "midtrans") {
+      const { data: chargeTransactionResponse, error: chargeTransactionError } =
+        await tryCatch(ctx.paymentServices.chargeTransaction());
+      if (chargeTransactionError) {
+        // Rollback
+        await ctx.orderQueries.deleteOrderById(orderId);
+
+        throw new AppError(
+          "INTERNAL_SERVER_ERROR",
+          "Failed to create QRIS payment, please try again later",
+          {
+            cause: chargeTransactionError,
+          }
+        );
+      }
+      qrisUrl = chargeTransactionResponse.qrisUrl;
+    }
+
+    // Set cooldown for buyer
+    await ctx.orderOperations.setBuyerCooldown(
+      buyer.email,
+      Number.parseInt(cooldownMinutes, 10) * 60
+    );
+
+    const response = {
+      orderId,
+      status: orderStatus,
+      totalPrice,
+      expiresAt,
+      qrisUrl,
+    };
+    ctx.waitUntil(
+      // Cache the response for 1 hour
+      ctx.orderOperations.setOrderResponse(
+        idempotencyKey,
+        JSON.stringify(response),
+        60 * 60
+      )
+    );
+
+    return response;
+  },
+
   processRefund: async (orderId, action, reason, processorId) => {
     const order = await ctx.orderQueries.getOrderById(orderId);
     if (!order) {

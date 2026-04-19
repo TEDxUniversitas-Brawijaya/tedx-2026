@@ -12,6 +12,8 @@ const configKeys = {
 const productKeys = {
   merchs: (status: "all" | "active" | "inactive") =>
     `products:merchs:${status}`,
+  tickets: (status: "all" | "active" | "inactive") =>
+    `products:tickets:${status}`,
 };
 
 export const KEYS = {

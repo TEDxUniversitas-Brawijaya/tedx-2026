@@ -143,6 +143,7 @@ export const createContext = async ({
     logger: logger.child({ service: "product" }),
     productQueries,
     productOperations,
+    configServices,
   });
 
   const captchaServices = createCaptchaServices({

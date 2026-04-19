@@ -51,6 +51,7 @@ export const TicketSummaryStep = ({
     formData.append("buyerInstansi", buyer.buyerInstansi);
     formData.append("captchaToken", captchaToken);
     formData.append("idempotencyKey", idempotencyKey);
+    formData.append("bundleItemProducts", JSON.stringify([])); // TODO: support bundle item products if needed
 
     await createOrderMutation.mutateAsync(formData, {
       onSuccess: (response) => {

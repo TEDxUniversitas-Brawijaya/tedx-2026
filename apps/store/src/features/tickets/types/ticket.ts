@@ -68,7 +68,7 @@ export type TicketProduct = {
   isActive: boolean;
   description: string | null;
   imageUrl: string | null;
-  bundleItems?: BundleItem[];
+  bundleItems: BundleItem[] | null;
 };
 
 export type TicketBuyer = {
@@ -93,10 +93,15 @@ export type TicketPayment = TicketPaymentMidtrans | TicketPaymentManual;
 
 export type TicketOrder = {
   orderId: string;
-  status: "pending_payment" | "pending_verification";
+  status:
+    | "pending_payment"
+    | "pending_verification"
+    | "paid"
+    | "expired"
+    | "refund_requested"
+    | "refunded"
+    | "rejected";
   totalPrice: number;
   expiresAt: string;
   qrisUrl: string | null;
-  midtransOrderId: string | null;
-  uploadUrl: string | null;
 };
