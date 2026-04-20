@@ -1400,6 +1400,7 @@ export const createOrderServices = (
     const failedOperations = stockResults.filter((result) => !result.success);
     if (failedOperations.length > 0) {
       // Some operations failed, rollback successful ones
+      // Comment from Copilot: Rollback computation for successfulOperations uses the index of the filtered stockResults array to read stockOperations[index]. This can mismatch productId→quantity pairs, causing incorrect (or zero) quantities to be incremented during rollback. Build the rollback list by iterating stockResults with their original index, or by looking up the matching operation by productId.
       const successfulOperations = stockResults
         .filter((result) => result.success)
         .map(({ productId }, index) => ({
