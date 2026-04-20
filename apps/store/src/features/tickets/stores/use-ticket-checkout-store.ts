@@ -65,20 +65,20 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
         buyer: null,
       }),
     onNextStep: () => {
-      const { checkoutStep, closeCheckout } = get();
+      const { checkoutStep, setIsCheckoutOpen } = get();
       const nextStep = progressSteps[checkoutStep].next;
       if (nextStep === null) {
-        closeCheckout();
+        setIsCheckoutOpen(false);
         return;
       }
 
       set({ checkoutStep: nextStep });
     },
     onPrevStep: () => {
-      const { checkoutStep, closeCheckout } = get();
+      const { checkoutStep, setIsCheckoutOpen } = get();
       const prevStep = progressSteps[checkoutStep].prev;
       if (prevStep === null) {
-        closeCheckout();
+        setIsCheckoutOpen(false);
         return;
       }
 
