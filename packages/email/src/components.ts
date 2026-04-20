@@ -97,7 +97,7 @@ export const detailMerchOrderTable = (
     name: string;
     quantity: number;
     variants?: { label: string; value: string }[];
-    bundleItems?: {
+    bundleProducts?: {
       name: string;
       variants?: { label: string; value: string }[];
     }[];
@@ -119,7 +119,7 @@ export const detailMerchOrderTable = (
 
     const getDetail = (
       variants?: { label: string; value: string }[],
-      bundleItems?: {
+      bundleProducts?: {
         name: string;
         variants?: { label: string; value: string }[];
       }[]
@@ -128,8 +128,8 @@ export const detailMerchOrderTable = (
         return variants.map((v) => `${v.label}: ${v.value}`).join(", ");
       }
 
-      if (bundleItems && bundleItems.length > 0) {
-        return bundleItems
+      if (bundleProducts && bundleProducts.length > 0) {
+        return bundleProducts
           .map((b) => {
             const variantText =
               b.variants && b.variants.length > 0
@@ -144,7 +144,7 @@ export const detailMerchOrderTable = (
       return null;
     };
 
-    const detail = getDetail(item.variants, item.bundleItems);
+    const detail = getDetail(item.variants, item.bundleProducts);
 
     return `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-bottom: 1px solid #C6C6C6; padding: 12px 0px;">
@@ -245,7 +245,7 @@ export const detailTicketOrderTable = (
     name: string;
     quantity: number;
     price: number;
-    bundleItems?: {
+    bundleProducts?: {
       name: string;
       variants?: { label: string; value: string }[];
     }[];
@@ -264,13 +264,13 @@ export const detailTicketOrderTable = (
   });
 
   const getDetail = (
-    bundleItems?: {
+    bundleProducts?: {
       name: string;
       variants?: { label: string; value: string }[];
     }[]
   ) => {
-    if (bundleItems && bundleItems.length > 0) {
-      return bundleItems
+    if (bundleProducts && bundleProducts.length > 0) {
+      return bundleProducts
         .map((b) => {
           const variantText =
             b.variants && b.variants.length > 0
@@ -285,7 +285,7 @@ export const detailTicketOrderTable = (
     return null;
   };
 
-  const detail = getDetail(ticket.bundleItems);
+  const detail = getDetail(ticket.bundleProducts);
 
   return `
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" class="detail-box" style="background-color: #F2F2F2; border-radius: 12px; overflow: hidden; padding: 32px 24px 24px 24px;">
