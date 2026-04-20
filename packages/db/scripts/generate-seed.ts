@@ -112,9 +112,9 @@ const regularProductData: InsertProduct[] = [
     type: "ticket_regular",
     name: "Main Event",
     description: "Main Event",
-    price: 75_000, // TODO
-    stock: 80, // TODO
-    isActive: true,
+    price: 0, // TODO
+    stock: 0, // TODO
+    isActive: false,
     createdAt: now,
     updatedAt: now,
   },
