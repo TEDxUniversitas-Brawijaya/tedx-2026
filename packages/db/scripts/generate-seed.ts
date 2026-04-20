@@ -130,7 +130,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "t-shirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -138,6 +137,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
@@ -154,7 +158,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "t-shirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -162,6 +165,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
@@ -178,7 +186,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "t-shirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -186,6 +193,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
@@ -202,7 +214,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "workshirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -210,6 +221,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
@@ -226,7 +242,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "workshirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -234,6 +249,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
@@ -250,7 +270,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "workshirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -258,6 +277,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
@@ -274,7 +298,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "workshirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -282,6 +305,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
