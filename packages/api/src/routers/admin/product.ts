@@ -1,64 +1,56 @@
 import { TRPCError } from "@trpc/server";
 import {
-  createProductInputSchema,
-  createProductOutputSchema,
   createVariantInputSchema,
   deleteProductInputSchema,
   listProductsInputSchema,
   listProductsOutputSchema,
   updateProductInputSchema,
-  updateVariantInputSchema,
+  updateProductOutputSchema,
 } from "../../schemas/product";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
 
 const list = protectedProcedure
   .input(listProductsInputSchema)
   .output(listProductsOutputSchema)
-  .query(() => {
-    // TODO: Implement admin.product.list
-    // - Apply type filter if provided
-    // - Return all products with full details
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.product.list is not implemented yet",
-    });
-  });
-
-const create = protectedProcedure
-  .input(createProductInputSchema)
-  .output(createProductOutputSchema)
-  .mutation(() => {
-    // TODO: Implement admin.product.create
-    // - Generate product ID with prod_ prefix
-    // - Create product with provided details
-    // - Return product ID and success message
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.product.create is not implemented yet",
-    });
+  .query(async ({ ctx }) => {
+    const products = await ctx.services.product.adminListTicketProducts();
+    // TODO: property access required only for getting a ticket
+    return products.map((product) => ({
+      id: product.id,
+      type: product.type,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      stock: product.stock,
+      isActive: product.isActive,
+      imageUrl: product.imageUrl ?? null,
+      variants: product.variants ?? null,
+      bundleItems: null, // not needed in admin list view
+      createdAt: product.createdAt,
+      updatedAt: product.updatedAt,
+    }));
   });
 
 const update = protectedProcedure
   .input(updateProductInputSchema)
-  .output(createProductOutputSchema)
-  .mutation(() => {
-    // TODO: Implement admin.product.update
-    // - Validate product exists
-    // - Update product fields
-    // - Return product ID and success message
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.product.update is not implemented yet",
+  .output(updateProductOutputSchema)
+  .mutation(async ({ ctx, input }) => {
+    await ctx.services.product.adminUpdateProduct(input.productId, {
+      price: input.price,
+      stock: input.stock,
     });
+
+    return {
+      productId: input.productId,
+      message: "Product updated successfully",
+    };
   });
 
 const deleteProduct = protectedProcedure
   .input(deleteProductInputSchema)
-  .output(createProductOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.product.delete
     // - Soft delete: set isActive = false
-    // - Return product ID and success message
     throw new TRPCError({
       code: "NOT_IMPLEMENTED",
       message: "admin.product.delete is not implemented yet",
@@ -67,37 +59,17 @@ const deleteProduct = protectedProcedure
 
 const createVariant = protectedProcedure
   .input(createVariantInputSchema)
-  .output(createProductOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.product.createVariant
-    // - Validate product exists
-    // - Add variant to product's variants array
-    // - Return product ID, variant ID, and success message
     throw new TRPCError({
       code: "NOT_IMPLEMENTED",
       message: "admin.product.createVariant is not implemented yet",
     });
   });
 
-const updateVariant = protectedProcedure
-  .input(updateVariantInputSchema)
-  .output(createProductOutputSchema)
-  .mutation(() => {
-    // TODO: Implement admin.product.updateVariant
-    // - Validate product and variant exist
-    // - Update variant in product's variants array
-    // - Return product ID, variant ID, and success message
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.product.updateVariant is not implemented yet",
-    });
-  });
-
 export const productRouter = createTRPCRouter({
   list,
-  create,
   update,
   delete: deleteProduct,
   createVariant,
-  updateVariant,
 });
