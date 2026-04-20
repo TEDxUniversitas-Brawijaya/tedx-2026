@@ -547,6 +547,10 @@ import Picnic from "@/assets/imgs/picnic.png";
     const backgroundContainerWrapper = sectionOne?.querySelector<HTMLElement>(
       ".background-container-wrapper"
     );
+    const isTablet = window.matchMedia(
+      "(min-width: 768px) and (max-width: 1199px)"
+    ).matches;
+    const isDesktop = window.matchMedia("(min-width: 1200px)").matches;
 
     if (!(sectionOne && horizontalScroll && backgroundContainerWrapper)) {
       return;
@@ -558,7 +562,12 @@ import Picnic from "@/assets/imgs/picnic.png";
 
     // Extra scroll room so the right-shifted final panel/CTA can fully enter
     // the viewport across breakpoints before vertical scrolling exits section one.
-    const HORIZONTAL_SCROLL_END_BUFFER_PX = 500;
+    let HORIZONTAL_SCROLL_END_BUFFER_PX = 30;
+    if (isTablet) {
+      HORIZONTAL_SCROLL_END_BUFFER_PX = 450;
+    } else if (isDesktop) {
+      HORIZONTAL_SCROLL_END_BUFFER_PX = 100;
+    }
 
     const getMaxHorizontalTranslatePx = () => {
       const trackWidth =
