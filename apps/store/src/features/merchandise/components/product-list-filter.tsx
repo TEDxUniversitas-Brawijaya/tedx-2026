@@ -141,7 +141,7 @@ export const ProductListFilter = ({ products }: { products: Product[] }) => {
                   ? bundlingCount
                   : merchCategoryWithCount.find(
                       (item) => item.category === filter
-                    )?.count || 0}
+                    )?.count || merchCategoryWithCount[0]?.count}
               </span>
             </div>
           </SelectTrigger>
