@@ -89,7 +89,7 @@ export const TicketIdentificationStep = ({
                       onChange={(event) =>
                         field.handleChange(event.target.value)
                       }
-                      placeholder="Ex : John Doe"
+                      placeholder="Masukkan nama lengkap"
                       value={field.state.value}
                     />
                     {isInvalid && (
@@ -129,7 +129,7 @@ export const TicketIdentificationStep = ({
                       onChange={(event) =>
                         field.handleChange(event.target.value)
                       }
-                      placeholder="Ex : johndoe@gmail.com"
+                      placeholder="contoh@email.com"
                       type="email"
                       value={field.state.value}
                     />
@@ -210,7 +210,7 @@ export const TicketIdentificationStep = ({
                       onChange={(event) =>
                         field.handleChange(event.target.value)
                       }
-                      placeholder="Ex : Universitas Brawijaya"
+                      placeholder="Universitas Brawijaya"
                       value={field.state.value}
                     />
                     {isInvalid && (
@@ -243,7 +243,7 @@ export const TicketIdentificationStep = ({
                         key={num}
                         value={num.toString()}
                       >
-                        Ex : {num}
+                        {num}
                       </SelectItem>
                     )
                   )}
