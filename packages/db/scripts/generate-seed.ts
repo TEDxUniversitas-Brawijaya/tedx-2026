@@ -112,9 +112,9 @@ const regularProductData: InsertProduct[] = [
     type: "ticket_regular",
     name: "Main Event",
     description: "Main Event",
-    price: 75_000, // TODO
-    stock: 80, // TODO
-    isActive: true,
+    price: 0, // TODO
+    stock: 0, // TODO
+    isActive: false,
     createdAt: now,
     updatedAt: now,
   },
@@ -130,7 +130,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "t-shirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -138,6 +137,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
@@ -154,7 +158,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "t-shirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -162,6 +165,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
@@ -178,7 +186,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "t-shirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -186,6 +193,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
@@ -202,7 +214,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "workshirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -210,6 +221,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
@@ -226,7 +242,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "workshirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -234,6 +249,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
@@ -250,7 +270,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "workshirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -258,6 +277,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
@@ -274,7 +298,6 @@ const regularProductData: InsertProduct[] = [
     isActive: true,
     category: "workshirt",
     variants: [
-      // TODO
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "S" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "M" },
       { id: createNanoIdWithPrefix("var", 21, true), type: "size", label: "L" },
@@ -282,6 +305,11 @@ const regularProductData: InsertProduct[] = [
         id: createNanoIdWithPrefix("var", 21, true),
         type: "size",
         label: "XL",
+      },
+      {
+        id: createNanoIdWithPrefix("var", 21, true),
+        type: "size",
+        label: "XXL",
       },
     ],
     imageUrl:
@@ -295,8 +323,8 @@ const regularProductData: InsertProduct[] = [
     name: "Topi A",
     description: "TEDx",
     category: "hat",
-    price: 50_000, // TODO
-    isActive: false, // Price will be determined after sales start
+    price: 65_000,
+    isActive: true,
     imageUrl:
       "https://cdn.tedxuniversitasbrawijaya.com/merchandise/hat/topi-1.png",
     createdAt: now,
@@ -308,8 +336,8 @@ const regularProductData: InsertProduct[] = [
     name: "Topi B",
     description: "TEDxUB",
     category: "hat",
-    price: 50_000, // TODO
-    isActive: false, // Price will be determined after sales start
+    price: 65_000,
+    isActive: true,
     imageUrl:
       "https://cdn.tedxuniversitasbrawijaya.com/merchandise/hat/topi-2.png",
     createdAt: now,
@@ -321,8 +349,8 @@ const regularProductData: InsertProduct[] = [
     name: "Topi C",
     description: "TEDxUniversitas Brawijaya",
     category: "hat",
-    price: 50_000, // TODO
-    isActive: false, // Price will be determined after sales start
+    price: 65_000,
+    isActive: true,
     imageUrl:
       "https://cdn.tedxuniversitasbrawijaya.com/merchandise/hat/topi-3.png",
     createdAt: now,
@@ -608,8 +636,8 @@ const bundlingProductsData: InsertProduct[] = [
     type: "merch_bundle",
     name: "Bundling A",
     description: "T-Shirt + Topi",
-    price: 0, // TODO
-    isActive: false,
+    price: 135_000,
+    isActive: true,
     bundleItems: [
       { category: "t-shirt", type: "merchandise" },
       { category: "hat", type: "merchandise" },
@@ -624,8 +652,8 @@ const bundlingProductsData: InsertProduct[] = [
     type: "merch_bundle",
     name: "Bundling B",
     description: "Workshirt + Topi",
-    price: 0, // TODO
-    isActive: false,
+    price: 240_000,
+    isActive: true,
     bundleItems: [
       { category: "workshirt", type: "merchandise" },
       { category: "hat", type: "merchandise" },
@@ -672,8 +700,8 @@ const bundlingProductsData: InsertProduct[] = [
     type: "merch_bundle",
     name: "Bundling E",
     description: "Topi + Keychain",
-    price: 0, // TODO
-    isActive: false,
+    price: 88_000,
+    isActive: true,
     bundleItems: [
       { category: "hat", type: "merchandise" },
       { category: "keychain", type: "merchandise" },
@@ -688,8 +716,8 @@ const bundlingProductsData: InsertProduct[] = [
     type: "merch_bundle",
     name: "Bundling F",
     description: "Topi + Stickers",
-    price: 0, // TODO
-    isActive: false,
+    price: 70_000,
+    isActive: true,
     bundleItems: [
       { category: "hat", type: "merchandise" },
       { category: "stickers", type: "merchandise" },

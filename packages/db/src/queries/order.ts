@@ -46,6 +46,10 @@ export type OrderQueries = {
     orderIds: SelectOrder["id"][]
   ) => Promise<SelectOrderItem[]>;
 
+  getOrderWithItemsByRefundToken: (
+    refundToken: SelectOrder["refundToken"]
+  ) => Promise<{ order: SelectOrder; items: SelectOrderItem[] } | null>;
+
   expirePendingPaymentOrders: () => Promise<Pick<SelectOrder, "buyerEmail">[]>;
   expirePendingVerificationOrders: () => Promise<
     Pick<SelectOrder, "buyerEmail">[]
@@ -175,6 +179,24 @@ export const createOrderQueries = (db: DB): OrderQueries => ({
     return await db.query.orderItemsTable.findMany({
       where: inArray(orderItemsTable.orderId, orderIds),
     });
+  },
+
+  getOrderWithItemsByRefundToken: async (refundToken) => {
+    const order = await db.query.ordersTable.findFirst({
+      where: eq(ordersTable.refundToken, refundToken),
+      with: {
+        orderItems: true,
+      },
+    });
+
+    if (!order) {
+      return null;
+    }
+
+    return {
+      order,
+      items: order.orderItems,
+    };
   },
 
   expirePendingPaymentOrders: async () => {

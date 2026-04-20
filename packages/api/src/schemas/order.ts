@@ -135,7 +135,7 @@ export const getOrderByIdOutputSchema = z.object({
     .object({
       id: z.string(),
       status: refundStatusSchema,
-      reason: z.string(),
+      reason: z.string().optional(),
       paymentMethod: z.string(),
       paymentProofUrl: z.nullable(z.url()),
       bankAccountNumber: z.string(),
@@ -165,8 +165,4 @@ export const processRefundInputSchema = z.object({
   reason: z.string().min(1).max(1000).optional(),
 });
 
-export const processRefundOutputSchema = z.object({
-  orderId: orderIdSchema,
-  refundStatus: refundStatusSchema,
-  message: z.string(),
-});
+export const processRefundOutputSchema = z.void();

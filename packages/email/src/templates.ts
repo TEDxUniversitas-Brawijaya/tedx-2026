@@ -8,6 +8,10 @@ export type TemplateMap = {
       name: string;
       quantity: number;
       variants?: { label: string; value: string }[];
+      bundleProducts?: {
+        name: string;
+        variants?: { label: string; value: string }[];
+      }[];
       price: number;
     }[];
   };
@@ -17,6 +21,10 @@ export type TemplateMap = {
       name: string;
       quantity: number;
       variants?: { label: string; value: string }[];
+      bundleProducts?: {
+        name: string;
+        variants?: { label: string; value: string }[];
+      }[];
       price: number;
     }[];
   };
@@ -26,6 +34,10 @@ export type TemplateMap = {
       name: string;
       quantity: number;
       variants?: { label: string; value: string }[];
+      bundleProducts?: {
+        name: string;
+        variants?: { label: string; value: string }[];
+      }[];
       price: number;
     }[];
     reason: string;
@@ -37,6 +49,11 @@ export type TemplateMap = {
       name: string;
       quantity: number;
       price: number;
+
+      bundleProducts?: {
+        name: string;
+        variants?: { label: string; value: string }[];
+      }[];
 
       tickets: {
         eventName: string;
@@ -52,6 +69,10 @@ export type TemplateMap = {
       name: string;
       quantity: number;
       price: number;
+      bundleProducts?: {
+        name: string;
+        variants?: { label: string; value: string }[];
+      }[];
     };
   };
   ticketOrderRejected: {
@@ -60,6 +81,10 @@ export type TemplateMap = {
       name: string;
       quantity: number;
       price: number;
+      bundleProducts?: {
+        name: string;
+        variants?: { label: string; value: string }[];
+      }[];
     };
     reason: string;
   };

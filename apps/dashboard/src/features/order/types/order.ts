@@ -76,7 +76,7 @@ export type DetailOrder = Order & {
   refund: {
     id: string;
     status: "requested" | "approved" | "rejected";
-    reason: string;
+    reason?: string;
     paymentMethod: string;
     paymentProofUrl: string | null;
     bankAccountNumber: string;

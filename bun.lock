@@ -173,6 +173,7 @@
         "@tedx-2026/storage": "workspace:*",
         "@tedx-2026/types": "workspace:*",
         "@tedx-2026/utils": "workspace:*",
+        "etiket": "^0.11.0",
       },
       "devDependencies": {
         "@tedx-2026/tsconfig": "workspace:*",
@@ -1492,6 +1493,8 @@
     "estree-walker": ["estree-walker@3.0.3", "", { "dependencies": { "@types/estree": "^1.0.0" } }, "sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g=="],
 
     "etag": ["etag@1.8.1", "", {}, "sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg=="],
+
+    "etiket": ["etiket@0.11.0", "", { "bin": { "etiket": "dist/cli.mjs" } }, "sha512-Ylk7LqDUwcjhp805fF5bbpwdBToPGWHiV2wLY9x1QZt3QcUKRpyrUympRZ2m6MUFVNk4Z7d3Be25jXTCxrzOfg=="],
 
     "eventemitter3": ["eventemitter3@5.0.1", "", {}, "sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA=="],
 

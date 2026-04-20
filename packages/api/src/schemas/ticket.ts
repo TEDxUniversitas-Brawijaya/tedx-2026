@@ -3,7 +3,6 @@ import {
   bundleItemSchema,
   buyerInfoSchema,
   captchaTokenSchema,
-  eventDaySchema,
   idempotencyKeySchema,
   imageFileSchema,
   isoDateStringSchema,
@@ -11,7 +10,6 @@ import {
   orderStatusSchema,
   productIdSchema,
   productTypeSchema,
-  snapshotVariantSchema,
 } from "./common";
 
 // ticket.listProducts
@@ -27,7 +25,7 @@ export const listTicketProductsOutputSchema = z.array(
     isActive: z.boolean(),
     description: z.string().nullable(),
     imageUrl: z.string().nullable(),
-    bundleItems: z.array(bundleItemSchema).optional(),
+    bundleItems: z.array(bundleItemSchema).nullable(),
   })
 );
 
@@ -39,23 +37,22 @@ export const createTicketOrderInputSchema = buyerInfoSchema.extend({
   captchaToken: captchaTokenSchema,
   idempotencyKey: idempotencyKeySchema,
   paymentProof: imageFileSchema.optional(),
+  bundleItemProducts: z
+    .array(
+      z.object({
+        productId: productIdSchema,
+        variantIds: z.array(z.string()).optional(),
+      })
+    )
+    .optional(), // for bundle items, the selected product IDs (if applicable)
 });
 
 export const createTicketOrderOutputSchema = z.object({
   orderId: orderIdSchema,
-  status: z.literal("pending_payment").or(z.literal("pending_verification")),
+  status: orderStatusSchema,
   totalPrice: z.number().int(),
   expiresAt: isoDateStringSchema,
-  payment: z
-    .object({
-      qrisUrl: z.string().url(),
-      midtransOrderId: z.string(),
-    })
-    .or(
-      z.object({
-        uploadUrl: z.string().url(),
-      })
-    ),
+  qrisUrl: z.nullable(z.url()),
 });
 
 // ticket.getOrderStatus
@@ -64,19 +61,5 @@ export const getTicketOrderStatusInputSchema = z.object({
 });
 
 export const getTicketOrderStatusOutputSchema = z.object({
-  orderId: orderIdSchema,
   status: orderStatusSchema,
-  type: z.literal("ticket"),
-  totalPrice: z.number().int(),
-  items: z.array(
-    z.object({
-      snapshotName: z.string(),
-      quantity: z.number().int(),
-      unitPrice: z.number().int(),
-      snapshotVariants: z.array(snapshotVariantSchema).optional(),
-    })
-  ),
-  createdAt: isoDateStringSchema,
-  paidAt: isoDateStringSchema.nullable(),
-  eventDay: eventDaySchema.optional(),
 });

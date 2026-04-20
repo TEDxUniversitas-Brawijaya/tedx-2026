@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import {
   createTicketOrderInputSchema,
   createTicketOrderOutputSchema,
@@ -12,43 +12,67 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 const listProducts = publicProcedure
   .input(listTicketProductsInputSchema)
   .output(listTicketProductsOutputSchema)
-  .query(() => {
-    // TODO: Implement ticket.listProducts
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "ticket.listProducts is not implemented yet",
+  .query(async ({ ctx }) => {
+    const products = await ctx.services.product.getTicketProducts({
+      status: "all",
     });
+    return products;
   });
 
 const createOrder = publicProcedure
-  .input(createTicketOrderInputSchema)
+  .input(z.instanceof(FormData))
   .output(createTicketOrderOutputSchema)
-  .mutation(() => {
-    // TODO: Implement ticket.createOrder
-    // - Validate CAPTCHA
-    // - Check idempotency key
-    // - Check cooldown by email (KV)
-    // - Validate product exists and is active
-    // - Validate selectedBundleItemId if product has selectable bundle items
-    // - Check stock availability (KV atomic decrement)
-    // - Validate payment proof if payment_mode is manual
-    // - Create order with pending_payment or pending_verification status
-    // - Return order details with payment info
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "ticket.createOrder is not implemented yet",
+  .mutation(async ({ ctx, input: formData }) => {
+    const input = createTicketOrderInputSchema.parse({
+      buyerName: formData.get("buyerName"),
+      buyerEmail: formData.get("buyerEmail"),
+      phone: formData.get("phone"),
+      buyerInstansi: formData.get("buyerInstansi"),
+      productId: formData.get("productId"),
+      quantity: Number(formData.get("quantity")),
+      captchaToken: formData.get("captchaToken"),
+      idempotencyKey: formData.get("idempotencyKey"),
+      paymentProof: formData.get("paymentProof") ?? undefined,
+      // Too lazy to determine if the value is string or not
+      bundleItemProducts: JSON.parse(
+        formData.get("bundleItemProducts") as string
+      ) as {
+        productId: string;
+        variantIds?: string[] | undefined;
+      }[],
     });
+
+    const order = await ctx.services.order.createTicketOrder(
+      {
+        buyer: {
+          name: input.buyerName,
+          email: input.buyerEmail,
+          phone: input.phone,
+          college: input.buyerInstansi,
+        },
+        paymentProof: input.paymentProof ?? null,
+        idempotencyKey: input.idempotencyKey,
+        captchaToken: input.captchaToken,
+      },
+      {
+        productId: input.productId,
+        quantity: input.quantity,
+        bundleItemProducts: input.bundleItemProducts,
+      }
+    );
+
+    return {
+      ...order,
+      expiresAt: order.expiresAt.toISOString(),
+    };
   });
 
 const getOrderStatus = publicProcedure
   .input(getTicketOrderStatusInputSchema)
   .output(getTicketOrderStatusOutputSchema)
-  .query(() => {
-    // TODO: Implement ticket.getOrderStatus
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "ticket.getOrderStatus is not implemented yet",
-    });
+  .query(async ({ ctx, input }) => {
+    const status = await ctx.services.order.getOrderStatus(input.orderId);
+    return { status };
   });
 
 export const ticketRouter = createTRPCRouter({

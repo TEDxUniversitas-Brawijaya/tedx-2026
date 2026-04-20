@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server";
 import {
   getOrderByIdInputSchema,
   getOrderByIdOutputSchema,
@@ -43,7 +42,10 @@ const getById = protectedProcedure
   .input(getOrderByIdInputSchema)
   .output(getOrderByIdOutputSchema)
   .query(async ({ ctx, input }) => {
-    const order = await ctx.services.order.getOrderById(input.orderId);
+    const [order, refund] = await Promise.all([
+      ctx.services.order.getOrderById(input.orderId),
+      ctx.services.refund.getRefundByOrderId(input.orderId),
+    ]);
 
     return {
       ...order,
@@ -53,8 +55,15 @@ const getById = protectedProcedure
       expiresAt: order.expiresAt ? order.expiresAt.toISOString() : null,
       verifiedAt: order.verifiedAt ? order.verifiedAt.toISOString() : null,
       pickedUpAt: order.pickedUpAt ? order.pickedUpAt.toISOString() : null,
-      // TODO: include refund details when available
-      refund: null,
+      refund: refund
+        ? {
+            ...refund,
+            processedAt: refund.processedAt
+              ? new Date(refund.processedAt).toISOString()
+              : null,
+            createdAt: new Date(refund.createdAt).toISOString(),
+          }
+        : null,
       // TODO: include ticket details when available
       tickets: null,
     };
@@ -75,11 +84,13 @@ const verifyPayment = protectedProcedure
 const processRefund = protectedProcedure
   .input(processRefundInputSchema)
   .output(processRefundOutputSchema)
-  .mutation(() => {
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "Refund processing is not implemented yet.",
-    });
+  .mutation(async ({ ctx, input }) => {
+    await ctx.services.order.processRefund(
+      input.orderId,
+      input.action,
+      input.reason ?? "",
+      ctx.session.user.id
+    );
   });
 
 export const orderRouter = createTRPCRouter({

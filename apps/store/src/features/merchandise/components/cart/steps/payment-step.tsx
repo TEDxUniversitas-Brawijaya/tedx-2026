@@ -57,7 +57,7 @@ export function PaymentStep({ order }: PaymentStepProps) {
         </DialogTitle>
       </DialogHeader>
 
-      <div className="mt-3 min-h-0 flex-1 space-y-2.5 overflow-y-hidden pr-1 [scrollbar-color:rgba(224,224,224,0.35)_transparent] [scrollbar-width:thin] sm:space-y-3 sm:pr-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/30 hover:[&::-webkit-scrollbar-thumb]:bg-white/45 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1 [@media(max-height:900px)]:overflow-y-auto">
+      <div className="no-scrollbar mt-3 min-h-0 flex-1 space-y-2.5 overflow-y-hidden pr-1">
         <div className="flex items-center justify-between border-gray-2 border-b pb-3">
           <span className="font-sans-2 text-gray-2 text-sm">Total</span>
           <span className="font-sans-2 text-base text-gray-2 sm:text-lg">

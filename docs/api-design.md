@@ -27,7 +27,7 @@ Returns an array of products, each containing: id, type, name, price, stock, isA
 
 ### `ticket.createOrder` **(mutation)**
 
-Create a ticket order. Reserves stock via KV. Saga pattern handles rollback on failure.
+Create a ticket order. Reserves stock in D1 using batch atomic updates. Saga pattern handles rollback on failure.
 
 Input:
 - `productId` — which ticket product to buy
@@ -44,7 +44,7 @@ Validations:
 - Cooldown check by email (KV)
 - CAPTCHA verification
 - Idempotency check (reject if key already used)
-- Stock available (KV atomic decrement)
+- Stock available (D1 atomic batch decrement with WHERE guard)
 - `selectedBundleItemId` required if product has selectable bundle items
 - Payment proof required if `payment_mode` is `manual`
 - Payment proof file must be an image and below 5 MB
@@ -150,7 +150,7 @@ Validations:
 
 Behavior:
 - `transaction_status: "settlement"` -> update order to "paid", generate tickets + QR, queue confirmation email
-- `transaction_status: "expire"` -> update order to "expired", release stock
+- `transaction_status: "expire"` -> update order to "expired", release stock in D1
 - Other statuses are logged but not acted upon
 
 Always returns 200 OK (per Midtrans spec).
@@ -191,7 +191,7 @@ Verify manual QRIS payment. Input: orderId, action ("approve" or "reject"), reas
 
 Process refund request. Input: orderId, action ("approve" or "reject"), reason (required if reject).
 
-On approve: release stock (KV), update order status, queue refund confirmation email.
+On approve: release stock in D1 (batch UPDATE), update order status, queue refund confirmation email.
 
 ## **Admin — Products**
 

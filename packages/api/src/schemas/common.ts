@@ -60,20 +60,20 @@ export const userRoleSchema = z.enum(["admin", "superadmin"]);
 
 // Buyer info (shared across orders)
 export const buyerInfoSchema = z.object({
-  buyerName: z.string().min(1).max(255),
-  buyerEmail: z.string().email(),
+  buyerName: z.string().min(1, "Nama lengkap wajib diisi").max(255),
+  buyerEmail: z.string().email("Format email tidak valid"),
   phone: z
-    .e164("Nomor telepon harus dalam format (+628123456789)")
-    .min(10)
-    .max(20),
-  buyerInstansi: z.string().min(1).max(255),
+    .e164()
+    .min(10, "Nomor telepon minimal 10 digit")
+    .max(20, "Nomor telepon maksimal 20 digit"),
+  buyerInstansi: z.string().min(1, "Institusi wajib diisi"),
 });
 
 export const merchBuyerInfoSchema = z.object({
   fullName: z.string().min(1, "Nama lengkap wajib diisi").max(255),
   email: z.string().email("Format email tidak valid"),
   phone: z
-    .string()
+    .e164()
     .min(10, "Nomor telepon minimal 10 digit")
     .max(20, "Nomor telepon maksimal 20 digit"),
   address: z.string().min(1, "Alamat wajib diisi"),
