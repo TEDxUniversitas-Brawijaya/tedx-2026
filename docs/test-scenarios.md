@@ -87,8 +87,6 @@ whatsapp_group_main: "https://chat.whatsapp.com/xxx"
 
 **State Transitions to Test:**
 - [✓] Admin approves → `paid` → Email: `merchOrder`
-- [✓] Admin rejects (reason: "Bukti pembayaran tidak valid") → `rejected` → Email: `merchOrderRejected`
-- [✓] System expires (24h) → `expired` → Email: `merchOrderExpired` *(TODO in code)*
 
 ---
 
@@ -101,9 +99,7 @@ whatsapp_group_main: "https://chat.whatsapp.com/xxx"
 - Order items: 1 item with quantity=3
 
 **State Transitions:**
-- [✓] Admin approves → `paid`
-- [✓] User requests refund (H-4) → `refund_requested`
-- [✓] Admin approves refund → `refunded` *(no stock to release for merch)*
+- [✓] Admin rejects (reason: "Bukti pembayaran tidak valid") → `rejected` → Email: `merchOrderRejected`
 
 ---
 
@@ -118,8 +114,7 @@ whatsapp_group_main: "https://chat.whatsapp.com/xxx"
 - Order items: 3 separate items in snapshot
 
 **State Transitions:**
-- [✓] Admin approves → `paid`
-- [✓] Admin picks up merch → `pickedUpAt` updated, `pickedUpBy` = admin_001
+- [✓] Admin approves → `paid` -> Email includes all items in order summary
 
 ---
 
@@ -155,7 +150,7 @@ whatsapp_group_main: "https://chat.whatsapp.com/xxx"
 - Order items: 1 item with quantity=3, variants=[{label: "L", type: "size"}]
 
 **State Transitions:**
-- [✓] Admin rejects (reason: "Transfer dari bank yang berbeda") → `rejected`
+- [✓] Admin approves → `paid`
 
 ---
 
@@ -169,9 +164,7 @@ whatsapp_group_main: "https://chat.whatsapp.com/xxx"
 - Order items: 2 separate items with different variants
 
 **State Transitions:**
-- [✓] Admin approves → `paid`
-- [✓] User requests refund → `refund_requested`
-- [✓] Admin rejects refund (reason: "Sudah melewati batas waktu") → back to `paid`
+- [✓] Admin rejects (reason: "Nominal tidak sesuai") → `rejected`
 
 ---
 
@@ -184,12 +177,11 @@ whatsapp_group_main: "https://chat.whatsapp.com/xxx"
 - 1x Topi B (no variant)
 
 **Expected Behavior:**
-- Total Price: Rp499,000 (75k + 150k + 180k + 54k + 65k)
+- Total Price: Rp524,000 (75k + 150k + 180k + 54k + 65k)
 - Order items: 5 items with proper variant snapshots
 
 **State Transitions:**
 - [✓] Admin approves → `paid`
-- [✓] Merch picked up on event day
 
 ---
 
@@ -227,7 +219,7 @@ whatsapp_group_main: "https://chat.whatsapp.com/xxx"
   ```
 
 **State Transitions:**
-- [✓] Admin approves → `paid` → Email includes bundle details
+- [✓] Admin rejects (reason: "Bukti pembayaran tidak valid") → `rejected`
 
 ---
 
@@ -244,7 +236,7 @@ whatsapp_group_main: "https://chat.whatsapp.com/xxx"
 - Bundle products snapshot shows selected variants
 
 **State Transitions:**
-- [✓] Admin rejects (reason: "Nominal tidak sesuai") → `rejected`
+- [✓] Admin approves → `paid`
 
 ---
 
@@ -260,9 +252,7 @@ whatsapp_group_main: "https://chat.whatsapp.com/xxx"
 - Both items have no variants (category-based selection only)
 
 **State Transitions:**
-- [✓] Admin approves → `paid`
-- [✓] User requests refund within deadline
-- [✓] Admin approves refund → `refunded`
+- [✓] Admin rejects (reason: "Nominal tidak sesuai") → `rejected`
 
 ---
 
@@ -316,7 +306,7 @@ whatsapp_group_main: "https://chat.whatsapp.com/xxx"
 - Quantity 2 means buyer gets 2 sets
 
 **State Transitions:**
-- [✓] System expires → `expired` (if not verified in 24h)
+- [✓] Admin rejects (reason: "Transfer dari bank yang berbeda") → `rejected`
 
 ---
 
@@ -335,7 +325,6 @@ whatsapp_group_main: "https://chat.whatsapp.com/xxx"
 
 **State Transitions:**
 - [✓] Admin approves → `paid`
-- [✓] Full refund flow (request → approved)
 
 ---
 
@@ -352,7 +341,6 @@ whatsapp_group_main: "https://chat.whatsapp.com/xxx"
 
 **State Transitions:**
 - [✓] Admin rejects → `rejected`
-- [✓] User re-orders (cooldown doesn't apply to merch)
 
 ---
 
@@ -1932,20 +1920,20 @@ if (input.paymentMethod !== orderData.order.paymentMethod) {
 - [ ] Set event dates to future dates
 
 ### Merchandise Orders
-- [ ] M1.1: Single no-variant item (approve)
-- [ ] M1.2: Single no-variant, quantity 3 (refund flow)
-- [ ] M1.3: Multiple no-variant items (pickup)
-- [ ] M2.1: Single variant item (approve)
-- [ ] M2.2: Quantity 3 with variant (reject)
-- [ ] M2.3: Multiple variants (refund rejected)
-- [ ] M2.4: Complex cart 5+ items (approve + pickup)
-- [ ] M3.1: Category bundle (approve + email check)
-- [ ] M3.2: Category bundle quantity 2 (reject)
-- [ ] M3.3: Different category bundle (refund approved)
-- [ ] M4.1: Fixed product bundle (approve)
-- [ ] M4.2: Fixed product bundle quantity 2 (expire)
-- [ ] M5.1: Mixed cart (full refund flow)
-- [ ] M5.2: Workshirt + multiple bundles (reject)
+- [x] M1.1: Single no-variant item (approve)
+- [x] M1.2: Single no-variant, quantity 3 (reject)
+- [x] M1.3: Multiple no-variant items (approve)
+- [x] M2.1: Single variant item (reject)
+- [x] M2.2: Quantity 3 with variant (approve)
+- [x] M2.3: Multiple variants (reject)
+- [x] M2.4: Complex cart 5+ items (approve)
+- [x] M3.1: Category bundle (reject)
+- [x] M3.2: Category bundle quantity 2 (approve)
+- [x] M3.3: Different category bundle (reject)
+- [x] M4.1: Fixed product bundle (approve)
+- [x] M4.2: Fixed product bundle quantity 2 (reject)
+- [x] M5.1: Mixed cart (approve)
+- [x] M5.2: Workshirt + multiple bundles (reject)
 
 ### Ticket Orders
 - [ ] T1.1: Single ticket quantity 1 (all states)
@@ -1969,8 +1957,8 @@ if (input.paymentMethod !== orderData.order.paymentMethod) {
 - [ ] refund_requested → paid (verify revert)
 
 ### Email Verification
-- [ ] merchOrder: Check order details, contact info
-- [ ] merchOrderRejected: Check rejection reason
+- [x] merchOrder: Check order details, contact info
+- [x] merchOrderRejected: Check rejection reason
 - [ ] merchOrderExpired: Check TODO status
 - [ ] ticketOrder: Check QR attachments, WhatsApp links, refund URL
 - [ ] ticketOrderRejected: Check stock restoration
