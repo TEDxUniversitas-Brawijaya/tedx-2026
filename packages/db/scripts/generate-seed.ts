@@ -295,8 +295,8 @@ const regularProductData: InsertProduct[] = [
     name: "Topi A",
     description: "TEDx",
     category: "hat",
-    price: 50_000, // TODO
-    isActive: false, // Price will be determined after sales start
+    price: 65_000,
+    isActive: true,
     imageUrl:
       "https://cdn.tedxuniversitasbrawijaya.com/merchandise/hat/topi-1.png",
     createdAt: now,
@@ -308,8 +308,8 @@ const regularProductData: InsertProduct[] = [
     name: "Topi B",
     description: "TEDxUB",
     category: "hat",
-    price: 50_000, // TODO
-    isActive: false, // Price will be determined after sales start
+    price: 65_000,
+    isActive: true,
     imageUrl:
       "https://cdn.tedxuniversitasbrawijaya.com/merchandise/hat/topi-2.png",
     createdAt: now,
@@ -321,8 +321,8 @@ const regularProductData: InsertProduct[] = [
     name: "Topi C",
     description: "TEDxUniversitas Brawijaya",
     category: "hat",
-    price: 50_000, // TODO
-    isActive: false, // Price will be determined after sales start
+    price: 65_000,
+    isActive: true,
     imageUrl:
       "https://cdn.tedxuniversitasbrawijaya.com/merchandise/hat/topi-3.png",
     createdAt: now,
@@ -608,8 +608,8 @@ const bundlingProductsData: InsertProduct[] = [
     type: "merch_bundle",
     name: "Bundling A",
     description: "T-Shirt + Topi",
-    price: 0, // TODO
-    isActive: false,
+    price: 135_000,
+    isActive: true,
     bundleItems: [
       { category: "t-shirt", type: "merchandise" },
       { category: "hat", type: "merchandise" },
@@ -624,8 +624,8 @@ const bundlingProductsData: InsertProduct[] = [
     type: "merch_bundle",
     name: "Bundling B",
     description: "Workshirt + Topi",
-    price: 0, // TODO
-    isActive: false,
+    price: 240_000,
+    isActive: true,
     bundleItems: [
       { category: "workshirt", type: "merchandise" },
       { category: "hat", type: "merchandise" },
@@ -672,8 +672,8 @@ const bundlingProductsData: InsertProduct[] = [
     type: "merch_bundle",
     name: "Bundling E",
     description: "Topi + Keychain",
-    price: 0, // TODO
-    isActive: false,
+    price: 88_000,
+    isActive: true,
     bundleItems: [
       { category: "hat", type: "merchandise" },
       { category: "keychain", type: "merchandise" },
@@ -688,8 +688,8 @@ const bundlingProductsData: InsertProduct[] = [
     type: "merch_bundle",
     name: "Bundling F",
     description: "Topi + Stickers",
-    price: 0, // TODO
-    isActive: false,
+    price: 70_000,
+    isActive: true,
     bundleItems: [
       { category: "hat", type: "merchandise" },
       { category: "stickers", type: "merchandise" },
