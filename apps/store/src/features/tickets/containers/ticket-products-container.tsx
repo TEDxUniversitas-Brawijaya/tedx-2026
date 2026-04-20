@@ -26,8 +26,17 @@ export const TicketProductsContainer = () => {
 
   const activeProducts =
     activeTab === "regular"
-      ? data.filter((p) => p.type === "ticket_regular")
-      : data.filter((p) => p.type === "ticket_bundle");
+      ? data
+          .filter((p) => p.type === "ticket_regular")
+          // Hacky way to sort "Main Event" to the end of the list without hardcoding IDs or anything
+          .sort(
+            (a, b) =>
+              b.name.length - a.name.length || a.name.localeCompare(b.name)
+          )
+      : data
+          .filter((p) => p.type === "ticket_bundle")
+          // Sort bundles by name because the current naming convention uses Bundling <number>
+          .sort((a, b) => a.name.localeCompare(b.name));
 
   return activeProducts.map((product) => (
     <TicketProductCard key={product.id} product={product} />
