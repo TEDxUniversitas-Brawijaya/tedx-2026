@@ -49,7 +49,8 @@ export const TicketProductCard = ({ product }: TicketProductCardProps) => {
           </h2>
           {product.description && (
             <p className="font-sans-2 text-sm text-white/80">
-              {product.description}
+              {product.description}.{" "}
+              {product.stock !== null && `${product.stock} tiket tersisa.`}
             </p>
           )}
           <p className="mt-3 font-sans-2 text-base text-white">

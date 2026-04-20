@@ -244,7 +244,7 @@ export const createProductServices = (
           ...product,
           isActive: eventHasPassed ? false : product.isActive, // if event date has passed, set isActive to false
           description: eventDate
-            ? eventDate.toLocaleDateString("en-US", {
+            ? eventDate.toLocaleDateString("id-ID", {
                 weekday: "long",
                 year: "numeric",
                 month: "long",
