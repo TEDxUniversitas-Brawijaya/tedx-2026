@@ -133,10 +133,10 @@ export const detailMerchOrderTable = (
           .map((b) => {
             const variantText =
               b.variants && b.variants.length > 0
-                ? `${b.variants.map((v) => `${v.label}: ${v.value}`).join(", ")}`
+                ? `(${b.variants.map((v) => `${v.label}: ${v.value}`).join(", ")})`
                 : "";
 
-            return `${b.name} (${variantText})`;
+            return `${b.name} ${variantText}`;
           })
           .join(", ");
       }
@@ -274,10 +274,10 @@ export const detailTicketOrderTable = (
         .map((b) => {
           const variantText =
             b.variants && b.variants.length > 0
-              ? `${b.variants.map((v) => `${v.label}: ${v.value}`).join(", ")}`
+              ? `(${b.variants.map((v) => `${v.label}: ${v.value}`).join(", ")})`
               : "";
 
-          return `${b.name} (${variantText})`;
+          return `${b.name} ${variantText}`;
         })
         .join(", ");
     }
