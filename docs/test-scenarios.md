@@ -1043,7 +1043,7 @@ Template: merchOrder
 ```
 Halo!
 
-Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitasBrawijaya 2026!
+Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitas Brawijaya 2026!
 
 Pembayaran kamu telah berhasil diproses. Saat ini, pesanan kamu sedang masuk dalam tahap pemrosesan. Mohon kesediaannya menunggu beberapa waktu sampai merchandise-mu siap untuk diambil. Jika ada pertanyaan mengenai detail pesanan atau pengambilan, jangan ragu untuk menghubungi contact person yang tertera pada email ini.
 
@@ -1098,7 +1098,7 @@ Template: merchOrderExpired
 ```
 Halo!
 
-Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitasBrawijaya 2026!
+Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitas Brawijaya 2026!
 
 Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini telah kadaluarsa (expired).
 
@@ -1130,7 +1130,7 @@ Template: merchOrderRejected
 ```
 Halo!
 
-Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitasBrawijaya 2026!
+Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitas Brawijaya 2026!
 
 Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid. Oleh karena itu, status pesanan kamu saat ini ditolak (rejected) karena **{reason}**.
 
@@ -1168,7 +1168,7 @@ Attachments: QR code PNG files (1 per ticket)
 ```
 Halo!
 
-Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitasBrawijaya 2026!
+Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitas Brawijaya 2026!
 
 Pembayaran kamu telah berhasil diproses. Tiket ini adalah pintu masuk-mu menuju ruang tempat berbagai kisah dari perjalanan hidup dipertemukan. Pastikan kamu menyimpan tiket ini dengan aman dan membawanya saat hari penukaran tiket dan/atau Hari-H acara diselenggarakan.
 
@@ -1237,7 +1237,7 @@ Template: ticketOrderExpired
 ```
 Halo!
 
-Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitasBrawijaya 2026!
+Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitas Brawijaya 2026!
 
 Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak terverifikasi oleh sistem kami. Oleh karena itu, status pesanan kamu saat ini telah kadaluarsa (expired).
 
@@ -1269,7 +1269,7 @@ Template: ticketOrderRejected
 ```
 Halo!
 
-Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitasBrawijaya 2026!
+Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitas Brawijaya 2026!
 
 Kami ingin menginformasikan bahwa pesanan kamu tidak dapat diproses lebih lanjut karena pembayaran yang dilakukan tidak valid. Oleh karena itu, status pesanan kamu saat ini ditolak (rejected) karena **{reason}**.
 

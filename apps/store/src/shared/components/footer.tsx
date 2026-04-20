@@ -1,9 +1,9 @@
-import { Link } from "@tanstack/react-router";
 import FooterAssets from "@/assets/imgs/carpet-2.png";
 import Logo from "@/assets/imgs/logo.png";
 import Texture from "@/assets/imgs/paper-texture-1.png";
 import silhouetteOfLightMobile from "@/assets/svgs/silhouette-of-light-mobile.svg";
 import silhouetteOfLight from "@/assets/svgs/silhouette-of-light.svg";
+import { Link } from "@tanstack/react-router";
 
 export const Footer = () => {
   return (
@@ -71,7 +71,7 @@ export const Footer = () => {
             id="footer-copy"
           >
             <p className="text-[clamp(1.04rem,4.2vw,1.28rem)] sm:text-[clamp(0.9rem,2.35vw,1rem)]">
-              ©2026. TEDxUniversitasBrawijaya
+              ©2026. TEDxUniversitas Brawijaya
             </p>
             <p className="text-[clamp(1.04rem,4.2vw,1.28rem)] sm:text-[clamp(0.9rem,2.35vw,1rem)]">
               An independently organized TED-like event under license from TED.
