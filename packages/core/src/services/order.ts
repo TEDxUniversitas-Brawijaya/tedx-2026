@@ -476,6 +476,9 @@ export const createOrderServices = (
         }[] = [];
 
         for (const snapshotBundleProduct of item.snapshotBundleProducts) {
+          if (snapshotBundleProduct.category) {
+            continue; // Only create tickets for bundle items that are tickets, not merchandise
+          }
           for (let i = 0; i < item.quantity; i++) {
             const event = await getEvent(snapshotBundleProduct.name);
             if (!event) {
