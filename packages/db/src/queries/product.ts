@@ -13,6 +13,10 @@ export type ProductQueries = {
     productIds: SelectProduct["id"][],
     opts?: { status?: "active" | "inactive" | "all" }
   ) => Promise<SelectProduct[]>;
+  updateProduct: (
+    productId: SelectProduct["id"],
+    data: { price?: number; stock?: number }
+  ) => Promise<SelectProduct | null>;
   batchDecrementProductStock: (
     operations: { productId: SelectProduct["id"]; quantity: number }[]
   ) => Promise<
@@ -47,6 +51,31 @@ export const createProductQueries = (db: DB): ProductQueries => ({
       where: eq(schema.productsTable.id, productId),
     });
     return product || null;
+  },
+  updateProduct: async (productId, data) => {
+    const updateData: { price?: number; stock?: number } = {};
+    if (data.price !== undefined) {
+      updateData.price = data.price;
+    }
+    if (data.stock !== undefined) {
+      updateData.stock = data.stock;
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      return (
+        (await db.query.productsTable.findFirst({
+          where: eq(schema.productsTable.id, productId),
+        })) ?? null
+      );
+    }
+
+    const result = await db
+      .update(schema.productsTable)
+      .set(updateData)
+      .where(eq(schema.productsTable.id, productId))
+      .returning();
+
+    return result[0] ?? null;
   },
   getProductsByIds: async (productIds, opts) => {
     const { status } = opts || {};
