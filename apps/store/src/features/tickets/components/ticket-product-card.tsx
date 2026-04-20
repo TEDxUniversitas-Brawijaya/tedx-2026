@@ -53,7 +53,7 @@ export const TicketProductCard = ({ product }: TicketProductCardProps) => {
             </p>
           )}
           <p className="mt-3 font-sans-2 text-base text-white">
-            {formatIdrCurrency(product.price)}
+            {product.price <= 0 ? "TBA" : formatIdrCurrency(product.price)}
           </p>
         </div>
       </div>
