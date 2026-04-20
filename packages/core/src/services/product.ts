@@ -12,6 +12,13 @@ export type ProductServices = {
   getTicketProducts: (opts?: {
     status?: "active" | "inactive" | "all";
   }) => Promise<Product[]>;
+  adminListTicketProducts: () => Promise<
+    Awaited<ReturnType<ProductQueries["getProducts"]>>
+  >;
+  adminUpdateProduct: (
+    productId: string,
+    data: { price?: number; stock?: number }
+  ) => Promise<void>;
 };
 
 type CreateProductServicesCtx = {
@@ -387,5 +394,32 @@ export const createProductServices = (
     );
 
     return response;
+  },
+  adminListTicketProducts: async () => {
+    return await ctx.productQueries.getProducts({
+      types: ["ticket_regular", "ticket_bundle"],
+    });
+  },
+  adminUpdateProduct: async (productId, data) => {
+    const product = await ctx.productQueries.getProductById(productId);
+
+    if (!product) {
+      throw new AppError("NOT_FOUND", "Product not found");
+    }
+
+    if (product.type !== "ticket_regular" && product.type !== "ticket_bundle") {
+      throw new AppError(
+        "BAD_REQUEST",
+        "Only ticket products can be updated via this endpoint"
+      );
+    }
+
+    await ctx.productQueries.updateProduct(productId, data);
+
+    await Promise.all([
+      ctx.productOperations.deleteTicketProducts("all"),
+      ctx.productOperations.deleteTicketProducts("active"),
+      ctx.productOperations.deleteTicketProducts("inactive"),
+    ]);
   },
 });
