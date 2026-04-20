@@ -1527,7 +1527,7 @@ export const createOrderServices = (
       const uploadedProof = await ctx.fileServices.uploadFile(
         `${orderId}-${proofImage.name}`,
         await proofImage.arrayBuffer(),
-        "payment-proofs/merchandise",
+        "payment-proofs/tickets",
         {
           maxSizeMB: 5,
         }
