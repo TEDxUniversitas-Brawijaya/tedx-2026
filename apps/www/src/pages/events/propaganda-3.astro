@@ -65,7 +65,7 @@ import Picnic from "@/assets/imgs/picnic.png";
           </div>
           <div class="third-screen">
             <div class="text-container">
-              <h2>DAY 1: MERANGKAI BUNGA</h2>
+              <h2><span class="day-label">DAY 1:</span> MERANGKAI BUNGA</h2>
               <p>
                 Bunga sering menjadi simbol kasih—keindahan yang tumbuh dari
                 perhatian kecil dan kehangatan yang tulus. Melalui kegiatan
@@ -81,7 +81,7 @@ import Picnic from "@/assets/imgs/picnic.png";
           </div>
           <div class="fourth-screen">
             <div class="text-container">
-              <h2>DAY 2: MEMBUAT BENTO</h2>
+              <h2><span class="day-label">DAY 2:</span> MEMBUAT BENTO</h2>
               <p>
                 Membuat bento menjadi ruang sederhana bagi partisipan untuk
                 merangkai makna pulang melalui bekal yang mereka susun bersama.
@@ -89,10 +89,14 @@ import Picnic from "@/assets/imgs/picnic.png";
                 dinding rumah yang menghadirkan rasa aman. Sementara nasi, lauk,
                 dan sayur yang menemani di sampingnya menggambarkan berbagai
                 kehadiran yang saling melengkapi dan membuat sebuah rumah terasa
-                lebih hidup. Dari susunan sederhana itu, membuat bento menjadi
-                seperti menata tempat untuk berpulang—ruang hangat di mana
-                setiap unsur di dalamnya saling menjaga dan memberi rasa untuk
-                kembali.
+                lebih hidup.
+              </p>
+            </div>
+            <div class="text-container">
+              <p>
+                Dari susunan sederhana itu, membuat bento menjadi seperti menata
+                tempat untuk berpulang—ruang hangat di mana setiap unsur di
+                dalamnya saling menjaga dan memberi rasa untuk kembali.
               </p>
             </div>
           </div>
@@ -106,7 +110,7 @@ import Picnic from "@/assets/imgs/picnic.png";
               />
               <div class="guidebook-actions">
                 <a
-                  href="#guidebook-link-placeholder"
+                  href="https://propaganda3tedxub2026.my.canva.site/guidebook"
                   class="guidebook-button guidebook-button-guidebook"
                 >
                   Baca Guidebook
@@ -136,7 +140,8 @@ import Picnic from "@/assets/imgs/picnic.png";
   #section-one {
     position: relative;
     height: 700dvh;
-    --max-horizontal-scroll-vw: 650;
+    --max-horizontal-scroll-vw: 700;
+    --background-track-extra-vw: 200;
   }
 
   #section-one .section-one-wrapper {
@@ -162,7 +167,10 @@ import Picnic from "@/assets/imgs/picnic.png";
   #section-one .background-container-wrapper {
     position: absolute;
     inset: 0;
-    width: calc((var(--max-horizontal-scroll-vw) + 100) * 1dvw);
+    width: calc(
+      (var(--max-horizontal-scroll-vw) + var(--background-track-extra-vw)) *
+      1dvw
+    );
     height: 100dvh;
     z-index: 1;
   }
@@ -185,9 +193,20 @@ import Picnic from "@/assets/imgs/picnic.png";
     gap: 5rem;
     z-index: 3;
   }
+  #section-one .fourth-screen {
+    position: relative;
+    width: 200dvw;
+    height: 100dvh;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 5rem;
+    z-index: 3;
+  }
 
   #section-one .third-screen,
-  #section-one .fourth-screen,
   #section-one .fifth-screen {
     position: relative;
     width: 100dvw;
@@ -213,6 +232,10 @@ import Picnic from "@/assets/imgs/picnic.png";
     margin-bottom: 1.5rem;
   }
 
+  #section-one .day-label {
+    display: inline;
+  }
+
   #section-one .first-screen p,
   #section-one .third-screen p,
   #section-one .fourth-screen p {
@@ -228,24 +251,41 @@ import Picnic from "@/assets/imgs/picnic.png";
     gap: 1rem;
     text-align: center;
     padding: 1rem 0.2rem;
-    transform: translateY(-10dvh);
   }
 
   #section-one .first-screen .text-container {
     width: 50%;
   }
   #section-one .first-screen .text-container:first-child {
+    transform: translateY(-15dvh);
     padding-left: 10dvw;
   }
+  #section-one .first-screen .text-container:nth-child(2) {
+    transform: translateY(-12dvh);
+  }
+  #section-one .third-screen .text-container:first-child {
+    transform: translateY(-6dvh);
+  }
+  #section-one .fourth-screen .text-container {
+    width: 50%;
+  }
+  #section-one .fourth-screen .text-container:first-child {
+    transform: translateY(-12dvh);
+  }
+  #section-one .fourth-screen .text-container:nth-child(2) {
+    transform: translateY(-15dvh);
+  }
+
   #section-one .third-screen {
-    transform: translateX(40dvw);
+    transform: translateX(105dvw);
   }
   #section-one .fourth-screen {
-    transform: translateX(250dvw);
+    transform: translateX(300dvw);
   }
+
   #section-one .fifth-screen {
     padding-inline: clamp(1rem, 7dvw, 5rem);
-    transform: translateX(250dvw);
+    transform: translateX(310dvw);
   }
 
   #section-one .guidebook-content {
@@ -351,20 +391,23 @@ import Picnic from "@/assets/imgs/picnic.png";
     position: absolute;
     left: 0;
     bottom: 0;
-    width: clamp(2400px, 700dvw, 4900px);
+    width: calc(
+      (var(--max-horizontal-scroll-vw) + var(--background-track-extra-vw)) *
+      1dvw
+    );
     height: auto;
     z-index: 1;
   }
   .bouquet-stand {
     position: absolute;
-    left: 25%;
+    left: 30%;
     bottom: 0%;
     height: auto;
     width: clamp(369px, 55dvw, 631px);
   }
   .flower-pot-1 {
     position: absolute;
-    left: 35%;
+    left: 43%;
     bottom: 5%;
     height: auto;
     width: clamp(129px, 20dvw, 200px);
@@ -372,15 +415,15 @@ import Picnic from "@/assets/imgs/picnic.png";
 
   .flower-pot-2 {
     position: absolute;
-    left: 40%;
-    bottom: 5%;
+    left: 47%;
+    bottom: 4%;
     height: auto;
     width: clamp(108px, 20dvw, 200px);
   }
 
   .tree {
     position: absolute;
-    left: 60%;
+    left: 55%;
     bottom: 7%;
     width: clamp(280px, 100dvw, 500px);
     height: auto;
@@ -388,10 +431,10 @@ import Picnic from "@/assets/imgs/picnic.png";
 
   .picnic {
     position: absolute;
-    left: 73%;
+    left: 68%;
     bottom: 5%;
     height: auto;
-    width: clamp(300px, 30dvw, 500px);
+    width: clamp(300px, 80dvw, 500px);
   }
 
   @keyframes guidebook-float {
@@ -406,9 +449,15 @@ import Picnic from "@/assets/imgs/picnic.png";
     }
   }
 
-  @media (min-width: 768px) and (max-width: 1199px) {
+  @media (max-width: 767px) {
+    #section-one .day-label {
+      display: block;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1200px) {
     #section-one {
-      --max-horizontal-scroll-vw: 415;
+      --max-horizontal-scroll-vw: 550;
     }
     #section-one .first-screen {
       width: 180dvw;
@@ -423,13 +472,39 @@ import Picnic from "@/assets/imgs/picnic.png";
     #section-one .third-screen {
       transform: translateX(10dvw);
     }
-    #section-one .fourth-screen {
-      transform: translateX(90dvw);
-    }
     #section-one .fifth-screen {
       transform: translateX(clamp(80dvw, 90dvw, 100dvw));
     }
 
+    #section-one .first-screen .text-container:nth-child(2) {
+      transform: translateY(-13dvh);
+    }
+    #section-one .third-screen .text-container:first-child {
+      transform: translateY(-14dvh);
+    }
+
+    #section-one .fourth-screen {
+      transform: translateX(clamp(90dvw, 100dvw, 110dvw));
+    }
+
+    #section-one .fourth-screen .text-container:first-child {
+      transform: translateY(-14dvh);
+    }
+    #section-one .fourth-screen .text-container:nth-child(2) {
+      transform: translateY(-14dvh);
+    }
+    #section-one .fourth-screen {
+      flex-direction: column;
+      gap: 0;
+      transform: translateX(250dvw);
+    }
+    #section-one .fifth-screen {
+      transform: translateX(220dvw);
+    }
+    #section-one .fourth-screen .text-container {
+      padding: 0;
+      width: 50%;
+    }
     .seesaw {
       left: 9%;
       bottom: 7%;
@@ -448,25 +523,23 @@ import Picnic from "@/assets/imgs/picnic.png";
     .flower-pot-1 {
       left: 43%;
       bottom: 7%;
-      width: clamp(129px, 20dvw, 200px);
     }
     .flower-pot-2 {
       left: 48%;
       bottom: 6%;
-      width: clamp(108px, 15dvw, 200px);
     }
     .tree {
-      width: clamp(200px, 100dvw, 400px);
+      left: 60%;
+      bottom: 10%;
     }
     .picnic {
       left: 74%;
-      width: clamp(300px, 50dvw, 500px);
     }
   }
 
   @media (min-width: 1200px) {
     #section-one {
-      --max-horizontal-scroll-vw: 200;
+      --max-horizontal-scroll-vw: 180;
     }
     #section-one .first-screen {
       flex-direction: column;
@@ -498,17 +571,38 @@ import Picnic from "@/assets/imgs/picnic.png";
     }
     #section-one .third-screen {
       width: 63dvw;
-      transform: translateX(30dvw);
+      transform: translateX(40dvw);
     }
     #section-one .fourth-screen {
       width: 64dvw;
-      transform: translateX(45dvw);
+      transform: translateX(98dvw);
     }
     #section-one .fifth-screen {
       padding-inline: clamp(1rem, 7dvw, 5rem);
-      transform: translateX(15dvw);
+      transform: translateX(80dvw);
+    }
+    #section-one .first-screen .text-container:nth-child(2) {
+      transform: translateY(-13dvh);
+    }
+    #section-one .third-screen .text-container:first-child {
+      transform: translateY(-14dvh);
     }
 
+    #section-one .fourth-screen .text-container:first-child {
+      transform: translateY(-14dvh);
+    }
+    #section-one .fourth-screen .text-container:nth-child(2) {
+      transform: translateY(-14dvh);
+    }
+    #section-one .fourth-screen {
+      flex-direction: column;
+      gap: 0;
+      transform: translateX(90dvw);
+    }
+    #section-one .fourth-screen .text-container {
+      padding: 0;
+      width: 50%;
+    }
     .seesaw {
       left: 11%;
       bottom: 8%;
@@ -518,24 +612,23 @@ import Picnic from "@/assets/imgs/picnic.png";
       bottom: 6%;
     }
     .bouquet-stand {
-      left: 30%;
+      left: 25%;
       bottom: 5%;
     }
     .flower-pot-1 {
-      left: 42%;
+      left: 35%;
       bottom: 5%;
     }
     .flower-pot-2 {
-      left: 46%;
+      left: 38%;
       bottom: 7%;
     }
     .tree {
-      left: 54%;
-      bottom: 10%;
+      left: 55%;
+      bottom: 13%;
     }
     .picnic {
-      left: 66%;
-      bottom: 5%;
+      left: 68%;
     }
   }
 </style>
@@ -547,10 +640,10 @@ import Picnic from "@/assets/imgs/picnic.png";
     const backgroundContainerWrapper = sectionOne?.querySelector<HTMLElement>(
       ".background-container-wrapper"
     );
-    const isTablet = window.matchMedia(
+    const tabletMediaQuery = window.matchMedia(
       "(min-width: 768px) and (max-width: 1199px)"
-    ).matches;
-    const isDesktop = window.matchMedia("(min-width: 1200px)").matches;
+    );
+    const desktopMediaQuery = window.matchMedia("(min-width: 1200px)");
 
     if (!(sectionOne && horizontalScroll && backgroundContainerWrapper)) {
       return;
@@ -560,14 +653,38 @@ import Picnic from "@/assets/imgs/picnic.png";
       return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
     };
 
+    type ViewportMode = "mobile" | "tablet" | "desktop";
+
+    const getViewportMode = (): ViewportMode => {
+      if (desktopMediaQuery.matches) {
+        return "desktop";
+      }
+      if (tabletMediaQuery.matches) {
+        return "tablet";
+      }
+
+      return "mobile";
+    };
+
     // Extra scroll room so the right-shifted final panel/CTA can fully enter
     // the viewport across breakpoints before vertical scrolling exits section one.
+    let viewportMode = getViewportMode();
     let HORIZONTAL_SCROLL_END_BUFFER_PX = 30;
-    if (isTablet) {
-      HORIZONTAL_SCROLL_END_BUFFER_PX = 450;
-    } else if (isDesktop) {
-      HORIZONTAL_SCROLL_END_BUFFER_PX = 100;
-    }
+
+    const applyViewportModeScrollConfig = (mode: ViewportMode) => {
+      if (mode === "tablet") {
+        HORIZONTAL_SCROLL_END_BUFFER_PX = 450;
+        return;
+      }
+      if (mode === "desktop") {
+        HORIZONTAL_SCROLL_END_BUFFER_PX = 100;
+        return;
+      }
+
+      HORIZONTAL_SCROLL_END_BUFFER_PX = 30;
+    };
+
+    applyViewportModeScrollConfig(viewportMode);
 
     const getMaxHorizontalTranslatePx = () => {
       const trackWidth =
@@ -632,6 +749,20 @@ import Picnic from "@/assets/imgs/picnic.png";
         resizeRafId = null;
       });
     });
+
+    const handleViewportModeChange = () => {
+      const nextViewportMode = getViewportMode();
+      if (nextViewportMode === viewportMode) {
+        return;
+      }
+
+      viewportMode = nextViewportMode;
+      applyViewportModeScrollConfig(viewportMode);
+      updateHorizontalScroll();
+    };
+
+    tabletMediaQuery.addEventListener("change", handleViewportModeChange);
+    desktopMediaQuery.addEventListener("change", handleViewportModeChange);
 
     updateHorizontalScroll();
   })();
