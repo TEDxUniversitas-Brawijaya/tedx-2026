@@ -7,10 +7,10 @@ export type TemplateMap = {
     items: {
       name: string;
       quantity: number;
-      variants?: { label: string; value: string }[];
+      variants?: { label: string; type: string }[];
       bundleProducts?: {
         name: string;
-        variants?: { label: string; value: string }[];
+        variants?: { label: string; type: string }[];
       }[];
       price: number;
     }[];
@@ -20,10 +20,10 @@ export type TemplateMap = {
     items: {
       name: string;
       quantity: number;
-      variants?: { label: string; value: string }[];
+      variants?: { label: string; type: string }[];
       bundleProducts?: {
         name: string;
-        variants?: { label: string; value: string }[];
+        variants?: { label: string; type: string }[];
       }[];
       price: number;
     }[];
@@ -33,10 +33,10 @@ export type TemplateMap = {
     items: {
       name: string;
       quantity: number;
-      variants?: { label: string; value: string }[];
+      variants?: { label: string; type: string }[];
       bundleProducts?: {
         name: string;
-        variants?: { label: string; value: string }[];
+        variants?: { label: string; type: string }[];
       }[];
       price: number;
     }[];
@@ -52,7 +52,7 @@ export type TemplateMap = {
 
       bundleProducts?: {
         name: string;
-        variants?: { label: string; value: string }[];
+        variants?: { label: string; type: string }[];
       }[];
 
       tickets: {
@@ -71,7 +71,7 @@ export type TemplateMap = {
       price: number;
       bundleProducts?: {
         name: string;
-        variants?: { label: string; value: string }[];
+        variants?: { label: string; type: string }[];
       }[];
     };
   };
@@ -83,7 +83,7 @@ export type TemplateMap = {
       price: number;
       bundleProducts?: {
         name: string;
-        variants?: { label: string; value: string }[];
+        variants?: { label: string; type: string }[];
       }[];
     };
     reason: string;
@@ -111,7 +111,7 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
-              Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitasBrawijaya 2026!
+              Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitas Brawijaya 2026!
             </span>
           </td>
         </tr>
@@ -156,7 +156,7 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
-              Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitasBrawijaya 2026!
+              Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitas Brawijaya 2026!
             </span>
           </td>
         </tr>
@@ -215,7 +215,7 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
-              Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitasBrawijaya 2026!
+              Terima kasih atas antusiasme kamu dalam pembelian official merchandise TEDxUniversitas Brawijaya 2026!
             </span>
           </td>
         </tr>
@@ -274,7 +274,7 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
-              Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitasBrawijaya 2026!
+              Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitas Brawijaya 2026!
             </span>
           </td>
         </tr>
@@ -375,7 +375,7 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
-              Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitasBrawijaya 2026!
+              Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitas Brawijaya 2026!
             </span>
           </td>
         </tr>
@@ -434,7 +434,7 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
-              Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitasBrawijaya 2026!
+              Terima kasih atas antusiasme kamu untuk menjadi bagian dari perjalanan bertumbuh bersama TEDxUniversitas Brawijaya 2026!
             </span>
           </td>
         </tr>

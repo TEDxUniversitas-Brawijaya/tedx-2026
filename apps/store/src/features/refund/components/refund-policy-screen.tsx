@@ -38,7 +38,7 @@ export function RefundPolicyScreen({ onContinue }: { onContinue: () => void }) {
               <li>
                 Dalam kondisi pembayaran ganda/lebih, biaya layanan refund akan
                 ditanggung oleh pembeli. Namun, jika acara dibatalkan oleh pihak
-                TEDxUniversitasBrawijaya, biaya layanan akan ditanggung oleh
+                TEDxUniversitas Brawijaya, biaya layanan akan ditanggung oleh
                 pihak penyelenggara.
               </li>
               <li>

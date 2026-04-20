@@ -88,7 +88,7 @@ export const HeroSection = () => {
           </div>
           <p className="w-2/3 font-sans-2 text-black text-xs md:text-base lg:w-1/4">
             Lengkapi jejak ceritamu sebagai bagian dari ruang bertumbuh bersama
-            TEDxUniversitasBrawijaya 2026.
+            TEDxUniversitas Brawijaya 2026.
           </p>
         </div>
         <div className="pointer-events-none absolute inset-0 flex h-screen w-full items-end overflow-hidden bg-transparent">

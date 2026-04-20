@@ -46,6 +46,10 @@ type OrderDetailItemsCardProps = {
 };
 
 export function OrderDetailItemsCard({ items }: OrderDetailItemsCardProps) {
+  const totalPrice = items.reduce((total, item) => {
+    return total + item.quantity * item.snapshot.price;
+  }, 0);
+
   return (
     <div className="rounded-lg border" id="order-detail-items">
       <Table>
@@ -88,6 +92,15 @@ export function OrderDetailItemsCard({ items }: OrderDetailItemsCardProps) {
               </TableCell>
             </TableRow>
           ))}
+          <TableRow>
+            <TableCell className="text-right font-semibold" colSpan={5}>
+              Total Price:
+            </TableCell>
+            <TableCell className="font-semibold" id="order-detail-total-price">
+              {formatCurrency(totalPrice)}
+            </TableCell>
+            <TableCell />
+          </TableRow>
         </TableBody>
       </Table>
     </div>

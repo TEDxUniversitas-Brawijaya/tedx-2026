@@ -25,7 +25,7 @@ export function SuccessStep() {
         </p>
         <p className="font-sans-2 text-sm text-white leading-relaxed sm:text-base">
           Kami tidak sabar menyambut ceritamu dan membangun rumah kita bersama
-          di TEDxUniversitasBrawijaya 2026!
+          di TEDxUniversitas Brawijaya 2026!
         </p>
       </div>
 

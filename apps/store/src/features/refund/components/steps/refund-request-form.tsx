@@ -53,7 +53,7 @@ export function RefundRequestForm({
 
         <p className="max-w-sm font-sans-2 text-gray-300 text-sm italic">
           Pengajuan pengembalian dana kamu sedang kami proses. Silakan menunggu
-          informasi selanjutnya melalui email TEDxUniversitasBrawijaya.
+          informasi selanjutnya melalui email TEDxUniversitas Brawijaya.
         </p>
 
         <Button

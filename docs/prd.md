@@ -2,7 +2,7 @@
 
 ## **Overview**
 
-Ticketing system, merchandise store, and admin panel for TEDxUniversitasBrawijaya 2026. Built as a TypeScript monorepo on Cloudflare free tier.
+Ticketing system, merchandise store, and admin panel for TEDxUniversitas Brawijaya 2026. Built as a TypeScript monorepo on Cloudflare free tier.
 
 
 ## **Scope**

@@ -6,7 +6,7 @@ export const header = (): string => {
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="position: relative;">
             <tr>
               <td class="header-padding" valign="middle" align="left" style="padding: 20px 48px; position: relative; z-index: 2;">
-                <img src="https://tedxuniversitasbrawijaya.com/email/logo.png" alt="Logo TEDxUniversitasBrawijaya" width="228" height="60" style="display: block; width: 228px; max-width: 100%; height: 60px; aspect-ratio: 3.78 / 1; object-fit: contain;" />
+                <img src="https://tedxuniversitasbrawijaya.com/email/logo.png" alt="Logo TEDxUniversitas Brawijaya" width="228" height="60" style="display: block; width: 228px; max-width: 100%; height: 60px; aspect-ratio: 3.78 / 1; object-fit: contain;" />
               </td>
               <td valign="top" align="right" style="padding: 0; position: absolute; bottom: 0; right: 0; z-index: 1;">
                 <img src="https://tedxuniversitasbrawijaya.com/email/chandelier-1.png" alt="Chandelier" width="165" height="162" style="display: block; width: 165px; max-width: 100%; height: 162px;" />
@@ -96,10 +96,10 @@ export const detailMerchOrderTable = (
   items: {
     name: string;
     quantity: number;
-    variants?: { label: string; value: string }[];
+    variants?: { label: string; type: string }[];
     bundleProducts?: {
       name: string;
-      variants?: { label: string; value: string }[];
+      variants?: { label: string; type: string }[];
     }[];
     price: number;
   }[]
@@ -118,27 +118,27 @@ export const detailMerchOrderTable = (
     });
 
     const getDetail = (
-      variants?: { label: string; value: string }[],
+      variants?: { label: string; type: string }[],
       bundleProducts?: {
         name: string;
-        variants?: { label: string; value: string }[];
+        variants?: { label: string; type: string }[];
       }[]
     ) => {
       if (variants && variants.length > 0) {
-        return variants.map((v) => `${v.label}: ${v.value}`).join(", ");
+        return `(${variants.map((v) => `${v.type}: ${v.label}`).join(", ")})`;
       }
 
       if (bundleProducts && bundleProducts.length > 0) {
-        return bundleProducts
+        return `: ${bundleProducts
           .map((b) => {
             const variantText =
               b.variants && b.variants.length > 0
-                ? `(${b.variants.map((v) => `${v.label}: ${v.value}`).join(", ")})`
+                ? `(${b.variants.map((v) => `${v.type}: ${v.label}`).join(", ")})`
                 : "";
 
             return `${b.name} ${variantText}`;
           })
-          .join(", ");
+          .join(", ")}`;
       }
 
       return null;
@@ -150,7 +150,7 @@ export const detailMerchOrderTable = (
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-bottom: 1px solid #C6C6C6; padding: 12px 0px;">
         <tr>
           <td width="40%" valign="middle" align="left">
-            <span class="table-content" style="font-size: 16px; text-align: left;">${item.name} ${detail ? `: ${detail}` : ""}</span>
+            <span class="table-content" style="font-size: 16px; text-align: left;">${item.name} ${detail ? `${detail}` : ""}</span>
           </td>
           <td width="20%" valign="middle" align="center">
             <span class="table-content" style="font-size: 16px; text-align: center;">${price}</span>
@@ -247,7 +247,7 @@ export const detailTicketOrderTable = (
     price: number;
     bundleProducts?: {
       name: string;
-      variants?: { label: string; value: string }[];
+      variants?: { label: string; type: string }[];
     }[];
   }
 ) => {
@@ -266,7 +266,7 @@ export const detailTicketOrderTable = (
   const getDetail = (
     bundleProducts?: {
       name: string;
-      variants?: { label: string; value: string }[];
+      variants?: { label: string; type: string }[];
     }[]
   ) => {
     if (bundleProducts && bundleProducts.length > 0) {
@@ -274,7 +274,7 @@ export const detailTicketOrderTable = (
         .map((b) => {
           const variantText =
             b.variants && b.variants.length > 0
-              ? `(${b.variants.map((v) => `${v.label}: ${v.value}`).join(", ")})`
+              ? `(${b.variants.map((v) => `${v.type}: ${v.label}`).join(", ")})`
               : "";
 
           return `${b.name} ${variantText}`;
