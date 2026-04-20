@@ -22,7 +22,6 @@ type TicketCheckoutStore = {
   order: TicketOrder | null;
 
   openCheckout: (product: TicketProduct) => void;
-  closeCheckout: () => void;
   onNextStep: () => void;
   onPrevStep: () => void;
 
@@ -56,19 +55,21 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
         buyer: null,
         order: null,
       }),
-    closeCheckout: () =>
-      set({
-        isCheckoutOpen: false,
-        checkoutStep: "identification",
-        selectedProduct: null,
-        quantity: 1,
-        buyer: null,
-      }),
     onNextStep: () => {
       const { checkoutStep, setIsCheckoutOpen } = get();
       const nextStep = progressSteps[checkoutStep].next;
       if (nextStep === null) {
         setIsCheckoutOpen(false);
+
+        // reset
+        set({
+          checkoutStep: "identification",
+          // selectedProduct: null, // For some reason it will throw error if we set selectedProduct to null here, need to investigate further --- IGNORE ---
+          quantity: 1,
+          buyer: null,
+          order: null,
+        });
+
         return;
       }
 
