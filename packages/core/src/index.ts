@@ -13,6 +13,7 @@ export {
   createPaymentServices,
   createProductServices,
   createRefundServices,
+  createTicketServices,
   createUserServices,
   type CaptchaServices,
   type ConfigServices,
@@ -22,5 +23,6 @@ export {
   type PaymentServices,
   type ProductServices,
   type RefundServices,
+  type TicketServices,
   type UserServices,
 } from "./services";

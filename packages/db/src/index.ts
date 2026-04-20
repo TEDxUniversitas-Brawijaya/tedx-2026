@@ -4,11 +4,13 @@ export {
   createOrderQueries,
   createProductQueries,
   createRefundQueries,
+  createTicketQueries,
   createUserQueries,
   type ConfigQueries,
   type OrderQueries,
   type ProductQueries,
   type RefundQueries,
+  type TicketQueries,
   type UserQueries,
 } from "./queries";
 export { schema } from "./schemas";

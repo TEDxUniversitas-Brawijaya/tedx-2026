@@ -24,6 +24,7 @@ import type { ConfigServices } from "./config";
 import type { EmailServices } from "./email";
 import type { FileServices } from "./file";
 import type { PaymentServices } from "./payment";
+import type { TicketServices } from "./ticket";
 
 export type OrderServices = {
   getOrders: (opts?: {
@@ -115,6 +116,7 @@ type CreateOrderServicesCtx = {
   fileServices: FileServices;
   paymentServices: PaymentServices;
   emailServices: EmailServices;
+  ticketServices: TicketServices;
 
   orderQueries: OrderQueries;
   refundQueries: RefundQueries;
@@ -279,50 +281,286 @@ export const createOrderServices = (
       );
     }
 
-    const sendEmail = async (
-      action: "approve" | "reject",
-      type: "ticket" | "merch"
-      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
-    ) => {
-      // TODO: Move query to outside of this function if needed to optimize, but since we need order items for both approve and reject email, we can just keep it here for now to avoid unnecessary queries when the order is not found or status is not pending_verification
-      const orderItems = await ctx.orderQueries.getOrderItemsByOrderId(orderId);
+    const orderItems = await ctx.orderQueries.getOrderItemsByOrderId(orderId);
 
-      const items = orderItems.map((item) => ({
-        name: item.snapshotName,
-        price: item.snapshotPrice,
-        quantity: item.quantity,
-        variants: item.snapshotVariants
-          ? item.snapshotVariants.map((v) => ({
-              label: v.label,
-              value: v.type,
-            }))
-          : [],
-      }));
+    const items = orderItems.map((item) => ({
+      name: item.snapshotName,
+      price: item.snapshotPrice,
+      quantity: item.quantity,
+      variants: item.snapshotVariants
+        ? item.snapshotVariants.map((v) => ({
+            label: v.label,
+            value: v.type,
+          }))
+        : [],
+      bundleProducts: item.snapshotBundleProducts
+        ? item.snapshotBundleProducts.map((bp) => ({
+            name: bp.name,
+            variants: bp.selectedVariants
+              ? bp.selectedVariants.map((v) => ({
+                  label: v.label,
+                  value: v.type,
+                }))
+              : [],
+          }))
+        : [],
+    }));
 
-      if (action === "approve") {
-        if (type === "merch") {
-          await ctx.emailServices.sendEmail(
-            order.buyerEmail,
-            "Payment Approved",
-            "merchOrder",
-            {
-              orderId: order.id,
-              items,
-            }
-          );
-        } else {
-          const item = orderItems[0]; // For ticket order, there should only be 1 item, so we can just take the first one
-          if (!item) {
+    if (action === "approve") {
+      await ctx.orderQueries.updateOrder(orderId, {
+        status: "paid",
+        verifiedBy: verifierId,
+        verifiedAt: new Date().toISOString(),
+      });
+
+      if (order.type === "ticket") {
+        // TODO: hacky way to get event day, we should have a better way to store this information in the order item snapshot, but for now we can just parse it from the product name
+        // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity, maybe by storing event day in the order item snapshot
+        const getEvent = async (productName: string) => {
+          const [
+            eventDatePropa3Day1,
+            eventDatePropa3Day2,
+            eventDateMain,
+            whatsappGroupPropa3Day1,
+            whatsappGroupPropa3Day2,
+            whatsappGroupMain,
+          ] = await Promise.all([
+            ctx.configServices.getConfig("event_date_propa3_day1"),
+            ctx.configServices.getConfig("event_date_propa3_day2"),
+            ctx.configServices.getConfig("event_date_main"),
+            ctx.configServices.getConfig("whatsapp_group_propa3_day1"),
+            ctx.configServices.getConfig("whatsapp_group_propa3_day2"),
+            ctx.configServices.getConfig("whatsapp_group_main"),
+          ]);
+          if (
+            eventDatePropa3Day1 === null ||
+            eventDatePropa3Day2 === null ||
+            eventDateMain === null ||
+            whatsappGroupPropa3Day1 === null ||
+            whatsappGroupPropa3Day2 === null ||
+            whatsappGroupMain === null
+          ) {
             throw new AppError(
               "INTERNAL_SERVER_ERROR",
-              "Order item not found for approved order",
+              "Missing required configuration values"
+            );
+          }
+
+          if (productName.toLowerCase().includes("propaganda 3 day 1")) {
+            return {
+              day: "propa3_day1" as const,
+              date: new Date(eventDatePropa3Day1).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              }),
+              whatsappGroupUrl: whatsappGroupPropa3Day1,
+            };
+          }
+
+          if (productName.toLowerCase().includes("propaganda 3 day 2")) {
+            return {
+              day: "propa3_day2" as const,
+              date: new Date(eventDatePropa3Day2).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              }),
+              whatsappGroupUrl: whatsappGroupPropa3Day2,
+            };
+          }
+
+          if (productName.toLowerCase().includes("main event")) {
+            return {
+              day: "main_event" as const,
+              date: new Date(eventDateMain).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              }),
+              whatsappGroupUrl: whatsappGroupMain,
+            };
+          }
+          return null;
+        };
+
+        const item = orderItems[0]; // For ticket order, there should only be 1 item, so we can just take the first one, so we can just take the first one
+        if (!item) {
+          throw new AppError(
+            "INTERNAL_SERVER_ERROR",
+            "Order item not found for approved order",
+            {
+              details: { orderId },
+            }
+          );
+        }
+
+        // ticker regular
+        if (!item.snapshotBundleProducts) {
+          const event = await getEvent(item.snapshotName);
+          if (!event) {
+            throw new AppError(
+              "INTERNAL_SERVER_ERROR",
+              "Failed to determine event day for ticket order",
               {
-                details: { orderId },
+                details: { orderId, productName: item.snapshotName },
+              }
+            );
+          }
+          const tickets = (
+            await ctx.ticketServices.createTickets(
+              Array.from({ length: item.quantity }, () => ({
+                orderItemId: item.id,
+                eventDay: event.day,
+              }))
+            )
+          ).map((t) => ({
+            ...t,
+            eventName: item.snapshotName,
+            eventDate: event.date,
+            whatsappGroupUrl: event.whatsappGroupUrl,
+          }));
+
+          ctx.waitUntil(
+            ctx.emailServices.sendEmailWithAttachment(
+              order.buyerEmail,
+              "Payment Approved",
+              "ticketOrder",
+              {
+                orderId: order.id,
+                item: {
+                  name: item.snapshotName,
+                  price: item.snapshotPrice,
+                  quantity: item.quantity,
+                  tickets,
+                },
+                // TODO: set dynamic refund URL based on enviroment
+                refundUrl: `https://store.tedxuniversitasbrawijaya.com/refund/${order.refundToken}`,
+              },
+              tickets.map((t, idx) => ({
+                name: `${t.eventDate}-${idx + 1}.png`,
+                content: t.qr,
+              }))
+            )
+          );
+          return;
+        }
+
+        // ticket bundle
+        const product = await ctx.productQueries.getProductById(item.productId);
+        if (!product) {
+          throw new AppError(
+            "INTERNAL_SERVER_ERROR",
+            "Product not found for order item",
+            {
+              details: { productId: item.productId, orderId },
+            }
+          );
+        }
+
+        if (!product.bundleItems) {
+          throw new AppError(
+            "INTERNAL_SERVER_ERROR",
+            "Bundle products not found for ticket bundle order item",
+            {
+              details: { productId: item.productId, orderId },
+            }
+          );
+        }
+
+        // const bundleProductIds = new Set<string>();
+        // for (const bundleItem of product.bundleItems) {
+        //   if (bundleItem.type !== "ticket") {
+        //     continue; // Only create tickets for ticket bundle items, not merchandise bundle items
+        //   }
+
+        //   bundleProductIds.add(bundleItem.productId);
+        // }
+
+        // const bundleProducts = await ctx.productQueries.getProductsByIds(
+        //   Array.from(bundleProductIds)
+        // );
+
+        // const bundleProductMap: Record<
+        //   string,
+        //   {
+        //     eventDay: "propa3_day1" | "propa3_day2" | "main_event";
+        //     eventDate: string;
+        //     whatsappGroupUrl: string;
+        //   }
+        // > = {};
+
+        // const events: {
+        //   day: "propa3_day1" | "propa3_day2" | "main_event";
+        //   date: string;
+        //   whatsappGroupUrl: string;
+        // }[] = [];
+        // for (const bundleItem of product.bundleItems) {
+        //   if (bundleItem.type !== "ticket") {
+        //     continue; // Only create tickets for ticket bundle items, not merchandise bundle items
+        //   }
+
+        //   const event = await getEvent(bundleItem.productId);
+        // }
+
+        const tickets: {
+          eventName: string;
+          eventDate: string;
+          eventDay: "propa3_day1" | "propa3_day2" | "main_event";
+          whatsappGroupUrl: string;
+        }[] = [];
+
+        for (const snapshotBundleProduct of item.snapshotBundleProducts) {
+          for (let i = 0; i < item.quantity; i++) {
+            const event = await getEvent(snapshotBundleProduct.name);
+            if (!event) {
+              throw new AppError(
+                "INTERNAL_SERVER_ERROR",
+                "Failed to determine event day for ticket order",
+                {
+                  details: { orderId, productName: snapshotBundleProduct.name },
+                }
+              );
+            }
+
+            tickets.push({
+              eventName: snapshotBundleProduct.name,
+              eventDate: event.date,
+              eventDay: event.day,
+              whatsappGroupUrl: event.whatsappGroupUrl,
+            });
+          }
+        }
+
+        const createdTickets = await ctx.ticketServices.createTickets(
+          tickets.map((t) => ({
+            orderItemId: item.id,
+            eventDay: t.eventDay,
+          }))
+        );
+
+        const ticketsWithQr = createdTickets.map((t, idx) => {
+          const ticketInfo = tickets[idx];
+          if (!ticketInfo) {
+            throw new AppError(
+              "INTERNAL_SERVER_ERROR",
+              "Ticket info not found for created ticket",
+              {
+                details: { orderId, ticketId: t.id },
               }
             );
           }
 
-          await ctx.emailServices.sendEmailWithAttachment(
+          return {
+            ...t,
+            eventName: ticketInfo.eventName,
+            eventDate: ticketInfo.eventDate,
+            whatsappGroupUrl: ticketInfo.whatsappGroupUrl,
+          };
+        });
+
+        ctx.waitUntil(
+          ctx.emailServices.sendEmailWithAttachment(
             order.buyerEmail,
             "Payment Approved",
             "ticketOrder",
@@ -332,129 +570,167 @@ export const createOrderServices = (
                 name: item.snapshotName,
                 price: item.snapshotPrice,
                 quantity: item.quantity,
-                tickets: [],
+                tickets,
               },
-              refundUrl: "",
+              // TODO: set dynamic refund URL based on enviroment
+              refundUrl: `https://store.tedxuniversitasbrawijaya.com/refund/${order.refundToken}`,
             },
-            [] // TODO
-          );
-        }
+            ticketsWithQr.map((t, idx) => ({
+              name: `${t.eventName}-${idx + 1}.png`,
+              content: t.qr,
+            }))
+          )
+        );
         return;
       }
 
-      // if action reject
-      if (type === "merch") {
-        await ctx.emailServices.sendEmail(
+      // order.type === "merch"
+      ctx.waitUntil(
+        ctx.emailServices.sendEmail(
           order.buyerEmail,
-          "Payment Rejected",
-          "merchOrderRejected",
+          "Payment Approved",
+          "merchOrder",
           {
             orderId: order.id,
-            reason: reason ?? "Not specified",
             items,
           }
+        )
+      );
+      return;
+    }
+
+    // action === "reject"
+    if (reason === null) {
+      throw new AppError(
+        "BAD_REQUEST",
+        "Rejection reason is required when rejecting a payment",
+        {
+          details: { orderId },
+        }
+      );
+    }
+    await ctx.orderQueries.updateOrder(orderId, {
+      status: "rejected",
+      verifiedBy: verifierId,
+      verifiedAt: new Date().toISOString(),
+      rejectionReason: reason,
+    });
+
+    // Release stock for rejected ticket orders
+    if (order.type === "ticket") {
+      // Collect all product IDs (main products + bundle item products)
+      const item = orderItems[0];
+      if (!item) {
+        // For ticket order, there should only be 1 item, so we can just take the first one, so we can just take the first one
+        throw new AppError(
+          "INTERNAL_SERVER_ERROR",
+          "Order item not found for approved order",
+          {
+            details: { orderId },
+          }
         );
-      } else {
-        const item = orderItems[0]; // For ticket order, there should only be 1 item, so we can just take the first one
-        if (!item) {
-          throw new AppError(
-            "INTERNAL_SERVER_ERROR",
-            "Order item not found for rejected order",
+      }
+
+      // ticket regular
+      if (!item.snapshotBundleProducts) {
+        await ctx.productQueries.batchIncrementProductStock([
+          {
+            productId: item.productId,
+            quantity: item.quantity,
+          },
+        ]);
+
+        ctx.waitUntil(
+          ctx.emailServices.sendEmail(
+            order.buyerEmail,
+            "Payment Rejected",
+            "ticketOrderRejected",
             {
-              details: { orderId },
+              orderId: order.id,
+              item: {
+                name: item.snapshotName,
+                price: item.snapshotPrice,
+                quantity: item.quantity,
+                bundleProducts: [], // TODO
+              },
+              reason,
             }
-          );
+          )
+        );
+        return;
+      }
+
+      // ticket bundle
+      const product = await ctx.productQueries.getProductById(item.productId);
+      if (!product) {
+        throw new AppError(
+          "INTERNAL_SERVER_ERROR",
+          "Product not found for order item",
+          {
+            details: { productId: item.productId, orderId },
+          }
+        );
+      }
+
+      // Collect stock release operations
+      const stockReleases: { productId: string; quantity: number }[] = [];
+
+      // DO NOT release stock for main product of ticket orders, because it is null and the stock is calculated based on the bundle items, so we only need to release stock for the bundle items
+      if (!product.bundleItems) {
+        throw new AppError(
+          "INTERNAL_SERVER_ERROR",
+          "Bundle products not found for ticket bundle order item",
+          {
+            details: { productId: item.productId, orderId },
+          }
+        );
+      }
+      for (const bundleItem of product.bundleItems) {
+        if (bundleItem.type !== "ticket") {
+          continue; // Only release stock for ticket bundle items, not merchandise bundle items
         }
 
-        await ctx.emailServices.sendEmail(
+        stockReleases.push({
+          productId: bundleItem.productId,
+          quantity: item.quantity,
+        });
+      }
+
+      await ctx.productQueries.batchIncrementProductStock(stockReleases);
+
+      ctx.waitUntil(
+        ctx.emailServices.sendEmail(
           order.buyerEmail,
           "Payment Rejected",
           "ticketOrderRejected",
           {
             orderId: order.id,
-            reason: reason ?? "Not specified",
             item: {
               name: item.snapshotName,
-              quantity: item.quantity,
               price: item.snapshotPrice,
-            },
-          }
-        );
-      }
-    };
-
-    if (action === "approve") {
-      await ctx.orderQueries.updateOrder(orderId, {
-        status: "paid",
-        verifiedBy: verifierId,
-        verifiedAt: new Date().toISOString(),
-      });
-
-      // TODO: Create ticket row and generate ticket qr code if the order contains ticket products
-
-      ctx.waitUntil(sendEmail("approve", order.type));
-    } else {
-      // Release stock for rejected ticket orders
-      if (order.type === "ticket") {
-        const orderItems =
-          await ctx.orderQueries.getOrderItemsByOrderId(orderId);
-
-        if (orderItems.length > 0) {
-          // Collect all product IDs (main products + bundle item products)
-          const allProductIds = new Set<string>();
-          for (const item of orderItems) {
-            allProductIds.add(item.productId);
-          }
-
-          // Fetch all products in batch
-          const products = await ctx.productQueries.getProductsByIds(
-            Array.from(allProductIds),
-            { status: "all" }
-          );
-          const productMap = new Map(products.map((p) => [p.id, p]));
-
-          // Collect stock release operations
-          const stockReleases: { productId: string; quantity: number }[] = [];
-
-          for (const item of orderItems) {
-            // Release main product stock
-            stockReleases.push({
-              productId: item.productId,
               quantity: item.quantity,
-            });
-
-            // Release bundle item stocks (only for tickets)
-            if (item.snapshotBundleProducts) {
-              const product = productMap.get(item.productId);
-              if (product?.bundleItems) {
-                for (const bundleItem of product.bundleItems) {
-                  if (bundleItem.type === "ticket") {
-                    stockReleases.push({
-                      productId: bundleItem.productId,
-                      quantity: item.quantity,
-                    });
-                  }
-                }
-              }
-            }
+              bundleProducts: [], // TODO
+            },
+            reason,
           }
-
-          // Execute all stock increments in a single batch
-          await ctx.productQueries.batchIncrementProductStock(stockReleases);
-        }
-      }
-
-      await ctx.orderQueries.updateOrder(orderId, {
-        status: "rejected",
-        verifiedBy: verifierId,
-        verifiedAt: new Date().toISOString(),
-        rejectionReason: reason,
-      });
-
-      ctx.waitUntil(sendEmail("reject", order.type));
+        )
+      );
+      return;
     }
 
-    // TODO: Invalidate cache if any, send confirmation email based on action
+    // merch order
+    ctx.waitUntil(
+      ctx.emailServices.sendEmail(
+        order.buyerEmail,
+        "Payment Rejected",
+        "merchOrderRejected",
+        {
+          orderId: order.id,
+          items,
+          reason,
+        }
+      )
+    );
   },
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor this function to reduce complexity

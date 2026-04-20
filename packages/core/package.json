@@ -16,9 +16,10 @@
     "@tedx-2026/email": "workspace:*",
     "@tedx-2026/kv": "workspace:*",
     "@tedx-2026/logger": "workspace:*",
-    "@tedx-2026/utils": "workspace:*",
     "@tedx-2026/storage": "workspace:*",
-    "@tedx-2026/types": "workspace:*"
+    "@tedx-2026/types": "workspace:*",
+    "@tedx-2026/utils": "workspace:*",
+    "etiket": "^0.11.0"
   },
   "devDependencies": {
     "@tedx-2026/tsconfig": "workspace:*",

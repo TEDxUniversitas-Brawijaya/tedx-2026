@@ -8,6 +8,7 @@ import {
   createPaymentServices,
   createProductServices,
   createRefundServices,
+  createTicketServices,
   createUserServices,
   type FileServices,
   type OrderServices,
@@ -21,6 +22,7 @@ import {
   createOrderQueries,
   createProductQueries,
   createRefundQueries,
+  createTicketQueries,
   createUserQueries,
   type D1Database,
   type DB,
@@ -100,6 +102,7 @@ export const createContext = async ({
   const configQueries = createConfigQueries(db);
   const productQueries = createProductQueries(db);
   const refundQueries = createRefundQueries(db);
+  const ticketQueries = createTicketQueries(db);
 
   const configServices = createConfigServices({
     ...baseContext,
@@ -152,6 +155,13 @@ export const createContext = async ({
     turnstileSecretKey: env.TURNSTILE_SECRET_KEY,
   });
 
+  const ticketServices = createTicketServices({
+    ...baseContext,
+    logger: logger.child({ service: "ticket" }),
+    configServices,
+    ticketQueries,
+  });
+
   const orderServices = createOrderServices({
     ...baseContext,
     logger: logger.child({ service: "order" }),
@@ -161,6 +171,7 @@ export const createContext = async ({
     fileServices,
     paymentServices,
     emailServices,
+    ticketServices,
 
     orderQueries,
     refundQueries,

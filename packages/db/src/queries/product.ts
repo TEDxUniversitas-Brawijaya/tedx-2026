@@ -8,6 +8,7 @@ export type ProductQueries = {
     status?: "active" | "inactive" | "all";
     types?: SelectProduct["type"][];
   }) => Promise<SelectProduct[]>;
+  getProductById: (productId: string) => Promise<SelectProduct | null>;
   getProductsByIds: (
     productIds: SelectProduct["id"][],
     opts?: { status?: "active" | "inactive" | "all" }
@@ -40,6 +41,12 @@ export const createProductQueries = (db: DB): ProductQueries => ({
     return await db.query.productsTable.findMany({
       where: whereClause,
     });
+  },
+  getProductById: async (productId) => {
+    const product = await db.query.productsTable.findFirst({
+      where: eq(schema.productsTable.id, productId),
+    });
+    return product || null;
   },
   getProductsByIds: async (productIds, opts) => {
     const { status } = opts || {};

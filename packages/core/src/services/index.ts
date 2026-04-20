@@ -6,4 +6,5 @@ export { createOrderServices, type OrderServices } from "./order";
 export { createPaymentServices, type PaymentServices } from "./payment";
 export { createProductServices, type ProductServices } from "./product";
 export { createRefundServices, type RefundServices } from "./refund";
+export { createTicketServices, type TicketServices } from "./ticket";
 export { createUserServices, type UserServices } from "./user";
