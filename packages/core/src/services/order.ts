@@ -279,7 +279,11 @@ export const createOrderServices = (
       );
     }
 
-    const sendEmail = async (action: "approve" | "reject") => {
+    const sendEmail = async (
+      action: "approve" | "reject",
+      type: "ticket" | "merch"
+      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
+    ) => {
       // TODO: Move query to outside of this function if needed to optimize, but since we need order items for both approve and reject email, we can just keep it here for now to avoid unnecessary queries when the order is not found or status is not pending_verification
       const orderItems = await ctx.orderQueries.getOrderItemsByOrderId(orderId);
 
@@ -296,16 +300,50 @@ export const createOrderServices = (
       }));
 
       if (action === "approve") {
-        await ctx.emailServices.sendEmail(
-          order.buyerEmail,
-          "Payment Approved",
-          "merchOrder",
-          {
-            orderId: order.id,
-            items,
+        if (type === "merch") {
+          await ctx.emailServices.sendEmail(
+            order.buyerEmail,
+            "Payment Approved",
+            "merchOrder",
+            {
+              orderId: order.id,
+              items,
+            }
+          );
+        } else {
+          const item = orderItems[0]; // For ticket order, there should only be 1 item, so we can just take the first one
+          if (!item) {
+            throw new AppError(
+              "INTERNAL_SERVER_ERROR",
+              "Order item not found for approved order",
+              {
+                details: { orderId },
+              }
+            );
           }
-        );
-      } else {
+
+          await ctx.emailServices.sendEmailWithAttachment(
+            order.buyerEmail,
+            "Payment Approved",
+            "ticketOrder",
+            {
+              orderId: order.id,
+              item: {
+                name: item.snapshotName,
+                price: item.snapshotPrice,
+                quantity: item.quantity,
+                tickets: [],
+              },
+              refundUrl: "",
+            },
+            [] // TODO
+          );
+        }
+        return;
+      }
+
+      // if action reject
+      if (type === "merch") {
         await ctx.emailServices.sendEmail(
           order.buyerEmail,
           "Payment Rejected",
@@ -314,6 +352,32 @@ export const createOrderServices = (
             orderId: order.id,
             reason: reason ?? "Not specified",
             items,
+          }
+        );
+      } else {
+        const item = orderItems[0]; // For ticket order, there should only be 1 item, so we can just take the first one
+        if (!item) {
+          throw new AppError(
+            "INTERNAL_SERVER_ERROR",
+            "Order item not found for rejected order",
+            {
+              details: { orderId },
+            }
+          );
+        }
+
+        await ctx.emailServices.sendEmail(
+          order.buyerEmail,
+          "Payment Rejected",
+          "ticketOrderRejected",
+          {
+            orderId: order.id,
+            reason: reason ?? "Not specified",
+            item: {
+              name: item.snapshotName,
+              quantity: item.quantity,
+              price: item.snapshotPrice,
+            },
           }
         );
       }
@@ -328,7 +392,7 @@ export const createOrderServices = (
 
       // TODO: Create ticket row and generate ticket qr code if the order contains ticket products
 
-      ctx.waitUntil(sendEmail("approve"));
+      ctx.waitUntil(sendEmail("approve", order.type));
     } else {
       // Release stock for rejected ticket orders
       if (order.type === "ticket") {
@@ -387,7 +451,7 @@ export const createOrderServices = (
         rejectionReason: reason,
       });
 
-      ctx.waitUntil(sendEmail("reject"));
+      ctx.waitUntil(sendEmail("reject", order.type));
     }
 
     // TODO: Invalidate cache if any, send confirmation email based on action
