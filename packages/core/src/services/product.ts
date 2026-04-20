@@ -278,7 +278,7 @@ export const createProductServices = (
 
       return {
         ...product,
-        quantity: minEventStock,
+        stock: minEventStock,
         createdAt: new Date(product.createdAt),
         updatedAt: new Date(product.updatedAt),
         // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO - refactor this later
