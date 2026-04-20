@@ -260,6 +260,7 @@ export const createOrderServices = (
     return status;
   },
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
   verifyPayment: async (orderId, action, reason, verifierId) => {
     const order = await ctx.orderQueries.getOrderById(orderId);
     if (!order) {
@@ -279,6 +280,7 @@ export const createOrderServices = (
     }
 
     const sendEmail = async (action: "approve" | "reject") => {
+      // TODO: Move query to outside of this function if needed to optimize, but since we need order items for both approve and reject email, we can just keep it here for now to avoid unnecessary queries when the order is not found or status is not pending_verification
       const orderItems = await ctx.orderQueries.getOrderItemsByOrderId(orderId);
 
       const items = orderItems.map((item) => ({
@@ -324,8 +326,60 @@ export const createOrderServices = (
         verifiedAt: new Date().toISOString(),
       });
 
+      // TODO: Create ticket row and generate ticket qr code if the order contains ticket products
+
       ctx.waitUntil(sendEmail("approve"));
     } else {
+      // Release stock for rejected ticket orders
+      if (order.type === "ticket") {
+        const orderItems =
+          await ctx.orderQueries.getOrderItemsByOrderId(orderId);
+
+        if (orderItems.length > 0) {
+          // Collect all product IDs (main products + bundle item products)
+          const allProductIds = new Set<string>();
+          for (const item of orderItems) {
+            allProductIds.add(item.productId);
+          }
+
+          // Fetch all products in batch
+          const products = await ctx.productQueries.getProductsByIds(
+            Array.from(allProductIds),
+            { status: "all" }
+          );
+          const productMap = new Map(products.map((p) => [p.id, p]));
+
+          // Collect stock release operations
+          const stockReleases: { productId: string; quantity: number }[] = [];
+
+          for (const item of orderItems) {
+            // Release main product stock
+            stockReleases.push({
+              productId: item.productId,
+              quantity: item.quantity,
+            });
+
+            // Release bundle item stocks (only for tickets)
+            if (item.snapshotBundleProducts) {
+              const product = productMap.get(item.productId);
+              if (product?.bundleItems) {
+                for (const bundleItem of product.bundleItems) {
+                  if (bundleItem.type === "ticket") {
+                    stockReleases.push({
+                      productId: bundleItem.productId,
+                      quantity: item.quantity,
+                    });
+                  }
+                }
+              }
+            }
+          }
+
+          // Execute all stock increments in a single batch
+          await ctx.productQueries.batchIncrementProductStock(stockReleases);
+        }
+      }
+
       await ctx.orderQueries.updateOrder(orderId, {
         status: "rejected",
         verifiedBy: verifierId,
@@ -551,7 +605,10 @@ export const createOrderServices = (
           "BAD_REQUEST",
           "Product does not have variants but variantIds were provided",
           {
-            details: { productId: item.productId, variantIds: item.variantIds },
+            details: {
+              productId: item.productId,
+              variantIds: item.variantIds,
+            },
           }
         );
       }
@@ -977,56 +1034,81 @@ export const createOrderServices = (
       );
     }
 
-    // Check stock availability
-    if (product.stock && product.stock < item.quantity) {
+    // Atomic stock decrement - Step 1 of Saga pattern
+    // Collect all stock operations (main + bundle items) for batch execution
+    const stockOperations: { productId: string; quantity: number }[] = [
+      { productId: item.productId, quantity: item.quantity },
+    ];
+
+    // Validate bundle products exist and collect their stock operations
+    if (product.bundleItems) {
+      for (const bundleItem of product.bundleItems) {
+        // Only decrement stock for ticket bundle items (merch has no stock)
+        if (bundleItem.type !== "ticket") {
+          continue;
+        }
+
+        const bundleProduct = productMap.get(bundleItem.productId);
+        if (!bundleProduct) {
+          throw new AppError("BAD_REQUEST", "Bundle item product not found", {
+            details: {
+              bundleItemProductId: bundleItem.productId,
+              parentProductId: item.productId,
+            },
+          });
+        }
+
+        stockOperations.push({
+          productId: bundleItem.productId,
+          quantity: item.quantity,
+        });
+      }
+    }
+
+    // Execute all stock decrements in a single batch (prevents overselling atomically)
+    const stockResults =
+      await ctx.productQueries.batchDecrementProductStock(stockOperations);
+
+    // Check if any operations failed
+    const failedOperations = stockResults.filter((result) => !result.success);
+    if (failedOperations.length > 0) {
+      // Some operations failed, rollback successful ones
+      const successfulOperations = stockResults
+        .filter((result) => result.success)
+        .map(({ productId }, index) => ({
+          productId,
+          quantity: stockOperations[index]?.quantity ?? 0,
+        }));
+
+      if (successfulOperations.length > 0) {
+        await ctx.productQueries.batchIncrementProductStock(
+          successfulOperations
+        );
+      }
+
+      // Report the first failure
+      const firstFailure = failedOperations[0];
+      const isMainProduct = firstFailure?.productId === item.productId;
+
       throw new AppError(
         "BAD_REQUEST",
-        "Some products do not have enough stock",
+        isMainProduct
+          ? "Insufficient stock or product not available for purchase"
+          : "Insufficient stock for bundle item",
         {
           details: {
-            productId: item.productId,
+            productId: firstFailure?.productId,
+            parentProductId: isMainProduct ? undefined : item.productId,
             buyer,
-            stock: product.stock,
+            requestedQuantity: item.quantity,
+            currentStock: firstFailure?.currentStock,
           },
         }
       );
     }
 
-    // If the product is a bundle, we also need to check the stock of the bundle items to ensure the bundle can be fulfilled
-    if (product.bundleItems) {
-      // we need to find the minimum event stock among the bundle items to determine the stock of the bundle product
-      const stock = Math.min(
-        ...product.bundleItems.map((bundleItem) => {
-          // if bundle item is not a ticket, we can ignore the stock because it doesnt affect the stock of the bundle product
-          if (bundleItem.type !== "ticket") {
-            return Number.POSITIVE_INFINITY;
-          }
-
-          const product = productMap.get(bundleItem.productId);
-          if (!product?.stock) {
-            throw new Error(
-              `Product with id ${bundleItem.productId} not found or has no stock for bundle item`
-            );
-          }
-
-          return product.stock;
-        })
-      );
-
-      if (stock < item.quantity) {
-        throw new AppError(
-          "BAD_REQUEST",
-          "Some products in the bundle do not have enough stock",
-          {
-            details: {
-              productId: item.productId,
-              buyer,
-              stock,
-            },
-          }
-        );
-      }
-    }
+    // Bundle stock decrements are tracked for error logging
+    const bundleStockDecrements = stockOperations.slice(1);
 
     if (product.price <= 0) {
       throw new AppError(
@@ -1160,10 +1242,22 @@ export const createOrderServices = (
     );
 
     if (createOrderError) {
+      // Saga rollback: release all reserved stock in batch
+      await ctx.productQueries.batchIncrementProductStock(stockOperations);
+
       if (uploadedProofImage) {
         // Rollback uploaded proof image if order creation failed
         await ctx.fileServices.deleteFile(uploadedProofImage.key);
       }
+
+      ctx.logger.error("Order creation failed, stock released", {
+        orderId,
+        productId: item.productId,
+        quantity: item.quantity,
+        bundleStockDecrements,
+        error: createOrderError,
+      });
+
       throw new AppError(
         "INTERNAL_SERVER_ERROR",
         "Failed to create order, please try again later",
@@ -1182,8 +1276,21 @@ export const createOrderServices = (
       const { data: chargeTransactionResponse, error: chargeTransactionError } =
         await tryCatch(ctx.paymentServices.chargeTransaction());
       if (chargeTransactionError) {
-        // Rollback
+        // Saga rollback: delete order and release stock in batch
         await ctx.orderQueries.deleteOrderById(orderId);
+
+        await ctx.productQueries.batchIncrementProductStock(stockOperations);
+
+        ctx.logger.error(
+          "Payment creation failed, order deleted and stock released",
+          {
+            orderId,
+            productId: item.productId,
+            quantity: item.quantity,
+            bundleStockDecrements,
+            error: chargeTransactionError,
+          }
+        );
 
         throw new AppError(
           "INTERNAL_SERVER_ERROR",
@@ -1221,6 +1328,7 @@ export const createOrderServices = (
     return response;
   },
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
   processRefund: async (orderId, action, reason, processorId) => {
     const order = await ctx.orderQueries.getOrderById(orderId);
     if (!order) {
@@ -1251,6 +1359,56 @@ export const createOrderServices = (
     const processedAt = new Date().toISOString();
 
     if (action === "approve") {
+      // Release stock for refunded ticket orders
+      if (order.type === "ticket") {
+        const orderItems =
+          await ctx.orderQueries.getOrderItemsByOrderId(orderId);
+
+        if (orderItems.length > 0) {
+          // Collect all product IDs (main products + bundle item products)
+          const allProductIds = new Set<string>();
+          for (const item of orderItems) {
+            allProductIds.add(item.productId);
+          }
+
+          // Fetch all products in batch
+          const products = await ctx.productQueries.getProductsByIds(
+            Array.from(allProductIds),
+            { status: "all" }
+          );
+          const productMap = new Map(products.map((p) => [p.id, p]));
+
+          // Collect stock release operations
+          const stockReleases: { productId: string; quantity: number }[] = [];
+
+          for (const item of orderItems) {
+            // Release main product stock
+            stockReleases.push({
+              productId: item.productId,
+              quantity: item.quantity,
+            });
+
+            // Release bundle item stocks (only for tickets)
+            if (item.snapshotBundleProducts) {
+              const product = productMap.get(item.productId);
+              if (product?.bundleItems) {
+                for (const bundleItem of product.bundleItems) {
+                  if (bundleItem.type === "ticket") {
+                    stockReleases.push({
+                      productId: bundleItem.productId,
+                      quantity: item.quantity,
+                    });
+                  }
+                }
+              }
+            }
+          }
+
+          // Execute all stock increments in a single batch
+          await ctx.productQueries.batchIncrementProductStock(stockReleases);
+        }
+      }
+
       await ctx.refundQueries.updateRefundRequest(refundRequest.id, {
         status: "approved",
         processedBy: processorId,
@@ -1278,12 +1436,6 @@ export const createOrderServices = (
       rejectionReason: reason,
     });
 
-    ctx.logger.info("Refund rejected", {
-      orderId,
-      reason,
-      processorId,
-    });
-
     // See ADR-004
     await ctx.orderQueries.updateOrder(orderId, {
       status: "paid",
@@ -1293,23 +1445,188 @@ export const createOrderServices = (
     return;
   },
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
   expirePendingPaymentOrders: async () => {
-    const expiredOrders = await ctx.orderQueries.expirePendingPaymentOrders();
+    // First, get all orders that will be expired (before they are updated)
+    const ordersToExpire = await ctx.orderQueries.getOrders({
+      page: 1,
+      limit: 1000, // Should be sufficient for cron runs every minute
+      status: "pending_payment",
+      sortBy: "createdAt",
+      sortOrder: "asc",
+    });
 
-    ctx.logger.info(`Expired ${expiredOrders.length} pending_payment orders`);
+    // Filter orders that have actually expired
+    const now = new Date();
+    const expiredOrdersData = ordersToExpire.orders.filter(
+      (order) => new Date(order.expiresAt) < now
+    );
+
+    // Get order items for each expired order (for stock release)
+    const expiredOrderIds = expiredOrdersData.map((order) => order.id);
+    const orderItems =
+      await ctx.orderQueries.getOrderItemsByOrderIds(expiredOrderIds);
+
+    // Group order items by order ID
+    const orderItemsMap = new Map<string, typeof orderItems>();
+    for (const item of orderItems) {
+      if (!orderItemsMap.has(item.orderId)) {
+        orderItemsMap.set(item.orderId, []);
+      }
+      orderItemsMap.get(item.orderId)?.push(item);
+    }
+
+    // Now expire the orders in the database
+    await ctx.orderQueries.expirePendingPaymentOrders();
+
+    // Collect all ticket order items for batch stock release
+    const ticketOrderItems: typeof orderItems = [];
+    for (const expiredOrderData of expiredOrdersData) {
+      if (expiredOrderData.type === "ticket") {
+        const items = orderItemsMap.get(expiredOrderData.id) ?? [];
+        ticketOrderItems.push(...items);
+      }
+    }
+
+    // Release stock for all expired ticket orders in batch
+    if (ticketOrderItems.length > 0) {
+      // Collect all product IDs (main products + bundle item products)
+      const allProductIds = new Set<string>();
+      for (const item of ticketOrderItems) {
+        allProductIds.add(item.productId);
+      }
+
+      // Fetch all products in batch
+      const products = await ctx.productQueries.getProductsByIds(
+        Array.from(allProductIds),
+        { status: "all" }
+      );
+      const productMap = new Map(products.map((p) => [p.id, p]));
+
+      // Collect stock release operations
+      const stockReleases: { productId: string; quantity: number }[] = [];
+
+      for (const item of ticketOrderItems) {
+        // Release main product stock
+        stockReleases.push({
+          productId: item.productId,
+          quantity: item.quantity,
+        });
+
+        // Release bundle item stocks (only for tickets)
+        if (item.snapshotBundleProducts) {
+          const product = productMap.get(item.productId);
+          if (product?.bundleItems) {
+            for (const bundleItem of product.bundleItems) {
+              if (bundleItem.type === "ticket") {
+                stockReleases.push({
+                  productId: bundleItem.productId,
+                  quantity: item.quantity,
+                });
+              }
+            }
+          }
+        }
+      }
+
+      // Execute all stock increments in a single batch
+      await ctx.productQueries.batchIncrementProductStock(stockReleases);
+    }
 
     // TODO: Send email
 
     return;
   },
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
   expirePendingVerificationOrders: async () => {
-    const expiredOrders =
-      await ctx.orderQueries.expirePendingVerificationOrders();
+    // First, get all orders that will be expired (before they are updated)
+    const ordersToExpire = await ctx.orderQueries.getOrders({
+      page: 1,
+      limit: 1000, // Should be sufficient for cron runs
+      status: "pending_verification",
+      sortBy: "createdAt",
+      sortOrder: "asc",
+    });
 
-    ctx.logger.info(
-      `Expired ${expiredOrders.length} pending_verification orders`
-    );
+    // Filter orders that have actually expired (24 hours after creation)
+    const now = new Date();
+    const expiredOrdersData = ordersToExpire.orders.filter((order) => {
+      const createdAt = new Date(order.createdAt);
+      const expiryTime = new Date(createdAt.getTime() + 24 * 60 * 60 * 1000);
+      return expiryTime < now;
+    });
+
+    // Get order items for each expired order (for stock release)
+    const expiredOrderIds = expiredOrdersData.map((order) => order.id);
+    const orderItems =
+      await ctx.orderQueries.getOrderItemsByOrderIds(expiredOrderIds);
+
+    // Group order items by order ID
+    const orderItemsMap = new Map<string, typeof orderItems>();
+    for (const item of orderItems) {
+      if (!orderItemsMap.has(item.orderId)) {
+        orderItemsMap.set(item.orderId, []);
+      }
+      orderItemsMap.get(item.orderId)?.push(item);
+    }
+
+    // Now expire the orders in the database
+    await ctx.orderQueries.expirePendingVerificationOrders();
+
+    // Collect all ticket order items for batch stock release
+    const ticketOrderItems: typeof orderItems = [];
+    for (const expiredOrderData of expiredOrdersData) {
+      if (expiredOrderData.type === "ticket") {
+        const items = orderItemsMap.get(expiredOrderData.id) ?? [];
+        ticketOrderItems.push(...items);
+      }
+    }
+
+    // Release stock for all expired ticket orders in batch
+    if (ticketOrderItems.length > 0) {
+      // Collect all product IDs (main products + bundle item products)
+      const allProductIds = new Set<string>();
+      for (const item of ticketOrderItems) {
+        allProductIds.add(item.productId);
+      }
+
+      // Fetch all products in batch
+      const products = await ctx.productQueries.getProductsByIds(
+        Array.from(allProductIds),
+        { status: "all" }
+      );
+      const productMap = new Map(products.map((p) => [p.id, p]));
+
+      // Collect stock release operations
+      const stockReleases: { productId: string; quantity: number }[] = [];
+
+      for (const item of ticketOrderItems) {
+        // Release main product stock
+        stockReleases.push({
+          productId: item.productId,
+          quantity: item.quantity,
+        });
+
+        // Release bundle item stocks (only for tickets)
+        if (item.snapshotBundleProducts) {
+          const product = productMap.get(item.productId);
+          if (product?.bundleItems) {
+            for (const bundleItem of product.bundleItems) {
+              if (bundleItem.type === "ticket") {
+                stockReleases.push({
+                  productId: bundleItem.productId,
+                  quantity: item.quantity,
+                });
+              }
+            }
+          }
+        }
+      }
+
+      // Execute all stock increments in a single batch
+      await ctx.productQueries.batchIncrementProductStock(stockReleases);
+    }
 
     // TODO: Send email
 

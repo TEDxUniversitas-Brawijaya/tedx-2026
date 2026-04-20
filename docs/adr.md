@@ -19,7 +19,7 @@ packages/
   core/         — Business logic (services)
   db/           — Drizzle schema, migrations, queries (src/queries/)
   email/        — Email templates and SMTP sending
-  kv/           — KV helpers (stock counter, cooldown, rate limit)
+  kv/           — KV helpers (cooldown, rate limit, product cache)
   logger/       — Structured logging utilities
   queue/        — CF Queue producers and consumers
   storage/      — R2 helpers (upload, signed URLs for both cdn and storage buckets)
@@ -39,32 +39,25 @@ packages/
 
 ---
 
-## **ADR-002: D1 Stock Decrement + KV Read Cache**
+## **ADR-002: D1 Atomic Stock Management**
 
 **Context:** Tickets are limited (<200 items), estimated traffic is 10-50k. We need a mechanism that handles concurrent purchases without overselling. D1 does not support `db.transaction()` (Drizzle throws `Cannot use BEGIN TRANSACTION`), but single SQL statements are atomic, and `db.batch()` provides atomic multi-statement writes.
 
-**Decision:** D1 is the single source of truth for both stock and order data. KV is used only as a read cache for displaying stock on the storefront.
+**Decision:** D1 is the single source of truth for both stock and order data. Stock reads and writes go directly to D1 for consistency and simplicity.
 
 Flow:
-1) Single Drizzle `UPDATE` on products table: `SET stock = stock - quantity WHERE id = ? AND stock >= quantity`
-2) Check result's `rowsAffected` in JS: if 0, return "sold out"
-3) If 1, proceed to `db.batch()` to insert order + order items + payment (atomic)
-4) If step 3 fails, compensating `UPDATE stock = stock + quantity` to release (saga)
-5) After successful write, update KV read cache with new stock value
-
-KV read cache:
-- `stock:{productId}` stores the latest known stock count
-- Updated after every stock-changing operation (checkout, expiry, refund)
-- Storefront reads from KV (fast, globally distributed) instead of hitting D1 on every page load
-- Stale data is acceptable for display purposes (buyer gets real-time check at checkout via D1)
+1) Batch `UPDATE` on products table using `db.batch()`: `SET stock = stock - quantity WHERE id = ? AND stock >= quantity` for all products (main + bundle items)
+2) Check each result's `rowsAffected`: if any is 0, rollback successful decrements and return "sold out"
+3) If all succeed, proceed to `db.batch()` to insert order + order items + payment (atomic)
+4) If step 3 fails, compensating batch `UPDATE stock = stock + quantity` to release all reserved stock (saga)
 
 **Consequences:**
 - Single SQL UPDATE is atomic by itself. D1's single-writer model serializes all writes, so no two checkouts can race on the same stock
 - No overselling is possible: the WHERE guard guarantees stock never goes below 0
 - Stock decrement and order creation are NOT in the same atomic batch (Drizzle limitation: can't interleave JS between batch statements). The saga pattern (ADR-005) handles the gap.
-- KV cache may briefly show stale stock counts, but this only affects the display. The actual purchase path always goes through D1.
-- Admin stock updates write to D1 first, then update KV cache
-- A periodic cron job can reconcile KV cache with D1 to fix any drift
+- All stock reads go to D1, which provides strong consistency
+- Batch operations reduce query latency from N+1 sequential queries to a single batch query
+- No cache synchronization complexity or risk of showing stale stock counts
 
 ---
 
@@ -120,17 +113,16 @@ Key transitions:
 
 Steps (in order):
 1) Validate inputs (idempotency check, cooldown check, product existence, CAPTCHA)
-2) Reserve stock in D1 (single UPDATE with WHERE guard, check rowsAffected)
-3) Create order + order items in D1 (single transaction)
+2) Reserve stock in D1 (batch UPDATE with WHERE guard, check rowsAffected for each)
+3) Create order + order items in D1 (single batch)
 4) Create Midtrans transaction (if Midtrans mode) or pending payment record in D1 (if manual mode)
 5) Set cooldown in KV
 6) Set order expiry marker in KV
-7) Update KV stock read cache
 
 Compensation (on failure at any step):
-- If step 3 fails: release stock in D1 via compensating UPDATE (reverse step 2)
+- If step 3 fails: release stock in D1 via compensating batch UPDATE (reverse step 2)
 - If step 4 fails: delete order from D1 (reverse step 3), release stock in D1 (reverse step 2)
-- Steps 5, 6, and 7 are non-critical; failure is logged but does not roll back the order
+- Steps 5 and 6 are non-critical; failure is logged but does not roll back the order
 
 **Consequences:**
 - No distributed transaction manager needed; saga is implemented as sequential steps with try/catch in the service layer
@@ -149,7 +141,7 @@ Compensation (on failure at any step):
 1) When an order is created, set KV key `order_expiry:{orderId}` with TTL 1200s (20 min)
 2) CF Cron Trigger runs every minute
 3) Cron queries D1 for orders where `status = 'pending_payment' AND expires_at < now()`
-4) For each expired order: release stock in KV, update order status to `expired` in D1
+4) For each expired order: release stock in D1 (batch UPDATE), update order status to `expired` in D1
 
 Why not Durable Objects:
 - Durable Objects can get expensive outside the free tier

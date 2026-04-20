@@ -33,7 +33,6 @@ See [here](https://mermaid.live/edit#pako:eNqFVE2P2jAQ_Ssjn6BKECFAIIdK_Ti0qlDVrt
 |                          |                  |                |                                                      |
 | :----------------------: | :--------------: | :------------: | :--------------------------------------------------: |
 |      **Key Pattern**     |     **Value**    |     **TTL**    |                      **Purpose**                     |
-|    `stock:{productId}`   |      integer     |      none      | Read cache for stock display (source of truth is D1) |
 |    `cooldown:{email}`    | expiry timestamp |  600s (10 min) |                   Purchase cooldown                  |
 |    `idempotency:{key}`   |   response JSON  | 3600s (1 hour) |             Duplicate request prevention             |
 
@@ -66,12 +65,10 @@ See [here](https://mermaid.live/edit#pako:eNqFVE2P2jAQ_Ssjn6BKECFAIIdK_Ti0qlDVrt
 
 5. **Bundle modeling via JSON.** `products.bundle_items` JSON array with `isSelectable` flag handles both fixed bundles and choice bundles. The selected choice is stored as the `product_id` on `order_items`.
 
-6. **D1 as stock source of truth.** Stock decrement via single atomic UPDATE with WHERE guard. KV only caches stock for display. See ADR-002.
+6. **Indexes**: Designed for the most common query patterns — order listing by status/type, attendance lookup by event day, cron expiry queries, and admin search by buyer email.
 
-7. **Indexes**: Designed for the most common query patterns — order listing by status/type, attendance lookup by event day, cron expiry queries, and admin search by buyer email.
+7. **Two R2 buckets**: Public CDN for product images, private storage for sensitive uploads (payment/refund proofs) accessible only via signed URLs.
 
-8. **Two R2 buckets**: Public CDN for product images, private storage for sensitive uploads (payment/refund proofs) accessible only via signed URLs.
+8. **Idempotency key on orders**: Stored in the orders table with a unique constraint to prevent duplicate order creation at the DB level.
 
-9. **Idempotency key on orders**: Stored in the orders table with a unique constraint to prevent duplicate order creation at the DB level.
-
-10. **Payment mode as config**: `payment_mode` in config table determines whether the system uses Midtrans or manual QRIS. This is a system-wide setting, not a per-order buyer choice. Allows switching once Midtrans merchant approval is granted.
+9. **Payment mode as config**: `payment_mode` in config table determines whether the system uses Midtrans or manual QRIS. This is a system-wide setting, not a per-order buyer choice. Allows switching once Midtrans merchant approval is granted.
