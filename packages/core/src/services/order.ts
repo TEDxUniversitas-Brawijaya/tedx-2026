@@ -1356,10 +1356,16 @@ export const createOrderServices = (
     }
 
     // Atomic stock decrement - Step 1 of Saga pattern
-    // Collect all stock operations (main + bundle items) for batch execution
-    const stockOperations: { productId: string; quantity: number }[] = [
-      { productId: item.productId, quantity: item.quantity },
-    ];
+    // Collect all stock operations for batch execution
+    const stockOperations: { productId: string; quantity: number }[] = [];
+
+    if (!product.bundleItems) {
+      // Regular ticket, decrement stock for the main product only
+      stockOperations.push({
+        productId: item.productId,
+        quantity: item.quantity,
+      });
+    }
 
     // Validate bundle products exist and collect their stock operations
     if (product.bundleItems) {
