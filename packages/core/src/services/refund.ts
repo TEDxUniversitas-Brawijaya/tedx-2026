@@ -317,6 +317,15 @@ const assertRefundableOrder = async (
     });
   }
 
+  if (orderData.order.type === "merch") {
+    throw new AppError("BAD_REQUEST", "ORDER_NOT_REFUNDABLE", {
+      details: {
+        orderId: orderData.order.id,
+        type: orderData.order.type,
+      },
+    });
+  }
+
   if (orderData.order.status !== "paid") {
     throw new AppError("BAD_REQUEST", "ORDER_NOT_REFUNDABLE", {
       details: {
