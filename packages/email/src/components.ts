@@ -129,7 +129,7 @@ export const detailMerchOrderTable = (
       }
 
       if (bundleProducts && bundleProducts.length > 0) {
-        return bundleProducts
+        return `: ${bundleProducts
           .map((b) => {
             const variantText =
               b.variants && b.variants.length > 0
@@ -138,7 +138,7 @@ export const detailMerchOrderTable = (
 
             return `${b.name} ${variantText}`;
           })
-          .join(", ");
+          .join(", ")}`;
       }
 
       return null;
