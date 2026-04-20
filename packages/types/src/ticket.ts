@@ -12,6 +12,6 @@ export type Ticket = {
   checkedInByUser: {
     id: string;
     name: string;
-  };
+  } | null;
   createdAt: string; // ISO 8601
 };
