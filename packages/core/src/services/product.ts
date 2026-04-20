@@ -266,7 +266,7 @@ export const createProductServices = (
           }
 
           const product = productMapById.get(bundleItem.productId);
-          if (!product?.stock) {
+          if (product === undefined || product.stock === null) {
             throw new Error(
               `Product with id ${bundleItem.productId} not found or has no stock for bundle item`
             );
