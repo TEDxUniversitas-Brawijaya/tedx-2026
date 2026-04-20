@@ -6,6 +6,7 @@ import {
   IconDatabase,
   IconHome,
   IconLogout,
+  IconPackage,
   IconShoppingBag,
 } from "@tabler/icons-react";
 import {
@@ -100,6 +101,12 @@ function RouteComponent() {
                   to: "/dashboard/orders",
                   icon: IconShoppingBag,
                   requiredResource: RESOURCES.ORDER,
+                },
+                {
+                  label: "Products",
+                  to: "/dashboard/products",
+                  icon: IconPackage,
+                  requiredResource: RESOURCES.PRODUCT,
                 },
                 {
                   label: "Storage",
