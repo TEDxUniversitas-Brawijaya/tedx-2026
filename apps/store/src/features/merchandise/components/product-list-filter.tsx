@@ -134,14 +134,14 @@ export const ProductListFilter = ({ products }: { products: Product[] }) => {
           <SelectTrigger className="flex w-48 flex-row items-center justify-between rounded-lg border-[#CACACA]/35 border-b-2 bg-white p-2">
             <div className="flex items-center gap-3 text-base">
               <span className="text-black uppercase">
-                {filter || merchCategoryWithCount[0]?.category}
+                {filter ?? merchCategoryWithCount[0]?.category}
               </span>
               <span className="font-semibold text-[#FF1818] leading-none">
                 {filter === "bundling"
                   ? bundlingCount
-                  : merchCategoryWithCount.find(
+                  : (merchCategoryWithCount.find(
                       (item) => item.category === filter
-                    )?.count || merchCategoryWithCount[0]?.count}
+                    )?.count ?? merchCategoryWithCount[0]?.count)}
               </span>
             </div>
           </SelectTrigger>
