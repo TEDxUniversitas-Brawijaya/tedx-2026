@@ -10,18 +10,11 @@ import { TicketSuccessStep } from "./ticket-success-step";
 import { TicketSummaryStep } from "./ticket-summary-step";
 
 export const TicketCheckoutModal = () => {
-  const { isCheckoutOpen, closeCheckout, checkoutStep } =
+  const { isCheckoutOpen, setIsCheckoutOpen, checkoutStep } =
     useTicketCheckoutStore();
 
   return (
-    <Dialog
-      onOpenChange={(open) => {
-        if (!open) {
-          closeCheckout();
-        }
-      }}
-      open={isCheckoutOpen}
-    >
+    <Dialog onOpenChange={setIsCheckoutOpen} open={isCheckoutOpen}>
       <DialogContent className="max-h-[92vh] max-w-[90%] overflow-hidden rounded-3xl border-none bg-black p-0 text-white shadow-[0_0_100px_2px_rgba(255,149,0,0.25)] *:data-[slot=dialog-close]:z-20 *:data-[slot=dialog-close]:bg-transparent *:data-[slot=dialog-close]:text-white md:w-full md:max-w-lg">
         <img
           alt="chandelier"

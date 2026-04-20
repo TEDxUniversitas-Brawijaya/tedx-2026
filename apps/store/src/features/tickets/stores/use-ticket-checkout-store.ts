@@ -13,6 +13,7 @@ type TicketCheckoutStore = {
   setActiveTab: (tab: TicketTab) => void;
 
   isCheckoutOpen: boolean;
+  setIsCheckoutOpen: (open: boolean) => void;
   checkoutStep: TicketCheckoutStep;
   selectedProduct: TicketProduct | null;
   quantity: number;
@@ -37,6 +38,8 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
     setActiveTab: (tab) => set({ activeTab: tab }),
 
     isCheckoutOpen: false,
+    setIsCheckoutOpen: (open) => set({ isCheckoutOpen: open }),
+
     checkoutStep: "identification",
     selectedProduct: null,
     quantity: 1,
