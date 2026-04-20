@@ -33,7 +33,7 @@ export const createProductOperations = (kv: KV): ProductOperations => ({
     }
 
     const { data: parsed, error } = await tryCatch(
-      JSON.parse(cachedData) as Promise<
+      Promise.resolve().then(() => JSON.parse(cachedData)) as Promise<
         (Omit<Product, "createdAt" | "updatedAt"> & {
           createdAt: string;
           updatedAt: string;
@@ -80,7 +80,7 @@ export const createProductOperations = (kv: KV): ProductOperations => ({
     }
 
     const { data: parsed, error } = await tryCatch(
-      JSON.parse(cachedData) as Promise<
+      Promise.resolve().then(() => JSON.parse(cachedData)) as Promise<
         (Omit<Product, "createdAt" | "updatedAt"> & {
           createdAt: string;
           updatedAt: string;
