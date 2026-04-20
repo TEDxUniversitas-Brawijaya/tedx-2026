@@ -1231,7 +1231,7 @@ export const createOrderServices = (
           paymentMethod: paymentMode as Order["paymentMethod"],
           proofImageUrl: uploadedProofImage ? uploadedProofImage.url : null,
           status: orderStatus,
-          type: "merch",
+          type: "ticket",
           idempotencyKey,
           expiresAt: expiresAt.toISOString(),
           paidAt,
