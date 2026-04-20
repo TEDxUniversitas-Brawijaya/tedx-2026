@@ -290,7 +290,7 @@ export const createOrderServices = (
       variants: item.snapshotVariants
         ? item.snapshotVariants.map((v) => ({
             label: v.label,
-            value: v.type,
+            type: v.type,
           }))
         : [],
       bundleProducts: item.snapshotBundleProducts
@@ -299,7 +299,7 @@ export const createOrderServices = (
             variants: bp.selectedVariants
               ? bp.selectedVariants.map((v) => ({
                   label: v.label,
-                  value: v.type,
+                  type: v.type,
                 }))
               : [],
           }))
@@ -544,7 +544,7 @@ export const createOrderServices = (
                   variants: bp.selectedVariants
                     ? bp.selectedVariants.map((v) => ({
                         label: v.label,
-                        value: v.type,
+                        type: v.type,
                       }))
                     : [],
                 })),
@@ -690,7 +690,7 @@ export const createOrderServices = (
                 variants: bp.selectedVariants
                   ? bp.selectedVariants.map((v) => ({
                       label: v.label,
-                      value: v.type,
+                      type: v.type,
                     }))
                   : [],
               })),

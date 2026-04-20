@@ -7,10 +7,10 @@ export type TemplateMap = {
     items: {
       name: string;
       quantity: number;
-      variants?: { label: string; value: string }[];
+      variants?: { label: string; type: string }[];
       bundleProducts?: {
         name: string;
-        variants?: { label: string; value: string }[];
+        variants?: { label: string; type: string }[];
       }[];
       price: number;
     }[];
@@ -20,10 +20,10 @@ export type TemplateMap = {
     items: {
       name: string;
       quantity: number;
-      variants?: { label: string; value: string }[];
+      variants?: { label: string; type: string }[];
       bundleProducts?: {
         name: string;
-        variants?: { label: string; value: string }[];
+        variants?: { label: string; type: string }[];
       }[];
       price: number;
     }[];
@@ -33,10 +33,10 @@ export type TemplateMap = {
     items: {
       name: string;
       quantity: number;
-      variants?: { label: string; value: string }[];
+      variants?: { label: string; type: string }[];
       bundleProducts?: {
         name: string;
-        variants?: { label: string; value: string }[];
+        variants?: { label: string; type: string }[];
       }[];
       price: number;
     }[];
@@ -52,7 +52,7 @@ export type TemplateMap = {
 
       bundleProducts?: {
         name: string;
-        variants?: { label: string; value: string }[];
+        variants?: { label: string; type: string }[];
       }[];
 
       tickets: {
@@ -71,7 +71,7 @@ export type TemplateMap = {
       price: number;
       bundleProducts?: {
         name: string;
-        variants?: { label: string; value: string }[];
+        variants?: { label: string; type: string }[];
       }[];
     };
   };
@@ -83,7 +83,7 @@ export type TemplateMap = {
       price: number;
       bundleProducts?: {
         name: string;
-        variants?: { label: string; value: string }[];
+        variants?: { label: string; type: string }[];
       }[];
     };
     reason: string;
