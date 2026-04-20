@@ -396,7 +396,10 @@ export const createOrderServices = (
         }
 
         // ticker regular
-        if (!item.snapshotBundleProducts) {
+        if (
+          !item.snapshotBundleProducts ||
+          item.snapshotBundleProducts.length === 0
+        ) {
           const event = await getEvent(item.snapshotName);
           if (!event) {
             throw new AppError(
@@ -418,6 +421,7 @@ export const createOrderServices = (
             ...t,
             eventName: item.snapshotName,
             eventDate: event.date,
+            eventDay: event.day,
             whatsappGroupUrl: event.whatsappGroupUrl,
           }));
 
@@ -438,7 +442,7 @@ export const createOrderServices = (
                 refundUrl: `https://store.tedxuniversitasbrawijaya.com/refund/${order.refundToken}`,
               },
               tickets.map((t, idx) => ({
-                name: `${t.eventDate}-${idx + 1}.png`,
+                name: `${t.eventDay}-${idx + 1}.png`,
                 content: t.qr,
               }))
             )
@@ -523,6 +527,7 @@ export const createOrderServices = (
             ...t,
             eventName: ticketInfo.eventName,
             eventDate: ticketInfo.eventDate,
+            eventDay: ticketInfo.eventDay,
             whatsappGroupUrl: ticketInfo.whatsappGroupUrl,
           };
         });
@@ -553,7 +558,7 @@ export const createOrderServices = (
               refundUrl: `https://store.tedxuniversitasbrawijaya.com/refund/${order.refundToken}`,
             },
             ticketsWithQr.map((t, idx) => ({
-              name: `${t.eventName}-${idx + 1}.png`,
+              name: `${t.eventDay}-${idx + 1}.png`,
               content: t.qr,
             }))
           )
@@ -609,7 +614,10 @@ export const createOrderServices = (
       }
 
       // ticket regular
-      if (!item.snapshotBundleProducts) {
+      if (
+        !item.snapshotBundleProducts ||
+        item.snapshotBundleProducts.length === 0
+      ) {
         await ctx.productQueries.batchIncrementProductStock([
           {
             productId: item.productId,
