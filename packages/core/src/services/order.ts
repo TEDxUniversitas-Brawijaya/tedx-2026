@@ -468,41 +468,6 @@ export const createOrderServices = (
           );
         }
 
-        // const bundleProductIds = new Set<string>();
-        // for (const bundleItem of product.bundleItems) {
-        //   if (bundleItem.type !== "ticket") {
-        //     continue; // Only create tickets for ticket bundle items, not merchandise bundle items
-        //   }
-
-        //   bundleProductIds.add(bundleItem.productId);
-        // }
-
-        // const bundleProducts = await ctx.productQueries.getProductsByIds(
-        //   Array.from(bundleProductIds)
-        // );
-
-        // const bundleProductMap: Record<
-        //   string,
-        //   {
-        //     eventDay: "propa3_day1" | "propa3_day2" | "main_event";
-        //     eventDate: string;
-        //     whatsappGroupUrl: string;
-        //   }
-        // > = {};
-
-        // const events: {
-        //   day: "propa3_day1" | "propa3_day2" | "main_event";
-        //   date: string;
-        //   whatsappGroupUrl: string;
-        // }[] = [];
-        // for (const bundleItem of product.bundleItems) {
-        //   if (bundleItem.type !== "ticket") {
-        //     continue; // Only create tickets for ticket bundle items, not merchandise bundle items
-        //   }
-
-        //   const event = await getEvent(bundleItem.productId);
-        // }
-
         const tickets: {
           eventName: string;
           eventDate: string;
@@ -571,6 +536,15 @@ export const createOrderServices = (
                 price: item.snapshotPrice,
                 quantity: item.quantity,
                 tickets,
+                bundleProducts: item.snapshotBundleProducts.map((bp) => ({
+                  name: bp.name,
+                  variants: bp.selectedVariants
+                    ? bp.selectedVariants.map((v) => ({
+                        label: v.label,
+                        value: v.type,
+                      }))
+                    : [],
+                })),
               },
               // TODO: set dynamic refund URL based on enviroment
               refundUrl: `https://store.tedxuniversitasbrawijaya.com/refund/${order.refundToken}`,
@@ -651,7 +625,6 @@ export const createOrderServices = (
                 name: item.snapshotName,
                 price: item.snapshotPrice,
                 quantity: item.quantity,
-                bundleProducts: [], // TODO
               },
               reason,
             }
@@ -709,7 +682,15 @@ export const createOrderServices = (
               name: item.snapshotName,
               price: item.snapshotPrice,
               quantity: item.quantity,
-              bundleProducts: [], // TODO
+              bundleProducts: item.snapshotBundleProducts.map((bp) => ({
+                name: bp.name,
+                variants: bp.selectedVariants
+                  ? bp.selectedVariants.map((v) => ({
+                      label: v.label,
+                      value: v.type,
+                    }))
+                  : [],
+              })),
             },
             reason,
           }
