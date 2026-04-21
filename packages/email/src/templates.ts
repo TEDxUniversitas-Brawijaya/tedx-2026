@@ -1,6 +1,23 @@
 import { detailMerchOrderTable, detailTicketOrderTable } from "./components";
 import { createEmailLayout } from "./layout";
 
+// Helper function to deduplicate tickets by unique event properties
+const getUniqueEvents = <
+  T extends { eventName: string; eventDate: string; whatsappGroupUrl: string },
+>(
+  tickets: T[]
+): T[] => {
+  const seen = new Set<string>();
+  return tickets.filter((ticket) => {
+    const key = `${ticket.eventName}|${ticket.eventDate}|${ticket.whatsappGroupUrl}`;
+    if (seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  });
+};
+
 export type TemplateMap = {
   merchOrder: {
     orderId: string;
@@ -263,6 +280,9 @@ const renderers: Renderers = {
   ticketOrder: (params) => {
     const { orderId, item, refundUrl } = params;
 
+    // Get unique events to avoid duplicates when displaying event info
+    const uniqueEvents = getUniqueEvents(item.tickets);
+
     const content = `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
@@ -300,14 +320,14 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
-              Gabung grup WhatsApp peserta untuk info terbaru, jadwal, dan pengumuman acara mengenai ${item.tickets.map((t) => `${t.eventName} (${t.eventDate})`).join(", ")}!
+              Gabung grup WhatsApp peserta untuk info terbaru, jadwal, dan pengumuman acara mengenai ${uniqueEvents.map((t) => `${t.eventName} (${t.eventDate})`).join(", ")}!
             </span>
           </td>
         </tr>
         <tr><td height="4"></td></tr>
         <tr>
           <td align="left">
-            ${item.tickets
+            ${uniqueEvents
               .map(
                 (t) => `
             <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="display: inline-block; margin-right: 8px; margin-bottom: 8px;">
