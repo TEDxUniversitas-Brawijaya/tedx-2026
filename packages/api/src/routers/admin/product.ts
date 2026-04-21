@@ -1,20 +1,26 @@
 import { TRPCError } from "@trpc/server";
 import {
+  createProductInputSchema,
+  createProductOutputSchema,
   createVariantInputSchema,
   deleteProductInputSchema,
   listProductsInputSchema,
   listProductsOutputSchema,
   updateProductInputSchema,
   updateProductOutputSchema,
+  updateVariantInputSchema,
 } from "../../schemas/product";
-import { createTRPCRouter, protectedProcedure } from "../../trpc";
+import { createTRPCRouter, superadminOnlyProcedure } from "../../trpc";
 
-const list = protectedProcedure
+const list = superadminOnlyProcedure
   .input(listProductsInputSchema)
   .output(listProductsOutputSchema)
   .query(async ({ ctx }) => {
-    const products = await ctx.services.product.adminListTicketProducts();
-    // TODO: property access required only for getting a ticket
+    // for now we only wanna list ticket products in admin dashboard, so we can ignore the type input for now
+    const products = await ctx.services.product.getTicketProducts({
+      status: "all",
+    });
+
     return products.map((product) => ({
       id: product.id,
       type: product.type,
@@ -24,29 +30,38 @@ const list = protectedProcedure
       stock: product.stock,
       isActive: product.isActive,
       imageUrl: product.imageUrl ?? null,
-      variants: product.variants ?? null,
-      bundleItems: null, // not needed in admin list view
-      createdAt: product.createdAt,
-      updatedAt: product.updatedAt,
+      variants: null,
+      bundleItems: null,
+      createdAt: new Date(product.createdAt).toISOString(),
+      updatedAt: new Date(product.updatedAt).toISOString(),
     }));
   });
 
-const update = protectedProcedure
+const create = superadminOnlyProcedure
+  .input(createProductInputSchema)
+  .output(createProductOutputSchema)
+  .mutation(() => {
+    // TODO: Implement admin.product.create
+    // - Generate product ID with prod_ prefix
+    // - Create product with provided details
+    // - Return product ID and success message
+    throw new TRPCError({
+      code: "NOT_IMPLEMENTED",
+      message: "admin.product.create is not implemented yet",
+    });
+  });
+
+const update = superadminOnlyProcedure
   .input(updateProductInputSchema)
   .output(updateProductOutputSchema)
   .mutation(async ({ ctx, input }) => {
-    await ctx.services.product.adminUpdateProduct(input.productId, {
+    await ctx.services.product.updateProduct(input.productId, {
       price: input.price,
       stock: input.stock,
     });
-
-    return {
-      productId: input.productId,
-      message: "Product updated successfully",
-    };
   });
 
-const deleteProduct = protectedProcedure
+const deleteProduct = superadminOnlyProcedure
   .input(deleteProductInputSchema)
   .mutation(() => {
     // TODO: Implement admin.product.delete
@@ -57,19 +72,36 @@ const deleteProduct = protectedProcedure
     });
   });
 
-const createVariant = protectedProcedure
+const createVariant = superadminOnlyProcedure
   .input(createVariantInputSchema)
   .mutation(() => {
     // TODO: Implement admin.product.createVariant
+    // - Validate product exists
+    // - Add variant to product's variants array
+    // - Return product ID, variant ID, and success message
     throw new TRPCError({
       code: "NOT_IMPLEMENTED",
       message: "admin.product.createVariant is not implemented yet",
     });
   });
 
+const updateVariant = superadminOnlyProcedure
+  .input(updateVariantInputSchema)
+  .mutation(() => {
+    // TODO: Implement admin.product.updateVariant
+    // - Validate product and variant exist
+    // - Update variant in product's variants array
+    throw new TRPCError({
+      code: "NOT_IMPLEMENTED",
+      message: "admin.product.updateVariant is not implemented yet",
+    });
+  });
+
 export const productRouter = createTRPCRouter({
   list,
+  create,
   update,
   delete: deleteProduct,
   createVariant,
+  updateVariant,
 });

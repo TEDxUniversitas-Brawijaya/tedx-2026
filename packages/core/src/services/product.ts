@@ -12,10 +12,7 @@ export type ProductServices = {
   getTicketProducts: (opts?: {
     status?: "active" | "inactive" | "all";
   }) => Promise<Product[]>;
-  adminListTicketProducts: () => Promise<
-    Awaited<ReturnType<ProductQueries["getProducts"]>>
-  >;
-  adminUpdateProduct: (
+  updateProduct: (
     productId: string,
     data: { price?: number; stock?: number }
   ) => Promise<void>;
@@ -173,6 +170,7 @@ export const createProductServices = (
 
     return response;
   },
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO - refactor this later
   getTicketProducts: async (opts) => {
     // Use status directly for cache key, default to "all"
     const { status = "all" } = opts || {};
@@ -241,13 +239,20 @@ export const createProductServices = (
       return null;
     };
 
-    const response: Product[] = products.map((product) => {
+    const response: Product[] = [];
+    for (const product of products) {
+      if (
+        product.type !== "ticket_regular" &&
+        product.type !== "ticket_bundle"
+      ) {
+        continue;
+      }
       if (product.bundleItems === null) {
         const eventDate = getEventDate(product.name);
 
         const eventHasPassed = eventDate ? new Date() > eventDate : false;
 
-        return {
+        response.push({
           ...product,
           isActive: eventHasPassed ? false : product.isActive, // if event date has passed, set isActive to false
           description: eventDate
@@ -261,7 +266,8 @@ export const createProductServices = (
           createdAt: new Date(product.createdAt),
           updatedAt: new Date(product.updatedAt),
           bundleItems: null,
-        };
+        });
+        continue;
       }
 
       // we need to find the minimum event stock among the bundle items to determine the stock of the bundle product
@@ -283,7 +289,7 @@ export const createProductServices = (
         })
       );
 
-      return {
+      response.push({
         ...product,
         stock: minEventStock,
         createdAt: new Date(product.createdAt),
@@ -385,8 +391,8 @@ export const createProductServices = (
 
           throw new Error(`Unknown bundle item type: ${bundleItem}`);
         }),
-      };
-    });
+      });
+    }
 
     // Cache the response for 1 minutes (60 seconds)
     ctx.waitUntil(
@@ -395,12 +401,7 @@ export const createProductServices = (
 
     return response;
   },
-  adminListTicketProducts: async () => {
-    return await ctx.productQueries.getProducts({
-      types: ["ticket_regular", "ticket_bundle"],
-    });
-  },
-  adminUpdateProduct: async (productId, data) => {
+  updateProduct: async (productId, data) => {
     const product = await ctx.productQueries.getProductById(productId);
 
     if (!product) {

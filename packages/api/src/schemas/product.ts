@@ -58,10 +58,7 @@ export const updateProductInputSchema = z.object({
   imageUrl: imageFileSchema.optional(),
 });
 
-export const updateProductOutputSchema = z.object({
-  productId: productIdSchema,
-  message: z.string(),
-});
+export const updateProductOutputSchema = z.void();
 
 // admin.product.delete
 export const deleteProductInputSchema = z.object({
