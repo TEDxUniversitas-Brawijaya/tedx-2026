@@ -8,11 +8,12 @@ import { toast } from "sonner";
 import { isManualPayment } from "../../configs/payment";
 import { formatIdrCurrency } from "../../lib/formatter";
 import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
-import type { TicketBuyer, TicketProduct } from "../../types/ticket";
+import type { TicketBuyer } from "../../types/ticket";
+import type { CartItem } from "../../types/checkout";
 
 type TicketSummaryStepProps = {
   buyer: TicketBuyer;
-  selectedProduct: TicketProduct;
+  selectedProduct: CartItem;
   quantity: number;
 };
 
@@ -51,7 +52,14 @@ export const TicketSummaryStep = ({
     formData.append("buyerInstansi", buyer.buyerInstansi);
     formData.append("captchaToken", captchaToken);
     formData.append("idempotencyKey", idempotencyKey);
-    formData.append("bundleItemProducts", JSON.stringify([])); // TODO: support bundle item products if needed
+    formData.append(
+      "bundleItemProducts",
+      JSON.stringify(
+        selectedProduct.selectedBundleProducts?.map((item) => ({
+          productId: item.productId,
+        }))
+      )
+    );
 
     await createOrderMutation.mutateAsync(formData, {
       onSuccess: (response) => {
