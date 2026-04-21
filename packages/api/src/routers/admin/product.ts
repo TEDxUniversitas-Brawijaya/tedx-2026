@@ -7,24 +7,37 @@ import {
   listProductsInputSchema,
   listProductsOutputSchema,
   updateProductInputSchema,
+  updateProductOutputSchema,
   updateVariantInputSchema,
 } from "../../schemas/product";
-import { createTRPCRouter, protectedProcedure } from "../../trpc";
+import { createTRPCRouter, superadminOnlyProcedure } from "../../trpc";
 
-const list = protectedProcedure
+const list = superadminOnlyProcedure
   .input(listProductsInputSchema)
   .output(listProductsOutputSchema)
-  .query(() => {
-    // TODO: Implement admin.product.list
-    // - Apply type filter if provided
-    // - Return all products with full details
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.product.list is not implemented yet",
+  .query(async ({ ctx }) => {
+    // for now we only wanna list ticket products in admin dashboard, so we can ignore the type input for now
+    const products = await ctx.services.product.getTicketProducts({
+      status: "all",
     });
+
+    return products.map((product) => ({
+      id: product.id,
+      type: product.type,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      stock: product.stock,
+      isActive: product.isActive,
+      imageUrl: product.imageUrl ?? null,
+      variants: null,
+      bundleItems: null,
+      createdAt: new Date(product.createdAt).toISOString(),
+      updatedAt: new Date(product.updatedAt).toISOString(),
+    }));
   });
 
-const create = protectedProcedure
+const create = superadminOnlyProcedure
   .input(createProductInputSchema)
   .output(createProductOutputSchema)
   .mutation(() => {
@@ -38,36 +51,29 @@ const create = protectedProcedure
     });
   });
 
-const update = protectedProcedure
+const update = superadminOnlyProcedure
   .input(updateProductInputSchema)
-  .output(createProductOutputSchema)
-  .mutation(() => {
-    // TODO: Implement admin.product.update
-    // - Validate product exists
-    // - Update product fields
-    // - Return product ID and success message
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.product.update is not implemented yet",
+  .output(updateProductOutputSchema)
+  .mutation(async ({ ctx, input }) => {
+    await ctx.services.product.updateProduct(input.productId, {
+      price: input.price,
+      stock: input.stock,
     });
   });
 
-const deleteProduct = protectedProcedure
+const deleteProduct = superadminOnlyProcedure
   .input(deleteProductInputSchema)
-  .output(createProductOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.product.delete
     // - Soft delete: set isActive = false
-    // - Return product ID and success message
     throw new TRPCError({
       code: "NOT_IMPLEMENTED",
       message: "admin.product.delete is not implemented yet",
     });
   });
 
-const createVariant = protectedProcedure
+const createVariant = superadminOnlyProcedure
   .input(createVariantInputSchema)
-  .output(createProductOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.product.createVariant
     // - Validate product exists
@@ -79,14 +85,12 @@ const createVariant = protectedProcedure
     });
   });
 
-const updateVariant = protectedProcedure
+const updateVariant = superadminOnlyProcedure
   .input(updateVariantInputSchema)
-  .output(createProductOutputSchema)
   .mutation(() => {
     // TODO: Implement admin.product.updateVariant
     // - Validate product and variant exist
     // - Update variant in product's variants array
-    // - Return product ID, variant ID, and success message
     throw new TRPCError({
       code: "NOT_IMPLEMENTED",
       message: "admin.product.updateVariant is not implemented yet",
