@@ -179,6 +179,7 @@ export const createContext = async ({
     productQueries,
 
     orderOperations,
+    productOperations,
   });
 
   const refundServices = createRefundServices({

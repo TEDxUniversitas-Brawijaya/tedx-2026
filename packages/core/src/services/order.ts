@@ -426,12 +426,6 @@ export const createOrderServices = (
             whatsappGroupUrl: event.whatsappGroupUrl,
           }));
 
-          await Promise.all([
-            ctx.productOperations.deleteTicketProducts("all"),
-            ctx.productOperations.deleteTicketProducts("active"),
-            ctx.productOperations.deleteTicketProducts("inactive"),
-          ]);
-
           ctx.waitUntil(
             ctx.emailServices.sendEmailWithAttachment(
               order.buyerEmail,
@@ -538,12 +532,6 @@ export const createOrderServices = (
             whatsappGroupUrl: ticketInfo.whatsappGroupUrl,
           };
         });
-
-        await Promise.all([
-          ctx.productOperations.deleteTicketProducts("all"),
-          ctx.productOperations.deleteTicketProducts("active"),
-          ctx.productOperations.deleteTicketProducts("inactive"),
-        ]);
 
         ctx.waitUntil(
           ctx.emailServices.sendEmailWithAttachment(
@@ -1432,6 +1420,12 @@ export const createOrderServices = (
     // Execute all stock decrements in a single batch (prevents overselling atomically)
     const stockResults =
       await ctx.productQueries.batchDecrementProductStock(stockOperations);
+
+    await Promise.all([
+      ctx.productOperations.deleteTicketProducts("all"),
+      ctx.productOperations.deleteTicketProducts("active"),
+      ctx.productOperations.deleteTicketProducts("inactive"),
+    ]);
 
     // Check if any operations failed
     const failedOperations = stockResults.filter((result) => !result.success);
