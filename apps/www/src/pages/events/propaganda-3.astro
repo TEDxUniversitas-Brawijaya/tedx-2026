@@ -1,8 +1,788 @@
 ---
-import ComingSoon from "@/components/coming-soon.astro";
+import { Image } from "astro:assets";
 import Layout from "@/components/layout.astro";
+import Footer from "@/components/footer.astro";
+import Navbar from "@/components/navbar.astro";
+import PaperTexture1 from "@/assets/imgs/paper-texture-1.png";
+import Seesaw from "@/assets/imgs/seesaw.png";
+import Playground from "@/assets/imgs/playground.png";
+import Grass from "@/assets/imgs/grass.png";
+import BouquetStand from "@/assets/imgs/bouquet-stand.png";
+import FlowerPot1 from "@/assets/imgs/flower-pot-1.png";
+import FlowerPot2 from "@/assets/imgs/flower-pot-2.png";
+import FlowerPot3 from "@/assets/imgs/flower-pot-3.png";
+import Guidebook from "@/assets/imgs/guidebook.png";
+import Tree from "@/assets/imgs/tree-1.png";
+import Picnic from "@/assets/imgs/picnic.png";
 ---
 
-<Layout>
-  <ComingSoon />
+<Layout
+  title="Bingkai Kasih | TEDx Universitas Brawijaya"
+  description="Bingkai Kasih akan mengeksplorasi interaksi penuh empati yang merupakan pilar penting dalam konsep keluarga. Ruang ini tidak hanya mempertemukan individu, tetapi juga merawat rasa memiliki yang memperkuat hubungan antarsesama. Setiap keterlibatan menjadi wujud nyata bahwa kebersamaan dapat dibangun melalui tindakan sederhana yang penuh makna."
+>
+  <Navbar />
+  <main>
+    <section id="section-one">
+      <div class="section-one-wrapper">
+        <div id="horizontal-scroll" class="horizontal-scroll">
+          <div class="background-container-wrapper">
+            <div class="background-container">
+              <Image src={Seesaw} alt="Seesaw" class="seesaw" />
+              <Image src={Playground} alt="Playground" class="playground" />
+              <Image src={Grass} alt="Grass" class="grass" />
+              <Image src={Tree} alt="Tree" class="tree" />
+              <Image src={Picnic} alt="Picnic" class="picnic" />
+              <Image
+                src={BouquetStand}
+                alt="Bouquet Stand"
+                class="bouquet-stand"
+              />
+              <Image src={FlowerPot1} alt="Flower Pot 1" class="flower-pot-1" />
+              <Image src={FlowerPot2} alt="Flower Pot 2" class="flower-pot-2" />
+              <Image src={FlowerPot3} alt="Flower Pot 3" class="flower-pot-3" />
+            </div>
+          </div>
+          <div class="first-screen">
+            <div class="text-container">
+              <h2>BINGKAI KASIH</h2>
+              <p>
+                Bingkai Kasih akan mengeksplorasi interaksi penuh empati yang
+                merupakan pilar penting dalam konsep keluarga. Ruang ini tidak
+                hanya mempertemukan individu, tetapi juga merawat rasa memiliki
+                yang memperkuat hubungan antarsesama. Setiap keterlibatan
+                menjadi wujud nyata bahwa kebersamaan dapat dibangun melalui
+                tindakan sederhana yang penuh makna.
+              </p>
+            </div>
+            <div class="text-container">
+              <p>
+                Kegiatan yang akan dilakukan adalah membuat bento, menghias kue
+                mangkuk, dan merangkai bunga. Pelaksanaan kegiatan akan dikemas
+                secara hangat, dan pada akhirnya akan memberikan kesan yang
+                dalam kepada partisipan sebagai sebuah keluarga tanpa ikatan
+                darah. Harapannya dengan dilaksanakan kegiatan ini dapat
+                memantik apa arti keluarga menurut masing-masing individu.
+              </p>
+            </div>
+          </div>
+          <div class="third-screen">
+            <div class="text-container">
+              <h2><span class="day-label">DAY 1:</span> MERANGKAI BUNGA</h2>
+              <p>
+                Bunga sering menjadi simbol kasih—keindahan yang tumbuh dari
+                perhatian kecil dan kehangatan yang tulus. Melalui kegiatan
+                merangkai bunga, para partisipan diajak untuk menata keindahan
+                warna dan bentuk bunga dengan tangan mereka sendiri, seakan
+                menghadirkan kembali kenangan tentang kasih yang pernah mereka
+                berikan kepada keluarga, sahabat, dan orang-orang di sepanjang
+                perjalanan hidupnya.
+              </p>
+            </div>
+            <div class="text-container">
+              <p>
+                Dari rangkaian sederhana itu, kita diingatkan bahwa kasih tidak
+                pernah benar-benar hilang, ia tetap hidup dan mekar dalam
+                kenangan.
+              </p>
+            </div>
+          </div>
+          <div class="fourth-screen">
+            <div class="text-container">
+              <h2><span class="day-label">DAY 2:</span> MEMBUAT BENTO</h2>
+              <p>
+                Membuat bento menjadi ruang sederhana bagi partisipan untuk
+                merangkai makna pulang melalui bekal yang mereka susun bersama.
+                Kotak bento yang membingkai hidangan di dalamnya menjadi seperti
+                dinding rumah yang menghadirkan rasa aman. Sementara nasi, lauk,
+                dan sayur yang menemani di sampingnya menggambarkan berbagai
+                kehadiran yang saling melengkapi dan membuat sebuah rumah terasa
+                lebih hidup.
+              </p>
+            </div>
+            <div class="text-container">
+              <p>
+                Dari susunan sederhana itu, membuat bento menjadi seperti menata
+                tempat untuk berpulang—ruang hangat di mana setiap unsur di
+                dalamnya saling menjaga dan memberi rasa untuk kembali.
+              </p>
+            </div>
+          </div>
+          <div class="fifth-screen">
+            <div class="guidebook-content">
+              <h2>GUIDEBOOK</h2>
+              <Image
+                src={Guidebook}
+                alt="Guidebook Pre Event"
+                class="guidebook"
+              />
+              <div class="guidebook-actions">
+                <a
+                  href="https://propaganda3tedxub2026.my.canva.site"
+                  class="guidebook-button guidebook-button-guidebook"
+                  target="_blank"
+                >
+                  Baca Guidebook
+                </a>
+                <a
+                  href="https://store.tedxuniversitasbrawijaya.com/tickets"
+                  class="guidebook-button guidebook-button-ticket"
+                  target="_blank"
+                >
+                  Buy ticket Pre Event
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Image
+          src={PaperTexture1}
+          alt="Paper Texture"
+          class="paper-texture-1"
+        />
+      </div>
+    </section>
+  </main>
+  <Footer />
 </Layout>
+
+<style>
+  #section-one {
+    position: relative;
+    height: 700dvh;
+    --max-horizontal-scroll-vw: 700;
+    --background-track-extra-vw: 200;
+  }
+
+  #section-one .section-one-wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    background-color: var(--color-white);
+  }
+
+  #section-one .horizontal-scroll {
+    --translate-x: 0px;
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100dvh;
+    transform: translate3d(var(--translate-x), 0, 0);
+    will-change: transform;
+  }
+
+  #section-one .background-container-wrapper {
+    position: absolute;
+    inset: 0;
+    width: calc(
+      (var(--max-horizontal-scroll-vw) + var(--background-track-extra-vw)) *
+      1dvw
+    );
+    height: 100dvh;
+    z-index: 1;
+  }
+
+  #section-one .background-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  #section-one .first-screen,
+  #section-one .third-screen,
+  #section-one .fourth-screen {
+    position: relative;
+    width: 200dvw;
+    height: 100dvh;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+    z-index: 3;
+  }
+  #section-one .first-screen,
+  #section-one .fourth-screen {
+    flex-direction: row;
+  }
+
+  #section-one .fifth-screen {
+    position: relative;
+    width: 100dvw;
+    height: 100dvh;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10dvw;
+    z-index: 3;
+  }
+
+  #section-one .first-screen h2,
+  #section-one .third-screen h2,
+  #section-one .fourth-screen h2,
+  #section-one .fifth-screen h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-l);
+    color: var(--color-black);
+  }
+
+  #section-one .fifth-screen h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  #section-one .day-label {
+    display: inline;
+  }
+
+  #section-one .first-screen p,
+  #section-one .third-screen p,
+  #section-one .fourth-screen p {
+    font-family: var(--font-sans);
+    font-size: var(--text-m);
+    color: var(--color-black);
+  }
+
+  #section-one .text-container {
+    position: relative;
+    z-index: 4;
+    display: grid;
+    gap: 1rem;
+    text-align: center;
+    padding: 1rem 0.2rem;
+  }
+
+  #section-one .first-screen .text-container,
+  #section-one .third-screen .text-container,
+  #section-one .fourth-screen .text-container {
+    width: 50%;
+  }
+  #section-one .first-screen .text-container:first-child {
+    transform: translateY(-15dvh);
+    padding-left: 10dvw;
+  }
+  #section-one .first-screen .text-container:nth-child(2) {
+    transform: translateY(-12dvh);
+  }
+  #section-one .third-screen .text-container:first-child {
+    transform: translateY(-13dvh);
+  }
+  #section-one .third-screen .text-container:nth-child(2) {
+    transform: translateY(-14dvh);
+  }
+  #section-one .fourth-screen .text-container:first-child {
+    transform: translateY(-13dvh);
+  }
+  #section-one .fourth-screen .text-container:nth-child(2) {
+    transform: translateY(-14dvh);
+  }
+
+  #section-one .third-screen {
+    flex-direction: row;
+    transform: translateX(120dvw);
+  }
+  #section-one .fourth-screen {
+    transform: translateX(220dvw);
+  }
+
+  #section-one .fifth-screen {
+    padding-inline: clamp(1rem, 7dvw, 5rem);
+    transform: translateX(280dvw);
+  }
+
+  #section-one .guidebook-content {
+    width: min(100%, 520px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    z-index: 4;
+  }
+
+  #section-one .guidebook {
+    width: auto;
+    max-width: min(80dvw, 400px);
+    height: auto;
+    object-fit: contain;
+    animation: guidebook-float 3.5s ease-in-out infinite;
+  }
+
+  #section-one .guidebook-actions {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  #section-one .guidebook-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-serif);
+    color: var(--color-white);
+    font-size: var(--text-m);
+    line-height: 1.1;
+    cursor: pointer;
+    padding: 1rem;
+    transition: transform 180ms ease;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  #section-one .guidebook-button:hover {
+    transform: translateY(-2px);
+  }
+
+  #section-one .guidebook-button-guidebook {
+    background-color: var(--color-green);
+  }
+
+  #section-one .guidebook-button-ticket {
+    background-color: var(--color-red-2);
+  }
+  .paper-texture-1 {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100dvw;
+    max-width: none;
+    height: 100dvh;
+    overflow: hidden;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    opacity: 0.45;
+    filter: contrast(1.15) saturate(0.92);
+    aspect-ratio: 1.78 / 1;
+    transform: translate(-50%, 0%);
+    z-index: 5;
+  }
+  .seesaw,
+  .playground,
+  .bouquet-stand,
+  .flower-pot-1,
+  .flower-pot-2,
+  .flower-pot-3,
+  .tree,
+  .picnic {
+    z-index: 2;
+  }
+
+  .seesaw {
+    position: absolute;
+    left: 8%;
+    bottom: 6%;
+    width: clamp(174px, 25dvw, 269px);
+    height: auto;
+  }
+
+  .playground {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: auto;
+    width: clamp(305px, 40dvw, 470px);
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .grass {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: calc(
+      (var(--max-horizontal-scroll-vw) + var(--background-track-extra-vw)) *
+      1dvw
+    );
+    height: auto;
+    z-index: 1;
+  }
+  .bouquet-stand {
+    position: absolute;
+    left: 30%;
+    bottom: 0%;
+    height: auto;
+    width: clamp(369px, 55dvw, 631px);
+  }
+  .flower-pot-1 {
+    position: absolute;
+    left: 40%;
+    bottom: 5%;
+    height: auto;
+    width: clamp(129px, 20dvw, 200px);
+  }
+
+  .flower-pot-2 {
+    position: absolute;
+    left: 43%;
+    bottom: 4%;
+    height: auto;
+    width: clamp(108px, 20dvw, 200px);
+  }
+
+  .flower-pot-3 {
+    display: none;
+  }
+
+  .tree {
+    position: absolute;
+    left: 55%;
+    bottom: 7%;
+    width: clamp(280px, 100dvw, 500px);
+    height: auto;
+  }
+
+  .picnic {
+    position: absolute;
+    left: 68%;
+    bottom: 5%;
+    height: auto;
+    width: clamp(300px, 80dvw, 550px);
+  }
+
+  @keyframes guidebook-float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-14px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  @media (max-width: 767px) {
+    #section-one .day-label {
+      display: block;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1199px) {
+    #section-one {
+      --max-horizontal-scroll-vw: 550;
+    }
+    #section-one .first-screen {
+      width: 180dvw;
+      gap: 2.5rem;
+    }
+
+    #section-one .first-screen .text-container:first-child {
+      margin-right: 10dvw;
+      margin-left: 5dvw;
+    }
+
+    #section-one .third-screen {
+      transform: translateX(10dvw);
+    }
+    #section-one .fifth-screen {
+      transform: translateX(clamp(80dvw, 90dvw, 100dvw));
+    }
+
+    #section-one .first-screen .text-container:nth-child(2) {
+      transform: translateY(-13dvh);
+    }
+    #section-one .third-screen .text-container:first-child {
+      transform: translateY(-14dvh);
+    }
+
+    #section-one .fourth-screen {
+      transform: translateX(clamp(90dvw, 100dvw, 110dvw));
+    }
+
+    #section-one .fourth-screen .text-container:first-child {
+      transform: translateY(-14dvh);
+    }
+    #section-one .fourth-screen .text-container:nth-child(2) {
+      transform: translateY(-14dvh);
+    }
+    #section-one .fourth-screen {
+      flex-direction: column;
+      gap: 0;
+      transform: translateX(110dvw);
+    }
+    #section-one .fifth-screen {
+      transform: translateX(125dvw);
+    }
+    #section-one .fourth-screen .text-container {
+      padding: 0;
+      width: 50%;
+    }
+    .seesaw {
+      left: 9%;
+      bottom: 7%;
+      width: clamp(174px, 25dvw, 269px);
+    }
+    .playground {
+      left: 1%;
+      bottom: 2%;
+      width: clamp(305px, 40dvw, 470px);
+    }
+    .bouquet-stand {
+      left: 32%;
+      bottom: 3%;
+      width: clamp(369px, 55dvw, 631px);
+    }
+    .flower-pot-1 {
+      left: 43%;
+      bottom: 7%;
+    }
+    .flower-pot-2 {
+      left: 48%;
+      bottom: 6%;
+    }
+    .tree {
+      left: 60%;
+      bottom: 10%;
+    }
+    .picnic {
+      left: 74%;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    #section-one {
+      --max-horizontal-scroll-vw: 180;
+    }
+    #section-one .first-screen {
+      flex-direction: column;
+      gap: 0;
+    }
+    #section-one .first-screen h2,
+    #section-one .third-screen h2,
+    #section-one .fourth-screen h2 {
+      font-size: var(--text-xl);
+    }
+    #section-one .first-screen p,
+    #section-one .third-screen p,
+    #section-one .fourth-screen p {
+      font-size: var(--text-m);
+    }
+
+    #section-one .guidebook-actions {
+      flex-direction: row;
+    }
+
+    #section-one .first-screen .text-container:first-child {
+      padding: 0;
+    }
+    #section-one .first-screen {
+      justify-content: center;
+      align-items: end;
+      width: 75dvw;
+      transform: translate(10dvw, 7dvh);
+    }
+    #section-one .third-screen {
+      flex-direction: column;
+      gap: 0;
+      width: 75dvw;
+      transform: translateX(65dvw);
+    }
+    #section-one .fourth-screen {
+      width: 83dvw;
+      transform: translate(120dvw, -1dvh);
+    }
+
+    #section-one .fifth-screen {
+      padding-inline: clamp(1rem, 7dvw, 5rem);
+      transform: translateX(100dvw);
+    }
+    #section-one .first-screen .text-container:nth-child(2) {
+      transform: translateY(-15dvh);
+    }
+    #section-one .third-screen .text-container:first-child {
+      transform: translateY(-15dvh);
+    }
+    #section-one .third-screen .text-container:nth-child(2) {
+      transform: translateY(-15dvh);
+    }
+    #section-one .third-screen .text-container {
+      padding: 0;
+    }
+
+    #section-one .fourth-screen {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    #section-one .fourth-screen .text-container {
+      padding: 0;
+      width: 50%;
+    }
+    .seesaw {
+      left: 11%;
+      bottom: 8%;
+    }
+    .playground {
+      left: 3%;
+      bottom: 6%;
+    }
+    .bouquet-stand {
+      left: 30%;
+      bottom: 5%;
+    }
+    .flower-pot-1 {
+      left: 40%;
+      bottom: 8%;
+    }
+    .flower-pot-2 {
+      left: 43%;
+      bottom: 10%;
+    }
+    .flower-pot-3 {
+      position: absolute;
+      left: 46%;
+      bottom: 8%;
+      display: block;
+      height: auto;
+      width: clamp(129px, 20dvw, 200px);
+    }
+    .tree {
+      left: 65%;
+      bottom: 15%;
+    }
+    .picnic {
+      left: 78%;
+      bottom: 12%;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const sectionOne = document.getElementById("section-one");
+    const horizontalScroll = document.getElementById("horizontal-scroll");
+    const backgroundContainerWrapper = sectionOne?.querySelector<HTMLElement>(
+      ".background-container-wrapper"
+    );
+    const tabletMediaQuery = window.matchMedia(
+      "(min-width: 768px) and (max-width: 1199px)"
+    );
+    const desktopMediaQuery = window.matchMedia("(min-width: 1200px)");
+
+    if (!(sectionOne && horizontalScroll && backgroundContainerWrapper)) {
+      return;
+    }
+
+    const easeInOutCubic = (t: number): number => {
+      return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+    };
+
+    type ViewportMode = "mobile" | "tablet" | "desktop";
+
+    const getViewportMode = (): ViewportMode => {
+      if (desktopMediaQuery.matches) {
+        return "desktop";
+      }
+      if (tabletMediaQuery.matches) {
+        return "tablet";
+      }
+
+      return "mobile";
+    };
+
+    // Extra scroll room so the right-shifted final panel/CTA can fully enter
+    // the viewport across breakpoints before vertical scrolling exits section one.
+    let viewportMode = getViewportMode();
+    let HORIZONTAL_SCROLL_END_BUFFER_PX = 330;
+
+    const applyViewportModeScrollConfig = (mode: ViewportMode) => {
+      if (mode === "tablet") {
+        HORIZONTAL_SCROLL_END_BUFFER_PX = 450;
+        return;
+      }
+      if (mode === "desktop") {
+        HORIZONTAL_SCROLL_END_BUFFER_PX = 700;
+        return;
+      }
+      HORIZONTAL_SCROLL_END_BUFFER_PX = 330;
+    };
+
+    applyViewportModeScrollConfig(viewportMode);
+
+    const getMaxHorizontalTranslatePx = () => {
+      const trackWidth =
+        backgroundContainerWrapper.getBoundingClientRect().width +
+        HORIZONTAL_SCROLL_END_BUFFER_PX;
+      const viewportWidth = sectionOne.clientWidth || window.innerWidth;
+
+      if (!(Number.isFinite(trackWidth) && Number.isFinite(viewportWidth))) {
+        return 0;
+      }
+
+      return Math.max(trackWidth - viewportWidth, 0);
+    };
+
+    const updateHorizontalScroll = () => {
+      const sectionRect = sectionOne.getBoundingClientRect();
+      const sectionHeight = sectionOne.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      const maxVerticalScroll = sectionHeight - viewportHeight;
+
+      if (maxVerticalScroll <= 0) {
+        horizontalScroll.style.setProperty("--translate-x", "0px");
+        return;
+      }
+
+      const scrollProgress = Math.max(
+        0,
+        Math.min(1, -sectionRect.top / maxVerticalScroll)
+      );
+
+      const maxHorizontalTranslatePx = getMaxHorizontalTranslatePx();
+      const horizontalScrollX =
+        -maxHorizontalTranslatePx * easeInOutCubic(scrollProgress);
+      horizontalScroll.style.setProperty(
+        "--translate-x",
+        `${horizontalScrollX}px`
+      );
+    };
+
+    let scrollRafId: number | null = null;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (scrollRafId !== null) {
+          return;
+        }
+        scrollRafId = requestAnimationFrame(() => {
+          updateHorizontalScroll();
+          scrollRafId = null;
+        });
+      },
+      { passive: true }
+    );
+
+    let resizeRafId: number | null = null;
+    window.addEventListener("resize", () => {
+      if (resizeRafId !== null) {
+        cancelAnimationFrame(resizeRafId);
+      }
+      resizeRafId = requestAnimationFrame(() => {
+        updateHorizontalScroll();
+        resizeRafId = null;
+      });
+    });
+
+    const handleViewportModeChange = () => {
+      const nextViewportMode = getViewportMode();
+      if (nextViewportMode === viewportMode) {
+        return;
+      }
+
+      viewportMode = nextViewportMode;
+      applyViewportModeScrollConfig(viewportMode);
+      updateHorizontalScroll();
+    };
+
+    tabletMediaQuery.addEventListener("change", handleViewportModeChange);
+    desktopMediaQuery.addEventListener("change", handleViewportModeChange);
+
+    updateHorizontalScroll();
+  })();
+</script>
