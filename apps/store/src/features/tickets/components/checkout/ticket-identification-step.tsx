@@ -7,7 +7,6 @@ import {
   FieldLabel,
 } from "@tedx-2026/ui/components/field";
 import { Input } from "@tedx-2026/ui/components/input";
-import { cn } from "@tedx-2026/ui/lib/utils";
 import {
   Select,
   SelectContent,
@@ -15,12 +14,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@tedx-2026/ui/components/select";
+import { cn } from "@tedx-2026/ui/lib/utils";
 import { useTicketIdentificationForm } from "../../hooks/use-ticket-identification-form";
 import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
-import type { TicketProduct } from "../../types/ticket";
+import type { CartItem } from "../../types/checkout";
 
 type TicketIdentificationStepProps = {
-  selectedProduct: TicketProduct;
+  selectedProduct: CartItem;
   quantity: number;
 };
 

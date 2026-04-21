@@ -4,7 +4,7 @@ import type {
   RefundQueries,
   UserQueries,
 } from "@tedx-2026/db";
-import type { OrderOperations } from "@tedx-2026/kv";
+import type { OrderOperations, ProductOperations } from "@tedx-2026/kv";
 import type {
   File as CustomFile,
   Order,
@@ -124,6 +124,7 @@ type CreateOrderServicesCtx = {
   productQueries: ProductQueries;
 
   orderOperations: OrderOperations;
+  productOperations: ProductOperations;
 } & BaseContext;
 
 export const createOrderServices = (
@@ -625,6 +626,12 @@ export const createOrderServices = (
           },
         ]);
 
+        await Promise.all([
+          ctx.productOperations.deleteTicketProducts("all"),
+          ctx.productOperations.deleteTicketProducts("active"),
+          ctx.productOperations.deleteTicketProducts("inactive"),
+        ]);
+
         ctx.waitUntil(
           ctx.emailServices.sendEmail(
             order.buyerEmail,
@@ -681,6 +688,12 @@ export const createOrderServices = (
       }
 
       await ctx.productQueries.batchIncrementProductStock(stockReleases);
+
+      await Promise.all([
+        ctx.productOperations.deleteTicketProducts("all"),
+        ctx.productOperations.deleteTicketProducts("active"),
+        ctx.productOperations.deleteTicketProducts("inactive"),
+      ]);
 
       ctx.waitUntil(
         ctx.emailServices.sendEmail(
@@ -1407,6 +1420,12 @@ export const createOrderServices = (
     // Execute all stock decrements in a single batch (prevents overselling atomically)
     const stockResults =
       await ctx.productQueries.batchDecrementProductStock(stockOperations);
+
+    await Promise.all([
+      ctx.productOperations.deleteTicketProducts("all"),
+      ctx.productOperations.deleteTicketProducts("active"),
+      ctx.productOperations.deleteTicketProducts("inactive"),
+    ]);
 
     // Check if any operations failed
     const failedOperations = stockResults.filter((result) => !result.success);

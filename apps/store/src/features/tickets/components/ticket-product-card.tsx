@@ -18,6 +18,23 @@ export const TicketProductCard = ({ product }: TicketProductCardProps) => {
   const isMainEvent = product.name.toLowerCase().includes("main event");
   const chairImage = isMainEvent ? DoubleChair : SingleChair;
 
+  const onOpenCheckout = () => {
+    const defaultBundleProducts = product.bundleItems
+      ?.filter((bundleItem) => bundleItem.type === "ticket")
+      ?.map((bundleItem) => {
+        return {
+          productId: bundleItem.productId,
+        };
+      });
+
+    openCheckout({
+      ...product,
+      itemId: `${product.id}-${Date.now()}`, // unique item ID for cart
+      selectedBundleProducts:
+        product.type === "ticket_bundle" ? defaultBundleProducts : undefined,
+    });
+  };
+
   return (
     <button
       className={cn(
@@ -26,7 +43,7 @@ export const TicketProductCard = ({ product }: TicketProductCardProps) => {
       )}
       disabled={isDisabled}
       id={`ticket-product-card-${product.id}`}
-      onClick={() => openCheckout(product)}
+      onClick={onOpenCheckout}
       type="button"
     >
       {/* Background Layer (Chair with Mask) */}

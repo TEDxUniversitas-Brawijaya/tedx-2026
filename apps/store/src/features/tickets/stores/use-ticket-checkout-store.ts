@@ -1,12 +1,7 @@
 import { create } from "zustand";
 import { progressSteps } from "../lib/steps";
-import type { TicketCheckoutStep } from "../types/checkout";
-import type {
-  TicketBuyer,
-  TicketOrder,
-  TicketProduct,
-  TicketTab,
-} from "../types/ticket";
+import type { CartItem, TicketCheckoutStep } from "../types/checkout";
+import type { TicketBuyer, TicketOrder, TicketTab } from "../types/ticket";
 
 type TicketCheckoutStore = {
   activeTab: TicketTab;
@@ -15,13 +10,13 @@ type TicketCheckoutStore = {
   isCheckoutOpen: boolean;
   setIsCheckoutOpen: (open: boolean) => void;
   checkoutStep: TicketCheckoutStep;
-  selectedProduct: TicketProduct | null;
+  selectedProduct: CartItem | null;
   quantity: number;
 
   buyer: TicketBuyer | null;
   order: TicketOrder | null;
 
-  openCheckout: (product: TicketProduct) => void;
+  openCheckout: (product: CartItem) => void;
   onNextStep: () => void;
   onPrevStep: () => void;
 

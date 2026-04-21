@@ -63,7 +63,14 @@ export const useTicketManualPaymentForm = () => {
       formData.append("captchaToken", captchaToken);
       formData.append("idempotencyKey", idempotencyKey);
       formData.append("paymentProof", value.paymentProof);
-      formData.append("bundleItemProducts", JSON.stringify([])); // TODO: support bundle item products if needed
+      formData.append(
+        "bundleItemProducts",
+        JSON.stringify(
+          selectedProduct.selectedBundleProducts?.map((item) => ({
+            productId: item.productId,
+          }))
+        )
+      );
 
       await createOrderMutation.mutateAsync(formData, {
         onSuccess: (response) => {
