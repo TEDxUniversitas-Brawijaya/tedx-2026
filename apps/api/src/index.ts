@@ -12,7 +12,6 @@ import type { R2BucketType } from "@tedx-2026/storage";
 import { createNanoId } from "@tedx-2026/utils";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { logger } from "hono/logger";
 
 type Bindings = {
   DB: D1Database;
@@ -40,7 +39,7 @@ const app = new Hono<{
   Bindings: Bindings;
 }>();
 
-app.use(logger());
+// app.use(logger());
 
 app.use(
   "/*",
