@@ -1969,23 +1969,29 @@ export const createOrderServices = (
       const stockReleases: { productId: string; quantity: number }[] = [];
 
       for (const item of ticketOrderItems) {
-        // Release main product stock
-        stockReleases.push({
-          productId: item.productId,
-          quantity: item.quantity,
-        });
+        const isBundleTicket =
+          !!item.snapshotBundleProducts &&
+          item.snapshotBundleProducts.length > 0;
 
-        // Release bundle item stocks (only for tickets)
-        if (item.snapshotBundleProducts) {
-          const product = productMap.get(item.productId);
-          if (product?.bundleItems) {
-            for (const bundleItem of product.bundleItems) {
-              if (bundleItem.type === "ticket") {
-                stockReleases.push({
-                  productId: bundleItem.productId,
-                  quantity: item.quantity,
-                });
-              }
+        if (!isBundleTicket) {
+          // Regular ticket order: release stock for the main product
+          stockReleases.push({
+            productId: item.productId,
+            quantity: item.quantity,
+          });
+          continue;
+        }
+
+        // Bundle ticket order: release stock only for ticket bundle items,
+        // not the main product
+        const product = productMap.get(item.productId);
+        if (product?.bundleItems) {
+          for (const bundleItem of product.bundleItems) {
+            if (bundleItem.type === "ticket") {
+              stockReleases.push({
+                productId: bundleItem.productId,
+                quantity: item.quantity,
+              });
             }
           }
         }
@@ -2064,23 +2070,29 @@ export const createOrderServices = (
       const stockReleases: { productId: string; quantity: number }[] = [];
 
       for (const item of ticketOrderItems) {
-        // Release main product stock
-        stockReleases.push({
-          productId: item.productId,
-          quantity: item.quantity,
-        });
+        const isBundleTicket =
+          !!item.snapshotBundleProducts &&
+          item.snapshotBundleProducts.length > 0;
 
-        // Release bundle item stocks (only for tickets)
-        if (item.snapshotBundleProducts) {
-          const product = productMap.get(item.productId);
-          if (product?.bundleItems) {
-            for (const bundleItem of product.bundleItems) {
-              if (bundleItem.type === "ticket") {
-                stockReleases.push({
-                  productId: bundleItem.productId,
-                  quantity: item.quantity,
-                });
-              }
+        if (!isBundleTicket) {
+          // Regular ticket order: release stock for the main product
+          stockReleases.push({
+            productId: item.productId,
+            quantity: item.quantity,
+          });
+          continue;
+        }
+
+        // Bundle ticket order: release stock only for ticket bundle items,
+        // not the main product
+        const product = productMap.get(item.productId);
+        if (product?.bundleItems) {
+          for (const bundleItem of product.bundleItems) {
+            if (bundleItem.type === "ticket") {
+              stockReleases.push({
+                productId: bundleItem.productId,
+                quantity: item.quantity,
+              });
             }
           }
         }
