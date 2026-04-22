@@ -10,9 +10,7 @@ export type RefundQueries = {
   getRefundRequestByOrderId: (
     orderId: SelectRefundRequest["orderId"]
   ) => Promise<SelectRefundRequest | null>;
-  createRefundRequest: (
-    data: InsertRefundRequest
-  ) => Promise<SelectRefundRequest>;
+  createRefundRequest: (data: InsertRefundRequest) => Promise<void>;
   updateRefundRequest: (
     id: SelectRefundRequest["id"],
     data: Partial<InsertRefundRequest>
@@ -31,16 +29,7 @@ export const createRefundQueries = (db: DB): RefundQueries => ({
   },
 
   createRefundRequest: async (data) => {
-    const [createdRefundRequest] = await db
-      .insert(refundRequestsTable)
-      .values(data)
-      .returning();
-
-    if (!createdRefundRequest) {
-      throw new Error("Failed to create refund request");
-    }
-
-    return createdRefundRequest;
+    await db.insert(refundRequestsTable).values(data);
   },
 
   updateRefundRequest: async (id, data) => {
