@@ -15,6 +15,7 @@ import { groupVariantsByType } from "../../../lib/variant";
 import { useCartStore } from "../../../stores/use-cart-store";
 import type { CartItem } from "../../../types/cart";
 import type { Product } from "../../../types/product";
+import { SizeChartDialog } from "../../size-chart-dialog";
 
 type RegularSelectionStepProps = {
   selectedItem: CartItem;
@@ -40,7 +41,7 @@ export function RegularSelectionStep({
   return (
     <div className="flex max-h-[80vh] flex-col pt-10 text-white">
       <div className="no-scrollbar flex-1 overflow-x-hidden overflow-y-scroll px-1 pr-2 pb-8">
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-start gap-2 sm:items-center sm:gap-3">
           <div className="w-1/2 shrink-0 overflow-hidden rounded-2xl border border-white/5 bg-neutral-900 shadow-lg md:w-2/5">
             {item.imageUrl ? (
               <img
@@ -69,12 +70,12 @@ export function RegularSelectionStep({
               </div>
             </div>
 
-            <div className="mt-2 hidden items-center gap-4 font-sans-2 sm:flex">
+            <div className="mt-2 flex w-full items-center gap-4 font-sans-2 sm:flex-nowrap">
               <div className="w-1/2">
                 <span className="font-sans-2 text-white text-xs">
                   Jumlah<span className="text-red-2">*</span>
                 </span>
-                <div className="mt-2 flex h-9 items-center gap-3 text-white">
+                <div className="mt-2 flex h-9 items-center gap-1.5 text-white sm:gap-3">
                   <button
                     className="text-white hover:text-gray-2"
                     onClick={() =>
@@ -82,9 +83,9 @@ export function RegularSelectionStep({
                     }
                     type="button"
                   >
-                    <MinusIcon size={22} />
+                    <MinusIcon className="h-4 w-4 sm:h-6 sm:w-6" />
                   </button>
-                  <span className="w-4 text-center text-sm">
+                  <span className="text-center text-sm sm:text-base">
                     {item.quantity}
                   </span>
                   <button
@@ -92,7 +93,7 @@ export function RegularSelectionStep({
                     onClick={() => onChangeQuantity(item.quantity + 1)}
                     type="button"
                   >
-                    <PlusIcon size={22} />
+                    <PlusIcon className="h-4 w-4 sm:h-6 sm:w-6" />
                   </button>
                 </div>
               </div>
@@ -104,9 +105,12 @@ export function RegularSelectionStep({
 
                 return (
                   <div className="w-1/2" key={type}>
-                    <span className="font-sans-2 text-white text-xs">
+                    <span className="flex items-center gap-1 font-sans-2 text-white text-xs">
                       {capitalize(type)}
                       <span className="text-red-2">*</span>
+                      {type === "size" && item.category && (
+                        <SizeChartDialog category={item.category} />
+                      )}
                     </span>
                     <Select
                       items={variants}
