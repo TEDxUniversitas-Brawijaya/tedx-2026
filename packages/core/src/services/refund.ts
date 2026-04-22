@@ -1,30 +1,21 @@
-import type { ConfigServices } from "./config";
-import type { FileServices } from "./file";
 import type {
   OrderQueries,
   ProductQueries,
   RefundQueries,
 } from "@tedx-2026/db";
+import type { Order } from "@tedx-2026/types";
 import { createNanoIdWithPrefix } from "@tedx-2026/utils";
 import { AppError } from "../errors";
 import type { BaseContext } from "../types";
-import type { Order } from "@tedx-2026/types";
+import type { ConfigServices } from "./config";
+import type { FileServices } from "./file";
 
 type RefundOrderData = NonNullable<
   Awaited<ReturnType<OrderQueries["getOrderWithItemsByRefundToken"]>>
 >;
 
-type SubmitRefundRequestInput = {
-  refundToken: string;
-  reason: string;
-  paymentMethod: "midtrans" | "manual";
-  bankAccountNumber: string;
-  bankName: string;
-  bankAccountHolder: string;
-  paymentProof?: File | null;
-};
-
 export type RefundServices = {
+  // TODO: Refactor to only validate refund token and order existence, not return full order info
   getOrderInfo: (refundToken: string) => Promise<{
     orderId: string;
     buyerName: string;
@@ -39,13 +30,25 @@ export type RefundServices = {
     totalPrice: number;
     refundDeadline: Date;
   }>;
-  submitRequest: (input: SubmitRefundRequestInput) => Promise<{
+  submitRequest: (input: {
+    refundToken: string;
+    reason: string;
+    // TODO: Payment method shouldnt be provided by client, should be determined from order data
+    paymentMethod: "midtrans" | "manual";
+    bankAccountNumber: string;
+    bankName: string;
+    bankAccountHolder: string;
+    // TODO: We dont need to require payment proof since we already have proof of payment from the order
+    paymentProof?: File | null;
+  }) => Promise<{
+    // TODO: We dont need to return these since the client doesnt need them
     refundId: string;
     status: "requested";
     message: string;
   }>;
   getRefundByOrderId: (
     orderId: Order["id"]
+    // TODO: We should return domain Refund type instead of raw DB refund request data, and we should also include related order and user info in the response
   ) => Promise<Awaited<ReturnType<RefundQueries["getRefundByOrderId"]>>>;
 };
 
