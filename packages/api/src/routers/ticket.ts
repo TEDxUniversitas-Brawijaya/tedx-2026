@@ -23,6 +23,17 @@ const createOrder = publicProcedure
   .input(z.instanceof(FormData))
   .output(createTicketOrderOutputSchema)
   .mutation(async ({ ctx, input: formData }) => {
+    const bundleItemProductsValue = formData.get("bundleItemProducts");
+    const bundleItemProducts =
+      bundleItemProductsValue &&
+      bundleItemProductsValue !== "undefined" &&
+      bundleItemProductsValue !== "null"
+        ? (JSON.parse(bundleItemProductsValue as string) as {
+            productId: string;
+            variantIds?: string[] | undefined;
+          }[])
+        : [];
+
     const input = createTicketOrderInputSchema.parse({
       buyerName: formData.get("buyerName"),
       buyerEmail: formData.get("buyerEmail"),
@@ -33,13 +44,7 @@ const createOrder = publicProcedure
       captchaToken: formData.get("captchaToken"),
       idempotencyKey: formData.get("idempotencyKey"),
       paymentProof: formData.get("paymentProof") ?? undefined,
-      // Too lazy to determine if the value is string or not
-      bundleItemProducts: JSON.parse(
-        formData.get("bundleItemProducts") as string
-      ) as {
-        productId: string;
-        variantIds?: string[] | undefined;
-      }[],
+      bundleItemProducts,
     });
 
     const order = await ctx.services.order.createTicketOrder(
