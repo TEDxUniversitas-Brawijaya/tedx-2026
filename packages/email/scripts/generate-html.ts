@@ -84,6 +84,24 @@ const sampleData: { [K in keyof TemplateMap]: TemplateMap[K] } = {
     },
     reason: "Pembayaran tidak valid / tidak terverifikasi",
   },
+  ticketOrderRefunded: {
+    orderId: "TDX-20260410-123456",
+    item: {
+      name: "Ticket Propa 3 Day 2",
+      quantity: 1,
+      price: 150_000,
+    },
+  },
+  ticketOrderRefundRejected: {
+    orderId: "TDX-20260410-123456",
+    item: {
+      name: "Ticket Main Event",
+      quantity: 1,
+      price: 200_000,
+    },
+    reason:
+      "Permintaan refund ditolak karena melewati batas waktu pengajuan refund",
+  },
 };
 
 async function generateHTML(): Promise<void> {
