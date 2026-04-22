@@ -10,7 +10,6 @@ import Grass from "@/assets/imgs/grass.png";
 import BouquetStand from "@/assets/imgs/bouquet-stand.png";
 import FlowerPot1 from "@/assets/imgs/flower-pot-1.png";
 import FlowerPot2 from "@/assets/imgs/flower-pot-2.png";
-import FlowerPot3 from "@/assets/imgs/flower-pot-3.png";
 import Guidebook from "@/assets/imgs/guidebook.png";
 import Tree from "@/assets/imgs/tree-1.png";
 import Picnic from "@/assets/imgs/picnic.png";
@@ -39,7 +38,6 @@ import Picnic from "@/assets/imgs/picnic.png";
               />
               <Image src={FlowerPot1} alt="Flower Pot 1" class="flower-pot-1" />
               <Image src={FlowerPot2} alt="Flower Pot 2" class="flower-pot-2" />
-              <Image src={FlowerPot3} alt="Flower Pot 3" class="flower-pot-3" />
             </div>
           </div>
           <div class="first-screen">
@@ -56,12 +54,12 @@ import Picnic from "@/assets/imgs/picnic.png";
             </div>
             <div class="text-container">
               <p>
-                Kegiatan yang akan dilakukan adalah membuat bento, menghias kue
-                mangkuk, dan merangkai bunga. Pelaksanaan kegiatan akan dikemas
-                secara hangat, dan pada akhirnya akan memberikan kesan yang
-                dalam kepada partisipan sebagai sebuah keluarga tanpa ikatan
-                darah. Harapannya dengan dilaksanakan kegiatan ini dapat
-                memantik apa arti keluarga menurut masing-masing individu.
+                Kegiatan yang akan dilakukan adalah membuat bento dan merangkai
+                bunga. Pelaksanaan kegiatan akan dikemas secara hangat, dan pada
+                akhirnya akan memberikan kesan yang dalam kepada partisipan
+                sebagai sebuah keluarga tanpa ikatan darah. Harapannya dengan
+                dilaksanakan kegiatan ini dapat memantik apa arti keluarga
+                menurut masing-masing individu.
               </p>
             </div>
           </div>
@@ -128,7 +126,7 @@ import Picnic from "@/assets/imgs/picnic.png";
                   class="guidebook-button guidebook-button-ticket"
                   target="_blank"
                 >
-                  Buy ticket Pre Event
+                  Buy ticket
                 </a>
               </div>
             </div>
@@ -363,12 +361,10 @@ import Picnic from "@/assets/imgs/picnic.png";
     transform: translate(-50%, 0%);
     z-index: 5;
   }
-  .seesaw,
   .playground,
   .bouquet-stand,
   .flower-pot-1,
   .flower-pot-2,
-  .flower-pot-3,
   .tree,
   .picnic {
     z-index: 2;
@@ -376,18 +372,19 @@ import Picnic from "@/assets/imgs/picnic.png";
 
   .seesaw {
     position: absolute;
-    left: 8%;
+    left: 9%;
     bottom: 6%;
     width: clamp(174px, 25dvw, 269px);
     height: auto;
+    z-index: 3;
   }
 
   .playground {
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: 8%;
     height: auto;
-    width: clamp(305px, 40dvw, 470px);
+    width: clamp(305px, 100dvw, 750px);
     object-fit: contain;
     object-position: center;
   }
@@ -405,45 +402,41 @@ import Picnic from "@/assets/imgs/picnic.png";
   }
   .bouquet-stand {
     position: absolute;
-    left: 30%;
-    bottom: 0%;
+    left: 25%;
+    bottom: 4%;
     height: auto;
-    width: clamp(369px, 55dvw, 631px);
+    width: clamp(400px, 55vw, 700px);
   }
   .flower-pot-1 {
     position: absolute;
-    left: 40%;
+    left: 37.5%;
     bottom: 5%;
     height: auto;
-    width: clamp(129px, 20dvw, 200px);
+    width: clamp(129px, 60dvw, 322px);
   }
 
   .flower-pot-2 {
     position: absolute;
-    left: 43%;
-    bottom: 4%;
+    left: 42.5%;
+    bottom: 3%;
     height: auto;
-    width: clamp(108px, 20dvw, 200px);
-  }
-
-  .flower-pot-3 {
-    display: none;
+    width: clamp(108px, 50dvw, 158px);
   }
 
   .tree {
     position: absolute;
     left: 55%;
     bottom: 7%;
-    width: clamp(280px, 100dvw, 500px);
+    width: clamp(280px, 100dvw, 600px);
     height: auto;
   }
 
   .picnic {
     position: absolute;
-    left: 68%;
-    bottom: 5%;
+    left: 70%;
+    bottom: 3%;
     height: auto;
-    width: clamp(300px, 80dvw, 550px);
+    width: clamp(250px, 30dvw, 500px);
   }
 
   @keyframes guidebook-float {
@@ -479,7 +472,7 @@ import Picnic from "@/assets/imgs/picnic.png";
     }
 
     #section-one .third-screen {
-      transform: translateX(10dvw);
+      transform: translateX(50dvw);
     }
     #section-one .fifth-screen {
       transform: translateX(clamp(80dvw, 90dvw, 100dvw));
@@ -515,26 +508,25 @@ import Picnic from "@/assets/imgs/picnic.png";
       width: 50%;
     }
     .seesaw {
-      left: 9%;
+      left: 12%;
       bottom: 7%;
       width: clamp(174px, 25dvw, 269px);
     }
     .playground {
       left: 1%;
-      bottom: 2%;
-      width: clamp(305px, 40dvw, 470px);
+      bottom: 8%;
     }
     .bouquet-stand {
-      left: 32%;
+      left: 28%;
       bottom: 3%;
-      width: clamp(369px, 55dvw, 631px);
+      width: clamp(369px, 75dvw, 631px);
     }
     .flower-pot-1 {
-      left: 43%;
+      left: 40%;
       bottom: 7%;
     }
     .flower-pot-2 {
-      left: 48%;
+      left: 43.5%;
       bottom: 6%;
     }
     .tree {
@@ -542,7 +534,8 @@ import Picnic from "@/assets/imgs/picnic.png";
       bottom: 10%;
     }
     .picnic {
-      left: 74%;
+      left: 76%;
+      width: clamp(250px, 50dvw, 700px);
     }
   }
 
@@ -615,12 +608,12 @@ import Picnic from "@/assets/imgs/picnic.png";
       width: 50%;
     }
     .seesaw {
-      left: 11%;
+      left: 15%;
       bottom: 8%;
     }
     .playground {
       left: 3%;
-      bottom: 6%;
+      bottom: 10%;
     }
     .bouquet-stand {
       left: 30%;
@@ -631,16 +624,8 @@ import Picnic from "@/assets/imgs/picnic.png";
       bottom: 8%;
     }
     .flower-pot-2 {
-      left: 43%;
-      bottom: 10%;
-    }
-    .flower-pot-3 {
-      position: absolute;
-      left: 46%;
-      bottom: 8%;
-      display: block;
-      height: auto;
-      width: clamp(129px, 20dvw, 200px);
+      left: 43.5%;
+      bottom: 7%;
     }
     .tree {
       left: 65%;
@@ -648,7 +633,7 @@ import Picnic from "@/assets/imgs/picnic.png";
     }
     .picnic {
       left: 78%;
-      bottom: 12%;
+      bottom: 9%;
     }
   }
 </style>
