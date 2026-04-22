@@ -105,6 +105,31 @@ export type TemplateMap = {
     };
     reason: string;
   };
+  ticketOrderRefunded: {
+    orderId: string;
+    item: {
+      name: string;
+      quantity: number;
+      price: number;
+      bundleProducts?: {
+        name: string;
+        variants?: { label: string; type: string }[];
+      }[];
+    };
+  };
+  ticketOrderRefundRejected: {
+    orderId: string;
+    item: {
+      name: string;
+      quantity: number;
+      price: number;
+      bundleProducts?: {
+        name: string;
+        variants?: { label: string; type: string }[];
+      }[];
+    };
+    reason: string;
+  };
 };
 
 export type TemplatesKey = keyof TemplateMap;
@@ -497,6 +522,116 @@ const renderers: Renderers = {
 
     return createEmailLayout(content, {
       preheader: "Pesanan tiket Anda ditolak",
+    });
+  },
+  ticketOrderRefunded: (params) => {
+    const { orderId, item } = params;
+
+    const content = `
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td>
+            <span>Halo!</span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih sudah berkenan menunggu proses pengajuan pengembalian dana (refund) tiket TEDxUniversitas Brawijaya 2026 kamu.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Pengajuan kamu telah berhasil diproses. Dana sudah kami kirimkan kembali ke rekening yang kamu cantumkan pada formulir pengajuan. Silakan lakukan pengecekan mutasi saldo secara berkala.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Walaupun kali ini cerita kita belum bisa bersinggungan secara langsung, pintu rumah TEDxUniversitas Brawijaya akan selalu terbuka untuk menyambut kisahmu di kesempatan berikutnya.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Jika butuh bantuan atau informasi lebih lanjut, silakan hubungi contact person yang tertera di email ini.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>Terima kasih!</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
+
+      ${detailTicketOrderTable(orderId, item)}
+    `;
+
+    return createEmailLayout(content, {
+      preheader: "Refund tiket Anda telah berhasil diproses",
+    });
+  },
+  ticketOrderRefundRejected: (params) => {
+    const { orderId, item, reason } = params;
+
+    const content = `
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td>
+            <span>Halo!</span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Terima kasih sudah berkenan menunggu proses pengajuan pengembalian dana (refund) tiket TEDxUniversitas Brawijaya 2026 kamu.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Mohon maaf, pengajuan kamu gagal diproses. Hal ini dikarenakan data atau alasan pengajuan yang kamu berikan belum memenuhi syarat pada Kebijakan Pengembalian Dana (Refund Policy) kami. Alasan penolakan refund adalah <span style="font-weight: 700;">${reason}</span>.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
+              Jika butuh bantuan atau informasi lebih lanjut, silakan hubungi contact person yang tertera di email ini.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>Terima kasih atas pengertianmu.</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 16px 0px;"></table>
+
+      ${detailTicketOrderTable(orderId, item)}
+    `;
+
+    return createEmailLayout(content, {
+      preheader: "Refund tiket Anda ditolak",
     });
   },
 };

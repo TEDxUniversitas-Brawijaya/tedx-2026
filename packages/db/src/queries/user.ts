@@ -1,4 +1,4 @@
-import { inArray } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import type { DB } from "../db";
 import { schema } from "../schemas";
 import type { SelectUser } from "../schemas/auth";
@@ -8,6 +8,7 @@ export type UserQueries = {
   getAllUser: () => Promise<SelectUser[]>;
 
   getUsersByIds: (ids: SelectUser["id"][]) => Promise<SelectUser[]>;
+  getUserById: (id: SelectUser["id"]) => Promise<SelectUser | null>;
 };
 
 export function createUserQueries(db: DB): UserQueries {
@@ -27,6 +28,14 @@ export function createUserQueries(db: DB): UserQueries {
         .from(schema.userTable)
         .where(inArray(schema.userTable.id, ids));
       return users;
+    },
+
+    getUserById: async (id) => {
+      const user = await db.query.userTable.findFirst({
+        where: eq(schema.userTable.id, id),
+      });
+
+      return user ?? null;
     },
   };
 }
