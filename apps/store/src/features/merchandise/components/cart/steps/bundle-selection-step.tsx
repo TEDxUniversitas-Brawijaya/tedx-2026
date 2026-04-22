@@ -6,6 +6,7 @@ import { formatIdrCurrency } from "../../../lib/formatter";
 import { groupVariantsByType } from "../../../lib/variant";
 import { useCartStore } from "../../../stores/use-cart-store";
 import type { CartItem } from "../../../types/cart";
+import { SizeChartDialog } from "../../size-chart-dialog";
 
 type BundleSelectionStepProps = {
   selectedItem: CartItem;
@@ -147,9 +148,13 @@ export function BundleSelectionStep({
 
                     return (
                       <div className="space-y-1.5" key={variantGroup.type}>
-                        <span className="text-sm text-white">
+                        <span className="flex items-center gap-1.5 text-sm text-white">
                           {capitalize(variantGroup.type)}{" "}
                           <span className="text-red-2">*</span>
+                          {variantGroup.type === "size" &&
+                            product?.category && (
+                              <SizeChartDialog category={product.category} />
+                            )}
                         </span>
                         <div className="mt-2 grid w-full grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
                           {variantGroup.variants.map((variant) => (
@@ -261,9 +266,12 @@ export function BundleSelectionStep({
 
                   return (
                     <div className="space-y-1.5" key={variantGroup.type}>
-                      <span className="text-sm text-white">
+                      <span className="flex items-center gap-1.5 text-sm text-white">
                         {capitalize(variantGroup.type)}{" "}
                         <span className="text-red-2">*</span>
+                        {variantGroup.type === "size" && product?.category && (
+                          <SizeChartDialog category={product.category} />
+                        )}
                       </span>
                       <div className="mt-2 grid w-full grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
                         {variantGroup.variants.map((variant) => (
