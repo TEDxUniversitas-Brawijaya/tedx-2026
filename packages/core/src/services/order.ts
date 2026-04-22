@@ -1711,8 +1711,7 @@ export const createOrderServices = (
       );
     }
 
-    const refundRequest =
-      await ctx.refundQueries.getRefundRequestByOrderId(orderId);
+    const refundRequest = await ctx.refundQueries.getRefundByOrderId(orderId);
 
     if (!refundRequest || refundRequest.status !== "requested") {
       throw new AppError("BAD_REQUEST", "Refund request not found", {

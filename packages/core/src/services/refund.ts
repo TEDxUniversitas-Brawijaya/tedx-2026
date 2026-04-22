@@ -46,7 +46,7 @@ export type RefundServices = {
   }>;
   getRefundByOrderId: (
     orderId: Order["id"]
-  ) => Promise<Awaited<ReturnType<RefundQueries["getRefundRequestByOrderId"]>>>;
+  ) => Promise<Awaited<ReturnType<RefundQueries["getRefundByOrderId"]>>>;
 };
 
 type CreateRefundServicesCtx = {
@@ -335,7 +335,7 @@ const assertRefundableOrder = async (
     });
   }
 
-  const refundRequest = await ctx.refundQueries.getRefundRequestByOrderId(
+  const refundRequest = await ctx.refundQueries.getRefundByOrderId(
     orderData.order.id
   );
 
@@ -389,7 +389,7 @@ export const createRefundServices = (
     };
   },
   getRefundByOrderId: async (orderId) => {
-    const refund = await ctx.refundQueries.getRefundRequestByOrderId(orderId);
+    const refund = await ctx.refundQueries.getRefundByOrderId(orderId);
     return refund;
   },
 
