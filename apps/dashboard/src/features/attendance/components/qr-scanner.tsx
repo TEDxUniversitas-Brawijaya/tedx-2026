@@ -19,6 +19,10 @@ export function QrScanner({ disabled, onDetect }: QrScannerProps) {
   const [scanning, setScanning] = useState(false);
 
   useEffect(() => {
+    // Reset dedupe state whenever scanning starts/stops so the same QR
+    // can be retried after a failed check-in or a scanner restart.
+    lastDetectedRef.current = "";
+
     if (!scanning) {
       return;
     }
@@ -152,9 +156,10 @@ export function QrScanner({ disabled, onDetect }: QrScannerProps) {
             <IconQrcode className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               className="pl-9"
+              disabled={disabled}
               onChange={(event) => setManualCode(event.target.value)}
               onKeyDown={(event) => {
-                if (event.key === "Enter" && manualCode.trim()) {
+                if (!disabled && event.key === "Enter" && manualCode.trim()) {
                   onDetect(manualCode.trim());
                   setManualCode("");
                 }

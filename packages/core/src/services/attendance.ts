@@ -119,9 +119,6 @@ export const createAttendanceServices = (
     }
 
     if (ticket.eventDay !== currentEventDay) {
-      console.log(
-        `Ticket event day (${ticket.eventDay}) does not match current event day (${currentEventDay})`
-      );
       throw new AppError(
         "BAD_REQUEST",
         "Ticket is not valid for today's event day",
