@@ -1,7 +1,6 @@
 import { createAuth, type Session } from "@tedx-2026/auth";
 import {
   createCaptchaServices,
-  createAttendanceServices,
   createConfigServices,
   createEmailServices,
   createFileServices,
@@ -11,16 +10,15 @@ import {
   createRefundServices,
   createTicketServices,
   createUserServices,
-  type AttendanceServices,
   type FileServices,
   type OrderServices,
   type ProductServices,
   type RefundServices,
+  type TicketServices,
   type UserServices,
 } from "@tedx-2026/core";
 import {
   createConfigQueries,
-  createAttendanceQueries,
   createDB,
   createOrderQueries,
   createProductQueries,
@@ -101,7 +99,6 @@ export const createContext = async ({
   const productOperations = createProductOperations(kv);
 
   const userQueries = createUserQueries(db);
-  const attendanceQueries = createAttendanceQueries(db);
   const orderQueries = createOrderQueries(db);
   const configQueries = createConfigQueries(db);
   const productQueries = createProductQueries(db);
@@ -162,15 +159,7 @@ export const createContext = async ({
   const ticketServices = createTicketServices({
     ...baseContext,
     logger: logger.child({ service: "ticket" }),
-    configServices,
     ticketQueries,
-  });
-
-  const attendanceServices = createAttendanceServices({
-    ...baseContext,
-    logger: logger.child({ service: "attendance" }),
-    attendanceQueries,
-    configServices,
   });
 
   const orderServices = createOrderServices({
@@ -213,11 +202,11 @@ export const createContext = async ({
     session,
     services: {
       user: userServices,
-      attendance: attendanceServices,
       file: fileServices,
       order: orderServices,
       refund: refundServices,
       product: productServices,
+      ticket: ticketServices,
     },
   };
 };
@@ -228,11 +217,11 @@ export type Context = {
   logger: LoggerType;
   services: {
     user: UserServices;
-    attendance: AttendanceServices;
     file: FileServices;
     order: OrderServices;
     refund: RefundServices;
     product: ProductServices;
+    ticket: TicketServices;
   };
   waitUntil: (promise: Promise<unknown>) => void;
   session: Session | null;

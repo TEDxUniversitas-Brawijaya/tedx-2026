@@ -1,8 +1,9 @@
 import { IconCamera, IconCameraOff, IconQrcode } from "@tabler/icons-react";
 import { Button } from "@tedx-2026/ui/components/button";
 import { Input } from "@tedx-2026/ui/components/input";
-import jsQR from "jsqr";
+import { Scanner, type IDetectedBarcode } from "@yudiel/react-qr-scanner";
 import { useEffect, useRef, useState } from "react";
+import { useDebounce } from "@/shared/hooks/use-debounce";
 
 type QrScannerProps = {
   disabled: boolean;
@@ -10,114 +11,49 @@ type QrScannerProps = {
 };
 
 export function QrScanner({ disabled, onDetect }: QrScannerProps) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const streamRef = useRef<MediaStream | null>(null);
   const lastDetectedRef = useRef("");
+  const [detectedCode, setDetectedCode] = useState("");
+  const debouncedDetectedCode = useDebounce(detectedCode, 300);
   const [error, setError] = useState<string | null>(null);
   const [manualCode, setManualCode] = useState("");
   const [scanning, setScanning] = useState(false);
 
   useEffect(() => {
-    // Reset dedupe state whenever scanning starts/stops so the same QR
-    // can be retried after a failed check-in or a scanner restart.
-    lastDetectedRef.current = "";
+    if (
+      !debouncedDetectedCode ||
+      debouncedDetectedCode === lastDetectedRef.current
+    ) {
+      return;
+    }
 
+    lastDetectedRef.current = debouncedDetectedCode;
+    onDetect(debouncedDetectedCode);
+    setDetectedCode("");
+    setScanning(false);
+  }, [debouncedDetectedCode, onDetect]);
+
+  useEffect(() => {
     if (!scanning) {
       return;
     }
 
-    let cancelled = false;
-    let timeoutId: number | null = null;
-
-    const start = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "environment" },
-        });
-        streamRef.current = stream;
-
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play();
-        }
-
-        const scan = () => {
-          const video = videoRef.current;
-          const canvas = canvasRef.current;
-          const context = canvas?.getContext("2d", {
-            willReadFrequently: true,
-          });
-
-          if (cancelled || !video || !canvas || !context) {
-            return;
-          }
-
-          try {
-            if (
-              video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA &&
-              video.videoWidth > 0 &&
-              video.videoHeight > 0
-            ) {
-              canvas.width = video.videoWidth;
-              canvas.height = video.videoHeight;
-              context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-              const imageData = context.getImageData(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-              );
-              const code = jsQR(
-                imageData.data,
-                imageData.width,
-                imageData.height,
-                {
-                  inversionAttempts: "dontInvert",
-                }
-              );
-              const rawValue = code?.data.trim();
-
-              if (rawValue && rawValue !== lastDetectedRef.current) {
-                lastDetectedRef.current = rawValue;
-                onDetect(rawValue);
-                setScanning(false);
-              }
-            }
-          } catch {
-            setError("Unable to read QR code from the camera feed.");
-          }
-
-          timeoutId = window.setTimeout(scan, 250);
-        };
-
-        scan();
-      } catch {
-        setError("Camera permission is unavailable.");
-        setScanning(false);
-      }
-    };
-
-    start();
-
-    return () => {
-      cancelled = true;
-      if (timeoutId) {
-        window.clearTimeout(timeoutId);
-      }
-      for (const track of streamRef.current?.getTracks() ?? []) {
-        track.stop();
-      }
-      streamRef.current = null;
-    };
-  }, [onDetect, scanning]);
+    lastDetectedRef.current = "";
+    setDetectedCode("");
+  }, [scanning]);
 
   useEffect(() => {
     if (disabled && scanning) {
       setScanning(false);
     }
   }, [disabled, scanning]);
+
+  const handleScan = (detectedCodes: IDetectedBarcode[]) => {
+    const rawValue = detectedCodes[0]?.rawValue.trim();
+
+    if (rawValue) {
+      setDetectedCode(rawValue);
+    }
+  };
 
   return (
     <div
@@ -181,13 +117,34 @@ export function QrScanner({ disabled, onDetect }: QrScannerProps) {
       </div>
 
       <div className="aspect-video overflow-hidden rounded-lg bg-muted lg:aspect-square">
-        <video
-          className="h-full w-full object-cover"
-          muted
-          playsInline
-          ref={videoRef}
-        />
-        <canvas className="hidden" ref={canvasRef} />
+        {scanning ? (
+          <Scanner
+            allowMultiple={false}
+            classNames={{
+              container: "h-full w-full",
+              video: "h-full w-full object-cover",
+            }}
+            components={{
+              finder: true,
+              onOff: false,
+              torch: false,
+              zoom: false,
+            }}
+            constraints={{ facingMode: "environment" }}
+            formats={["qr_code"]}
+            onError={() => {
+              setError("Camera permission is unavailable.");
+              setScanning(false);
+            }}
+            onScan={handleScan}
+            scanDelay={250}
+            sound={false}
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-muted-foreground text-sm">
+            Camera is off
+          </div>
+        )}
       </div>
     </div>
   );

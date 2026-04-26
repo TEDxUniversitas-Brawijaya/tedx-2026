@@ -59,9 +59,7 @@ export function AttendanceTableContainer() {
         { qrCode },
         {
           onError: (error) => {
-            toast.error("Check-in failed", {
-              description: error.message,
-            });
+            toast.error(error.message);
           },
           onSuccess: (ticket) => {
             invalidateAttendance();
@@ -79,9 +77,7 @@ export function AttendanceTableContainer() {
         { ticketId, status: nextStatus },
         {
           onError: (error) => {
-            toast.error("Attendance update failed", {
-              description: error.message,
-            });
+            toast.error(error.message);
           },
           onSuccess: (result) => {
             invalidateAttendance();

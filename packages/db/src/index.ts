@@ -1,13 +1,12 @@
 export { createDB, type D1Database, type DB } from "./db";
 export {
-  createAttendanceQueries,
   createConfigQueries,
   createOrderQueries,
   createProductQueries,
   createRefundQueries,
   createTicketQueries,
   createUserQueries,
-  type AttendanceQueries,
+  type AttendanceRecord,
   type ConfigQueries,
   type OrderQueries,
   type ProductQueries,

@@ -12,7 +12,7 @@ const list = protectedProcedure
   .input(listAttendanceInputSchema)
   .output(listAttendanceOutputSchema)
   .query(async ({ ctx, input }) => {
-    const { tickets, meta } = await ctx.services.attendance.getAttendance({
+    const { tickets, meta } = await ctx.services.ticket.getAttendance({
       page: input.page,
       limit: input.limit,
       eventDay: input.eventDay,
@@ -37,17 +37,14 @@ const checkIn = protectedProcedure
   .input(checkInInputSchema)
   .output(checkInOutputSchema)
   .mutation(async ({ ctx, input }) => {
-    return await ctx.services.attendance.checkIn(
-      input.qrCode,
-      ctx.session.user.id
-    );
+    return await ctx.services.ticket.checkIn(input.qrCode, ctx.session.user.id);
   });
 
 const updateStatus = protectedProcedure
   .input(updateAttendanceStatusInputSchema)
   .output(updateAttendanceStatusOutputSchema)
   .mutation(async ({ ctx, input }) => {
-    return await ctx.services.attendance.updateStatus(
+    return await ctx.services.ticket.updateStatus(
       input.ticketId,
       input.status,
       ctx.session.user.id

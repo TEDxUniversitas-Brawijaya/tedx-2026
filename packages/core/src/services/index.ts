@@ -1,7 +1,3 @@
-export {
-  createAttendanceServices,
-  type AttendanceServices,
-} from "./attendance";
 export { createCaptchaServices, type CaptchaServices } from "./captcha";
 export { createConfigServices, type ConfigServices } from "./config";
 export { createEmailServices, type EmailServices } from "./email";
