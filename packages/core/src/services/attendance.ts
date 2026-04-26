@@ -6,12 +6,14 @@ import type { ConfigServices } from "./config";
 type EventDay = SelectTicket["eventDay"];
 type AttendanceStatus = SelectTicket["attendanceStatus"];
 
+// Maps each event day enum to its corresponding config key.
 const EVENT_DAY_CONFIG_KEYS: Record<EventDay, string> = {
   propa3_day1: "event_date_propa3_day1",
   propa3_day2: "event_date_propa3_day2",
   main_event: "event_date_main",
 };
 
+// Returns the current date in Asia/Jakarta as YYYY-MM-DD.
 const getJakartaDate = (date = new Date()) => {
   const parts = new Intl.DateTimeFormat("en-US", {
     timeZone: "Asia/Jakarta",
@@ -31,6 +33,7 @@ const getJakartaDate = (date = new Date()) => {
   return `${year}-${month}-${day}`;
 };
 
+// Public contract for attendance-related business operations.
 export type AttendanceServices = {
   getAttendance: (opts: {
     page: number;
@@ -67,11 +70,13 @@ export type AttendanceServices = {
   }>;
 };
 
+// Dependencies required to construct attendance services.
 type CreateAttendanceServicesCtx = {
   attendanceQueries: AttendanceQueries;
   configServices: ConfigServices;
 } & BaseContext;
 
+// Resolves today's active event day by matching configured event dates.
 const resolveCurrentEventDay = async (
   configServices: ConfigServices
 ): Promise<EventDay | null> => {
@@ -89,6 +94,7 @@ const resolveCurrentEventDay = async (
   return matchingConfig?.eventDay ?? null;
 };
 
+// Creates attendance services backed by query and config dependencies.
 export const createAttendanceServices = (
   ctx: CreateAttendanceServicesCtx
 ): AttendanceServices => ({
