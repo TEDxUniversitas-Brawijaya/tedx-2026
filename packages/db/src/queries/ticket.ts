@@ -43,7 +43,10 @@ export type TicketQueries = {
     ticketId: SelectTicket["id"],
     status: AttendanceStatus,
     checkedInBy: string | null,
-    checkedInAt: string | null
+    checkedInAt: string | null,
+    opts?: {
+      onlyIfNotCheckedIn?: boolean;
+    }
   ) => Promise<SelectTicket | null>;
 };
 
@@ -188,7 +191,19 @@ export const createTicketQueries = (db: DB): TicketQueries => ({
     return ticket ?? null;
   },
 
-  updateAttendance: async (ticketId, status, checkedInBy, checkedInAt) => {
+  updateAttendance: async (
+    ticketId,
+    status,
+    checkedInBy,
+    checkedInAt,
+    opts
+  ) => {
+    const conditions = [eq(ticketsTable.id, ticketId)];
+
+    if (opts?.onlyIfNotCheckedIn) {
+      conditions.push(eq(ticketsTable.attendanceStatus, "not_checked_in"));
+    }
+
     const [ticket] = await db
       .update(ticketsTable)
       .set({
@@ -196,7 +211,7 @@ export const createTicketQueries = (db: DB): TicketQueries => ({
         checkedInBy,
         checkedInAt,
       })
-      .where(eq(ticketsTable.id, ticketId))
+      .where(and(...conditions))
       .returning();
 
     return ticket ?? null;

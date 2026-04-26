@@ -92,6 +92,7 @@ export function AttendanceTable({
                         Override
                       </span>
                       <Switch
+                        aria-label={`Override check-in status for ${ticket.buyerName} (${eventDayLabelMap[ticket.eventDay]})`}
                         checked={checkedIn}
                         disabled={isUpdating}
                         onCheckedChange={(value) => {
