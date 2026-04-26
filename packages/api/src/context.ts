@@ -159,6 +159,7 @@ export const createContext = async ({
   const ticketServices = createTicketServices({
     ...baseContext,
     logger: logger.child({ service: "ticket" }),
+    configServices,
     ticketQueries,
   });
 
