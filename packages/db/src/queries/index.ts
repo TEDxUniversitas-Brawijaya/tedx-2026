@@ -1,3 +1,4 @@
+export { createAttendanceQueries, type AttendanceQueries } from "./attendance";
 export { createConfigQueries, type ConfigQueries } from "./config";
 export { createOrderQueries, type OrderQueries } from "./order";
 export { createProductQueries, type ProductQueries } from "./product";

@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server";
 import {
   checkInInputSchema,
   checkInOutputSchema,
@@ -12,46 +11,47 @@ import { createTRPCRouter, protectedProcedure } from "../../trpc";
 const list = protectedProcedure
   .input(listAttendanceInputSchema)
   .output(listAttendanceOutputSchema)
-  .query(() => {
-    // TODO: Implement admin.attendance.list
-    // - Apply filters: eventDay, status, search
-    // - Apply sorting: sortBy, sortOrder
-    // - Apply pagination: page, limit
-    // - Return tickets with attendance info and pagination
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.attendance.list is not implemented yet",
+  .query(async ({ ctx, input }) => {
+    const { tickets, meta } = await ctx.services.attendance.getAttendance({
+      page: input.page,
+      limit: input.limit,
+      eventDay: input.eventDay,
+      status: input.status,
+      search: input.search,
+      sortBy: input.sortBy,
+      sortOrder: input.sortOrder,
     });
+
+    return {
+      tickets,
+      pagination: {
+        page: input.page,
+        limit: input.limit,
+        total: meta.total,
+        totalPages: Math.ceil(meta.total / input.limit),
+      },
+    };
   });
 
 const checkIn = protectedProcedure
   .input(checkInInputSchema)
   .output(checkInOutputSchema)
-  .mutation(() => {
-    // TODO: Implement admin.attendance.checkIn
-    // - Validate QR code exists
-    // - Check event day matches today (from config)
-    // - Check not already checked in
-    // - Update attendance status and timestamp
-    // - Return ticket info and success message
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.attendance.checkIn is not implemented yet",
-    });
+  .mutation(async ({ ctx, input }) => {
+    return await ctx.services.attendance.checkIn(
+      input.qrCode,
+      ctx.session.user.id
+    );
   });
 
 const updateStatus = protectedProcedure
   .input(updateAttendanceStatusInputSchema)
   .output(updateAttendanceStatusOutputSchema)
-  .mutation(() => {
-    // TODO: Implement admin.attendance.updateStatus
-    // - Validate ticket exists
-    // - Update attendance status (admin override)
-    // - Return ticket ID, status, and success message
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.attendance.updateStatus is not implemented yet",
-    });
+  .mutation(async ({ ctx, input }) => {
+    return await ctx.services.attendance.updateStatus(
+      input.ticketId,
+      input.status,
+      ctx.session.user.id
+    );
   });
 
 export const attendanceRouter = createTRPCRouter({

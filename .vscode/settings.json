@@ -61,5 +61,6 @@
   },
   "search.exclude": {
     "**/routeTree.gen.ts": true
-  }
+  },
+  "js/ts.tsdk.path": "node_modules/typescript/lib"
 }

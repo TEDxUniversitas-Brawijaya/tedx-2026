@@ -1,6 +1,7 @@
 import { createAuth, type Session } from "@tedx-2026/auth";
 import {
   createCaptchaServices,
+  createAttendanceServices,
   createConfigServices,
   createEmailServices,
   createFileServices,
@@ -10,6 +11,7 @@ import {
   createRefundServices,
   createTicketServices,
   createUserServices,
+  type AttendanceServices,
   type FileServices,
   type OrderServices,
   type ProductServices,
@@ -18,6 +20,7 @@ import {
 } from "@tedx-2026/core";
 import {
   createConfigQueries,
+  createAttendanceQueries,
   createDB,
   createOrderQueries,
   createProductQueries,
@@ -98,6 +101,7 @@ export const createContext = async ({
   const productOperations = createProductOperations(kv);
 
   const userQueries = createUserQueries(db);
+  const attendanceQueries = createAttendanceQueries(db);
   const orderQueries = createOrderQueries(db);
   const configQueries = createConfigQueries(db);
   const productQueries = createProductQueries(db);
@@ -162,6 +166,13 @@ export const createContext = async ({
     ticketQueries,
   });
 
+  const attendanceServices = createAttendanceServices({
+    ...baseContext,
+    logger: logger.child({ service: "attendance" }),
+    attendanceQueries,
+    configServices,
+  });
+
   const orderServices = createOrderServices({
     ...baseContext,
     logger: logger.child({ service: "order" }),
@@ -202,6 +213,7 @@ export const createContext = async ({
     session,
     services: {
       user: userServices,
+      attendance: attendanceServices,
       file: fileServices,
       order: orderServices,
       refund: refundServices,
@@ -216,6 +228,7 @@ export type Context = {
   logger: LoggerType;
   services: {
     user: UserServices;
+    attendance: AttendanceServices;
     file: FileServices;
     order: OrderServices;
     refund: RefundServices;
