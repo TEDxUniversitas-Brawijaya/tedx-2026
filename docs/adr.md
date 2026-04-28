@@ -322,7 +322,7 @@ Remaining tables: `config`, `products`, `orders`, `order_items`, `tickets`, `ref
 
 **Decision:**
 - **Orders**: Human-readable format `TDX-{YYMMDD}-{XXXXX}` (e.g. `TDX-260801-A1B2C`). Easy to communicate verbally for customer support.
-- **All other entities**: Prefixed nanoid `{prefix}_{nanoid}` (e.g. `tkt_V1StGXR8Z`).
+- **All other entities**: Prefixed nanoid `{prefix}_{nanoid}` (e.g. `ticket_V1StGXR8Z`).
 
 |                    |                    |                    |
 | :----------------: | :----------------: | :----------------: |
@@ -333,7 +333,7 @@ Remaining tables: `config`, `products`, `orders`, `order_items`, `tickets`, `ref
 |     Bundle Item    |    `bi_{nanoid}`   |   `bi_xYz123AbC`   |
 |     Order Item     |    `oi_{nanoid}`   |   `oi_qWeRtYuIo`   |
 | Order Item Variant |   `oiv_{nanoid}`   |   `oiv_aSdFgHjK`   |
-|       Ticket       |   `tkt_{nanoid}`   |   `tkt_zXcVbNmL`   |
+|       Ticket       |  `ticket_{nanoid}` |  `ticket_zXcVbNmL` |
 |       Payment      |   `pay_{nanoid}`   |   `pay_pOiUyTrE`   |
 |   Refund Request   |   `ref_{nanoid}`   |   `ref_wQeRtYuI`   |
 |    Merch Pickup    |   `mpu_{nanoid}`   |   `mpu_lKjHgFdS`   |

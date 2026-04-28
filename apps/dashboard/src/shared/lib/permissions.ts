@@ -6,6 +6,7 @@ export const ROLES = {
 export type Role = (typeof ROLES)[keyof typeof ROLES];
 
 export const RESOURCES = {
+  ATTENDANCE: "attendance",
   STORAGE: "storage",
   ORDER: "order",
   PRODUCT: "product",
@@ -18,6 +19,7 @@ export type Resource = (typeof RESOURCES)[keyof typeof RESOURCES];
  * Maps each resource to the roles that can access it
  */
 export const PERMISSIONS: Record<Resource, readonly Role[]> = {
+  [RESOURCES.ATTENDANCE]: [ROLES.ADMIN, ROLES.SUPERADMIN],
   [RESOURCES.STORAGE]: [ROLES.SUPERADMIN],
   [RESOURCES.ORDER]: [ROLES.ADMIN, ROLES.SUPERADMIN],
   [RESOURCES.PRODUCT]: [ROLES.SUPERADMIN],

@@ -7,6 +7,7 @@ import {
   IconHome,
   IconLogout,
   IconPackage,
+  IconQrcode,
   IconShoppingBag,
 } from "@tabler/icons-react";
 import {
@@ -95,6 +96,12 @@ function RouteComponent() {
                   label: "Home",
                   to: "/dashboard/home",
                   icon: IconHome,
+                },
+                {
+                  label: "Attendance",
+                  to: "/dashboard/attendance",
+                  icon: IconQrcode,
+                  requiredResource: RESOURCES.ATTENDANCE,
                 },
                 {
                   label: "Orders",
