@@ -3,6 +3,7 @@ import { MerchProductsTable } from "@/features/dashboard/components/merch-produc
 import { PendingActionsSection } from "@/features/dashboard/components/pending-actions-section";
 import { TicketProductsTable } from "@/features/dashboard/components/ticket-products-table";
 import { trpc } from "@/shared/lib/trpc";
+import { IconRefresh } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
@@ -12,7 +13,6 @@ import {
 } from "@tedx-2026/ui/components/alert";
 import { Button } from "@tedx-2026/ui/components/button";
 import { cn } from "@tedx-2026/ui/lib/utils";
-import { RefreshCw } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/home")({
   component: RouteComponent,
@@ -61,7 +61,7 @@ function RouteComponent() {
           size="sm"
           variant="outline"
         >
-          <RefreshCw
+          <IconRefresh
             className={cn(
               "size-4",
               dashboardQuery.isFetching && "animate-spin"
