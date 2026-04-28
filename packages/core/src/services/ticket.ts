@@ -103,7 +103,7 @@ export const createTicketServices = (
 ): TicketServices => ({
   createTickets: async (tickets) => {
     const ticketsToInsert = tickets.map((ticket) => {
-      const id = createNanoIdWithPrefix("tkt");
+      const id = createNanoIdWithPrefix("ticket");
       const qrCode = createNanoId();
 
       return {

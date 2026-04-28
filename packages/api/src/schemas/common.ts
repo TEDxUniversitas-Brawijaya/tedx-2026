@@ -157,7 +157,7 @@ export const snapshotVariantSchema = z.object({
 export const orderIdSchema = z.string();
 export const productIdSchema = z.string().startsWith("prod_");
 export const orderItemIdSchema = z.string().startsWith("oi_");
-export const ticketIdSchema = z.string().startsWith("tkt_");
+export const ticketIdSchema = z.string().startsWith("ticket_");
 export const refundIdSchema = z.string().startsWith("ref_");
 export const userIdSchema = z.string();
 

@@ -6,7 +6,7 @@ import { orderItemsTable } from "./orders";
 export const ticketsTable = sqliteTable(
   "tickets",
   (t) => ({
-    id: t.text().primaryKey(), // prefix: tkt_
+    id: t.text().primaryKey(), // prefix: ticket_
     orderItemId: t
       .text()
       .notNull()
