@@ -108,6 +108,24 @@ export type OrderServices = {
 
   expirePendingPaymentOrders: () => Promise<void>;
   expirePendingVerificationOrders: () => Promise<void>;
+
+  getDashboardPendingStats: () => Promise<{
+    pendingVerificationsCount: number;
+    refundRequestedCount: number;
+  }>;
+
+  getSoldTicketsByProduct: () => Promise<
+    { productId: string; quantitySold: number }[]
+  >;
+
+  getSoldMerchByProduct: () => Promise<
+    {
+      productId: string;
+      name: string;
+      quantitySold: number;
+      belumPickup: number;
+    }[]
+  >;
 };
 
 type CreateOrderServicesCtx = {
@@ -2104,5 +2122,17 @@ export const createOrderServices = (
     // TODO: Send email
 
     return;
+  },
+
+  getDashboardPendingStats: async () => {
+    return await ctx.orderQueries.getOrderPendingCounts();
+  },
+
+  getSoldTicketsByProduct: async () => {
+    return await ctx.orderQueries.getSoldTicketQuantityByProduct();
+  },
+
+  getSoldMerchByProduct: async () => {
+    return await ctx.orderQueries.getSoldMerchQuantityByProduct();
   },
 });
