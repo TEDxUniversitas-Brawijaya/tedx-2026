@@ -1,7 +1,7 @@
-import { AttendanceFilters } from "@/features/attendance/components/attendance-filters";
 import { AttendanceTableContainer } from "@/features/attendance/containers/attendance-table-container";
 import { canAccess, RESOURCES } from "@/shared/lib/permissions";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { QrScanner } from "../../features/attendance/components/qr-scanner";
 
 export const Route = createFileRoute("/dashboard/attendance")({
   component: RouteComponent,
@@ -29,9 +29,10 @@ function RouteComponent() {
             Event-day check-in queue control.
           </p>
         </div>
+
+        <QrScanner />
       </div>
 
-      <AttendanceFilters />
       <AttendanceTableContainer />
     </div>
   );

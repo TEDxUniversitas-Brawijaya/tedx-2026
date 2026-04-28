@@ -1,4 +1,7 @@
+import { queryClient } from "@/shared/lib/query-client";
+import { trpc } from "@/shared/lib/trpc";
 import { IconCircleCheck, IconUserCheck } from "@tabler/icons-react";
+import { useMutation } from "@tanstack/react-query";
 import { Badge } from "@tedx-2026/ui/components/badge";
 import { Button } from "@tedx-2026/ui/components/button";
 import { Switch } from "@tedx-2026/ui/components/switch";
@@ -10,6 +13,8 @@ import {
   TableHeader,
   TableRow,
 } from "@tedx-2026/ui/components/table";
+import { useCallback } from "react";
+import { toast } from "sonner";
 import type { AttendanceStatus, AttendanceTicket } from "../types/attendance";
 import {
   attendanceStatusLabelMap,
@@ -18,18 +23,61 @@ import {
 } from "../utils/formatter";
 
 type AttendanceTableProps = {
-  isUpdating: boolean;
-  onCheckIn: (qrCode: string) => void;
-  onUpdateStatus: (ticketId: string, status: AttendanceStatus) => void;
   tickets: AttendanceTicket[];
 };
 
-export function AttendanceTable({
-  isUpdating,
-  onCheckIn,
-  onUpdateStatus,
-  tickets,
-}: AttendanceTableProps) {
+export function AttendanceTable({ tickets }: AttendanceTableProps) {
+  const checkInMutation = useMutation(
+    trpc.admin.attendance.checkIn.mutationOptions()
+  );
+  const updateStatusMutation = useMutation(
+    trpc.admin.attendance.updateStatus.mutationOptions()
+  );
+  const isUpdating =
+    checkInMutation.isPending || updateStatusMutation.isPending;
+
+  const invalidateAttendance = useCallback(() => {
+    queryClient.invalidateQueries({
+      queryKey: trpc.admin.attendance.list.queryKey(),
+    });
+  }, []);
+
+  const handleCheckIn = useCallback(
+    (qrCode: string) => {
+      checkInMutation.mutate(
+        { qrCode },
+        {
+          onError: (error) => {
+            toast.error(error.message);
+          },
+          onSuccess: (ticket) => {
+            invalidateAttendance();
+            toast.success(`${ticket.buyerName} checked in`);
+          },
+        }
+      );
+    },
+    [checkInMutation, invalidateAttendance]
+  );
+
+  const handleUpdateStatus = useCallback(
+    (ticketId: string, nextStatus: AttendanceStatus) => {
+      updateStatusMutation.mutate(
+        { ticketId, status: nextStatus },
+        {
+          onError: (error) => {
+            toast.error(error.message);
+          },
+          onSuccess: (result) => {
+            invalidateAttendance();
+            toast.success(result.message);
+          },
+        }
+      );
+    },
+    [invalidateAttendance, updateStatusMutation]
+  );
+
   return (
     <div className="overflow-hidden rounded-xl border" id="attendance-table">
       <Table>
@@ -81,7 +129,7 @@ export function AttendanceTable({
                     {!checkedIn && (
                       <Button
                         disabled={isUpdating}
-                        onClick={() => onCheckIn(ticket.qrCode)}
+                        onClick={() => handleCheckIn(ticket.qrCode)}
                         size="sm"
                       >
                         <IconUserCheck /> Check In
@@ -96,7 +144,7 @@ export function AttendanceTable({
                         checked={checkedIn}
                         disabled={isUpdating}
                         onCheckedChange={(value) => {
-                          onUpdateStatus(
+                          handleUpdateStatus(
                             ticket.id,
                             value ? "checked_in" : "not_checked_in"
                           );
