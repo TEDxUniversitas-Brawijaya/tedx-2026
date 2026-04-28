@@ -16,6 +16,9 @@ export type ProductServices = {
     productId: string,
     data: { price?: number; stock?: number }
   ) => Promise<void>;
+  getDashboardTicketProductStats: () => Promise<
+    { id: string; name: string; stock: number | null; isActive: boolean }[]
+  >;
 };
 
 type CreateProductServicesCtx = {
@@ -422,5 +425,18 @@ export const createProductServices = (
       ctx.productOperations.deleteTicketProducts("active"),
       ctx.productOperations.deleteTicketProducts("inactive"),
     ]);
+  },
+
+  getDashboardTicketProductStats: async () => {
+    const products = await ctx.productQueries.getProducts({
+      types: ["ticket_regular"],
+      status: "all",
+    });
+    return products.map((p) => ({
+      id: p.id,
+      name: p.name,
+      stock: p.stock,
+      isActive: p.isActive,
+    }));
   },
 });

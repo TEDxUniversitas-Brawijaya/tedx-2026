@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server";
 import {
   getDashboardAnalyticsInputSchema,
   getDashboardAnalyticsOutputSchema,
@@ -8,21 +7,31 @@ import { createTRPCRouter, protectedProcedure } from "../../trpc";
 const dashboard = protectedProcedure
   .input(getDashboardAnalyticsInputSchema)
   .output(getDashboardAnalyticsOutputSchema)
-  .query(() => {
-    // TODO: Implement admin.analytics.dashboard
-    // - Calculate totalRevenue (sum of paid orders)
-    // - Calculate totalOrders (count of all orders)
-    // - Calculate ticketsSold (count of tickets)
-    // - Calculate ticketsByType (breakdown by event day)
-    // - Calculate merchOrders (count of merch orders)
-    // - Calculate refundRate (refunded orders / total paid orders)
-    // - Calculate checkInRate per event day (checked in / total tickets)
-    // - Calculate revenueByDay (time series data)
-    // - Return all analytics data
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.analytics.dashboard is not implemented yet",
+  .query(async ({ ctx }) => {
+    const [pendingStats, ticketSales, merchSales, ticketProductsData] =
+      await Promise.all([
+        ctx.services.order.getDashboardPendingStats(),
+        ctx.services.order.getSoldTicketsByProduct(),
+        ctx.services.order.getSoldMerchByProduct(),
+        ctx.services.product.getDashboardTicketProductStats(),
+      ]);
+
+    const soldMap = new Map(
+      ticketSales.map((s) => [s.productId, s.quantitySold])
+    );
+
+    const ticketProducts = ticketProductsData.map((p) => {
+      const quantitySold = soldMap.get(p.id) ?? 0;
+      const soldPlusRemaining =
+        p.stock !== null ? quantitySold + p.stock : null;
+      return { ...p, quantitySold, soldPlusRemaining };
     });
+
+    return {
+      ...pendingStats,
+      ticketProducts,
+      merchProducts: merchSales,
+    };
   });
 
 export const analyticsRouter = createTRPCRouter({
