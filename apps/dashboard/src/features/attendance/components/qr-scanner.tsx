@@ -2,8 +2,7 @@ import { IconCamera, IconCameraOff, IconQrcode } from "@tabler/icons-react";
 import { Button } from "@tedx-2026/ui/components/button";
 import { Input } from "@tedx-2026/ui/components/input";
 import { Scanner, type IDetectedBarcode } from "@yudiel/react-qr-scanner";
-import { useEffect, useRef, useState } from "react";
-import { useDebounce } from "@/shared/hooks/use-debounce";
+import { useState } from "react";
 
 type QrScannerProps = {
   disabled: boolean;
@@ -11,47 +10,15 @@ type QrScannerProps = {
 };
 
 export function QrScanner({ disabled, onDetect }: QrScannerProps) {
-  const lastDetectedRef = useRef("");
-  const [detectedCode, setDetectedCode] = useState("");
-  const debouncedDetectedCode = useDebounce(detectedCode, 300);
   const [error, setError] = useState<string | null>(null);
   const [manualCode, setManualCode] = useState("");
-  const [scanning, setScanning] = useState(false);
-
-  useEffect(() => {
-    if (
-      !debouncedDetectedCode ||
-      debouncedDetectedCode === lastDetectedRef.current
-    ) {
-      return;
-    }
-
-    lastDetectedRef.current = debouncedDetectedCode;
-    onDetect(debouncedDetectedCode);
-    setDetectedCode("");
-    setScanning(false);
-  }, [debouncedDetectedCode, onDetect]);
-
-  useEffect(() => {
-    if (!scanning) {
-      return;
-    }
-
-    lastDetectedRef.current = "";
-    setDetectedCode("");
-  }, [scanning]);
-
-  useEffect(() => {
-    if (disabled && scanning) {
-      setScanning(false);
-    }
-  }, [disabled, scanning]);
+  const [scanning, setScanning] = useState(disabled);
 
   const handleScan = (detectedCodes: IDetectedBarcode[]) => {
     const rawValue = detectedCodes[0]?.rawValue.trim();
 
     if (rawValue) {
-      setDetectedCode(rawValue);
+      onDetect(rawValue);
     }
   };
 
