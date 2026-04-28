@@ -11,7 +11,7 @@ type MerchProduct = {
   productId: string;
   name: string;
   quantitySold: number;
-  belumPickup: number;
+  unpickedUpQuantity: number;
 };
 
 type MerchProductsTableProps = {
@@ -28,7 +28,7 @@ export function MerchProductsTable({ products }: MerchProductsTableProps) {
             <TableRow>
               <TableHead>Product</TableHead>
               <TableHead className="text-right">Sold</TableHead>
-              <TableHead className="text-right">Belum Pickup</TableHead>
+              <TableHead className="text-right">Unpicked Up</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -51,12 +51,12 @@ export function MerchProductsTable({ products }: MerchProductsTableProps) {
                 <TableCell className="text-right tabular-nums">
                   <span
                     className={
-                      product.belumPickup > 0
+                      product.unpickedUpQuantity > 0
                         ? "font-medium text-orange-500"
                         : ""
                     }
                   >
-                    {product.belumPickup.toLocaleString()}
+                    {product.unpickedUpQuantity.toLocaleString()}
                   </span>
                 </TableCell>
               </TableRow>

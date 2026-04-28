@@ -123,7 +123,7 @@ export type OrderServices = {
       productId: string;
       name: string;
       quantitySold: number;
-      belumPickup: number;
+      unpickedUpQuantity: number;
     }[]
   >;
 };

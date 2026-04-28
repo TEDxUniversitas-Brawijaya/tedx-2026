@@ -79,7 +79,7 @@ export type OrderQueries = {
       productId: string;
       name: string;
       quantitySold: number;
-      belumPickup: number;
+      unpickedUpQuantity: number;
     }[]
   >;
 };
@@ -302,7 +302,7 @@ export const createOrderQueries = (db: DB): OrderQueries => ({
         productId: orderItemsTable.productId,
         name: orderItemsTable.snapshotName,
         quantitySold: sql<number>`cast(sum(${orderItemsTable.quantity}) as integer)`,
-        belumPickup: sql<number>`cast(sum(case when ${ordersTable.pickedUpAt} is null then ${orderItemsTable.quantity} else 0 end) as integer)`,
+        unpickedUpQuantity: sql<number>`cast(sum(case when ${ordersTable.pickedUpAt} is null then ${orderItemsTable.quantity} else 0 end) as integer)`,
       })
       .from(orderItemsTable)
       .innerJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))

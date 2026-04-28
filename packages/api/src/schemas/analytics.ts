@@ -21,7 +21,7 @@ export const getDashboardAnalyticsOutputSchema = z.object({
       productId: z.string(),
       name: z.string(),
       quantitySold: z.number().int(),
-      belumPickup: z.number().int(),
+      unpickedUpQuantity: z.number().int(),
     })
   ),
 });
