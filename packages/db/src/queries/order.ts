@@ -1,14 +1,4 @@
-import {
-  and,
-  asc,
-  desc,
-  eq,
-  inArray,
-  isNull,
-  like,
-  or,
-  sql,
-} from "drizzle-orm";
+import { and, asc, desc, eq, inArray, like, or, sql } from "drizzle-orm";
 import type { DB } from "../db";
 import {
   orderItemsTable,
@@ -287,11 +277,7 @@ export const createOrderQueries = (db: DB): OrderQueries => ({
       .from(orderItemsTable)
       .innerJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
       .where(
-        and(
-          eq(ordersTable.status, "paid"),
-          eq(ordersTable.type, "ticket"),
-          isNull(orderItemsTable.snapshotBundleProducts)
-        )
+        and(eq(ordersTable.status, "paid"), eq(ordersTable.type, "ticket"))
       )
       .groupBy(orderItemsTable.productId);
   },
