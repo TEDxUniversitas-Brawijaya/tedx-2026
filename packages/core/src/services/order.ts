@@ -283,6 +283,7 @@ export const createOrderServices = (
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
   verifyPayment: async (orderId, action, reason, verifierId) => {
+    const startTime = Date.now();
     const order = await ctx.orderQueries.getOrderById(orderId);
     if (!order) {
       throw new AppError("BAD_REQUEST", "Order not found", {
@@ -466,6 +467,16 @@ export const createOrderServices = (
               }))
             )
           );
+          ctx.logger.info("payment.verified", {
+            orderId,
+            action: "approve",
+            verifierId,
+            orderType: order.type,
+            buyerEmail: order.buyerEmail,
+            totalPrice: order.totalPrice,
+            ticketsCreated: tickets.length,
+            durationMs: Date.now() - startTime,
+          });
           return;
         }
 
@@ -582,6 +593,16 @@ export const createOrderServices = (
             }))
           )
         );
+        ctx.logger.info("payment.verified", {
+          orderId,
+          action: "approve",
+          verifierId,
+          orderType: order.type,
+          buyerEmail: order.buyerEmail,
+          totalPrice: order.totalPrice,
+          ticketsCreated: createdTickets.length,
+          durationMs: Date.now() - startTime,
+        });
         return;
       }
 
@@ -597,6 +618,15 @@ export const createOrderServices = (
           }
         )
       );
+      ctx.logger.info("payment.verified", {
+        orderId,
+        action: "approve",
+        verifierId,
+        orderType: order.type,
+        buyerEmail: order.buyerEmail,
+        totalPrice: order.totalPrice,
+        durationMs: Date.now() - startTime,
+      });
       return;
     }
 
@@ -666,6 +696,16 @@ export const createOrderServices = (
             }
           )
         );
+        ctx.logger.info("payment.verified", {
+          orderId,
+          action: "reject",
+          verifierId,
+          orderType: order.type,
+          buyerEmail: order.buyerEmail,
+          totalPrice: order.totalPrice,
+          rejectionReason: reason,
+          durationMs: Date.now() - startTime,
+        });
         return;
       }
 
@@ -738,6 +778,16 @@ export const createOrderServices = (
           }
         )
       );
+      ctx.logger.info("payment.verified", {
+        orderId,
+        action: "reject",
+        verifierId,
+        orderType: order.type,
+        buyerEmail: order.buyerEmail,
+        totalPrice: order.totalPrice,
+        rejectionReason: reason,
+        durationMs: Date.now() - startTime,
+      });
       return;
     }
 
@@ -754,6 +804,16 @@ export const createOrderServices = (
         }
       )
     );
+    ctx.logger.info("payment.verified", {
+      orderId,
+      action: "reject",
+      verifierId,
+      orderType: order.type,
+      buyerEmail: order.buyerEmail,
+      totalPrice: order.totalPrice,
+      rejectionReason: reason,
+      durationMs: Date.now() - startTime,
+    });
   },
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor this function to reduce complexity
@@ -776,6 +836,8 @@ export const createOrderServices = (
         qrisUrl: parsed.qrisUrl,
       };
     }
+
+    const startTime = Date.now();
 
     const [
       merchPreorderDeadline,
@@ -1110,6 +1172,13 @@ export const createOrderServices = (
         // Rollback uploaded proof image if order creation failed
         await ctx.fileServices.deleteFile(uploadedProofImage.key);
       }
+      ctx.logger.error("merch_order.create_failed", {
+        orderId,
+        buyerEmail: buyer.email,
+        totalPrice,
+        error: createOrderError,
+        durationMs: Date.now() - startTime,
+      });
       throw new AppError(
         "INTERNAL_SERVER_ERROR",
         "Failed to create order, please try again later",
@@ -1131,6 +1200,13 @@ export const createOrderServices = (
         // Rollback
         await ctx.orderQueries.deleteOrderById(orderId);
 
+        ctx.logger.error("merch_order.payment_charge_failed", {
+          orderId,
+          buyerEmail: buyer.email,
+          totalPrice,
+          error: chargeTransactionError,
+          durationMs: Date.now() - startTime,
+        });
         throw new AppError(
           "INTERNAL_SERVER_ERROR",
           "Failed to create QRIS payment, please try again later",
@@ -1160,6 +1236,16 @@ export const createOrderServices = (
       )
     );
 
+    ctx.logger.info("merch_order.created", {
+      orderId,
+      buyerEmail: buyer.email,
+      totalPrice,
+      itemCount: items.length,
+      paymentMethod: paymentMode,
+      status: orderStatus,
+      durationMs: Date.now() - startTime,
+    });
+
     return response;
   },
 
@@ -1183,6 +1269,8 @@ export const createOrderServices = (
         qrisUrl: parsed.qrisUrl,
       };
     }
+
+    const startTime = Date.now();
 
     const [
       paymentMode,
@@ -1628,12 +1716,14 @@ export const createOrderServices = (
         await ctx.fileServices.deleteFile(uploadedProofImage.key);
       }
 
-      ctx.logger.error("Order creation failed, stock released", {
+      ctx.logger.error("ticket_order.create_failed", {
         orderId,
+        buyerEmail: buyer.email,
         productId: item.productId,
         quantity: item.quantity,
         bundleStockDecrements,
         error: createOrderError,
+        durationMs: Date.now() - startTime,
       });
 
       throw new AppError(
@@ -1659,16 +1749,15 @@ export const createOrderServices = (
 
         await ctx.productQueries.batchIncrementProductStock(stockOperations);
 
-        ctx.logger.error(
-          "Payment creation failed, order deleted and stock released",
-          {
-            orderId,
-            productId: item.productId,
-            quantity: item.quantity,
-            bundleStockDecrements,
-            error: chargeTransactionError,
-          }
-        );
+        ctx.logger.error("ticket_order.payment_charge_failed", {
+          orderId,
+          buyerEmail: buyer.email,
+          productId: item.productId,
+          quantity: item.quantity,
+          bundleStockDecrements,
+          error: chargeTransactionError,
+          durationMs: Date.now() - startTime,
+        });
 
         throw new AppError(
           "INTERNAL_SERVER_ERROR",
@@ -1703,11 +1792,23 @@ export const createOrderServices = (
       )
     );
 
+    ctx.logger.info("ticket_order.created", {
+      orderId,
+      buyerEmail: buyer.email,
+      productId: item.productId,
+      quantity: item.quantity,
+      totalPrice,
+      paymentMethod: paymentMode,
+      status: orderStatus,
+      durationMs: Date.now() - startTime,
+    });
+
     return response;
   },
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
   processRefund: async (orderId, action, reason, processorId) => {
+    const startTime = Date.now();
     const order = await ctx.orderQueries.getOrderById(orderId);
     if (!order) {
       throw new AppError("BAD_REQUEST", "Order not found", {
@@ -1802,6 +1903,15 @@ export const createOrderServices = (
             }
           )
         );
+        ctx.logger.info("refund.processed", {
+          orderId,
+          action: "approve",
+          processorId,
+          buyerEmail: order.buyerEmail,
+          totalPrice: order.totalPrice,
+          stockReleased: true,
+          durationMs: Date.now() - startTime,
+        });
         return;
       }
 
@@ -1876,6 +1986,15 @@ export const createOrderServices = (
         )
       );
 
+      ctx.logger.info("refund.processed", {
+        orderId,
+        action: "approve",
+        processorId,
+        buyerEmail: order.buyerEmail,
+        totalPrice: order.totalPrice,
+        stockReleased: true,
+        durationMs: Date.now() - startTime,
+      });
       return;
     }
 
@@ -1921,11 +2040,22 @@ export const createOrderServices = (
       )
     );
 
+    ctx.logger.info("refund.processed", {
+      orderId,
+      action: "reject",
+      processorId,
+      buyerEmail: order.buyerEmail,
+      totalPrice: order.totalPrice,
+      stockReleased: false,
+      rejectionReason: reason,
+      durationMs: Date.now() - startTime,
+    });
     return;
   },
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
   expirePendingPaymentOrders: async () => {
+    const startTime = Date.now();
     // First, get all orders that will be expired (before they are updated)
     const ordersToExpire = await ctx.orderQueries.getOrders({
       page: 1,
@@ -2020,11 +2150,20 @@ export const createOrderServices = (
 
     // TODO: Send email
 
+    ctx.logger.info("orders.expire_pending_payment", {
+      expiredCount: expiredOrdersData.length,
+      orderIds: expiredOrdersData.map((o) => o.id),
+      ticketOrdersWithStockReleased: expiredOrdersData.filter(
+        (o) => o.type === "ticket"
+      ).length,
+      durationMs: Date.now() - startTime,
+    });
     return;
   },
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
   expirePendingVerificationOrders: async () => {
+    const startTime = Date.now();
     // First, get all orders that will be expired (before they are updated)
     const ordersToExpire = await ctx.orderQueries.getOrders({
       page: 1,
@@ -2121,6 +2260,14 @@ export const createOrderServices = (
 
     // TODO: Send email
 
+    ctx.logger.info("orders.expire_pending_verification", {
+      expiredCount: expiredOrdersData.length,
+      orderIds: expiredOrdersData.map((o) => o.id),
+      ticketOrdersWithStockReleased: expiredOrdersData.filter(
+        (o) => o.type === "ticket"
+      ).length,
+      durationMs: Date.now() - startTime,
+    });
     return;
   },
 

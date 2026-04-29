@@ -397,6 +397,7 @@ export const createRefundServices = (
   },
 
   submitRequest: async (input) => {
+    const startTime = Date.now();
     const orderData = await assertRefundableOrder(ctx, input.refundToken);
 
     if (input.paymentMethod !== orderData.order.paymentMethod) {
@@ -469,9 +470,27 @@ export const createRefundServices = (
         );
       }
 
+      ctx.logger.error("refund.submit_failed", {
+        refundId,
+        orderId: orderData.order.id,
+        buyerEmail: orderData.order.buyerEmail,
+        error,
+        durationMs: Date.now() - startTime,
+      });
       throw error;
     }
     // TODO: Queue refund confirmation email
+
+    ctx.logger.info("refund.submitted", {
+      refundId,
+      orderId: orderData.order.id,
+      buyerEmail: orderData.order.buyerEmail,
+      reason: input.reason,
+      paymentMethod: input.paymentMethod,
+      bankName: input.bankName,
+      hasPaymentProof: !!input.paymentProof,
+      durationMs: Date.now() - startTime,
+    });
 
     return {
       refundId,

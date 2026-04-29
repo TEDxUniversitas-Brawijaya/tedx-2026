@@ -1,5 +1,9 @@
 import type { TicketQueries } from "@tedx-2026/db";
-import { createNanoId, createNanoIdWithPrefix } from "@tedx-2026/utils";
+import {
+  createNanoId,
+  createNanoIdWithPrefix,
+  tryCatch,
+} from "@tedx-2026/utils";
 import { qrcodePNG } from "etiket/png";
 import type { BaseContext } from "../types";
 import type { ConfigServices } from "./config";
@@ -28,6 +32,7 @@ export const createTicketServices = (
   ctx: CreateTicketServicesCtx
 ): TicketServices => ({
   createTickets: async (tickets) => {
+    const startTime = Date.now();
     const ticketsToInsert = tickets.map((ticket) => {
       const id = createNanoIdWithPrefix("ticket");
       const qrCode = createNanoId();
@@ -40,7 +45,18 @@ export const createTicketServices = (
       };
     });
 
-    await ctx.ticketQueries.createTickets(ticketsToInsert);
+    const { error } = await tryCatch(
+      ctx.ticketQueries.createTickets(ticketsToInsert)
+    );
+    if (error) {
+      ctx.logger.error("tickets.create_failed", {
+        count: ticketsToInsert.length,
+        orderItemIds: tickets.map((t) => t.orderItemId),
+        error,
+        durationMs: Date.now() - startTime,
+      });
+      throw error;
+    }
 
     const response = ticketsToInsert.map((ticket) => {
       const qrUint8Array = qrcodePNG(ticket.qrCode, {
@@ -54,6 +70,14 @@ export const createTicketServices = (
         qrCode: ticket.qrCode,
         qr: qrBuffer,
       };
+    });
+
+    ctx.logger.info("tickets.created", {
+      count: ticketsToInsert.length,
+      ticketIds: ticketsToInsert.map((t) => t.id),
+      orderItemIds: tickets.map((t) => t.orderItemId),
+      eventDays: [...new Set(tickets.map((t) => t.eventDay))],
+      durationMs: Date.now() - startTime,
     });
 
     return response;
