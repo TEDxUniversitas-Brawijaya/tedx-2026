@@ -1,14 +1,4 @@
-import {
-  and,
-  asc,
-  desc,
-  eq,
-  inArray,
-  isNull,
-  like,
-  or,
-  sql,
-} from "drizzle-orm";
+import { and, asc, desc, eq, inArray, like, or, sql } from "drizzle-orm";
 import type { DB } from "../db";
 import {
   orderItemsTable,
@@ -79,7 +69,7 @@ export type OrderQueries = {
       productId: string;
       name: string;
       quantitySold: number;
-      belumPickup: number;
+      unpickedUpQuantity: number;
     }[]
   >;
 };
@@ -287,11 +277,7 @@ export const createOrderQueries = (db: DB): OrderQueries => ({
       .from(orderItemsTable)
       .innerJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
       .where(
-        and(
-          eq(ordersTable.status, "paid"),
-          eq(ordersTable.type, "ticket"),
-          isNull(orderItemsTable.snapshotBundleProducts)
-        )
+        and(eq(ordersTable.status, "paid"), eq(ordersTable.type, "ticket"))
       )
       .groupBy(orderItemsTable.productId);
   },
@@ -302,7 +288,7 @@ export const createOrderQueries = (db: DB): OrderQueries => ({
         productId: orderItemsTable.productId,
         name: orderItemsTable.snapshotName,
         quantitySold: sql<number>`cast(sum(${orderItemsTable.quantity}) as integer)`,
-        belumPickup: sql<number>`cast(sum(case when ${ordersTable.pickedUpAt} is null then ${orderItemsTable.quantity} else 0 end) as integer)`,
+        unpickedUpQuantity: sql<number>`cast(sum(case when ${ordersTable.pickedUpAt} is null then ${orderItemsTable.quantity} else 0 end) as integer)`,
       })
       .from(orderItemsTable)
       .innerJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
