@@ -6,6 +6,7 @@ export {
   createRefundQueries,
   createTicketQueries,
   createUserQueries,
+  type AttendanceRecord,
   type ConfigQueries,
   type OrderQueries,
   type ProductQueries,
@@ -14,3 +15,4 @@ export {
   type UserQueries,
 } from "./queries";
 export { schema } from "./schemas";
+export type { SelectTicket } from "./schemas/tickets";

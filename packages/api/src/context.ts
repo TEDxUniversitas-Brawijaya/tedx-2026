@@ -14,6 +14,7 @@ import {
   type OrderServices,
   type ProductServices,
   type RefundServices,
+  type TicketServices,
   type UserServices,
 } from "@tedx-2026/core";
 import {
@@ -206,6 +207,7 @@ export const createContext = async ({
       order: orderServices,
       refund: refundServices,
       product: productServices,
+      ticket: ticketServices,
     },
   };
 };
@@ -220,6 +222,7 @@ export type Context = {
     order: OrderServices;
     refund: RefundServices;
     product: ProductServices;
+    ticket: TicketServices;
   };
   waitUntil: (promise: Promise<unknown>) => void;
   session: Session | null;
