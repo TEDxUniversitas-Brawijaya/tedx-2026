@@ -1,9 +1,5 @@
 import { Button } from "@tedx-2026/ui/components/button";
-import {
-  DialogClose,
-  DialogHeader,
-  DialogTitle,
-} from "@tedx-2026/ui/components/dialog";
+import { DialogHeader, DialogTitle } from "@tedx-2026/ui/components/dialog";
 import { ChevronDownIcon, MinusIcon, PlusIcon } from "lucide-react";
 import { capitalize } from "../../../../../shared/lib/string";
 import { formatIdrCurrency } from "../../../lib/formatter";
@@ -60,7 +56,6 @@ export function CartStep() {
     updateQuantity,
     getTotalPrice,
     onNextStep,
-    onPrevStep,
     openSelectionStep,
   } = useCartStore();
   const totalPrice = getTotalPrice();
@@ -168,27 +163,15 @@ export function CartStep() {
             {formatIdrCurrency(totalPrice)}
           </span>
         </div>
-        <div className="flex gap-2 sm:gap-4">
-          <DialogClose
-            render={
-              <Button
-                className="w-full flex-1"
-                onClick={onPrevStep}
-                size="checkout"
-                variant="store-secondary"
-              />
-            }
-          >
-            Batal
-          </DialogClose>
+        <div className="flex justify-end gap-2 sm:gap-4">
           <Button
-            className="flex-1"
+            className="w-1/2"
             disabled={items.length === 0}
             onClick={onNextStep}
             size="checkout"
             variant="store-primary"
           >
-            Lanjutkan
+            Bayar
           </Button>
         </div>
       </div>

@@ -203,7 +203,7 @@ export function RegularSelectionStep({
             className="h-12 w-1/2 rounded-xl bg-red-2 px-7 text-base text-white shadow-lg transition-all hover:bg-[#C01F1F] active:scale-95"
             onClick={onAddItem}
           >
-            {selectionStepMode === "add" ? "Bayar" : "Konfirmasi"}
+            {selectionStepMode === "add" ? "Tambah" : "Konfirmasi"}
           </Button>
         </div>
       </div>
