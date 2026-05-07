@@ -306,7 +306,7 @@ export function BundleSelectionStep({
       </div>
 
       <div className="sticky bottom-0 bg-black px-2 pt-1.5 pb-1.5">
-        <div className="flex items-center justify-between text-gray-2">
+        <div className="flex flex-col gap-2 text-gray-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm md:text-base">Harga Total</p>
             <p className="text-sm md:text-base">
@@ -314,10 +314,10 @@ export function BundleSelectionStep({
             </p>
           </div>
           <Button
-            className="h-12 w-1/2 rounded-xl bg-red-2 px-7 text-base text-white shadow-lg transition-all hover:bg-[#C01F1F] active:scale-95"
+            className="h-12 w-full rounded-xl bg-red-2 px-7 text-base text-white shadow-lg transition-all hover:bg-[#C01F1F] active:scale-95 sm:w-1/2"
             onClick={onAddItem}
           >
-            {selectionStepMode === "add" ? "Tambah" : "Konfirmasi"}
+            {selectionStepMode === "add" ? "Tambah Keranjang" : "Konfirmasi"}
           </Button>
         </div>
       </div>

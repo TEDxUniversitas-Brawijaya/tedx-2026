@@ -41,7 +41,7 @@ export function RegularSelectionStep({
   return (
     <div className="flex max-h-[80vh] flex-col pt-10 text-white">
       <div className="no-scrollbar flex-1 overflow-x-hidden overflow-y-scroll px-1 pr-2 pb-8">
-        <div className="flex items-start gap-2 sm:items-center sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <div className="w-1/2 shrink-0 overflow-hidden rounded-2xl border border-white/5 bg-neutral-900 shadow-lg md:w-2/5">
             {item.imageUrl ? (
               <img
@@ -70,7 +70,7 @@ export function RegularSelectionStep({
               </div>
             </div>
 
-            <div className="mt-2 flex w-full items-center gap-4 font-sans-2 sm:flex-nowrap">
+            <div className="mt-2 flex w-full flex-col items-start gap-4 font-sans-2 sm:flex-row sm:items-center">
               <div className="w-1/2">
                 <span className="font-sans-2 text-white text-xs">
                   Jumlah<span className="text-red-2">*</span>
@@ -192,7 +192,7 @@ export function RegularSelectionStep({
       </div>
 
       <div className="sticky bottom-0 bg-black px-1 pt-1.5 pb-1.5">
-        <div className="flex items-center justify-between font-sans-2 text-gray-2">
+        <div className="flex flex-col items-start justify-start gap-2 font-sans-2 text-gray-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm md:text-base">Harga Total</p>
             <p className="text-sm md:text-base">
@@ -200,10 +200,10 @@ export function RegularSelectionStep({
             </p>
           </div>
           <Button
-            className="h-12 w-1/2 rounded-xl bg-red-2 px-7 text-base text-white shadow-lg transition-all hover:bg-[#C01F1F] active:scale-95"
+            className="h-12 w-full rounded-xl bg-red-2 px-7 text-base text-white shadow-lg transition-all hover:bg-[#C01F1F] active:scale-95 sm:w-1/2"
             onClick={onAddItem}
           >
-            {selectionStepMode === "add" ? "Tambah" : "Konfirmasi"}
+            {selectionStepMode === "add" ? "Masukkan Keranjang" : "Konfirmasi"}
           </Button>
         </div>
       </div>
