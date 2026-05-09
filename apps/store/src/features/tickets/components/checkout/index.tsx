@@ -8,6 +8,7 @@ import { TicketManualPaymentStep } from "./ticket-manual-payment-step";
 import { TicketPaymentStep } from "./ticket-payment-step";
 import { TicketSuccessStep } from "./ticket-success-step";
 import { TicketSummaryStep } from "./ticket-summary-step";
+import { TicketChooseBundleItemStep } from "./ticket-choose-bundle-item-step";
 
 export const TicketCheckoutModal = () => {
   const { isCheckoutOpen, setIsCheckoutOpen, checkoutStep } =
@@ -59,6 +60,16 @@ const TicketCheckoutContent = () => {
         selectedProduct={selectedProduct}
       />
     );
+  }
+
+  if (checkoutStep === "choose_bundle_item") {
+    if (!selectedProduct) {
+      throw new Error(
+        "Trying to access choose bundle item step but didn't find active product"
+      );
+    }
+
+    return <TicketChooseBundleItemStep selectedProduct={selectedProduct} />;
   }
 
   if (checkoutStep === "summary") {

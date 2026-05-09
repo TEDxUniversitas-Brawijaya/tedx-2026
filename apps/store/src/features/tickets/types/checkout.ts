@@ -1,7 +1,8 @@
-import type { TicketProduct } from "./ticket";
+import type { MerchCategory, TicketProduct } from "./ticket";
 
 export type TicketCheckoutStep =
   | "identification"
+  | "choose_bundle_item"
   | "summary"
   | "payment"
   | "success";
@@ -11,6 +12,9 @@ export type CartItem = TicketProduct & {
   // TODO: add support for merch
   selectedBundleProducts?: {
     productId: string;
-    variantIds?: string[] | undefined;
+    product: {
+      name: string;
+    };
+    category: MerchCategory | null; // null means it comes from a merchandise_product type bundle item, which doesn't have a category
   }[];
 };

@@ -24,6 +24,8 @@ type TicketCheckoutStore = {
   setQuantity: (qty: number) => void;
   setBuyer: (buyer: TicketBuyer) => void;
   setOrder: (order: TicketOrder) => void;
+
+  setSelectedProduct: (product: CartItem | null) => void;
 };
 
 export const useTicketCheckoutStore = create<TicketCheckoutStore>(
@@ -68,6 +70,29 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
         return;
       }
 
+      if (nextStep === "choose_bundle_item") {
+        const product = get().selectedProduct;
+        if (!product) {
+          throw new Error(
+            "Trying to access choose bundle item step but didn't find active product"
+          );
+        }
+
+        const hasMerchItem = product.bundleItems?.some(
+          (item) => item.type === "merchandise"
+        );
+
+        if (
+          product.bundleItems === null ||
+          product.bundleItems.length === 0 ||
+          !hasMerchItem
+        ) {
+          // If bundleItems is null or empty, skip the choose_bundle_item step
+          set({ checkoutStep: "summary" });
+          return;
+        }
+      }
+
       set({ checkoutStep: nextStep });
     },
     onPrevStep: () => {
@@ -76,6 +101,29 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
       if (prevStep === null) {
         setIsCheckoutOpen(false);
         return;
+      }
+
+      if (prevStep === "choose_bundle_item") {
+        const product = get().selectedProduct;
+        if (!product) {
+          throw new Error(
+            "Trying to access choose bundle item step but didn't find active product"
+          );
+        }
+
+        const hasMerchItem = product.bundleItems?.some(
+          (item) => item.type === "merchandise"
+        );
+
+        if (
+          product.bundleItems === null ||
+          product.bundleItems.length === 0 ||
+          !hasMerchItem
+        ) {
+          // If bundleItems is null or empty, skip the choose_bundle_item step
+          set({ checkoutStep: "identification" });
+          return;
+        }
       }
 
       set({ checkoutStep: prevStep });
@@ -90,5 +138,6 @@ export const useTicketCheckoutStore = create<TicketCheckoutStore>(
     },
     setBuyer: (buyer) => set({ buyer }),
     setOrder: (order) => set({ order }),
+    setSelectedProduct: (product) => set({ selectedProduct: product }),
   })
 );
