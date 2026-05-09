@@ -58,8 +58,6 @@ export const TicketChooseBundleItemStep = ({ selectedProduct }: Props) => {
               return null;
             }
 
-            console.log({ item });
-
             const product = selectedProduct.selectedBundleProducts?.find(
               (p) => p.category === item.category
             );
