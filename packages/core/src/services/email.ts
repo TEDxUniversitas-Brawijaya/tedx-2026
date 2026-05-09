@@ -4,6 +4,7 @@ import {
   type TemplateMap,
   type TemplatesKey,
 } from "@tedx-2026/email";
+import { tryCatch } from "@tedx-2026/utils";
 import type { BaseContext } from "../types";
 
 export type EmailServices = {
@@ -39,14 +40,32 @@ export const createEmailServices = (
 
   return {
     sendEmail: async (to, subject, templateKey, params) => {
-      await ctx.email.sendEmail({
-        to: [{ email: to }],
-        subject,
-        htmlContent: createTemplate(templateKey, params),
-        sender: {
-          name: senderName,
-          email: senderEmail,
-        },
+      const startTime = Date.now();
+      const { error } = await tryCatch(
+        ctx.email.sendEmail({
+          to: [{ email: to }],
+          subject,
+          htmlContent: createTemplate(templateKey, params),
+          sender: {
+            name: senderName,
+            email: senderEmail,
+          },
+        })
+      );
+      if (error) {
+        ctx.logger.error("email.send_failed", {
+          recipientEmail: to,
+          templateKey,
+          error,
+          durationMs: Date.now() - startTime,
+        });
+        throw error;
+      }
+      ctx.logger.info("email.sent", {
+        recipientEmail: to,
+        templateKey,
+        hasAttachments: false,
+        durationMs: Date.now() - startTime,
       });
     },
     sendEmailWithAttachment: async (
@@ -56,18 +75,38 @@ export const createEmailServices = (
       params,
       attachments
     ) => {
-      await ctx.email.sendEmail({
-        to: [{ email: to }],
-        subject,
-        htmlContent: createTemplate(templateKey, params),
-        sender: {
-          name: senderName,
-          email: senderEmail,
-        },
-        attachment: attachments.map((att) => ({
-          name: att.name,
-          content: Buffer.from(att.content).toString("base64"),
-        })),
+      const startTime = Date.now();
+      const { error } = await tryCatch(
+        ctx.email.sendEmail({
+          to: [{ email: to }],
+          subject,
+          htmlContent: createTemplate(templateKey, params),
+          sender: {
+            name: senderName,
+            email: senderEmail,
+          },
+          attachment: attachments.map((att) => ({
+            name: att.name,
+            content: Buffer.from(att.content).toString("base64"),
+          })),
+        })
+      );
+      if (error) {
+        ctx.logger.error("email.send_failed", {
+          recipientEmail: to,
+          templateKey,
+          hasAttachments: true,
+          error,
+          durationMs: Date.now() - startTime,
+        });
+        throw error;
+      }
+      ctx.logger.info("email.sent", {
+        recipientEmail: to,
+        templateKey,
+        hasAttachments: true,
+        attachmentCount: attachments.length,
+        durationMs: Date.now() - startTime,
       });
     },
   };

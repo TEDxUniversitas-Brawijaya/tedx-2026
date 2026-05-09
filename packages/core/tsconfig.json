@@ -1,12 +1,12 @@
 {
   "extends": "@tedx-2026/tsconfig/base.json",
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "tests/**/*"],
   "compilerOptions": {
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "dist",
     "composite": true,
-    "rootDir": "src"
+    "rootDir": "."
   }
 }

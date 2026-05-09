@@ -10,7 +10,7 @@ See ADR-013 for the full decision. Summary:
 
 - **Orders** use a human-readable format: `TDX-{YYMMDD}-{XXXXX}` (e.g. `TDX-260801-A1B2C`). This makes it easy to communicate over phone/chat for customer support and admin lookup.
 
-- **All other entities** use prefixed nanoid (e.g. `tkt_abc123`, `prod_def456`). Prefixed IDs are debuggable in logs and shorter than UUIDs.
+- **All other entities** use prefixed nanoid (e.g. `ticket_abc123`, `prod_def456`). Prefixed IDs are debuggable in logs and shorter than UUIDs.
 
 ## **DBML Schema**
 

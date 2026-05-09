@@ -84,11 +84,13 @@ export const worker = await Worker("api", {
       headSamplingRate: 1,
       invocationLogs: true,
       persist: true,
+      destinations: app.stage === "prod" ? ["sentry-logs"] : [],
     },
     traces: {
       enabled: true,
       headSamplingRate: 1,
       persist: true,
+      destinations: app.stage === "prod" ? ["sentry-traces"] : [],
     },
   },
   domains:

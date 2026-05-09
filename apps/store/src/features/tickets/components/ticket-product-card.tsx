@@ -1,9 +1,27 @@
 import DoubleChair from "@/assets/imgs/double-chair.png";
+import Propa3Poster from "@/assets/imgs/propa-3-poster.jpg";
 import SingleChair from "@/assets/imgs/single-chair.png";
 import { cn } from "@tedx-2026/ui/lib/utils";
 import { formatIdrCurrency } from "../lib/formatter";
 import { useTicketCheckoutStore } from "../stores/use-ticket-checkout-store";
 import type { TicketProduct } from "../types/ticket";
+
+const getCardImage = (product: TicketProduct): string => {
+  if (product.imageUrl) {
+    return product.imageUrl;
+  }
+
+  const name = product.name.toLowerCase();
+
+  switch (true) {
+    case name.includes("propaganda 3"):
+      return Propa3Poster;
+    case name.includes("main event"):
+      return DoubleChair;
+    default:
+      return SingleChair;
+  }
+};
 
 type TicketProductCardProps = {
   product: TicketProduct;
@@ -15,8 +33,7 @@ export const TicketProductCard = ({ product }: TicketProductCardProps) => {
   const isSoldOut = product.stock !== null && product.stock <= 0;
   const isDisabled = !product.isActive || isSoldOut;
 
-  const isMainEvent = product.name.toLowerCase().includes("main event");
-  const chairImage = isMainEvent ? DoubleChair : SingleChair;
+  const cardImage = getCardImage(product);
 
   const onOpenCheckout = () => {
     const defaultBundleProducts = product.bundleItems
@@ -29,7 +46,7 @@ export const TicketProductCard = ({ product }: TicketProductCardProps) => {
 
     openCheckout({
       ...product,
-      itemId: `${product.id}-${Date.now()}`, // unique item ID for cart
+      itemId: `${product.id}-${Date.now()}`,
       selectedBundleProducts:
         product.type === "ticket_bundle" ? defaultBundleProducts : undefined,
     });
@@ -46,19 +63,17 @@ export const TicketProductCard = ({ product }: TicketProductCardProps) => {
       onClick={onOpenCheckout}
       type="button"
     >
-      {/* Background Layer (Chair with Mask) */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <img
           alt=""
           className="product-card-chair object-cover object-top opacity-80"
           height={227}
-          src={chairImage}
+          src={cardImage}
           style={{ height: "227px", width: "481px" }}
           width={481}
         />
       </div>
 
-      {/* Content Layer - Bottom Aligned as per Screenshot */}
       <div className="relative z-20 flex h-full flex-col justify-end p-8 text-left">
         <div className="flex flex-col gap-1">
           <h2 className="font-serif-2 text-2xl text-white leading-tight">

@@ -108,6 +108,24 @@ export type OrderServices = {
 
   expirePendingPaymentOrders: () => Promise<void>;
   expirePendingVerificationOrders: () => Promise<void>;
+
+  getDashboardPendingStats: () => Promise<{
+    pendingVerificationsCount: number;
+    refundRequestedCount: number;
+  }>;
+
+  getSoldTicketsByProduct: () => Promise<
+    { productId: string; quantitySold: number }[]
+  >;
+
+  getSoldMerchByProduct: () => Promise<
+    {
+      productId: string;
+      name: string;
+      quantitySold: number;
+      unpickedUpQuantity: number;
+    }[]
+  >;
 };
 
 type CreateOrderServicesCtx = {
@@ -265,6 +283,7 @@ export const createOrderServices = (
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
   verifyPayment: async (orderId, action, reason, verifierId) => {
+    const startTime = Date.now();
     const order = await ctx.orderQueries.getOrderById(orderId);
     if (!order) {
       throw new AppError("BAD_REQUEST", "Order not found", {
@@ -448,6 +467,16 @@ export const createOrderServices = (
               }))
             )
           );
+          ctx.logger.info("payment.verified", {
+            orderId,
+            action: "approve",
+            verifierId,
+            orderType: order.type,
+            buyerEmail: order.buyerEmail,
+            totalPrice: order.totalPrice,
+            ticketsCreated: tickets.length,
+            durationMs: Date.now() - startTime,
+          });
           return;
         }
 
@@ -564,6 +593,16 @@ export const createOrderServices = (
             }))
           )
         );
+        ctx.logger.info("payment.verified", {
+          orderId,
+          action: "approve",
+          verifierId,
+          orderType: order.type,
+          buyerEmail: order.buyerEmail,
+          totalPrice: order.totalPrice,
+          ticketsCreated: createdTickets.length,
+          durationMs: Date.now() - startTime,
+        });
         return;
       }
 
@@ -579,6 +618,15 @@ export const createOrderServices = (
           }
         )
       );
+      ctx.logger.info("payment.verified", {
+        orderId,
+        action: "approve",
+        verifierId,
+        orderType: order.type,
+        buyerEmail: order.buyerEmail,
+        totalPrice: order.totalPrice,
+        durationMs: Date.now() - startTime,
+      });
       return;
     }
 
@@ -648,6 +696,16 @@ export const createOrderServices = (
             }
           )
         );
+        ctx.logger.info("payment.verified", {
+          orderId,
+          action: "reject",
+          verifierId,
+          orderType: order.type,
+          buyerEmail: order.buyerEmail,
+          totalPrice: order.totalPrice,
+          rejectionReason: reason,
+          durationMs: Date.now() - startTime,
+        });
         return;
       }
 
@@ -720,6 +778,16 @@ export const createOrderServices = (
           }
         )
       );
+      ctx.logger.info("payment.verified", {
+        orderId,
+        action: "reject",
+        verifierId,
+        orderType: order.type,
+        buyerEmail: order.buyerEmail,
+        totalPrice: order.totalPrice,
+        rejectionReason: reason,
+        durationMs: Date.now() - startTime,
+      });
       return;
     }
 
@@ -736,6 +804,16 @@ export const createOrderServices = (
         }
       )
     );
+    ctx.logger.info("payment.verified", {
+      orderId,
+      action: "reject",
+      verifierId,
+      orderType: order.type,
+      buyerEmail: order.buyerEmail,
+      totalPrice: order.totalPrice,
+      rejectionReason: reason,
+      durationMs: Date.now() - startTime,
+    });
   },
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor this function to reduce complexity
@@ -758,6 +836,8 @@ export const createOrderServices = (
         qrisUrl: parsed.qrisUrl,
       };
     }
+
+    const startTime = Date.now();
 
     const [
       merchPreorderDeadline,
@@ -1092,6 +1172,13 @@ export const createOrderServices = (
         // Rollback uploaded proof image if order creation failed
         await ctx.fileServices.deleteFile(uploadedProofImage.key);
       }
+      ctx.logger.error("merch_order.create_failed", {
+        orderId,
+        buyerEmail: buyer.email,
+        totalPrice,
+        error: createOrderError,
+        durationMs: Date.now() - startTime,
+      });
       throw new AppError(
         "INTERNAL_SERVER_ERROR",
         "Failed to create order, please try again later",
@@ -1113,6 +1200,13 @@ export const createOrderServices = (
         // Rollback
         await ctx.orderQueries.deleteOrderById(orderId);
 
+        ctx.logger.error("merch_order.payment_charge_failed", {
+          orderId,
+          buyerEmail: buyer.email,
+          totalPrice,
+          error: chargeTransactionError,
+          durationMs: Date.now() - startTime,
+        });
         throw new AppError(
           "INTERNAL_SERVER_ERROR",
           "Failed to create QRIS payment, please try again later",
@@ -1142,6 +1236,16 @@ export const createOrderServices = (
       )
     );
 
+    ctx.logger.info("merch_order.created", {
+      orderId,
+      buyerEmail: buyer.email,
+      totalPrice,
+      itemCount: items.length,
+      paymentMethod: paymentMode,
+      status: orderStatus,
+      durationMs: Date.now() - startTime,
+    });
+
     return response;
   },
 
@@ -1165,6 +1269,8 @@ export const createOrderServices = (
         qrisUrl: parsed.qrisUrl,
       };
     }
+
+    const startTime = Date.now();
 
     const [
       paymentMode,
@@ -1610,12 +1716,14 @@ export const createOrderServices = (
         await ctx.fileServices.deleteFile(uploadedProofImage.key);
       }
 
-      ctx.logger.error("Order creation failed, stock released", {
+      ctx.logger.error("ticket_order.create_failed", {
         orderId,
+        buyerEmail: buyer.email,
         productId: item.productId,
         quantity: item.quantity,
         bundleStockDecrements,
         error: createOrderError,
+        durationMs: Date.now() - startTime,
       });
 
       throw new AppError(
@@ -1641,16 +1749,15 @@ export const createOrderServices = (
 
         await ctx.productQueries.batchIncrementProductStock(stockOperations);
 
-        ctx.logger.error(
-          "Payment creation failed, order deleted and stock released",
-          {
-            orderId,
-            productId: item.productId,
-            quantity: item.quantity,
-            bundleStockDecrements,
-            error: chargeTransactionError,
-          }
-        );
+        ctx.logger.error("ticket_order.payment_charge_failed", {
+          orderId,
+          buyerEmail: buyer.email,
+          productId: item.productId,
+          quantity: item.quantity,
+          bundleStockDecrements,
+          error: chargeTransactionError,
+          durationMs: Date.now() - startTime,
+        });
 
         throw new AppError(
           "INTERNAL_SERVER_ERROR",
@@ -1685,11 +1792,23 @@ export const createOrderServices = (
       )
     );
 
+    ctx.logger.info("ticket_order.created", {
+      orderId,
+      buyerEmail: buyer.email,
+      productId: item.productId,
+      quantity: item.quantity,
+      totalPrice,
+      paymentMethod: paymentMode,
+      status: orderStatus,
+      durationMs: Date.now() - startTime,
+    });
+
     return response;
   },
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
   processRefund: async (orderId, action, reason, processorId) => {
+    const startTime = Date.now();
     const order = await ctx.orderQueries.getOrderById(orderId);
     if (!order) {
       throw new AppError("BAD_REQUEST", "Order not found", {
@@ -1704,8 +1823,14 @@ export const createOrderServices = (
       );
     }
 
-    const refundRequest =
-      await ctx.refundQueries.getRefundRequestByOrderId(orderId);
+    if (order.type !== "ticket") {
+      throw new AppError(
+        "BAD_REQUEST",
+        "Only ticket orders can be refunded at the moment"
+      );
+    }
+
+    const refundRequest = await ctx.refundQueries.getRefundByOrderId(orderId);
 
     if (!refundRequest || refundRequest.status !== "requested") {
       throw new AppError("BAD_REQUEST", "Refund request not found", {
@@ -1716,58 +1841,123 @@ export const createOrderServices = (
       });
     }
 
+    const orderItems = await ctx.orderQueries.getOrderItemsByOrderId(orderId);
+
+    const item = orderItems[0];
+    if (!item) {
+      throw new AppError(
+        "INTERNAL_SERVER_ERROR",
+        "Order items not found for ticket order during refund processing",
+        {
+          details: {
+            orderId,
+          },
+        }
+      );
+    }
+
     const processedAt = new Date().toISOString();
 
     if (action === "approve") {
-      // Release stock for refunded ticket orders
-      if (order.type === "ticket") {
-        const orderItems =
-          await ctx.orderQueries.getOrderItemsByOrderId(orderId);
+      // ticket regular
+      if (
+        !item.snapshotBundleProducts ||
+        item.snapshotBundleProducts.length === 0
+      ) {
+        await ctx.productQueries.batchIncrementProductStock([
+          {
+            productId: item.productId,
+            quantity: item.quantity,
+          },
+        ]);
 
-        if (orderItems.length > 0) {
-          // Collect all product IDs (main products + bundle item products)
-          const allProductIds = new Set<string>();
-          for (const item of orderItems) {
-            allProductIds.add(item.productId);
-          }
+        await Promise.all([
+          ctx.productOperations.deleteTicketProducts("all"),
+          ctx.productOperations.deleteTicketProducts("active"),
+          ctx.productOperations.deleteTicketProducts("inactive"),
+        ]);
 
-          // Fetch all products in batch
-          const products = await ctx.productQueries.getProductsByIds(
-            Array.from(allProductIds),
-            { status: "all" }
-          );
-          const productMap = new Map(products.map((p) => [p.id, p]));
+        await ctx.refundQueries.updateRefundRequest(refundRequest.id, {
+          status: "approved",
+          processedBy: processorId,
+          processedAt,
+          rejectionReason: null,
+        });
 
-          // Collect stock release operations
-          const stockReleases: { productId: string; quantity: number }[] = [];
+        await ctx.orderQueries.updateOrder(orderId, {
+          status: "refunded",
+        });
 
-          for (const item of orderItems) {
-            // Release main product stock
-            stockReleases.push({
-              productId: item.productId,
-              quantity: item.quantity,
-            });
-
-            // Release bundle item stocks (only for tickets)
-            if (item.snapshotBundleProducts) {
-              const product = productMap.get(item.productId);
-              if (product?.bundleItems) {
-                for (const bundleItem of product.bundleItems) {
-                  if (bundleItem.type === "ticket") {
-                    stockReleases.push({
-                      productId: bundleItem.productId,
-                      quantity: item.quantity,
-                    });
-                  }
-                }
-              }
+        ctx.waitUntil(
+          ctx.emailServices.sendEmail(
+            order.buyerEmail,
+            "Your refund has been approved",
+            "ticketOrderRefunded",
+            {
+              orderId: order.id,
+              item: {
+                name: item.snapshotName,
+                price: item.snapshotPrice,
+                quantity: item.quantity,
+              },
             }
-          }
-
-          // Execute all stock increments in a single batch
-          await ctx.productQueries.batchIncrementProductStock(stockReleases);
-        }
+          )
+        );
+        ctx.logger.info("refund.processed", {
+          orderId,
+          action: "approve",
+          processorId,
+          buyerEmail: order.buyerEmail,
+          totalPrice: order.totalPrice,
+          stockReleased: true,
+          durationMs: Date.now() - startTime,
+        });
+        return;
       }
+
+      // ticket bundle
+      const product = await ctx.productQueries.getProductById(item.productId);
+      if (!product) {
+        throw new AppError(
+          "INTERNAL_SERVER_ERROR",
+          "Product not found for order item",
+          {
+            details: { productId: item.productId, orderId },
+          }
+        );
+      }
+
+      // Collect stock release operations
+      const stockReleases: { productId: string; quantity: number }[] = [];
+
+      // DO NOT release stock for main product of ticket orders, because it is null and the stock is calculated based on the bundle items, so we only need to release stock for the bundle items
+      if (!product.bundleItems) {
+        throw new AppError(
+          "INTERNAL_SERVER_ERROR",
+          "Bundle products not found for ticket bundle order item",
+          {
+            details: { productId: item.productId, orderId },
+          }
+        );
+      }
+      for (const bundleItem of product.bundleItems) {
+        if (bundleItem.type !== "ticket") {
+          continue; // Only release stock for ticket bundle items, not merchandise bundle items
+        }
+
+        stockReleases.push({
+          productId: bundleItem.productId,
+          quantity: item.quantity,
+        });
+      }
+
+      await ctx.productQueries.batchIncrementProductStock(stockReleases);
+
+      await Promise.all([
+        ctx.productOperations.deleteTicketProducts("all"),
+        ctx.productOperations.deleteTicketProducts("active"),
+        ctx.productOperations.deleteTicketProducts("inactive"),
+      ]);
 
       await ctx.refundQueries.updateRefundRequest(refundRequest.id, {
         status: "approved",
@@ -1780,8 +1970,31 @@ export const createOrderServices = (
         status: "refunded",
       });
 
-      // TODO: Queue refund confirmation email
+      ctx.waitUntil(
+        ctx.emailServices.sendEmail(
+          order.buyerEmail,
+          "Your refund has been approved",
+          "ticketOrderRefunded",
+          {
+            orderId: order.id,
+            item: {
+              name: item.snapshotName,
+              price: item.snapshotPrice,
+              quantity: item.quantity,
+            },
+          }
+        )
+      );
 
+      ctx.logger.info("refund.processed", {
+        orderId,
+        action: "approve",
+        processorId,
+        buyerEmail: order.buyerEmail,
+        totalPrice: order.totalPrice,
+        stockReleased: true,
+        durationMs: Date.now() - startTime,
+      });
       return;
     }
 
@@ -1800,13 +2013,49 @@ export const createOrderServices = (
     await ctx.orderQueries.updateOrder(orderId, {
       status: "paid",
     });
-    // TODO: Queue refund confirmation email
 
+    ctx.waitUntil(
+      ctx.emailServices.sendEmail(
+        order.buyerEmail,
+        "Your refund has been rejected",
+        "ticketOrderRefundRejected",
+        {
+          orderId: order.id,
+          item: {
+            name: item.snapshotName,
+            price: item.snapshotPrice,
+            quantity: item.quantity,
+            bundleProducts: item.snapshotBundleProducts?.map((bp) => ({
+              name: bp.name,
+              variants: bp.selectedVariants
+                ? bp.selectedVariants.map((v) => ({
+                    label: v.label,
+                    type: v.type,
+                  }))
+                : [],
+            })),
+          },
+          reason,
+        }
+      )
+    );
+
+    ctx.logger.info("refund.processed", {
+      orderId,
+      action: "reject",
+      processorId,
+      buyerEmail: order.buyerEmail,
+      totalPrice: order.totalPrice,
+      stockReleased: false,
+      rejectionReason: reason,
+      durationMs: Date.now() - startTime,
+    });
     return;
   },
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
   expirePendingPaymentOrders: async () => {
+    const startTime = Date.now();
     // First, get all orders that will be expired (before they are updated)
     const ordersToExpire = await ctx.orderQueries.getOrders({
       page: 1,
@@ -1867,23 +2116,29 @@ export const createOrderServices = (
       const stockReleases: { productId: string; quantity: number }[] = [];
 
       for (const item of ticketOrderItems) {
-        // Release main product stock
-        stockReleases.push({
-          productId: item.productId,
-          quantity: item.quantity,
-        });
+        const isBundleTicket =
+          !!item.snapshotBundleProducts &&
+          item.snapshotBundleProducts.length > 0;
 
-        // Release bundle item stocks (only for tickets)
-        if (item.snapshotBundleProducts) {
-          const product = productMap.get(item.productId);
-          if (product?.bundleItems) {
-            for (const bundleItem of product.bundleItems) {
-              if (bundleItem.type === "ticket") {
-                stockReleases.push({
-                  productId: bundleItem.productId,
-                  quantity: item.quantity,
-                });
-              }
+        if (!isBundleTicket) {
+          // Regular ticket order: release stock for the main product
+          stockReleases.push({
+            productId: item.productId,
+            quantity: item.quantity,
+          });
+          continue;
+        }
+
+        // Bundle ticket order: release stock only for ticket bundle items,
+        // not the main product
+        const product = productMap.get(item.productId);
+        if (product?.bundleItems) {
+          for (const bundleItem of product.bundleItems) {
+            if (bundleItem.type === "ticket") {
+              stockReleases.push({
+                productId: bundleItem.productId,
+                quantity: item.quantity,
+              });
             }
           }
         }
@@ -1895,11 +2150,20 @@ export const createOrderServices = (
 
     // TODO: Send email
 
+    ctx.logger.info("orders.expire_pending_payment", {
+      expiredCount: expiredOrdersData.length,
+      orderIds: expiredOrdersData.map((o) => o.id),
+      ticketOrdersWithStockReleased: expiredOrdersData.filter(
+        (o) => o.type === "ticket"
+      ).length,
+      durationMs: Date.now() - startTime,
+    });
     return;
   },
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor to reduce complexity
   expirePendingVerificationOrders: async () => {
+    const startTime = Date.now();
     // First, get all orders that will be expired (before they are updated)
     const ordersToExpire = await ctx.orderQueries.getOrders({
       page: 1,
@@ -1962,23 +2226,29 @@ export const createOrderServices = (
       const stockReleases: { productId: string; quantity: number }[] = [];
 
       for (const item of ticketOrderItems) {
-        // Release main product stock
-        stockReleases.push({
-          productId: item.productId,
-          quantity: item.quantity,
-        });
+        const isBundleTicket =
+          !!item.snapshotBundleProducts &&
+          item.snapshotBundleProducts.length > 0;
 
-        // Release bundle item stocks (only for tickets)
-        if (item.snapshotBundleProducts) {
-          const product = productMap.get(item.productId);
-          if (product?.bundleItems) {
-            for (const bundleItem of product.bundleItems) {
-              if (bundleItem.type === "ticket") {
-                stockReleases.push({
-                  productId: bundleItem.productId,
-                  quantity: item.quantity,
-                });
-              }
+        if (!isBundleTicket) {
+          // Regular ticket order: release stock for the main product
+          stockReleases.push({
+            productId: item.productId,
+            quantity: item.quantity,
+          });
+          continue;
+        }
+
+        // Bundle ticket order: release stock only for ticket bundle items,
+        // not the main product
+        const product = productMap.get(item.productId);
+        if (product?.bundleItems) {
+          for (const bundleItem of product.bundleItems) {
+            if (bundleItem.type === "ticket") {
+              stockReleases.push({
+                productId: bundleItem.productId,
+                quantity: item.quantity,
+              });
             }
           }
         }
@@ -1990,6 +2260,26 @@ export const createOrderServices = (
 
     // TODO: Send email
 
+    ctx.logger.info("orders.expire_pending_verification", {
+      expiredCount: expiredOrdersData.length,
+      orderIds: expiredOrdersData.map((o) => o.id),
+      ticketOrdersWithStockReleased: expiredOrdersData.filter(
+        (o) => o.type === "ticket"
+      ).length,
+      durationMs: Date.now() - startTime,
+    });
     return;
+  },
+
+  getDashboardPendingStats: async () => {
+    return await ctx.orderQueries.getOrderPendingCounts();
+  },
+
+  getSoldTicketsByProduct: async () => {
+    return await ctx.orderQueries.getSoldTicketQuantityByProduct();
+  },
+
+  getSoldMerchByProduct: async () => {
+    return await ctx.orderQueries.getSoldMerchQuantityByProduct();
   },
 });

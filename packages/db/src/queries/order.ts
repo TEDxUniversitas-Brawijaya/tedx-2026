@@ -54,6 +54,24 @@ export type OrderQueries = {
   expirePendingVerificationOrders: () => Promise<
     Pick<SelectOrder, "buyerEmail">[]
   >;
+
+  getOrderPendingCounts: () => Promise<{
+    pendingVerificationsCount: number;
+    refundRequestedCount: number;
+  }>;
+
+  getSoldTicketQuantityByProduct: () => Promise<
+    { productId: string; quantitySold: number }[]
+  >;
+
+  getSoldMerchQuantityByProduct: () => Promise<
+    {
+      productId: string;
+      name: string;
+      quantitySold: number;
+      unpickedUpQuantity: number;
+    }[]
+  >;
 };
 
 export const createOrderQueries = (db: DB): OrderQueries => ({
@@ -231,5 +249,50 @@ export const createOrderQueries = (db: DB): OrderQueries => ({
       .returning({ buyerEmail: ordersTable.buyerEmail });
 
     return expiredOrders;
+  },
+
+  getOrderPendingCounts: async () => {
+    const [[pendingRow], [refundRow]] = await db.batch([
+      db
+        .select({ count: sql<number>`cast(count(*) as integer)` })
+        .from(ordersTable)
+        .where(eq(ordersTable.status, "pending_verification")),
+      db
+        .select({ count: sql<number>`cast(count(*) as integer)` })
+        .from(ordersTable)
+        .where(eq(ordersTable.status, "refund_requested")),
+    ]);
+    return {
+      pendingVerificationsCount: pendingRow?.count ?? 0,
+      refundRequestedCount: refundRow?.count ?? 0,
+    };
+  },
+
+  getSoldTicketQuantityByProduct: async () => {
+    return await db
+      .select({
+        productId: orderItemsTable.productId,
+        quantitySold: sql<number>`cast(sum(${orderItemsTable.quantity}) as integer)`,
+      })
+      .from(orderItemsTable)
+      .innerJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
+      .where(
+        and(eq(ordersTable.status, "paid"), eq(ordersTable.type, "ticket"))
+      )
+      .groupBy(orderItemsTable.productId);
+  },
+
+  getSoldMerchQuantityByProduct: async () => {
+    return await db
+      .select({
+        productId: orderItemsTable.productId,
+        name: orderItemsTable.snapshotName,
+        quantitySold: sql<number>`cast(sum(${orderItemsTable.quantity}) as integer)`,
+        unpickedUpQuantity: sql<number>`cast(sum(case when ${ordersTable.pickedUpAt} is null then ${orderItemsTable.quantity} else 0 end) as integer)`,
+      })
+      .from(orderItemsTable)
+      .innerJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
+      .where(and(eq(ordersTable.status, "paid"), eq(ordersTable.type, "merch")))
+      .groupBy(orderItemsTable.productId, orderItemsTable.snapshotName);
   },
 });
