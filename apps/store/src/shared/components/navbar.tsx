@@ -17,7 +17,7 @@ type MenuItem = {
 };
 
 const menu: readonly MenuItem[] = [
-  { name: "Home", href: "/" },
+  { name: "Home", href: "https://tedxuniversitasbrawijaya.com" },
   {
     name: "About Us",
     children: [

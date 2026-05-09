@@ -8,8 +8,8 @@ import { toast } from "sonner";
 import { isManualPayment } from "../../configs/payment";
 import { formatIdrCurrency } from "../../lib/formatter";
 import { useTicketCheckoutStore } from "../../stores/use-ticket-checkout-store";
-import type { TicketBuyer } from "../../types/ticket";
 import type { CartItem } from "../../types/checkout";
+import type { TicketBuyer } from "../../types/ticket";
 
 type TicketSummaryStepProps = {
   buyer: TicketBuyer;
@@ -76,6 +76,49 @@ export const TicketSummaryStep = ({
     });
   };
 
+  const getDescription = () => {
+    if (selectedProduct.bundleItems) {
+      return (
+        selectedProduct.bundleItems
+          // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO
+          .map((item) => {
+            if (item.type === "selectable_item") {
+              return "";
+            }
+
+            if (item.type === "ticket") {
+              return `Tiket ${item.product.name}`;
+            }
+
+            if (item.type === "merchandise_product") {
+              return item.product.name;
+            }
+
+            if (item.type === "merchandise") {
+              const selectedBundleProduct =
+                selectedProduct.selectedBundleProducts?.find(
+                  (p) => p.category === item.category
+                );
+
+              return selectedBundleProduct?.productId
+                ? selectedBundleProduct.product.name
+                : "";
+            }
+
+            return "";
+          })
+          .filter((desc) => desc !== "")
+          .join(", ")
+      );
+    }
+    if (selectedProduct.description) {
+      return selectedProduct.description;
+    }
+    return "";
+  };
+
+  const description = getDescription();
+
   return (
     <div className="flex max-h-[80vh] flex-col">
       <DialogHeader className="text-left">
@@ -94,9 +137,7 @@ export const TicketSummaryStep = ({
             <div className="flex items-start justify-between gap-4 border-white/10 border-b pb-4">
               <span className="shrink-0 text-gray-2">Tiket yang Dibeli</span>
               <span className="max-w-[60%] text-right font-bold text-white">
-                {selectedProduct.name}
-                {selectedProduct.description &&
-                  ` (${selectedProduct.description})`}
+                {selectedProduct.name} ({description})
               </span>
             </div>
             <div className="flex items-start justify-between gap-4 border-white/10 border-b pb-4">

@@ -37,10 +37,38 @@ export const TicketProductCard = ({ product }: TicketProductCardProps) => {
 
   const onOpenCheckout = () => {
     const defaultBundleProducts = product.bundleItems
-      ?.filter((bundleItem) => bundleItem.type === "ticket")
+      ?.filter(
+        (bundleItem) =>
+          bundleItem.type === "ticket" ||
+          bundleItem.type === "merchandise" ||
+          bundleItem.type === "merchandise_product"
+      )
       ?.map((bundleItem) => {
+        if (
+          bundleItem.type === "ticket" ||
+          bundleItem.type === "merchandise_product"
+        ) {
+          return {
+            productId: bundleItem.productId,
+            product: {
+              name: bundleItem.product.name,
+            },
+            category: null,
+          };
+        }
+
+        const firstProduct = bundleItem.products[0];
+        if (!firstProduct) {
+          throw new Error(
+            "Bundle item of type merchandise must have at least one product."
+          );
+        }
         return {
-          productId: bundleItem.productId,
+          productId: firstProduct.id,
+          category: bundleItem.category,
+          product: {
+            name: firstProduct.name,
+          },
         };
       });
 

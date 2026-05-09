@@ -10,20 +10,25 @@ export const progressSteps: {
   identification: {
     idx: 1,
     prev: null,
+    next: "choose_bundle_item",
+  },
+  choose_bundle_item: {
+    idx: 2,
+    prev: "identification",
     next: "summary",
   },
   summary: {
-    idx: 2,
-    prev: "identification",
+    idx: 3,
+    prev: "choose_bundle_item",
     next: "payment",
   },
   payment: {
-    idx: 3,
+    idx: 4,
     prev: "summary",
     next: "success",
   },
   success: {
-    idx: 4,
+    idx: 5,
     prev: "payment",
     next: null,
   },
