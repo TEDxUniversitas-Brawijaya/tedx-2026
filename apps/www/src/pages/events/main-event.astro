@@ -315,10 +315,9 @@ const processedSpeakers = speakers.map((s) => {
                 <div class="tv-presale-body">
                   <p class="presale-label">
                     {currentDate >= new Date("2026-05-17")
-                      ? "Normal Ticket"
-                      : "Presale ticket"}
+                      ? "Normal Ticket Main Event"
+                      : "Presale Ticket Main Event"}
                   </p>
-                  <p class="presale-event">main event</p>
                   <p class="presale-date">
                     {currentDate >= new Date("2026-05-17")
                       ? "17 Mei - 23 Mei"
@@ -339,12 +338,12 @@ const processedSpeakers = speakers.map((s) => {
               <h2>Lokasi dan Waktu</h2>
               <div class="location-details">
                 <p>Lokasi: Auditorium Widyaloka Universitas Brawijaya</p>
-                <p>Waktu: 9:15 - 17.00 WIB</p>
+                <p>Waktu: 9.00 - selesai</p>
               </div>
               <a
                 href="https://store.tedxuniversitasbrawijaya.com/tickets"
                 class="buy-ticket-btn"
-                >Buy ticket Main Event</a
+                >Buy Main Event Tickets</a
               >
             </div>
           </div>
@@ -352,10 +351,10 @@ const processedSpeakers = speakers.map((s) => {
         </section>
 
         <div id="video-teaser-floating"></div>
+        <Footer />
       </div>
     </div>
   </main>
-  <Footer />
 </Layout>
 
 <style>
@@ -1454,6 +1453,10 @@ const processedSpeakers = speakers.map((s) => {
     opacity: 0.5;
   }
 
+  .is-zoomed #tv-next {
+    visibility: hidden;
+  }
+
   .location-info-wrapper {
     position: absolute;
     top: 28dvh;
@@ -1610,6 +1613,18 @@ const processedSpeakers = speakers.map((s) => {
       bottom: 59dvw;
       gap: 6vw;
     }
+    .is-zoomed .tv-controls::before {
+      content: "Sebelumnya";
+      visibility: hidden;
+      font-family: var(--font-serif);
+      font-size: 1.2dvh;
+    }
+    .is-zoomed .tv-controls #tv-next {
+      display: none;
+    }
+    .is-zoomed .tv-controls #tv-prev {
+      order: 3;
+    }
     #tv-content {
       font-size: 3vw;
     }
@@ -1658,14 +1673,15 @@ const processedSpeakers = speakers.map((s) => {
     }
 
     #tv-speaker.show-detail .speaker-detail-wrapper {
-      width: 100%;
+      width: 57%;
     }
 
     #tv-speaker.show-detail .speaker-detail-text {
       height: 85%;
-      font-size: 1.6vw;
-      width: 45vw; /* Stable width for mobile detail */
-      min-width: 45vw;
+      font-size: 1.5vw;
+      width: 100%;
+      min-width: auto;
+      text-align: justify;
     }
 
     #video-teaser-floating {
