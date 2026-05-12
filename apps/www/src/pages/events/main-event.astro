@@ -1,8 +1,2718 @@
 ---
-import ComingSoon from "@/components/coming-soon.astro";
+import ClosedDoor from "@/assets/imgs/closed-door.png";
+import SemiOpenedDoor from "@/assets/imgs/semi-opened-door.png";
+import Window1 from "@/assets/imgs/window-1.png";
+import OpenedDoor from "@/assets/imgs/opened-door.png";
+import HouseNumber1 from "@/assets/imgs/house-number-1.png";
+import PrintTexture1 from "@/assets/imgs/print-texture-1.png";
+import Clock from "@/assets/imgs/clock.png";
+import WallTexture1 from "@/assets/imgs/wall-texture-1.png";
+import WhiteWallEffect1 from "@/assets/imgs/white-wall-effect-1.png";
+import GreenRoomBackground1 from "@/assets/imgs/green-room-background-1.png";
+import FrameEP from "@/assets/imgs/frame-ep.png";
+import FrameEM from "@/assets/imgs/frame-em.png";
+import FrameCEM from "@/assets/imgs/frame-cem.png";
+import FrameVP from "@/assets/imgs/frame-vp.png";
+import FrameSponsorship from "@/assets/imgs/frame-sponsorship.png";
+import FrameCurator from "@/assets/imgs/frame-curator.png";
+import FrameDesign from "@/assets/imgs/frame-design.png";
+import FrameWebsite from "@/assets/imgs/frame-website.png";
+import WoodFloor from "@/assets/imgs/wood-floor.png";
+import Desk from "@/assets/imgs/desk.png";
+import StandLamp from "@/assets/imgs/stand-lamp.png";
+import TV from "@/assets/imgs/tv.png";
+import Calendar24 from "@/assets/imgs/calendar-24.png";
+import LogoTEDx from "@/assets/imgs/logo.png";
+import PhotoFrameSpeaker from "@/assets/imgs/photo-frame-speaker.png";
+
 import Layout from "@/components/layout.astro";
+import Navbar from "@/components/navbar.astro";
+import Footer from "@/components/footer.astro";
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+import "lenis/dist/lenis.css";
+
+const speakerImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/imgs/speakers/*.png",
+  { eager: true }
+);
+
+const speakers = [
+  {
+    id: "helwa",
+    name: "Aniza Helwa",
+    title: "Mahasiswi Universitas Brawijaya",
+    description:
+      "Mahasiswi Teknik Informatika yang gemar dan aktif berkecimpung dalam dunia organisasi dan komunikasi. Sebagai salah satu Awardee Tanoto Scholarship, Helwa aktif menjalani posisi Project Department sembari mengembangkan skill public speaking yang digemarinya. Kini, ia tengah mengemban peran sebagai Google Student Ambassador 2026 untuk mengintegrasikan budaya 'Psychological Safety' ke lingkup akademik. Ia ingin menciptakan ekosistem di mana setiap mahasiswa berani bereksplorasi dan berinovasi tanpa hambatan rasa takut akan kegagalan.",
+    reveal_date: "2026-05-06",
+  },
+  {
+    id: "himawan",
+    name: "Himawan Adi Nugroho",
+    title: "Founder Humanies Project",
+    description:
+      "Seorang aktivis sosial dan penggerak kemanusiaan yang dikenal sebagai Founder Humanies Project, sebuah platform yang mengonsolidasi kepedulian anak muda terhadap isu kesejahteraan dan kebijakan publik. Ia turut menjadi leader komunitas @greencitzen sebagai sebuah collective movement yang membagikan aksi-aksi mereka dalam menggerakan fandom K-Pop kepada kegiatan sosial dan kemanusiaan. Melalui rekam jejak panjang sebagai relawan, termasuk kepemimpinannya di World Cleanup Day Indonesia, Himawan kini sibuk menggerakkan ribuan relawan dalam aksi tanggap bencana dan kampanye donasi nasional.",
+    reveal_date: "2026-05-09",
+  },
+  {
+    id: "dhova",
+    name: "Ramadhova Mahros Majdi",
+    title: "Content Creator Specialist",
+    description:
+      "Akrab disapa Dhova dalam konten 'Dhova dan Maipa'. Seorang kreator konten dan figur publik yang secara konsisten mengedukasi generasi muda mengenai pentingnya kesehatan mental dan komunikasi dalam hubungan asmara. Memulai perjalanannya dari ketertarikan pada dinamika interpersonal, ia kini aktif mengelola berbagai proyek kreatif yang menyoroti bagaimana sebuah kemitraan setara dapat dibangun melalui keterbukaan.",
+    reveal_date: "2026-05-10",
+  },
+  {
+    id: "bu-zaza",
+    name: "Fariza Yuniar R.",
+    title: "Dosen Ilmu Komunikasi UB",
+    description:
+      "Seorang akademisi dan pakar Ilmu Komunikasi di Universitas Brawijaya dengan spesialisasi utama di bidang komunikasi keluarga. Sebagai peneliti, beliau secara mendalam mengeksplorasi bagaimana pola interaksi dan keterbukaan di dalam rumah tangga membentuk ketahanan mental serta identitas anggotanya. Saat ini, beliau aktif menjalankan riset serta program pengabdian masyarakat yang membekali para orang tua dengan keterampilan komunikasi strategis dalam pengasuhan. Beliau percaya bahwa rumah sejati dibangun melalui komunikasi yang hangat, menjadikan keluarga sebagai tempat kembali yang paling aman bagi setiap individu.",
+    reveal_date: "2026-05-15",
+  },
+  {
+    id: "natkeni",
+    name: "Natasha Keniraras",
+    title: "Finalis Miss Indonesia 2018",
+    description:
+      "Storyteller dan kreator konten lulusan Teknik Perkapalan Institut Teknologi Sepuluh Nopember (ITS) yang membawa perspektif unik mengenai otentisitas dan keterhubungan emosional. Memiliki latar belakang prestasi sebagai Finalis 16 Besar Miss Indonesia 2018 mewakili NTB dan bagian dari Paguyuban Cak & Ning Surabaya, ia kini dikenal luas melalui identitas 'CEO of Sexy Javanese Accent' yang ia gunakan sebagai instrumen komunikasi jujur untuk merayakan akar budayanya.",
+    reveal_date: "2026-05-16",
+  },
+  {
+    id: "leya",
+    name: "Harleyava Princy",
+    title: "Aktris",
+    description:
+      "Perempuan muda yang tumbuh dalam dunia seni peran dengan semangat eksplorasi dan ekspresi tanpa batas, Harleyava Princy atau Leya dikenal sebagai aktris dan figur publik yang menghadirkan emosi autentik melalui setiap karakter yang ia perankan. Ia mulai menapaki karier akting sejak 2023 dan semakin dikenal luas lewat perannya sebagai Cinta dalam film musikal Rangga & Cinta (2025), yang mengantarkannya meraih penghargaan Aktris Pilihan Penonton Festival Film Indonesia 2025.",
+    reveal_date: "2026-05-17",
+  },
+];
+
+const imageMapping: Record<string, string> = {
+  helwa: "aniza.png",
+  "bu-zaza": "fariza.png",
+};
+
+const currentDate = new Date();
+const processedSpeakers = speakers.map((s) => {
+  const isRevealed = new Date(s.reveal_date) <= currentDate;
+  const baseFilename = imageMapping[s.id] || `${s.id}.png`;
+  const filename = isRevealed
+    ? baseFilename
+    : baseFilename.replace(".png", "-unrevealed.png");
+
+  const imageKey = `/src/assets/imgs/speakers/${filename}`;
+  return {
+    ...s,
+    name: isRevealed ? s.name : "Coming Soon",
+    title: isRevealed ? s.title : "Coming Soon",
+    description: isRevealed ? s.description || "" : "Coming Soon",
+    imageSrc: speakerImages[imageKey]?.default.src || "",
+    isRevealed,
+  };
+});
 ---
 
-<Layout>
-  <ComingSoon />
+<Layout
+  title="Main Event - TEDx Universitas Brawijaya 2026"
+  description="Experience the main event of TEDx Universitas Brawijaya 2026. Join us for a day of inspiring talks and ideas."
+>
+  <Navbar />
+  <main>
+    <div id="outside">
+      <Image src={WhiteWallEffect1} alt="" class="white-wall-effect-1" />
+      <Image src={WallTexture1} alt="" class="wall-texture-1" />
+      <Image src={WallTexture1} alt="" class="wall-texture-2" />
+      <div id="door-container">
+        <Image
+          src={OpenedDoor}
+          alt="Opened Door"
+          class="door"
+          id="opened-door"
+        />
+        <Image
+          src={SemiOpenedDoor}
+          alt="Semi-Opened Door"
+          class="door"
+          id="semi-opened-door"
+        />
+        <Image
+          src={ClosedDoor}
+          alt="Closed Door"
+          class="door"
+          id="closed-door"
+        />
+      </div>
+
+      <Image src={HouseNumber1} alt="House Number 1" class="house-number-1" />
+
+      <Image src={Window1} alt="Window 1" class="window-1" />
+
+      <Image src={PrintTexture1} alt="" class="print-texture-1" />
+
+      <div class="content">
+        <h2>
+          Main Event <br>
+          TEDxUniversitas Brawijaya,
+        </h2>
+        <p>
+          Hadir sebagai panggung utama, ruang bertemunya ide, suara, dan
+          pengalaman yang mengajakmu menepi sejenak untuk merefleksikan hidup
+          sebagai perjalanan kebersamaan
+        </p>
+        <button id="continue-btn" type="button">Lanjutkan</button>
+
+        <div class="background"></div>
+      </div>
+    </div>
+    <div id="inside">
+      <div class="lenis-content">
+        <div id="video-teaser-anchor"></div>
+
+        <section class="inside-section">
+          <div class="overlay"></div>
+          <Image src={GreenRoomBackground1} alt="" class="section-bg" />
+          <div class="absolute-container">
+            <Image src={Clock} alt="clock" class="clock" />
+          </div>
+
+          <div id="frames">
+            <div class="frame-ep-container">
+              <Image src={FrameEP} alt="Frame EP" class="frame-ep" />
+            </div>
+            <div class="frame-em-container">
+              <Image src={FrameEM} alt="Frame EM" class="frame-em" />
+            </div>
+            <div class="frame-cem-container">
+              <Image src={FrameCEM} alt="Frame CEM" class="frame-cem" />
+            </div>
+            <div class="frame-vp-container">
+              <Image src={FrameVP} alt="Frame VP" class="frame-vp" />
+            </div>
+            <div class="frame-sponsorship-container">
+              <Image
+                src={FrameSponsorship}
+                alt="Frame Sponsorship"
+                class="frame-sponsorship"
+              />
+            </div>
+            <div class="frame-curator-container">
+              <Image
+                src={FrameCurator}
+                alt="Frame Curator"
+                class="frame-curator"
+              />
+            </div>
+            <div class="frame-design-container">
+              <Image
+                src={FrameDesign}
+                alt="Frame Design"
+                class="frame-design"
+              />
+            </div>
+            <div class="frame-website-container">
+              <Image
+                src={FrameWebsite}
+                alt="Frame Website"
+                class="frame-website"
+              />
+            </div>
+          </div>
+
+          <div class="section-content">
+            <h2>
+              Bertumbuh Bersama: Cerita yang Kita Bawa, <br> Rumah yang Kita
+              Cipta
+            </h2>
+            <p>
+              Panggung ini merajut kisah tentang keluarga sebagai ruang yang
+              terus dibentuk dari rasa yang dijaga, dialog yang dipertahankan,
+              dan perbedaan yang perlahan dirangkul. Di sini, cerita-cerita
+              beresonansi; luka menemukan tempatnya untuk singgah, tawa hadir
+              dengan hangat, dan makna tumbuh perlahan, mengantar kita pulang,
+              bukan pada tempat, melainkan pada kehangatan yang kita ciptakan
+              bersama.
+            </p>
+          </div>
+        </section>
+
+        <section class="inside-section" id="room-section">
+          <div class="overlay"></div>
+          <Image src={GreenRoomBackground1} alt="" class="section-bg" />
+
+          <div class="calendar-wrapper">
+            <Image src={Calendar24} alt="Calendar" class="calendar-24" />
+            {processedSpeakers.map(
+              (speaker) =>
+                speaker.isRevealed && (
+                  <div
+                    class={`coret coret-${new Date(speaker.reveal_date).getDate()}`}
+                  />
+                )
+            )}
+          </div>
+
+          <div class="light-beam-wrapper">
+            <div class="light-beam"></div>
+          </div>
+          <div class="light-pool">
+            <svg
+              width="100%"
+              height="100%"
+              viewBox="0 0 205 47"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse
+                cx="102.29"
+                cy="23.189"
+                rx="102.465"
+                ry="22.3962"
+                transform="rotate(-3.43409 102.29 23.189)"
+                fill="#FF9500"
+              />
+            </svg>
+          </div>
+          <Image src={StandLamp} alt="Lamp" class="stand-lamp" />
+
+          <div class="zoom-container">
+            <div class="section-content"></div>
+            <Image src={TV} alt="TV" class="tv" />
+            <div class="tv-screen">
+              <div id="tv-content">Bertumbuh Bersama</div>
+              <div
+                id="tv-speaker"
+                style="display: none;"
+                data-speakers={JSON.stringify(processedSpeakers)}
+              >
+                <div class="speaker-layout">
+                  <div class="speaker-card" id="speaker-card">
+                    <img
+                      src=""
+                      alt=""
+                      class="speaker-photo"
+                      id="speaker-photo-img"
+                    >
+                    <Image
+                      src={PhotoFrameSpeaker}
+                      alt="Frame"
+                      class="speaker-frame-bg"
+                    />
+                    <div class="speaker-info">
+                      <h3 id="speaker-name-display"></h3>
+                      <p id="speaker-title-display"></p>
+                    </div>
+                  </div>
+                  <div class="speaker-detail-wrapper">
+                    <div
+                      class="speaker-detail-text"
+                      id="speaker-detail-text"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <div id="tv-presale-content" style="display: none;">
+                <div class="tv-presale-body">
+                  <p class="presale-label">
+                    {currentDate >= new Date("2026-05-17")
+                      ? "Normal Ticket Main Event"
+                      : "Presale Ticket Main Event"}
+                  </p>
+                  <p class="presale-date">
+                    {currentDate >= new Date("2026-05-17")
+                      ? "17 Mei - 23 Mei"
+                      : "11 Mei - 16 Mei"}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <Image src={LogoTEDx} alt="TEDx Logo" class="tv-logo" />
+            <div class="tv-controls">
+              <button id="tv-prev" class="control-label">Sebelumnya</button>
+              <button id="tv-detail" class="detail-btn">Detail</button>
+              <button id="tv-next" class="control-label">Selanjutnya</button>
+            </div>
+            <Image src={Desk} alt="Desk" class="desk" />
+
+            <div class="location-info-wrapper">
+              <h2>Lokasi dan Waktu</h2>
+              <div class="location-details">
+                <p>Lokasi: Auditorium Widyaloka Universitas Brawijaya</p>
+                <p>Waktu: 9.00 - selesai</p>
+              </div>
+              <a
+                href="https://store.tedxuniversitasbrawijaya.com/tickets"
+                class="buy-ticket-btn"
+                >Buy Main Event Tickets</a
+              >
+            </div>
+          </div>
+          <Image src={WoodFloor} alt="Floor" class="wood-floor" />
+        </section>
+
+        <div id="video-teaser-floating"></div>
+        <Footer />
+      </div>
+    </div>
+  </main>
 </Layout>
+
+<style>
+  main {
+    background-color: var(--color-green);
+    height: 100dvh;
+    position: relative;
+    overflow: hidden;
+    padding-top: var(--navbar-height);
+
+    transition: opacity 0.25s ease-in-out;
+  }
+
+  #outside {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    --door-height: 40dvh;
+    z-index: 2;
+    display: block;
+
+    transform: scale(1);
+    transform-origin: 20% 80%;
+
+    transition:
+      transform 3s ease-in-out,
+      opacity 0.25s ease-in-out;
+  }
+
+  #inside {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100dvw;
+    opacity: 0;
+    z-index: 1;
+    overflow-y: auto;
+    transition: opacity 0.25s ease-in-out;
+  }
+
+  .inside-section {
+    position: relative;
+    height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 20dvh;
+    text-align: center;
+    color: var(--color-white);
+  }
+
+  .inside-section .section-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150vw;
+    height: 190vh;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .inside-section .section-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    max-width: 60rem;
+    text-align: center;
+    color: var(--color-white);
+  }
+
+  .inside-section h2 {
+    font-family: var(--font-serif);
+    color: white;
+    font-size: 3dvh;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  .inside-section p {
+    font-family: var(--font-sans);
+    font-size: 2dvh;
+    width: 80%;
+    color: white;
+    margin: 0 auto;
+    font-weight: ;
+    text-wrap: pretty;
+  }
+
+  .absolute-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .clock {
+    position: absolute;
+    height: 30dvh;
+    width: auto;
+    aspect-ratio: 252.73 / 253;
+    object-fit: contain;
+    left: 12dvh;
+    bottom: 12dvh;
+    display: block;
+    z-index: 2;
+  }
+
+  #video-teaser-anchor {
+    position: absolute;
+    top: 100dvh;
+    left: 0;
+    width: 100%;
+    height: 0;
+    pointer-events: none;
+  }
+  /* TODO : add video */
+  #video-teaser-floating {
+    display: none;
+    position: absolute;
+    top: 120dvh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80vw;
+    max-width: 1133px;
+    aspect-ratio: 1133 / 539;
+    background-color: #d9d9d9;
+    z-index: 50;
+    opacity: 0.4;
+    will-change: transform;
+    transition: none;
+  }
+
+  /* ── Ornament Frames ── */
+  #frames {
+    position: absolute;
+    bottom: -35dvh;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .frame-ep-container {
+    position: absolute;
+    top: 6%;
+    left: 50%;
+    transform: translateX(-320%);
+    width: auto;
+    height: 16.5dvh;
+    aspect-ratio: 0.72 / 1;
+  }
+
+  .frame-ep {
+    width: auto;
+    height: 16.5dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 0.72 / 1;
+  }
+
+  .frame-em-container {
+    position: absolute;
+    top: 4%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: 19.8dvh;
+    aspect-ratio: 0.83 / 1;
+  }
+
+  .frame-em {
+    width: auto;
+    height: 19.8dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 0.83 / 1;
+  }
+
+  .frame-cem-container {
+    position: absolute;
+    top: 6%;
+    left: 50%;
+    transform: translateX(190%);
+    width: auto;
+    height: 17.8dvh;
+    aspect-ratio: 0.8 / 1;
+  }
+
+  .frame-cem {
+    width: auto;
+    height: 17.8dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 0.8 / 1;
+  }
+
+  .frame-vp-container {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-260%);
+    width: auto;
+    height: 12.5dvh;
+    aspect-ratio: 1.26 / 1;
+  }
+
+  .frame-vp {
+    width: auto;
+    height: 12.5dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 1.26 / 1;
+  }
+
+  .frame-sponsorship-container {
+    position: absolute;
+    top: 32%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: 11.2dvh;
+    aspect-ratio: 1.35 / 1;
+  }
+
+  .frame-sponsorship {
+    width: auto;
+    height: 11.2dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 1.35 / 1;
+  }
+
+  .frame-curator-container {
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    transform: translateX(170%);
+    width: auto;
+    height: 11.2dvh;
+    aspect-ratio: 1.38 / 1;
+  }
+
+  .frame-curator {
+    width: auto;
+    height: 11.2dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 1.38 / 1;
+  }
+
+  .frame-design-container {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translateX(-190%);
+    width: auto;
+    height: 15.2dvh;
+    aspect-ratio: 0.8 / 1;
+  }
+
+  .frame-design {
+    width: auto;
+    height: 15.2dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 0.8 / 1;
+  }
+
+  .frame-website-container {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translateX(75%);
+    width: auto;
+    height: 15.2dvh;
+    aspect-ratio: 0.8 / 1;
+  }
+
+  .frame-website {
+    width: auto;
+    height: 15.2dvh;
+    object-fit: cover;
+    overflow: visible;
+    object-position: center;
+    aspect-ratio: 0.8 / 1;
+  }
+
+  .inside-section:nth-child(3) .section-bg {
+    transform: translate(-50%, -50%) scaleY(-1);
+  }
+
+  .inside-section:nth-child(3) {
+    margin-top: -1px;
+  }
+
+  .inside-section .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      circle,
+      rgba(74, 72, 117, 0) 0%,
+      rgba(74, 72, 117, 1) 100%
+    );
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .white-wall-effect-1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100dvw;
+    height: 110dvh;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+    aspect-ratio: 1.78 / 1;
+    z-index: 1;
+  }
+
+  .wall-texture-1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+    mix-blend-mode: soft-light;
+    aspect-ratio: 1.78 / 1;
+    z-index: 1;
+  }
+
+  .wall-texture-2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+    mix-blend-mode: color-burn;
+    aspect-ratio: 1.78 / 1;
+    opacity: 0.83;
+    filter: blur(25px);
+    z-index: 1;
+  }
+
+  #door-container {
+    position: absolute;
+    bottom: -2%;
+    left: 50%;
+    transform: translateX(-90%);
+    width: auto;
+    height: var(--door-height);
+    pointer-events: none;
+    object-position: center;
+    aspect-ratio: 0.49 / 1;
+    z-index: 2;
+  }
+
+  .door {
+    position: absolute;
+    width: auto;
+    height: auto;
+    transition: opacity 0.25s ease-in-out;
+  }
+
+  .window-1 {
+    display: none;
+    position: absolute;
+    bottom: var(--door-height);
+    left: 50%;
+    transform: translate(-170%, 100%);
+    width: auto;
+    height: 10dvh; /* Default mobile height */
+    pointer-events: none;
+    aspect-ratio: 0.72 / 1;
+    z-index: 5;
+  }
+
+  .house-number-1 {
+    position: absolute;
+    bottom: var(--door-height);
+    left: 50%;
+    transform: translate(40%, 100%);
+    width: auto;
+    height: 10dvh;
+    pointer-events: none;
+    aspect-ratio: 1.27 / 1;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+    z-index: 3;
+  }
+
+  .print-texture-1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 105dvh;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    aspect-ratio: 1.48 / 1;
+    z-index: 1;
+  }
+
+  #outside .content {
+    position: absolute;
+    top: calc(var(--navbar-height) + 1rem);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 30rem;
+    text-align: center;
+    color: var(--color-white);
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+
+  #outside .content .background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    height: 120%;
+    background-color: black;
+    z-index: -1;
+    opacity: 0.63;
+    filter: blur(75px);
+  }
+
+  #outside .content h2 {
+    position: relative;
+    z-index: 11;
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    color: var(--color-white);
+    text-wrap-style: balance;
+  }
+
+  #outside .content p {
+    position: relative;
+    z-index: 11;
+    font-family: var(--font-sans);
+    font-size: var(--text-m);
+    color: var(--color-white);
+    text-wrap-style: pretty;
+  }
+
+  #outside .content button {
+    position: relative;
+    z-index: 11;
+    font-family: var(--font-serif);
+    font-size: var(--text-m);
+    color: var(--color-white);
+    padding: 1rem 2rem;
+    background-color: var(--color-red-2);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  #outside .content button:hover {
+    background-color: color-mix(
+      in oklch,
+      var(--color-red-2) 80%,
+      transparent 20%
+    );
+  }
+
+  .wood-floor {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100dvw;
+    height: 15dvh;
+    object-fit: cover;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .desk {
+    position: absolute;
+    bottom: 5dvh; /* Sits slightly above the bottom to look like it's on the floor */
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: 36dvh;
+    aspect-ratio: 1036 / 341;
+    object-fit: contain;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .tv {
+    position: absolute;
+    bottom: 39dvh;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 40dvh;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .calendar-wrapper {
+    position: absolute;
+    top: 15dvh;
+    left: 26dvh;
+    height: 28dvh;
+    z-index: 2;
+    pointer-events: none;
+    display: inline-block;
+    transition: all 1.5s cubic-bezier(0.45, 0, 0.55, 1);
+  }
+
+  .calendar-24 {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  .coret {
+    position: absolute;
+    background-color: #eb0028;
+    border-radius: 0.2dvh;
+    width: 15%;
+    height: 0.4dvh;
+    transform: translate(-60%, -20%) rotate(-60deg);
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    opacity: 0;
+  }
+
+  .coret-6 {
+    top: 62%;
+    left: 41%;
+  }
+
+  .coret-9 {
+    top: 62%;
+    left: 78.5%;
+  }
+
+  .coret-10 {
+    top: 62%;
+    left: 91%;
+  }
+
+  .coret-15 {
+    top: 73.5%;
+    left: 66%;
+  }
+
+  .coret-16 {
+    top: 73.5%;
+    left: 78.5%;
+  }
+
+  .coret-17 {
+    top: 73.5%;
+    left: 91%;
+  }
+
+  .coret-15 {
+    top: 73.5%;
+    left: 66%;
+  }
+
+  .coret-16 {
+    top: 73.5%;
+    left: 78.5%;
+  }
+
+  .coret-17 {
+    top: 73.5%;
+    left: 91%;
+  }
+
+  .animate-coret .coret {
+    animation: drawCoret 0.8s ease-out forwards;
+  }
+
+  .animate-coret .coret-6 {
+    animation-delay: 1.4s;
+  }
+
+  .animate-coret .coret-9 {
+    animation-delay: 2s;
+  }
+
+  .animate-coret .coret-10 {
+    animation-delay: 2.6s;
+  }
+
+  .animate-coret .coret-15 {
+    animation-delay: 3.2s;
+  }
+
+  .animate-coret .coret-16 {
+    animation-delay: 3.8s;
+  }
+
+  .animate-coret .coret-17 {
+    animation-delay: 4.4s;
+  }
+
+  .animate-coret .coret-15 {
+    animation-delay: 3.2s;
+  }
+
+  .animate-coret .coret-16 {
+    animation-delay: 3.8s;
+  }
+
+  .animate-coret .coret-17 {
+    animation-delay: 4.4s;
+  }
+
+  @keyframes drawCoret {
+    0% {
+      clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+      opacity: 1;
+    }
+    100% {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      opacity: 1;
+    }
+  }
+
+  .tv-logo {
+    position: absolute;
+    bottom: 70dvh;
+    left: calc(50% - 18dvh);
+    width: 15dvh;
+    height: auto;
+    object-fit: contain;
+    z-index: 6;
+    pointer-events: none;
+    opacity: 0.8;
+  }
+
+  .tv-controls {
+    position: absolute;
+    bottom: 43.5dvh;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 4.4dvh;
+    z-index: 5;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .detail-btn {
+    background-color: black;
+    color: white;
+    font-family: var(--font-serif);
+    font-size: 1.2dvh;
+    padding: 0.5dvh 2.2dvh;
+    border-radius: 2rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2dvh 3.5dvh rgba(0, 0, 0, 0.6);
+    transition: background-color 0.3s ease;
+  }
+
+  .is-zoomed .detail-btn {
+    background-color: black !important;
+  }
+
+  .tv-screen {
+    position: absolute;
+    bottom: 39dvh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40dvh;
+    height: 40dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    z-index: 5;
+    overflow: hidden;
+  }
+
+  .tv-screen::before {
+    content: "";
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    width: 80%;
+    height: 65%;
+    background:
+      linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+      linear-gradient(
+        90deg,
+        rgba(255, 0, 0, 0.03),
+        rgba(0, 255, 0, 0.01),
+        rgba(0, 0, 255, 0.03)
+      );
+    background-size:
+      100% 3px,
+      3px 100%;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  .tv-screen::after {
+    content: "";
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    width: 80%;
+    height: 65%;
+    background: rgba(255, 255, 255, 0.05);
+    opacity: 0;
+    z-index: 3;
+    pointer-events: none;
+    animation: tv-flicker 0.15s infinite;
+  }
+
+  @keyframes tv-flicker {
+    0% {
+      opacity: 0.01;
+    }
+    50% {
+      opacity: 0.05;
+    }
+    100% {
+      opacity: 0.02;
+    }
+  }
+
+  #tv-content {
+    font-family: var(--font-serif);
+    font-size: 2.2dvh;
+    color: white;
+    text-align: center;
+    max-width: 65%;
+    line-height: 1.2;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    transform: translateY(-2dvh);
+    z-index: 1;
+    transition:
+      opacity 0.2s ease-in-out,
+      filter 0.2s ease-in-out;
+  }
+
+  #tv-speaker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 1;
+    transition:
+      opacity 0.2s ease-in-out,
+      filter 0.2s ease-in-out;
+  }
+
+  .tv-speaker-header {
+    position: absolute;
+    top: 8%;
+    right: 8%;
+    width: 84%;
+    text-align: right;
+    z-index: 4;
+  }
+
+  .location-details {
+    margin-bottom: 2dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .location-details p {
+    font-family: var(--font-sans);
+    font-size: 2.2dvh;
+    color: white;
+    margin: 0.8dvh 0;
+    text-align: center;
+  }
+
+  .tv-speaker-title {
+    font-family: var(--font-sans);
+    font-size: 1.8dvh;
+    color: white;
+    opacity: 0.9;
+  }
+
+  .speaker-layout {
+    position: absolute;
+    top: 13%;
+    left: 8%;
+    width: 84%;
+    height: 75%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5%;
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .speaker-card {
+    position: relative;
+    width: 35%;
+    min-width: 35%;
+    max-width: 35%;
+    flex-shrink: 0;
+    height: max-content;
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .speaker-frame-bg {
+    width: 100%;
+    height: auto;
+    display: block;
+    position: relative;
+    z-index: 2;
+  }
+
+  .speaker-photo {
+    position: absolute;
+    top: 8%;
+    left: 16%;
+    width: 72%;
+    height: 75%;
+    object-fit: cover;
+    z-index: 4;
+    border-radius: 0.2dvh;
+    background-color: #fbf2dc;
+  }
+
+  .speaker-photo.is-coming-soon {
+    background-color: #242424;
+    transition: none !important;
+  }
+
+  .speaker-info {
+    position: absolute;
+    bottom: 2%;
+    left: 0%;
+    font-family: var(--font-serif-2);
+    width: 100%;
+    height: 15%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+  }
+
+  #speaker-name-display {
+    font-family: var(--font-serif);
+    font-size: 1.2dvh;
+    color: #fbf2dc;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  #speaker-title-display {
+    font-family: var(--font-sans);
+    font-size: 0.8dvh;
+    color: #fbf2dc;
+    margin: 0 auto;
+    text-align: center;
+    opacity: 0.8;
+  }
+
+  .speaker-detail-wrapper {
+    width: 0;
+    overflow: hidden;
+    transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    display: flex;
+    align-items: center;
+  }
+
+  .speaker-detail-text {
+    width: 22dvh; /* Stable width to prevent reflow during transition */
+    min-width: 22dvh;
+    opacity: 0;
+    font-family: var(--font-serif);
+    font-size: 1dvh;
+    line-height: 1.5;
+    color: #fbf2dc;
+    text-align: left;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  #tv-speaker.show-detail .speaker-layout {
+    justify-content: center;
+  }
+
+  #tv-speaker.show-detail .speaker-card {
+    /* No size changes, inherits from .speaker-card */
+  }
+
+  #tv-speaker.show-detail .speaker-detail-wrapper {
+    width: 55%;
+  }
+
+  #tv-speaker.show-detail .speaker-detail-text {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out 0.2s; /* Slight delay for better feel */
+  }
+
+  .tv-glitch {
+    filter: blur(2px) brightness(1.5);
+    opacity: 0.5;
+  }
+
+  .control-label {
+    background: none;
+    border: none;
+    font-family: var(--font-serif);
+    font-size: 1.2dvh;
+    color: black;
+    cursor: pointer;
+    padding: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .stand-lamp {
+    position: absolute;
+    bottom: 5dvh;
+    right: 0dvw;
+    width: auto;
+    height: 100dvh;
+    aspect-ratio: 367 / 1009;
+    object-fit: contain;
+    z-index: 2;
+    pointer-events: none;
+    transition: all 1.5s cubic-bezier(0.45, 0, 0.55, 1);
+  }
+
+  .light-beam-wrapper {
+    position: absolute;
+    top: 18dvh;
+    right: -22dvh;
+    width: 90dvh;
+    height: 50dvh;
+    filter: blur(40px);
+    z-index: 1;
+    pointer-events: none;
+    transform-origin: top center;
+    opacity: 0; /* Awalnya mati */
+    transition:
+      opacity 0.1s,
+      transform 1.5s cubic-bezier(0.45, 0, 0.55, 1);
+  }
+
+  .animate-lamp .light-beam-wrapper {
+    animation: flicker 3s ease-in-out forwards;
+  }
+
+  .light-beam {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      #ff9500 0%,
+      rgba(153, 89, 0, 0) 100%
+    );
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+
+  .light-pool {
+    position: absolute;
+    top: 23dvh;
+    right: 12dvh;
+    width: 22dvh;
+    height: auto;
+    filter: blur(2dvh);
+    opacity: 0; /* Awalnya mati */
+    z-index: 5;
+    pointer-events: none;
+    transform: rotate(-1deg);
+    transition:
+      opacity 0.1s,
+      transform 1.5s cubic-bezier(0.45, 0, 0.55, 1);
+  }
+
+  .animate-lamp .light-pool {
+    animation: flicker 3s ease-in-out forwards;
+  }
+
+  @keyframes flicker {
+    0% {
+      opacity: 0;
+    }
+    5% {
+      opacity: 0.8;
+    }
+    10% {
+      opacity: 0.1;
+    }
+    15% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 0.2;
+    }
+    30% {
+      opacity: 0.8;
+    }
+    35% {
+      opacity: 0.1;
+    }
+    40% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Zoom & Location Info */
+  .zoom-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    height: 100%;
+    transition: transform 1.5s cubic-bezier(0.45, 0, 0.55, 1);
+    transform-origin: 50% 50%;
+    z-index: 2;
+  }
+
+  .is-zoomed .zoom-container {
+    transform: scale(1.4) translate(-32dvh, 10dvh);
+  }
+
+  .is-zoomed .calendar-wrapper {
+    /* Allow user to custom calendar position when zoomed */
+    transform: translate(-28dvh, -25dvh) scale(0.8);
+    transition: all 1.5s cubic-bezier(0.45, 0, 0.55, 1);
+    height: 45dvh;
+  }
+
+  .is-zoomed .stand-lamp {
+    transform: scale(1.5) translate(-5dvh, 6dvh);
+    transition: all 1.5s cubic-bezier(0.45, 0, 0.55, 1);
+  }
+
+  .is-zoomed .light-beam-wrapper,
+  .is-zoomed .light-pool {
+    transform: scale(1.3) translate(-7dvh, 0dvh);
+    transition: all 1.5s cubic-bezier(0.45, 0, 0.55, 1);
+    opacity: 0.5;
+  }
+
+  .is-zoomed #tv-next {
+    visibility: hidden;
+  }
+
+  .location-info-wrapper {
+    position: absolute;
+    top: 28dvh;
+    right: 4dvh;
+    width: 40dvh;
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 1s ease-out 0.5s;
+    pointer-events: none;
+  }
+
+  .is-zoomed .location-info-wrapper {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .location-info-wrapper h2 {
+    font-family: var(--font-serif);
+    font-size: 4.2dvh;
+    color: #fbf2dc;
+    margin-bottom: 2dvh;
+    text-shadow: 0 0 15px rgba(255, 149, 0, 0.4);
+  }
+
+  .location-details p {
+    font-family: var(--font-sans);
+    font-size: 2dvh;
+    margin: 0.5dvh 0;
+    color: white;
+    opacity: 1;
+    width: 100%;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .buy-ticket-btn {
+    margin-top: 3dvh;
+    padding: 1rem 2rem;
+    background-color: var(--color-red-2);
+    color: var(--color-white);
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 1.25rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    display: inline-block;
+  }
+
+  .buy-ticket-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    background-color: color-mix(
+      in oklch,
+      var(--color-red-2) 80%,
+      transparent 20%
+    );
+  }
+
+  .buy-ticket-btn:active {
+    transform: translateY(-1px);
+    background-color: color-mix(
+      in oklch,
+      var(--color-red-2) 60%,
+      transparent 40%
+    );
+  }
+
+  /* TV Presale Content Styles */
+  #tv-presale-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    font-family: var(--font-serif) !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fbf2dc !important;
+    text-align: center;
+    z-index: 1;
+  }
+
+  .tv-presale-logo {
+    width: 15dvh;
+    height: auto;
+  }
+
+  .tv-presale-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8dvh;
+    width: 100%;
+    align-items: center;
+  }
+
+  .presale-label {
+    font-family: var(--font-serif) !important;
+    font-size: 3.2dvh;
+    margin: 0;
+    color: white !important;
+    white-space: nowrap;
+  }
+
+  .presale-event {
+    font-family: var(--font-serif) !important;
+    font-size: 2.8dvh;
+    margin: 0;
+    text-transform: lowercase;
+    color: white !important;
+    white-space: nowrap;
+  }
+
+  .presale-date {
+    font-family: var(--font-serif) !important;
+    font-size: 2.2dvh;
+    margin-top: 2dvh;
+    color: white !important;
+    white-space: nowrap !important;
+  }
+
+  /* Responsive Breakpoints */
+
+  /* Mobile (< 768px) */
+  @media (max-width: 767px) {
+    .inside-section {
+      height: 100svh;
+      padding-top: 15svh;
+    }
+
+    .tv {
+      height: 65vw;
+      bottom: 52vw;
+    }
+    .tv-screen {
+      height: 48vw;
+      width: 60vw;
+      bottom: 59vw;
+    }
+    .tv-logo {
+      bottom: 105vw;
+      left: calc(50% - 30vw);
+      width: 15vw;
+    }
+    .tv-controls {
+      bottom: 59dvw;
+      gap: 6vw;
+    }
+    .is-zoomed .tv-controls::before {
+      content: "Sebelumnya";
+      visibility: hidden;
+      font-family: var(--font-serif);
+      font-size: 1.2dvh;
+    }
+    .is-zoomed .tv-controls #tv-next {
+      display: none;
+    }
+    .is-zoomed .tv-controls #tv-prev {
+      order: 3;
+    }
+    #tv-content {
+      font-size: 3vw;
+    }
+    .tv-speaker-title {
+      display: none;
+    }
+
+    /* Speaker Card Adjustments for Mobile */
+    .speaker-layout {
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+    }
+    .speaker-card {
+      width: 40%;
+      min-width: 40%;
+      max-width: 40%;
+      flex-shrink: 0;
+    }
+    .speaker-info {
+      bottom: 1%;
+    }
+    #speaker-name-display {
+      font-size: 2vw;
+      text-align: center;
+      margin: 0 auto;
+    }
+    #speaker-title-display {
+      font-size: 1.5vw;
+      text-align: center;
+      margin: 0.5vw auto 0;
+    }
+
+    /* Khusus Tampilan Detail di Mobile (Side-by-Side) - Dibuat Lebih Lebar */
+    #tv-speaker.show-detail .speaker-layout {
+      flex-direction: row;
+      justify-content: center;
+      gap: 3%;
+      top: 45%;
+      height: 100%;
+      width: 100%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #tv-speaker.show-detail .speaker-detail-wrapper {
+      width: 57%;
+    }
+
+    #tv-speaker.show-detail .speaker-detail-text {
+      height: 85%;
+      font-size: 1.5vw;
+      width: 100%;
+      min-width: auto;
+      text-align: justify;
+    }
+
+    #video-teaser-floating {
+      width: 90vw;
+      top: 90svh;
+    }
+
+    .calendar-wrapper {
+      top: 10dvh;
+      left: 4dvb;
+      height: 20dvh;
+    }
+
+    .clock {
+      display: block;
+      height: 40vw;
+      left: -20vw;
+      bottom: 40vw;
+    }
+    .desk {
+      width: auto;
+      height: 60vw;
+      aspect-ratio: 1036 / 341;
+      bottom: 8vw;
+    }
+    .stand-lamp {
+      height: 130vw;
+      bottom: 8vw;
+      right: -5vw;
+      display: none;
+    }
+    .light-beam-wrapper {
+      display: none;
+    }
+    .light-pool {
+      display: none;
+    }
+    .wood-floor {
+      height: 25vw;
+      bottom: 0;
+    }
+    #frames {
+      bottom: 40dvh;
+      right: -50vw; /* Digeser ke kanan agar kepotong mirip jam */
+      left: auto;
+      width: 90vw;
+      height: 50dvh;
+      transform: scale(0.6);
+      transform-origin: center bottom;
+    }
+
+    /* Row 1 */
+    .frame-ep-container {
+      top: 0;
+      left: 0;
+      transform: none;
+    }
+    .frame-em-container {
+      top: -2%;
+      left: 35%;
+      transform: none;
+    }
+    .frame-cem-container {
+      top: 0;
+      left: 70%;
+      transform: none;
+    }
+
+    /* Row 2 */
+    .frame-vp-container {
+      top: 35%;
+      left: -5%;
+      transform: none;
+    }
+    .frame-sponsorship-container {
+      top: 35%;
+      left: 30%;
+      transform: none;
+    }
+    .frame-curator-container {
+      top: 38%;
+      left: 65%;
+      transform: none;
+    }
+
+    /* Row 3 */
+    .frame-design-container {
+      top: 75%;
+      left: 15%;
+      transform: none;
+    }
+    .frame-website-container {
+      top: 75%;
+      left: 50%;
+      transform: none;
+    }
+
+    /* Zoom for Mobile (Sesuaikan Nilai Ini) */
+    .is-zoomed .zoom-container {
+      transform: scale(1) translate(-35%, 8%);
+    }
+
+    .location-info-wrapper {
+      top: auto;
+      bottom: 84.5vw; /* Mengunci ke titik tengah TV (52vw + 32.5vw) */
+      right: -30dvw;
+      width: 40dvw;
+      transform: translate(
+        100%,
+        50%
+      ); /* 100% ke kanan, 50% ke bawah untuk centering */
+      transition: all 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .is-zoomed .location-info-wrapper {
+      transform: translate(0, 50%); /* Tetap di tengah vertikal saat muncul */
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Kembalikan Lampu saat Zoomed di Mobile */
+    .is-zoomed .stand-lamp {
+      opacity: 1;
+      visibility: visible;
+      display: block;
+      right: -5dvw;
+      bottom: 10vw; /* Disesuaikan agar tetap nempel di atas meja */
+      z-index: 20;
+      transform: scale(1.1);
+    }
+
+    .is-zoomed .light-beam-wrapper {
+      opacity: 0.9;
+      visibility: visible;
+      display: block;
+      z-index: 2;
+      top: auto;
+      bottom: 84.5vw; /* SAMA dengan location-info-wrapper agar selalu mengikuti */
+      right: -25vw;
+      width: 100vw;
+      height: 60vw;
+      transform: translate(0, 50%);
+      transform-origin: top center;
+      pointer-events: none;
+    }
+
+    .location-info-wrapper h2 {
+      font-size: 2.2svh;
+      margin-bottom: 1svh;
+    }
+
+    .location-details p {
+      font-size: 1.4svh;
+      margin: 0.5svh 0;
+    }
+
+    .buy-ticket-btn {
+      margin-top: 2svh;
+      padding: 1svh 2svh;
+      font-size: 1.4svh;
+    }
+
+    #tv-presale-content {
+      padding: 5% 10% 15% 10%;
+    }
+
+    .tv-presale-logo {
+      width: 10dvh;
+    }
+
+    .presale-label {
+      font-size: 1.8dvh;
+    }
+
+    .presale-event {
+      font-size: 1.6dvh;
+    }
+
+    .presale-date {
+      font-size: 1.2dvh;
+    }
+  }
+
+  /* Tablet (768px - 1023px) */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .is-zoomed .zoom-container {
+      transform: scale(1.2) translate(-22%, 8%);
+    }
+
+    .location-info-wrapper {
+      top: auto;
+      bottom: 58dvh;
+      right: -13dvw;
+      width: 35dvw;
+      transform: translate(100%, 50%);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .is-zoomed .location-info-wrapper {
+      transform: translate(0, 50%);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .is-zoomed .stand-lamp {
+      opacity: 1;
+      visibility: visible;
+      display: block;
+      right: -8dvh;
+      bottom: 10dvh;
+      z-index: 20;
+    }
+
+    .is-zoomed .light-beam-wrapper {
+      opacity: 0.9;
+      visibility: visible;
+      display: block;
+      z-index: 2;
+      top: auto;
+      bottom: 58dvh; /* SAMA dengan location-info-wrapper di tablet */
+      right: -28dvh;
+      width: 100dvh;
+      height: 60dvh;
+      transform: translate(0, 50%);
+      transform-origin: top center;
+      pointer-events: none;
+    }
+
+    .location-info-wrapper h2 {
+      font-size: 2.8dvh;
+    }
+
+    .location-details p {
+      font-size: 1.6dvh;
+    }
+
+    .buy-ticket-btn {
+      font-size: 1.5dvh;
+    }
+    .tv {
+      height: 40dvh;
+      bottom: 35dvh;
+    }
+    .tv-screen {
+      height: 40dvh;
+      width: 40dvh;
+      bottom: 35dvh;
+    }
+    .tv-logo {
+      bottom: 68dvh;
+      left: calc(50% - 18dvh);
+      width: 11dvh;
+    }
+    .tv-controls {
+      bottom: 40dvh;
+      gap: 3dvh;
+    }
+    #tv-content {
+      font-size: 2dvh;
+    }
+    .tv-speaker-title {
+      display: none;
+    }
+
+    /* Speaker Card Adjustments for Tablet */
+    .speaker-layout {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 85%;
+    }
+    .speaker-card {
+      width: 38%;
+      min-width: 38%;
+      max-width: 38%;
+      flex-shrink: 0;
+    }
+    #speaker-name-display {
+      font-size: 1dvh;
+      text-align: center;
+      margin: 0 auto;
+    }
+    #speaker-title-display {
+      font-size: 1dvh;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    /* Khusus Tampilan Detail di Tablet (Side-by-Side) */
+    #tv-speaker.show-detail .speaker-layout {
+      flex-direction: row;
+      justify-content: center;
+      gap: 2%;
+      top: 50%;
+      height: 100%;
+      width: 100%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #tv-speaker.show-detail .speaker-card {
+      /* No size changes, inherits from .speaker-card */
+    }
+    #tv-speaker.show-detail .speaker-detail-wrapper {
+      width: 50%;
+    }
+    #tv-speaker.show-detail .speaker-detail-text {
+      font-size: 1dvh;
+      width: 22dvh; /* Stable width for tablet */
+      min-width: 22dvh;
+    }
+    .calendar-wrapper {
+      left: 10dvh;
+    }
+    .clock {
+      display: block;
+      height: 22.5dvh;
+      left: -10dvh;
+      bottom: 12dvh;
+    }
+    .desk {
+      height: 32dvh;
+      bottom: 8dvh;
+    }
+    .stand-lamp {
+      height: 90dvh;
+      bottom: 5dvh;
+      right: -2dvw;
+    }
+    #frames {
+      bottom: -25dvh;
+      transform: scale(0.8);
+      transform-origin: center bottom;
+    }
+    .light-beam-wrapper {
+      display: block;
+      height: 85dvh;
+      bottom: 5dvh;
+      right: -8dvw;
+    }
+    #frames {
+      bottom: -20dvh;
+      right: -30dvh; /* Digeser ke kanan agar terpotong simetris */
+      left: auto;
+      transform: scale(0.7);
+      transform-origin: center bottom;
+    }
+    #video-teaser-floating {
+      width: 85vw;
+      top: 85dvh;
+    }
+    .light-beam-wrapper {
+      display: block;
+      right: -8dvw;
+      top: 1.5dvh;
+    }
+    .light-pool {
+      display: block;
+      right: -5dvw;
+      top: 30dvh;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    /* Overriding duplicate block removed to prevent confusion */
+    .calendar-wrapper {
+      top: 14dvw;
+      left: 3dvh;
+      height: 20dvh;
+    }
+    .clock {
+      display: block;
+      height: 22.5dvh;
+      left: 4dvh;
+      bottom: 12dvh;
+    }
+    .desk {
+      height: 32dvh;
+      bottom: 6dvh;
+    }
+    .stand-lamp,
+    .light-pool,
+    .light-beam-wrapper {
+      display: none;
+    }
+    #frames {
+      bottom: -18dvh;
+      transform: scale(0.75);
+      transform-origin: center bottom;
+    }
+    #video-teaser-floating {
+      width: 85vw;
+      top: 85dvh;
+    }
+  }
+
+  @media (min-width: 820px) and (max-width: 1023px) {
+    .tv {
+      bottom: 32dvh;
+    }
+    .tv-screen {
+      bottom: 32dvh;
+    }
+    .tv-logo {
+      bottom: 62dvh;
+      left: calc(50% - 16dvh);
+    }
+    .tv-controls {
+      bottom: 38dvh; /* Adjusted for the lower TV position */
+      gap: 4dvh;
+    }
+    .speaker-layout {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 85%;
+    }
+
+    .speaker-card {
+      width: 30%;
+      min-width: 30%;
+      max-width: 30%;
+      flex-shrink: 0;
+    }
+
+    #speaker-name-display {
+      font-size: 1dvh;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    #speaker-title-display {
+      font-size: 0.6dvh;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    #tv-speaker.show-detail .speaker-layout {
+      flex-direction: row;
+      justify-content: center;
+      gap: 3%;
+      top: 50%;
+      height: 85%;
+      width: 100%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #tv-speaker.show-detail .speaker-detail-wrapper {
+      width: 48%;
+    }
+    #tv-speaker.show-detail .speaker-detail-text {
+      height: 85%;
+      font-size: 0.9dvh;
+      width: 20dvh; /* Stable width for specific tablet range */
+      min-width: 20dvh;
+    }
+  }
+
+  /* Shared Laptop & Desktop (>= 1024px) */
+  @media (min-width: 1024px) {
+    #outside {
+      --door-height: 65dvh;
+      transform-origin: 50% 80%;
+    }
+    #door-container {
+      transform: translateX(-50%);
+    }
+    .window-1 {
+      display: block;
+      position: absolute;
+      bottom: var(--door-height);
+      left: 50%;
+      transform: translate(-170%, 100%);
+      width: auto;
+      height: 45dvh;
+      pointer-events: none;
+      aspect-ratio: 0.72 / 1;
+      z-index: 5;
+    }
+    .house-number-1 {
+      transform: translate(200%, 100%);
+    }
+    #outside .content {
+      left: 0%;
+      top: auto;
+      bottom: 10%;
+      padding-left: 9.375rem;
+      max-width: 50%;
+      transform: none;
+      justify-content: flex-start;
+      align-items: start;
+      text-align: left;
+      height: min-content;
+    }
+    #outside .content .background {
+      z-index: 1;
+      opacity: 0.8;
+      height: 160%;
+      width: 100%;
+    }
+    .frame-ep-container,
+    .frame-ep {
+      height: 16.5dvh;
+    }
+    .frame-ep-container {
+      top: 16%;
+      left: auto;
+      right: 13%;
+      transform: translateX(-190%);
+    }
+    .frame-em-container,
+    .frame-em {
+      height: 19.8dvh;
+    }
+    .frame-em-container {
+      top: 14%;
+      left: auto;
+      right: 13%;
+      transform: none;
+    }
+    .frame-cem-container,
+    .frame-cem {
+      height: 17.8dvh;
+    }
+    .frame-cem-container {
+      top: 16%;
+      left: auto;
+      right: 13.5%;
+      transform: translateX(155%);
+    }
+    .frame-vp-container,
+    .frame-vp {
+      height: 12.5dvh;
+    }
+    .frame-vp-container {
+      top: 35%;
+      left: auto;
+      right: 13%;
+      transform: translateX(-140%);
+    }
+    .frame-sponsorship-container,
+    .frame-sponsorship {
+      height: 11.2dvh;
+    }
+    .frame-sponsorship-container {
+      top: 37%;
+      left: auto;
+      right: 13%;
+      transform: translateX(-10%);
+    }
+    .frame-curator-container,
+    .frame-curator {
+      height: 11.2dvh;
+    }
+    .frame-curator-container {
+      top: 36%;
+      left: auto;
+      right: 13%;
+      transform: translateX(140%);
+    }
+    .frame-design-container,
+    .frame-design {
+      height: 15.2dvh;
+    }
+    .frame-design-container {
+      top: 50%;
+      left: auto;
+      right: 13%;
+      transform: translateX(-120%);
+    }
+    .frame-website-container,
+    .frame-website {
+      height: 15.2dvh;
+    }
+    .frame-website-container {
+      top: 50%;
+      left: auto;
+      right: 13%;
+      transform: translateX(35%);
+    }
+
+    /* All Laptop & Desktop Settings (>= 1024px) */
+    .tv {
+      height: 50dvh;
+      width: 50dvh;
+      bottom: 35dvh;
+    }
+    .tv-screen {
+      height: 50dvh;
+      width: 50dvh;
+      bottom: 35dvh;
+    }
+    .tv-logo {
+      bottom: 72dvh;
+      left: calc(50% - 18dvh);
+      width: 14dvh;
+    }
+    .tv-controls {
+      bottom: 44dvh;
+      gap: 5dvh;
+    }
+    #tv-content {
+      font-size: 2.8dvh;
+    }
+
+    .clock {
+      height: 30dvh;
+      left: 12dvh;
+      bottom: 12dvh;
+    }
+    .desk {
+      height: 36dvh;
+      bottom: 5dvh;
+    }
+    .stand-lamp {
+      height: 100dvh;
+      bottom: 5dvh;
+      right: 0dvw;
+    }
+    #frames {
+      bottom: -35dvh;
+      transform: scale(1);
+      transform-origin: center bottom;
+    }
+  }
+</style>
+
+<script>
+  const delay = (ms: number): Promise<void> =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
+  (() => {
+    const continueBtn = document.getElementById("continue-btn");
+    const openedDoor = document.getElementById("opened-door");
+    const semiOpenedDoor = document.getElementById("semi-opened-door");
+    const closedDoor = document.getElementById("closed-door");
+
+    const outside = document.getElementById("outside");
+    const inside = document.getElementById("inside");
+
+    if (
+      !(
+        continueBtn &&
+        openedDoor &&
+        semiOpenedDoor &&
+        closedDoor &&
+        outside &&
+        inside
+      )
+    ) {
+      return;
+    }
+
+    continueBtn.addEventListener("click", async () => {
+      // 1. Initial slow zoom and fade out content
+      outside.style.transition =
+        "transform 5s ease-out, opacity 0.5s ease-in-out";
+      outside.style.transform = "scale(1.1)";
+
+      const content = document.querySelector(
+        "#outside .content"
+      ) as HTMLElement;
+      if (content) {
+        content.style.transition = "opacity 0.8s ease-out";
+        content.style.opacity = "0";
+        content.style.pointerEvents = "none";
+      }
+
+      // 2. Animate door opening
+      closedDoor.style.opacity = "0";
+      await delay(600);
+      semiOpenedDoor.style.opacity = "0";
+      await delay(600);
+      openedDoor.style.opacity = "1";
+
+      // 3. Final aggressive zoom-in
+      await delay(300);
+      outside.style.transition =
+        "transform 2.5s cubic-bezier(0.65, 0, 0.35, 1), opacity 1s ease-in-out";
+      outside.style.transform = "scale(10)";
+      outside.style.opacity = "0";
+
+      await delay(1200);
+      inside.style.opacity = "1";
+
+      await delay(1300);
+      outside.style.display = "none";
+    });
+  })();
+
+  // Video teaser scroll animation — only triggers after hitting scroll bottom
+  (() => {
+    const inside = document.getElementById("inside");
+    const teaser = document.getElementById("video-teaser-floating");
+
+    if (!(inside && teaser)) {
+      return;
+    }
+
+    let overscroll = 0;
+    const maxOverscroll = window.innerHeight * 0.8;
+    let locked = false;
+
+    const isScrolledToBottom = () => {
+      const maxScroll = inside.scrollHeight - inside.clientHeight;
+      return maxScroll > 0 && inside.scrollTop >= maxScroll * 0.9;
+    };
+
+    const updateTeaser = () => {
+      const progress = Math.min(Math.max(overscroll / maxOverscroll, 0), 1);
+      const width = window.innerWidth;
+      const isMobile = width < 768;
+      const isTablet = width >= 768 && width < 1024;
+
+      // Tetap absolute di antara section 1 & 2 (100dvh)
+      teaser.style.position = "absolute";
+      if (isTablet) {
+        // Posisi seragam untuk semua jenis tablet
+        teaser.style.top = "85dvh";
+      } else {
+        teaser.style.top = isMobile ? "90svh" : "120dvh";
+      }
+      teaser.style.left = "50%";
+
+      // Kita geser translateY-nya: -50% (tengah) dikurangi progress * 100vh
+      // Jadi pas di-overscroll, dia bakal melesat ke atas (keluar layar)
+      const extraY = progress * 100;
+      teaser.style.transform = `translate(-50%, calc(-50% - ${extraY}vh))`;
+
+      // Opacity dipaksa 40%
+      teaser.style.opacity = "0.4";
+    };
+
+    window.addEventListener(
+      "wheel",
+      (e) => {
+        const atBottom = isScrolledToBottom();
+
+        if (atBottom && e.deltaY > 0) {
+          e.preventDefault();
+          locked = true;
+          overscroll = Math.min(overscroll + e.deltaY, maxOverscroll);
+          updateTeaser();
+        } else if (locked && e.deltaY < 0) {
+          e.preventDefault();
+          overscroll = Math.max(overscroll + e.deltaY, 0);
+          updateTeaser();
+          if (overscroll <= 0) {
+            locked = false;
+          }
+        }
+      },
+      { passive: false }
+    );
+
+    // Reset if user scrolls back up normally
+    inside.addEventListener(
+      "scroll",
+      () => {
+        if (!isScrolledToBottom() && overscroll > 0) {
+          overscroll = 0;
+          locked = false;
+          updateTeaser();
+        }
+      },
+      { passive: true }
+    );
+
+    // Touch support
+    let touchStartY = 0;
+    window.addEventListener(
+      "touchstart",
+      (e) => {
+        const touch = e.touches?.[0];
+        if (touch) {
+          touchStartY = touch.clientY;
+        }
+      },
+      { passive: true }
+    );
+
+    window.addEventListener(
+      "touchmove",
+      (e) => {
+        const touch = e.touches?.[0];
+        if (!touch) {
+          return;
+        }
+
+        const touchY = touch.clientY;
+        const deltaY = touchStartY - touchY;
+        touchStartY = touchY;
+
+        const atBottom = isScrolledToBottom();
+
+        if (atBottom && deltaY > 0) {
+          e.preventDefault();
+          locked = true;
+          overscroll = Math.min(overscroll + deltaY, maxOverscroll);
+          updateTeaser();
+        } else if (locked && deltaY < 0) {
+          e.preventDefault();
+          overscroll = Math.max(overscroll + deltaY, 0);
+          updateTeaser();
+          if (overscroll <= 0) {
+            locked = false;
+          }
+        }
+      },
+      { passive: false }
+    );
+
+    updateTeaser();
+  })();
+
+  // TV Screen Content and Controls Logic
+  (() => {
+    const prevBtn = document.getElementById("tv-prev");
+    const nextBtn = document.getElementById("tv-next");
+    const detailBtn = document.getElementById("tv-detail");
+    const tvContent = document.getElementById("tv-content");
+    const tvSpeaker = document.getElementById("tv-speaker");
+    const tvPresaleContent = document.getElementById("tv-presale-content");
+    const roomSection = document.getElementById("room-section");
+    const tvLogo = document.querySelector(".tv-logo") as HTMLElement;
+    const speakerPhotoImg = document.getElementById(
+      "speaker-photo-img"
+    ) as HTMLImageElement;
+    const speakerNameDisplay = document.getElementById("speaker-name-display");
+    const speakerTitleDisplay = document.getElementById(
+      "speaker-title-display"
+    );
+
+    if (!(prevBtn && nextBtn && detailBtn && tvContent && tvSpeaker)) {
+      return;
+    }
+
+    type SpeakerState = {
+      id: string;
+      name: string;
+      title: string;
+      description: string;
+      reveal_date: string;
+      imageSrc: string;
+      isRevealed: boolean;
+    };
+
+    type TVState =
+      | { type: "text"; text: string; color: string }
+      | { type: "speaker"; speaker: SpeakerState; color: string }
+      | { type: "final"; color: string };
+
+    // Embed speakers from Astro frontmatter via data attribute
+    const processedSpeakers = JSON.parse(
+      tvSpeaker.getAttribute("data-speakers") || "[]"
+    ) as SpeakerState[];
+
+    const states: TVState[] = [
+      { type: "text", text: "Bertumbuh Bersama", color: "black" },
+      { type: "text", text: "Mengenal Speaker", color: "black" },
+    ];
+
+    const speakerDetailText = document.getElementById("speaker-detail-text");
+
+    // Append speakers to states
+    for (const speaker of processedSpeakers) {
+      states.push({
+        type: "speaker",
+        speaker,
+        color: "#eb0028", // Or another color for details
+      });
+    }
+
+    states.push({
+      type: "final",
+      color: "#eb0028",
+    });
+
+    let currentState = 0;
+
+    const setGlitch = (active: boolean) => {
+      const method = active ? "add" : "remove";
+      tvContent.classList[method]("tv-glitch");
+      tvSpeaker.classList[method]("tv-glitch");
+      if (tvPresaleContent) {
+        tvPresaleContent.classList[method]("tv-glitch");
+      }
+    };
+
+    const updateSpeakerUI = (speaker: SpeakerState) => {
+      tvContent.style.display = "none";
+      tvSpeaker.style.display = "block";
+
+      if (speakerPhotoImg) {
+        speakerPhotoImg.src = speaker.imageSrc;
+        speakerPhotoImg.classList.toggle("is-coming-soon", !speaker.isRevealed);
+      }
+      if (speakerNameDisplay) {
+        speakerNameDisplay.textContent = speaker.name;
+      }
+      if (speakerTitleDisplay) {
+        speakerTitleDisplay.textContent =
+          speaker.id === "helwa" ? "FILKOM 2024" : speaker.title;
+      }
+      if (speakerDetailText) {
+        speakerDetailText.textContent = speaker.description;
+      }
+    };
+
+    const updateTextUI = (text: string) => {
+      tvContent.style.display = "block";
+      tvSpeaker.style.display = "none";
+      tvContent.textContent = text;
+    };
+
+    const updateUI = async () => {
+      const state = states[currentState];
+      if (!state) {
+        return;
+      }
+
+      tvSpeaker.classList.remove("show-detail");
+      setGlitch(true);
+      await delay(100);
+
+      const isFinal = state.type === "final";
+
+      // Toggle extra UI components based on state
+      if (tvPresaleContent) {
+        tvPresaleContent.style.display = isFinal ? "flex" : "none";
+      }
+      if (roomSection) {
+        roomSection.classList.toggle("is-zoomed", isFinal);
+      }
+      if (tvLogo) {
+        tvLogo.style.opacity = "0.8";
+      }
+
+      // Update core TV content based on type
+      if (state.type === "text") {
+        updateTextUI(state.text);
+      } else if (state.type === "speaker") {
+        updateSpeakerUI(state.speaker);
+      } else if (isFinal) {
+        tvContent.style.display = "none";
+        tvSpeaker.style.display = "none";
+      }
+
+      (detailBtn as HTMLElement).style.backgroundColor = state.color;
+      await delay(50);
+      setGlitch(false);
+    };
+
+    nextBtn.addEventListener("click", () => {
+      currentState = (currentState + 1) % states.length;
+      updateUI();
+    });
+
+    prevBtn.addEventListener("click", () => {
+      currentState = (currentState - 1 + states.length) % states.length;
+      updateUI();
+    });
+
+    detailBtn.addEventListener("click", () => {
+      const state = states[currentState];
+      if (!state) {
+        return;
+      }
+      if (state.type === "speaker") {
+        tvSpeaker.classList.toggle("show-detail");
+      }
+    });
+
+    updateUI();
+  })();
+
+  // Lamp flicker animation trigger
+  (() => {
+    const sections = document.querySelectorAll(".inside-section");
+    const section2 = sections[1] as HTMLElement | undefined;
+    if (!section2) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            section2.classList.add("animate-lamp", "animate-coret");
+            observer.unobserve(section2);
+          }
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(section2);
+  })();
+
+  // Smooth Scroll with Lenis
+  import Lenis from "lenis";
+
+  (() => {
+    const inside = document.getElementById("inside");
+    if (!inside) {
+      return;
+    }
+
+    const lenis = new Lenis({
+      wrapper: inside,
+      content: inside.querySelector(".lenis-content") as HTMLElement,
+      lerp: 0.04,
+      wheelMultiplier: 0.8,
+      touchMultiplier: 1.5,
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  })();
+</script>
