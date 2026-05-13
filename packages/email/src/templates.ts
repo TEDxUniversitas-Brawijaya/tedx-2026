@@ -308,6 +308,9 @@ const renderers: Renderers = {
     // Get unique events to avoid duplicates when displaying event info
     const uniqueEvents = getUniqueEvents(item.tickets);
 
+    // This changes made after propa so only main event ticket get sent, but main event ticket doesn't have whatsapp group, so we hide the whatsapp link for now. This will be reverted back to original logic in the future when we change this interface to accept nullable whatsappGroupUrl for tickets that doesn't have whatsapp group
+    const sendWhatsAppLink = false;
+
     const content = `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
@@ -340,6 +343,9 @@ const renderers: Renderers = {
           </td>
         </tr>
         <tr><td height="16"></td></tr>
+        ${
+          sendWhatsAppLink
+            ? `
         <tr><td style="border-top: 1px solid #ccc;"></td></tr>
         <tr><td height="16"></td></tr>
         <tr>
@@ -380,6 +386,9 @@ const renderers: Renderers = {
           </td>
         </tr>
         <tr><td height="16"></td></tr>
+        `
+            : ""
+        }
         <tr><td style="border-top: 1px solid #ccc;"></td></tr>
         <tr><td height="16"></td></tr>
         <tr>
