@@ -10,6 +10,7 @@ export const getDashboardAnalyticsOutputSchema = z.object({
     z.object({
       id: z.string(),
       name: z.string(),
+      description: z.string().nullable(),
       stock: z.number().int().nullable(),
       isActive: z.boolean(),
       quantitySold: z.number().int(),
