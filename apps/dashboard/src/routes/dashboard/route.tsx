@@ -110,6 +110,12 @@ function RouteComponent() {
                   requiredResource: RESOURCES.ORDER,
                 },
                 {
+                  label: "Merch Pickup",
+                  to: "/dashboard/merch-pickup",
+                  icon: IconPackage,
+                  requiredResource: RESOURCES.MERCH_PICKUP,
+                },
+                {
                   label: "Products",
                   to: "/dashboard/products",
                   icon: IconPackage,
