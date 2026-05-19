@@ -1,4 +1,15 @@
-import { and, asc, desc, eq, inArray, like, or, sql } from "drizzle-orm";
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  inArray,
+  isNotNull,
+  isNull,
+  like,
+  or,
+  sql,
+} from "drizzle-orm";
 import type { DB } from "../db";
 import {
   orderItemsTable,
@@ -72,6 +83,28 @@ export type OrderQueries = {
       unpickedUpQuantity: number;
     }[]
   >;
+
+  getMerchPickupOrders: (opts: {
+    page: number;
+    limit: number;
+    status?: "picked_up" | "not_picked_up";
+    search?: string;
+  }) => Promise<{
+    orders: {
+      orderId: string;
+      buyerName: string;
+      buyerEmail: string;
+      totalPrice: number;
+      pickedUpAt: string | null;
+      createdAt: string;
+      items: {
+        name: string;
+        quantity: number;
+        snapshotVariants: { label: string; type: string }[] | null;
+      }[];
+    }[];
+    meta: { total: number };
+  }>;
 };
 
 export const createOrderQueries = (db: DB): OrderQueries => ({
@@ -294,5 +327,72 @@ export const createOrderQueries = (db: DB): OrderQueries => ({
       .innerJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
       .where(and(eq(ordersTable.status, "paid"), eq(ordersTable.type, "merch")))
       .groupBy(orderItemsTable.productId, orderItemsTable.snapshotName);
+  },
+
+  getMerchPickupOrders: async ({ page, limit, status, search }) => {
+    const offset = (page - 1) * limit;
+
+    const whereClause = and(
+      eq(ordersTable.type, "merch"),
+      eq(ordersTable.status, "paid"),
+      status === "picked_up" ? isNotNull(ordersTable.pickedUpAt) : undefined,
+      status === "not_picked_up" ? isNull(ordersTable.pickedUpAt) : undefined,
+      search
+        ? or(
+            like(ordersTable.buyerName, `%${search}%`),
+            like(ordersTable.buyerEmail, `%${search}%`),
+            like(ordersTable.id, `%${search}%`)
+          )
+        : undefined
+    );
+
+    const [countRecords, ordersRecords] = await db.batch([
+      db
+        .select({ count: sql<number>`count(*)` })
+        .from(ordersTable)
+        .where(whereClause),
+      db.query.ordersTable.findMany({
+        where: whereClause,
+        orderBy: desc(ordersTable.createdAt),
+        limit,
+        offset,
+      }),
+    ]);
+
+    const total = countRecords[0]?.count ?? 0;
+
+    if (ordersRecords.length === 0) {
+      return { orders: [], meta: { total } };
+    }
+
+    const orderIds = ordersRecords.map((o) => o.id);
+    const itemsRecords = await db.query.orderItemsTable.findMany({
+      where: inArray(orderItemsTable.orderId, orderIds),
+    });
+
+    const itemsByOrderId = new Map<string, typeof itemsRecords>();
+    for (const item of itemsRecords) {
+      const existing = itemsByOrderId.get(item.orderId) ?? [];
+      existing.push(item);
+      itemsByOrderId.set(item.orderId, existing);
+    }
+
+    const orders = ordersRecords.map((order) => ({
+      orderId: order.id,
+      buyerName: order.buyerName,
+      buyerEmail: order.buyerEmail,
+      totalPrice: order.totalPrice,
+      pickedUpAt: order.pickedUpAt ?? null,
+      createdAt: order.createdAt,
+      items: (itemsByOrderId.get(order.id) ?? []).map((item) => ({
+        name: item.snapshotName,
+        quantity: item.quantity,
+        snapshotVariants: item.snapshotVariants as
+          | { label: string; type: string }[]
+          | null,
+      })),
+    }));
+
+    return { orders, meta: { total } };
   },
 });

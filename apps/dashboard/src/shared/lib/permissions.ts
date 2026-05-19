@@ -7,6 +7,7 @@ export type Role = (typeof ROLES)[keyof typeof ROLES];
 
 export const RESOURCES = {
   ATTENDANCE: "attendance",
+  MERCH_PICKUP: "merch_pickup",
   STORAGE: "storage",
   ORDER: "order",
   PRODUCT: "product",
@@ -20,6 +21,7 @@ export type Resource = (typeof RESOURCES)[keyof typeof RESOURCES];
  */
 export const PERMISSIONS: Record<Resource, readonly Role[]> = {
   [RESOURCES.ATTENDANCE]: [ROLES.ADMIN, ROLES.SUPERADMIN],
+  [RESOURCES.MERCH_PICKUP]: [ROLES.ADMIN, ROLES.SUPERADMIN],
   [RESOURCES.STORAGE]: [ROLES.SUPERADMIN],
   [RESOURCES.ORDER]: [ROLES.ADMIN, ROLES.SUPERADMIN],
   [RESOURCES.PRODUCT]: [ROLES.SUPERADMIN],

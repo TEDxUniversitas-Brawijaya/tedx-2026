@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server";
 import {
   listMerchPickupInputSchema,
   listMerchPickupOutputSchema,
@@ -10,29 +9,32 @@ import { createTRPCRouter, protectedProcedure } from "../../trpc";
 const list = protectedProcedure
   .input(listMerchPickupInputSchema)
   .output(listMerchPickupOutputSchema)
-  .query(() => {
-    // TODO: Implement admin.merchPickup.list
-    // - Apply filters: status, search
-    // - Apply pagination: page, limit
-    // - Return merch orders with pickup status and pagination
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.merchPickup.list is not implemented yet",
+  .query(async ({ ctx, input }) => {
+    const { orders, meta } = await ctx.services.order.getMerchPickupList({
+      page: input.page,
+      limit: input.limit,
+      status: input.status,
+      search: input.search,
     });
+    return {
+      orders,
+      pagination: {
+        page: input.page,
+        limit: input.limit,
+        total: meta.total,
+        totalPages: Math.ceil(meta.total / input.limit),
+      },
+    };
   });
 
 const markPickedUp = protectedProcedure
   .input(markPickedUpInputSchema)
   .output(markPickedUpOutputSchema)
-  .mutation(() => {
-    // TODO: Implement admin.merchPickup.markPickedUp
-    // - Validate order exists and is paid
-    // - Update pickedUpAt timestamp and pickedUpBy admin ID
-    // - Return order ID, status, and timestamp
-    throw new TRPCError({
-      code: "NOT_IMPLEMENTED",
-      message: "admin.merchPickup.markPickedUp is not implemented yet",
-    });
+  .mutation(async ({ ctx, input }) => {
+    return await ctx.services.order.markPickedUp(
+      input.orderId,
+      ctx.session.user.id
+    );
   });
 
 export const merchPickupRouter = createTRPCRouter({

@@ -14,6 +14,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardStorageRouteImport } from './routes/dashboard/storage'
 import { Route as DashboardProductsRouteImport } from './routes/dashboard/products'
 import { Route as DashboardOrdersRouteImport } from './routes/dashboard/orders'
+import { Route as DashboardMerchPickupRouteImport } from './routes/dashboard/merch-pickup'
 import { Route as DashboardHomeRouteImport } from './routes/dashboard/home'
 import { Route as DashboardAttendanceRouteImport } from './routes/dashboard/attendance'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
@@ -43,6 +44,11 @@ const DashboardOrdersRoute = DashboardOrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardMerchPickupRoute = DashboardMerchPickupRouteImport.update({
+  id: '/merch-pickup',
+  path: '/merch-pickup',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 const DashboardHomeRoute = DashboardHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/dashboard/attendance': typeof DashboardAttendanceRoute
   '/dashboard/home': typeof DashboardHomeRoute
+  '/dashboard/merch-pickup': typeof DashboardMerchPickupRoute
   '/dashboard/orders': typeof DashboardOrdersRoute
   '/dashboard/products': typeof DashboardProductsRoute
   '/dashboard/storage': typeof DashboardStorageRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/dashboard/attendance': typeof DashboardAttendanceRoute
   '/dashboard/home': typeof DashboardHomeRoute
+  '/dashboard/merch-pickup': typeof DashboardMerchPickupRoute
   '/dashboard/orders': typeof DashboardOrdersRoute
   '/dashboard/products': typeof DashboardProductsRoute
   '/dashboard/storage': typeof DashboardStorageRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/dashboard/attendance': typeof DashboardAttendanceRoute
   '/dashboard/home': typeof DashboardHomeRoute
+  '/dashboard/merch-pickup': typeof DashboardMerchPickupRoute
   '/dashboard/orders': typeof DashboardOrdersRoute
   '/dashboard/products': typeof DashboardProductsRoute
   '/dashboard/storage': typeof DashboardStorageRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/dashboard/attendance'
     | '/dashboard/home'
+    | '/dashboard/merch-pickup'
     | '/dashboard/orders'
     | '/dashboard/products'
     | '/dashboard/storage'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/dashboard/attendance'
     | '/dashboard/home'
+    | '/dashboard/merch-pickup'
     | '/dashboard/orders'
     | '/dashboard/products'
     | '/dashboard/storage'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/dashboard/attendance'
     | '/dashboard/home'
+    | '/dashboard/merch-pickup'
     | '/dashboard/orders'
     | '/dashboard/products'
     | '/dashboard/storage'
@@ -166,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardOrdersRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/merch-pickup': {
+      id: '/dashboard/merch-pickup'
+      path: '/merch-pickup'
+      fullPath: '/dashboard/merch-pickup'
+      preLoaderRoute: typeof DashboardMerchPickupRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/dashboard/home': {
       id: '/dashboard/home'
       path: '/home'
@@ -193,6 +212,7 @@ declare module '@tanstack/react-router' {
 interface DashboardRouteRouteChildren {
   DashboardAttendanceRoute: typeof DashboardAttendanceRoute
   DashboardHomeRoute: typeof DashboardHomeRoute
+  DashboardMerchPickupRoute: typeof DashboardMerchPickupRoute
   DashboardOrdersRoute: typeof DashboardOrdersRoute
   DashboardProductsRoute: typeof DashboardProductsRoute
   DashboardStorageRoute: typeof DashboardStorageRoute
@@ -201,6 +221,7 @@ interface DashboardRouteRouteChildren {
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardAttendanceRoute: DashboardAttendanceRoute,
   DashboardHomeRoute: DashboardHomeRoute,
+  DashboardMerchPickupRoute: DashboardMerchPickupRoute,
   DashboardOrdersRoute: DashboardOrdersRoute,
   DashboardProductsRoute: DashboardProductsRoute,
   DashboardStorageRoute: DashboardStorageRoute,

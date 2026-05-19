@@ -126,6 +126,33 @@ export type OrderServices = {
       unpickedUpQuantity: number;
     }[]
   >;
+
+  getMerchPickupList: (opts: {
+    page: number;
+    limit: number;
+    status?: "picked_up" | "not_picked_up";
+    search?: string;
+  }) => Promise<{
+    orders: {
+      orderId: string;
+      buyerName: string;
+      buyerEmail: string;
+      totalPrice: number;
+      pickedUpAt: string | null;
+      createdAt: string;
+      items: {
+        name: string;
+        quantity: number;
+        snapshotVariants: { label: string; type: string }[] | null;
+      }[];
+    }[];
+    meta: { total: number };
+  }>;
+
+  markPickedUp: (
+    orderId: string,
+    adminId: string
+  ) => Promise<{ orderId: string; status: "picked_up"; pickedUpAt: string }>;
 };
 
 type CreateOrderServicesCtx = {
@@ -2281,5 +2308,41 @@ export const createOrderServices = (
 
   getSoldMerchByProduct: async () => {
     return await ctx.orderQueries.getSoldMerchQuantityByProduct();
+  },
+
+  getMerchPickupList: async (opts) => {
+    return await ctx.orderQueries.getMerchPickupOrders(opts);
+  },
+
+  markPickedUp: async (orderId, adminId) => {
+    const order = await ctx.orderQueries.getOrderById(orderId);
+    if (!order) {
+      throw new AppError("NOT_FOUND", "Order not found", {
+        details: { orderId },
+      });
+    }
+    if (order.type !== "merch") {
+      throw new AppError("BAD_REQUEST", "Order is not a merch order", {
+        details: { orderId },
+      });
+    }
+    if (order.status !== "paid") {
+      throw new AppError("BAD_REQUEST", "Order is not paid", {
+        details: { orderId, status: order.status },
+      });
+    }
+    if (order.pickedUpAt !== null) {
+      throw new AppError("BAD_REQUEST", "Order has already been picked up", {
+        details: { orderId },
+      });
+    }
+
+    const pickedUpAt = new Date().toISOString();
+    await ctx.orderQueries.updateOrder(orderId, {
+      pickedUpAt,
+      pickedUpBy: adminId,
+    });
+
+    return { orderId, status: "picked_up" as const, pickedUpAt };
   },
 });

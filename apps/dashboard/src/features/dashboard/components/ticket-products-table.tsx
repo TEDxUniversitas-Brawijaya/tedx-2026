@@ -12,6 +12,7 @@ import { cn } from "@tedx-2026/ui/lib/utils";
 type TicketProduct = {
   id: string;
   name: string;
+  description: string | null;
   stock: number | null;
   isActive: boolean;
   quantitySold: number;
@@ -50,7 +51,14 @@ export function TicketProductsTable({ products }: TicketProductsTableProps) {
             )}
             {products.map((product) => (
               <TableRow key={product.id}>
-                <TableCell className="font-medium">{product.name}</TableCell>
+                <TableCell className="font-medium">
+                  <div>{product.name}</div>
+                  {product.description && (
+                    <div className="font-normal text-muted-foreground text-xs">
+                      {product.description}
+                    </div>
+                  )}
+                </TableCell>
                 <TableCell className="text-right">
                   <Badge variant={product.isActive ? "default" : "outline"}>
                     {product.isActive ? "Active" : "Inactive"}

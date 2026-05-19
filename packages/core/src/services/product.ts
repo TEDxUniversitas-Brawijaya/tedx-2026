@@ -17,7 +17,13 @@ export type ProductServices = {
     data: { price?: number; stock?: number }
   ) => Promise<void>;
   getDashboardTicketProductStats: () => Promise<
-    { id: string; name: string; stock: number | null; isActive: boolean }[]
+    {
+      id: string;
+      name: string;
+      description: string | null;
+      stock: number | null;
+      isActive: boolean;
+    }[]
   >;
 };
 
@@ -429,12 +435,13 @@ export const createProductServices = (
 
   getDashboardTicketProductStats: async () => {
     const products = await ctx.productQueries.getProducts({
-      types: ["ticket_regular"],
+      types: ["ticket_regular", "ticket_bundle"],
       status: "all",
     });
     return products.map((p) => ({
       id: p.id,
       name: p.name,
+      description: p.description ?? null,
       stock: p.stock,
       isActive: p.isActive,
     }));
