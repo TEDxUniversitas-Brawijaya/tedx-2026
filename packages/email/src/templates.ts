@@ -338,6 +338,14 @@ const renderers: Renderers = {
         <tr>
           <td>
             <span>
+              Kami juga mengajak teman-teman untuk hadir dengan mengenakan outfit bernuansa putih dan/atau biru. Warna-warna ini kami pilih untuk menghadirkan suasana yang hangat, tenang, dan penuh keterhubungan—selaras dengan rumah yang akan kita bangun bersama nanti.
+            </span>
+          </td>
+        </tr>
+        <tr><td height="16"></td></tr>
+        <tr>
+          <td>
+            <span>
               Kami sangat menantikan kehadiran dan cerita yang akan kamu bawa. Siapkan dirimu untuk saling mendengar dan membangun makna baru di rumah kita nanti!
             </span>
           </td>
