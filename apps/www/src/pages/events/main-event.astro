@@ -350,7 +350,16 @@ const processedSpeakers = speakers.map((s) => {
           <Image src={WoodFloor} alt="Floor" class="wood-floor" />
         </section>
 
-        <div id="video-teaser-floating"></div>
+        <div id="video-teaser-floating">
+          <video
+            src="https://cdn.tedxuniversitasbrawijaya.com/teasers/main-event-teaser.mp4"
+            autoplay
+            loop
+            muted
+            playsinline
+            controls
+          ></video>
+        </div>
         <Footer />
       </div>
     </div>
@@ -481,9 +490,8 @@ const processedSpeakers = speakers.map((s) => {
     height: 0;
     pointer-events: none;
   }
-  /* TODO : add video */
   #video-teaser-floating {
-    display: none;
+    display: block;
     position: absolute;
     top: 120dvh;
     left: 50%;
@@ -491,11 +499,21 @@ const processedSpeakers = speakers.map((s) => {
     width: 80vw;
     max-width: 1133px;
     aspect-ratio: 1133 / 539;
-    background-color: #d9d9d9;
+    background-color: transparent;
     z-index: 50;
-    opacity: 0.4;
+    opacity: 1;
     will-change: transform;
     transition: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  #video-teaser-floating video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   /* ── Ornament Frames ── */
@@ -2382,7 +2400,7 @@ const processedSpeakers = speakers.map((s) => {
     });
   })();
 
-  // Video teaser scroll animation — only triggers after hitting scroll bottom
+  // Video teaser scroll animation — slides up as page scrolls
   (() => {
     const inside = document.getElementById("inside");
     const teaser = document.getElementById("video-teaser-floating");
@@ -2391,17 +2409,10 @@ const processedSpeakers = speakers.map((s) => {
       return;
     }
 
-    let overscroll = 0;
-    const maxOverscroll = window.innerHeight * 0.8;
-    let locked = false;
-
-    const isScrolledToBottom = () => {
-      const maxScroll = inside.scrollHeight - inside.clientHeight;
-      return maxScroll > 0 && inside.scrollTop >= maxScroll * 0.9;
-    };
-
     const updateTeaser = () => {
-      const progress = Math.min(Math.max(overscroll / maxOverscroll, 0), 1);
+      const scrollTop = inside.scrollTop;
+      const scrollHeight = window.innerHeight;
+      const progress = Math.min(Math.max(scrollTop / scrollHeight, 0), 1);
       const width = window.innerWidth;
       const isMobile = width < 768;
       const isTablet = width >= 768 && width < 1024;
@@ -2417,93 +2428,15 @@ const processedSpeakers = speakers.map((s) => {
       teaser.style.left = "50%";
 
       // Kita geser translateY-nya: -50% (tengah) dikurangi progress * 100vh
-      // Jadi pas di-overscroll, dia bakal melesat ke atas (keluar layar)
+      // Jadi pas di-scroll, dia bakal melesat ke atas (keluar layar)
       const extraY = progress * 100;
       teaser.style.transform = `translate(-50%, calc(-50% - ${extraY}vh))`;
 
-      // Opacity dipaksa 40%
-      teaser.style.opacity = "0.4";
+      // Opacity dipaksa 100%
+      teaser.style.opacity = "1";
     };
 
-    window.addEventListener(
-      "wheel",
-      (e) => {
-        const atBottom = isScrolledToBottom();
-
-        if (atBottom && e.deltaY > 0) {
-          e.preventDefault();
-          locked = true;
-          overscroll = Math.min(overscroll + e.deltaY, maxOverscroll);
-          updateTeaser();
-        } else if (locked && e.deltaY < 0) {
-          e.preventDefault();
-          overscroll = Math.max(overscroll + e.deltaY, 0);
-          updateTeaser();
-          if (overscroll <= 0) {
-            locked = false;
-          }
-        }
-      },
-      { passive: false }
-    );
-
-    // Reset if user scrolls back up normally
-    inside.addEventListener(
-      "scroll",
-      () => {
-        if (!isScrolledToBottom() && overscroll > 0) {
-          overscroll = 0;
-          locked = false;
-          updateTeaser();
-        }
-      },
-      { passive: true }
-    );
-
-    // Touch support
-    let touchStartY = 0;
-    window.addEventListener(
-      "touchstart",
-      (e) => {
-        const touch = e.touches?.[0];
-        if (touch) {
-          touchStartY = touch.clientY;
-        }
-      },
-      { passive: true }
-    );
-
-    window.addEventListener(
-      "touchmove",
-      (e) => {
-        const touch = e.touches?.[0];
-        if (!touch) {
-          return;
-        }
-
-        const touchY = touch.clientY;
-        const deltaY = touchStartY - touchY;
-        touchStartY = touchY;
-
-        const atBottom = isScrolledToBottom();
-
-        if (atBottom && deltaY > 0) {
-          e.preventDefault();
-          locked = true;
-          overscroll = Math.min(overscroll + deltaY, maxOverscroll);
-          updateTeaser();
-        } else if (locked && deltaY < 0) {
-          e.preventDefault();
-          overscroll = Math.max(overscroll + deltaY, 0);
-          updateTeaser();
-          if (overscroll <= 0) {
-            locked = false;
-          }
-        }
-      },
-      { passive: false }
-    );
-
+    inside.addEventListener("scroll", updateTeaser, { passive: true });
     updateTeaser();
   })();
 
