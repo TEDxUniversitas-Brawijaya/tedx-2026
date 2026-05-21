@@ -10,6 +10,9 @@ export type RefundQueries = {
   getRefundByOrderId: (
     orderId: SelectRefundRequest["orderId"]
   ) => Promise<SelectRefundRequest | null>;
+  getRefundsByOrderId: (
+    orderId: SelectRefundRequest["orderId"]
+  ) => Promise<SelectRefundRequest[]>;
   createRefundRequest: (data: InsertRefundRequest) => Promise<void>;
   updateRefundRequest: (
     id: SelectRefundRequest["id"],
@@ -21,9 +24,17 @@ export const createRefundQueries = (db: DB): RefundQueries => ({
   getRefundByOrderId: async (orderId) => {
     const refundRequest = await db.query.refundRequestsTable.findFirst({
       where: eq(refundRequestsTable.orderId, orderId),
+      orderBy: (table, { desc }) => [desc(table.createdAt)],
     });
 
     return refundRequest ?? null;
+  },
+
+  getRefundsByOrderId: async (orderId) => {
+    return await db.query.refundRequestsTable.findMany({
+      where: eq(refundRequestsTable.orderId, orderId),
+      orderBy: (table, { desc }) => [desc(table.createdAt)],
+    });
   },
 
   createRefundRequest: async (data) => {

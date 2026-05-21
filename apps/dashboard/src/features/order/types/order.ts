@@ -73,7 +73,7 @@ export type DetailOrder = Order & {
         checkedInBy: string | null;
       }[]
     | null;
-  refund: {
+  refunds: {
     id: string;
     status: "requested" | "approved" | "rejected";
     reason?: string;
@@ -86,5 +86,5 @@ export type DetailOrder = Order & {
     processedAt: string | null;
     rejectionReason: string | null;
     createdAt: string;
-  } | null;
+  }[];
 };

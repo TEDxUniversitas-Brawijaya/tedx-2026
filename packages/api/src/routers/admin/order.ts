@@ -42,9 +42,9 @@ const getById = protectedProcedure
   .input(getOrderByIdInputSchema)
   .output(getOrderByIdOutputSchema)
   .query(async ({ ctx, input }) => {
-    const [order, refund] = await Promise.all([
+    const [order, refunds] = await Promise.all([
       ctx.services.order.getOrderById(input.orderId),
-      ctx.services.refund.getRefundByOrderId(input.orderId),
+      ctx.services.refund.getRefundsByOrderId(input.orderId),
     ]);
 
     return {
@@ -55,15 +55,13 @@ const getById = protectedProcedure
       expiresAt: order.expiresAt ? order.expiresAt.toISOString() : null,
       verifiedAt: order.verifiedAt ? order.verifiedAt.toISOString() : null,
       pickedUpAt: order.pickedUpAt ? order.pickedUpAt.toISOString() : null,
-      refund: refund
-        ? {
-            ...refund,
-            processedAt: refund.processedAt
-              ? new Date(refund.processedAt).toISOString()
-              : null,
-            createdAt: new Date(refund.createdAt).toISOString(),
-          }
-        : null,
+      refunds: refunds.map((refund) => ({
+        ...refund,
+        processedAt: refund.processedAt
+          ? new Date(refund.processedAt).toISOString()
+          : null,
+        createdAt: new Date(refund.createdAt).toISOString(),
+      })),
       // TODO: include ticket details when available
       tickets: null,
     };
