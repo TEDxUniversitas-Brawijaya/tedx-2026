@@ -36,7 +36,9 @@ export const OrderDetailDialogContent = ({
         <OrderDetailBuyerInfoCard order={order} />
         <OrderDetailItemsCard items={order.items} />
         {order.tickets && <OrderDetailTicketsCard tickets={order.tickets} />}
-        {order.refund && <OrderDetailRefundCard refund={order.refund} />}
+        {order.refunds.length > 0 && (
+          <OrderDetailRefundCard refunds={order.refunds} />
+        )}
       </div>
 
       {canVerifyPayment && (

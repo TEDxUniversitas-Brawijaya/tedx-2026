@@ -50,6 +50,9 @@ export type RefundServices = {
     orderId: Order["id"]
     // TODO: We should return domain Refund type instead of raw DB refund request data, and we should also include related order and user info in the response
   ) => Promise<Awaited<ReturnType<RefundQueries["getRefundByOrderId"]>>>;
+  getRefundsByOrderId: (
+    orderId: Order["id"]
+  ) => Promise<Awaited<ReturnType<RefundQueries["getRefundsByOrderId"]>>>;
 };
 
 type CreateRefundServicesCtx = {
@@ -394,6 +397,9 @@ export const createRefundServices = (
   getRefundByOrderId: async (orderId) => {
     const refund = await ctx.refundQueries.getRefundByOrderId(orderId);
     return refund;
+  },
+  getRefundsByOrderId: async (orderId) => {
+    return await ctx.refundQueries.getRefundsByOrderId(orderId);
   },
 
   submitRequest: async (input) => {

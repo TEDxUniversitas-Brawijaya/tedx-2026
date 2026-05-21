@@ -131,8 +131,8 @@ export const getOrderByIdOutputSchema = z.object({
       })
     )
     .nullable(),
-  refund: z
-    .object({
+  refunds: z.array(
+    z.object({
       id: z.string(),
       status: refundStatusSchema,
       reason: z.string().optional(),
@@ -146,7 +146,7 @@ export const getOrderByIdOutputSchema = z.object({
       rejectionReason: z.string().nullable(),
       createdAt: isoDateStringSchema,
     })
-    .nullable(),
+  ),
 });
 
 // admin.order.verifyPayment
