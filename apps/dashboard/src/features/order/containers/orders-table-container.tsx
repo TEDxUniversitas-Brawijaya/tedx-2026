@@ -83,6 +83,7 @@ export function OrdersTableContainer() {
     <>
       <OrdersTable orders={listQuery.data.orders} />
       <OrderPaginationControls
+        total={listQuery.data.pagination.total}
         totalPages={listQuery.data.pagination.totalPages}
       />
     </>

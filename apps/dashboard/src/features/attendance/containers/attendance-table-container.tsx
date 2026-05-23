@@ -88,6 +88,7 @@ export function AttendanceTableContainer() {
       <AttendanceFilters />
       <AttendanceTable tickets={listQuery.data.tickets} />
       <AttendancePaginationControls
+        total={listQuery.data.pagination.total}
         totalPages={listQuery.data.pagination.totalPages}
       />
     </div>

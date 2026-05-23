@@ -85,6 +85,7 @@ export function MerchPickupTableContainer() {
       <MerchPickupFilters />
       <MerchPickupTable orders={listQuery.data.orders} />
       <MerchPickupPaginationControls
+        total={listQuery.data.pagination.total}
         totalPages={listQuery.data.pagination.totalPages}
       />
     </div>
