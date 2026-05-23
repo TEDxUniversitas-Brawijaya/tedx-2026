@@ -4,15 +4,20 @@ import { useOrderFilterStore } from "../stores/use-order-filter-store";
 
 type OrderPaginationControlsProps = {
   totalPages: number;
+  total: number;
 };
 
 export function OrderPaginationControls({
   totalPages,
+  total,
 }: OrderPaginationControlsProps) {
   const {
-    filter: { page },
+    filter: { page, limit },
     onChangePage,
   } = useOrderFilterStore();
+
+  const start = total === 0 ? 0 : Math.min((page - 1) * limit + 1, total);
+  const end = Math.min(page * limit, total);
 
   const onPrev = () => {
     if (page <= 1) {
@@ -39,7 +44,7 @@ export function OrderPaginationControls({
         className="text-muted-foreground text-sm"
         id="order-management-pagination-text"
       >
-        Page {page} of {totalPages}
+        Showing {start}–{end} of {total} · Page {page} of {totalPages}
       </p>
       <div
         className="flex items-center gap-2"

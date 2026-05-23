@@ -4,21 +4,25 @@ import { useMerchPickupFilterStore } from "../stores/use-merch-pickup-filter-sto
 
 type MerchPickupPaginationControlsProps = {
   totalPages: number;
+  total: number;
 };
 
 export function MerchPickupPaginationControls({
   totalPages,
+  total,
 }: MerchPickupPaginationControlsProps) {
   const {
-    filter: { page },
+    filter: { page, limit },
     onChangePage,
   } = useMerchPickupFilterStore();
   const pageCount = Math.max(totalPages, 1);
+  const start = total === 0 ? 0 : Math.min((page - 1) * limit + 1, total);
+  const end = Math.min(page * limit, total);
 
   return (
     <div className="flex items-center justify-between" id="merch-pickup-pages">
       <p className="text-muted-foreground text-sm">
-        Page {page} of {pageCount}
+        Showing {start}–{end} of {total} · Page {page} of {pageCount}
       </p>
       <div className="flex items-center gap-2">
         <Button
