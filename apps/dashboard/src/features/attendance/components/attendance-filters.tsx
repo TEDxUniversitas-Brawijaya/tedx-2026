@@ -38,6 +38,7 @@ const rowsPerPageItems = [
   { label: "20 rows", value: "20" },
   { label: "50 rows", value: "50" },
   { label: "100 rows", value: "100" },
+  { label: "200 rows", value: "200" },
 ];
 
 export function AttendanceFilters() {

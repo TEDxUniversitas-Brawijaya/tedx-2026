@@ -40,6 +40,8 @@ const rowsPerPageItems = [
   { label: "5 rows", value: "5" },
   { label: "10 rows", value: "10" },
   { label: "20 rows", value: "20" },
+  { label: "50 rows", value: "50" },
+  { label: "100 rows", value: "100" },
 ];
 
 export function OrderFilters() {
