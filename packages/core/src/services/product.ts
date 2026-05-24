@@ -259,11 +259,12 @@ export const createProductServices = (
       if (product.bundleItems === null) {
         const eventDate = getEventDate(product.name);
 
-        const eventHasPassed = eventDate ? new Date() > eventDate : false;
+        // const eventHasPassed = eventDate ? new Date() > eventDate : false;
 
         response.push({
           ...product,
-          isActive: eventHasPassed ? false : product.isActive, // if event date has passed, set isActive to false
+          // isActive: eventHasPassed ? false : product.isActive, // if event date has passed, set isActive to false
+          isActive: product.isActive,
           description: eventDate
             ? eventDate.toLocaleDateString("id-ID", {
                 weekday: "long",
