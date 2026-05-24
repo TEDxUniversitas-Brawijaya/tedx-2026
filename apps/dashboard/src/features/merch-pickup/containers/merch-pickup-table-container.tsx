@@ -13,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "@tedx-2026/ui/components/table";
-import { MerchPickupFilters } from "../components/merch-pickup-filters";
 import { MerchPickupPaginationControls } from "../components/merch-pickup-pagination-controls";
 import { MerchPickupTable } from "../components/merch-pickup-table";
 import { useMerchPickupFilterStore } from "../stores/use-merch-pickup-filter-store";
@@ -82,7 +81,6 @@ export function MerchPickupTableContainer() {
 
   return (
     <div className="space-y-4">
-      <MerchPickupFilters />
       <MerchPickupTable orders={listQuery.data.orders} />
       <MerchPickupPaginationControls
         total={listQuery.data.pagination.total}

@@ -1,3 +1,4 @@
+import { AttendanceFilters } from "@/features/attendance/components/attendance-filters";
 import { AttendanceTableContainer } from "@/features/attendance/containers/attendance-table-container";
 import { canAccess, RESOURCES } from "@/shared/lib/permissions";
 import { createFileRoute, redirect } from "@tanstack/react-router";
@@ -33,7 +34,10 @@ function RouteComponent() {
         <QrScanner />
       </div>
 
-      <AttendanceTableContainer />
+      <div className="space-y-4">
+        <AttendanceFilters />
+        <AttendanceTableContainer />
+      </div>
     </div>
   );
 }

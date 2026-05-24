@@ -1,3 +1,4 @@
+import { MerchPickupFilters } from "@/features/merch-pickup/components/merch-pickup-filters";
 import { MerchPickupTableContainer } from "@/features/merch-pickup/containers/merch-pickup-table-container";
 import { canAccess, RESOURCES } from "@/shared/lib/permissions";
 import { createFileRoute, redirect } from "@tanstack/react-router";
@@ -25,7 +26,10 @@ function RouteComponent() {
           Mark paid merch orders as picked up.
         </p>
       </div>
-      <MerchPickupTableContainer />
+      <div className="space-y-4">
+        <MerchPickupFilters />
+        <MerchPickupTableContainer />
+      </div>
     </div>
   );
 }

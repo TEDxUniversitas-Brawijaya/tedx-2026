@@ -13,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "@tedx-2026/ui/components/table";
-import { AttendanceFilters } from "../components/attendance-filters";
 import { AttendancePaginationControls } from "../components/attendance-pagination-controls";
 import { AttendanceTable } from "../components/attendance-table";
 import { useAttendanceFilterStore } from "../stores/use-attendance-filter-store";
@@ -85,7 +84,6 @@ export function AttendanceTableContainer() {
 
   return (
     <div className="space-y-4">
-      <AttendanceFilters />
       <AttendanceTable tickets={listQuery.data.tickets} />
       <AttendancePaginationControls
         total={listQuery.data.pagination.total}
