@@ -1500,17 +1500,23 @@ export const createOrderServices = (
 
     const eventHasPassed = eventDate ? new Date() > eventDate : false;
     if (eventHasPassed) {
-      throw new AppError(
-        "BAD_REQUEST",
-        "The event date for this ticket has passed, you cannot purchase this ticket",
-        {
-          details: {
-            productId: item.productId,
-            buyer,
-            eventDate: eventDate ? eventDate.toISOString() : null,
-          },
-        }
-      );
+      ctx.logger.warn("ticket_order.event_date_passed", {
+        orderId,
+        productId: item.productId,
+        buyerEmail: buyer.email,
+        eventDate: eventDate?.toISOString(),
+      });
+      // throw new AppError(
+      //   "BAD_REQUEST",
+      //   "The event date for this ticket has passed, you cannot purchase this ticket",
+      //   {
+      //     details: {
+      //       productId: item.productId,
+      //       buyer,
+      //       eventDate: eventDate ? eventDate.toISOString() : null,
+      //     },
+      //   }
+      // );
     }
 
     // Atomic stock decrement - Step 1 of Saga pattern
